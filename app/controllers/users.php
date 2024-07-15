@@ -12,9 +12,9 @@ function userAuph($user)
     $_SESSION['login'] = $user['login'];
     $_SESSION['privilege'] = $user['privilege'];
     $_SESSION['service'] = $user['service_id'];
-    if($_SESSION['admin']){
+    if ($_SESSION['admin']) {
         header('location: ' . BASE_URL . 'admin/admin.php');
-    }else {
+    } else {
         header('location: ' . BASE_URL);
     }
 }
@@ -31,20 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
     $service = $_POST['service'];
 
 
-    if($login === '' || $password === '' || $second_password === ''){
+    if ($login === '' || $password === '' || $second_password === '') {
         $errMsg = 'Не все поля заполнены';
-    }elseif (!preg_match($pattern_for_pass, $login)){
+    } elseif (!preg_match($pattern_for_pass, $login)) {
         $errMsg = "Логин должен соответствовать формату ii.ivanov т.е. 2 символа(инициалы), точка, фамилия";
-    }elseif (mb_strlen($password, encoding: 'UTF8') < 8) {
+    } elseif (mb_strlen($password, encoding: 'UTF8') < 8) {
         $errMsg = "Пароль должен быть не менее 8 символов";
-    }elseif ($second_password !== $password){
+    } elseif ($second_password !== $password) {
         $errMsg = "Пароли не совпадают";
-    }
-    else{
-        $existence = selectOne_main(table: 'users',params: ['login' => $login]);
-        if(!empty($existence['login']) && $existence['login'] === $login){
+    } else {
+        $existence = selectOne_main(table: 'users', params: ['login' => $login]);
+        if (!empty($existence['login']) && $existence['login'] === $login) {
             $errMsg = "Пользователь с таким именем существует";
-        }else {
+        } else {
             $password = password_hash($password, PASSWORD_DEFAULT);
             $post = [
                 'privilege' => $privilege,
@@ -52,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
                 'password' => $password,
                 'service_id' => $service,
             ];
-            $id =  insert_main('users', $post);
-            $user = selectOne_main(table: 'users',params: ['id' => $id]);
+            $id = insert_main('users', $post);
+            $user = selectOne_main(table: 'users', params: ['id' => $id]);
 
             userAuph($user);
             //$errMsg = "Пользователь " . "<strong>" . $login . "</strong>" . " создан";
@@ -68,21 +67,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
 }
 
 //Код для формы авторизации
-if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button_log'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button_log'])) {
     $login = trim($_POST['login']);
     $password = trim($_POST['password']);
-    if($login === '' || $password === ''){
+    if ($login === '' || $password === '') {
         $errMsg = "Не все поля заполнены";
-    }else{
-        $existence = selectOne_main(table: 'users',params: ['login' => $login]);
-        if ($existence && password_verify($password, $existence['password'])){
+    } else {
+        $existence = selectOne_main(table: 'users', params: ['login' => $login]);
+        if ($existence && password_verify($password, $existence['password'])) {
             //Авторизовать
-           userAuph($existence);
-        }else{
-            if (!$existence){
+            userAuph($existence);
+        } else {
+            if (!$existence) {
                 $errMsg = "Неправильный логин";
                 $login = '';
-            }elseif (!password_verify($password, $existence['password'])){
+            } elseif (!password_verify($password, $existence['password'])) {
                 $errMsg = "Неправильный пароль";
             }
         }

@@ -9,8 +9,8 @@ $menuItems = [
 ];
 ?>
 
-    <!doctype html>
-    <html lang="en">
+<!doctype html>
+<html lang="en">
 
 <head>
     <title>Заказ техники</title>
@@ -35,58 +35,61 @@ $routes = selectALL('route', params: ['service_id' => $current_service]);
     <h2>Форма заказа автотранспорта</h2>
     <form>
         <div class="form-row mb-3">
-        <div class="row">
-            <div class="col">
-                <label for="dateFrom">Дата с</label>
-                <input type="date" class="form-control" id="dateFrom">
+            <div class="row">
+                <div class="col">
+                    <label for="dateFrom">Дата с</label>
+                    <input type="date" class="form-control" id="dateFrom">
+                </div>
+                <div class="col">
+                    <label for="dateTo">Дата по</label>
+                    <input type="date" class="form-control" id="dateTo">
+                </div>
             </div>
-            <div class="col">
-                <label for="dateTo">Дата по</label>
-                <input type="date" class="form-control" id="dateTo">
-            </div>
-        </div>
         </div>
         <div class="form-row mb-3">
             <div class="row">
-            <div class="col">
-                <label for="timeFrom">Время с</label>
-                <input type="time" class="form-control" id="timeFrom">
-            </div>
-            <div class="col">
-                <label for="timeTo">Время по</label>
-                <input type="time" class="form-control" id="timeTo">
-            </div>
+                <div class="col">
+                    <label for="timeFrom">Время с</label>
+                    <input type="time" class="form-control" id="timeFrom">
+                </div>
+                <div class="col">
+                    <label for="timeTo">Время по</label>
+                    <input type="time" class="form-control" id="timeTo">
+                </div>
             </div>
         </div>
         <div class="form-row mb-3">
-        <div class="row">
-            <div class="col">
-                <label for="route">Маршрут</label>
-                <select class="form-select">
-                    <option value="" class="default-option"></option>
-                    <?php foreach ($routes as $route): ?>
-                        <option value="<?= htmlspecialchars($route['id']); ?>">
-                            <?= htmlspecialchars($route['route_to']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col">
-                <label>Смена</label><br>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="shift" id="shift1" value="08:00-20:00">
-                    <label class="form-check-label" for="shift1">08:00-20:00</label>
+            <div class="row">
+                <div class="col">
+                    <label for="route">Маршрут</label>
+                    <select class="form-select">
+                        <option value="" class="default-option"></option>
+                        <?php foreach ($routes as $route): ?>
+                            <option value="<?= htmlspecialchars($route['id']); ?>">
+                                <?= htmlspecialchars($route['route_to']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input, mt-3" type="radio" name="shift" id="shift2" value="20:00-08:00">
-                    <label class="form-check-label" for="shift2">20:00-08:00</label>
+                <div class="col">
+                    <label>Смена</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="shift" id="shift1" value="08:00-20:00">
+                        <label class="form-check-label" for="shift1">08:00-20:00</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input, mt-3" type="radio" name="shift" id="shift2" value="20:00-08:00">
+                        <label class="form-check-label" for="shift2">20:00-08:00</label>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         <div class="form-group mb-4">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Справочник маршрутов</button>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Справочник маршрутов
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">

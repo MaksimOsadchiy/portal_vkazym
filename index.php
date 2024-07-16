@@ -1,5 +1,5 @@
 <?php include('path.php');
-include 'app/database/db_main.php';
+session_start();
 $pageTitle = "Главная";
 $menuItems = [];
 ?>

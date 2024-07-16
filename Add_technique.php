@@ -1,7 +1,8 @@
 <?php
     include('path.php');
-    include 'app/database/db.php';
-    include 'app/database/db_main.php';
+    // include 'app/database/db.php';
+    // include 'app/database/db_main.php';
+    include 'app/database/dbFunction.php';
 
     // session_start(); // По идее можно убрать
     $pageTitle = "Заказ техники";
@@ -11,12 +12,12 @@
         ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
     ];
 
-    $techniques = selectALL('technique');
+    $techniques = selectALLRes('technique');
     $params = ['service_id' => $_SESSION['service']];
-    $responsible_persons = selectALL('responsible_person', $params);
+    $responsible_persons = selectALLRes('responsible_person', $params);
     $current_service = $_SESSION['service'];
-    $serviceFullName = selectOne_main('services', ['id' => $current_service]);
-    $routes = selectALL('route', params: ['service_id' => $current_service]);
+    $serviceFullName = selectOneRes('services', ['id' => $current_service]);
+    $routes = selectALLRes('route', params: ['service_id' => $current_service]);
 
 ?>
 

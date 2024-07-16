@@ -1,6 +1,6 @@
 <?php
 
-include '../database/db.php';
+include '../database/dbFunction.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$requestBody = file_get_contents('php://input');
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		'route_to' => $data['route_to'],
 		'service_id' => $data['service_id'],
 	];
-	$response = insert($table, $params);
+	$response = insertRes($table, $params);
 	echo json_encode(['id' => $response]);
 } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 	$requestBody = file_get_contents('php://input');
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		'route_to' => $data['route_to'],
 		'service_id' => $data['service_id'],
 	];
-	$response = update($table, $id, $params);
+	$response = updateRes($table, $id, $params);
 	echo json_encode(['id' => $response]);
 } else {
 	http_response_code(405);

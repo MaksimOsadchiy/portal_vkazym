@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					body: JSON.stringify(request),
 				});
 				const jsonResponse = await response.json();		// Получаем тело ответа
+				console.log(jsonResponse);
 				if (!response.ok) {
 					throw new Error(jsonResponse.status);
 				};
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				addEventEditService(resRow);		// Вешаем на кнопку в новой строке слушатель
 				bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
+				query === 'POST' && (document.querySelector('.add-entry').innerText = 'Добавить запись');
 			} catch(error) {
 				document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
 			}

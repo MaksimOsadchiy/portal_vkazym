@@ -1,5 +1,5 @@
 <?php
-// include("app/database/db_main.php");
+
 include("app/database/dbFunction.php");
 
 function userAuph($user){
@@ -16,7 +16,6 @@ function userAuph($user){
 
 $pattern_for_pass = '/^[a-zA-Z]{2}\.[a-zA-Z0-9]+$/';
 $errMsg = '';
-$regstatus = ''; // нигде не используестя
 //Код для формы регистрации
 if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
 	$login = trim($_POST['login']);
@@ -43,10 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
 			$post = [
 				'privilege' => $privilege,
 				'login' => $login,
-				'password' => $password,
 				'service_id' => $service,
 			];
 			$id = insertRes('users', $post);
+			$post = [
+				'user_id' => $id,
+				'password' => $password,
+			];
+			insertRes('passwords', $post);
 			$user = selectOneRes(table: 'users', params: ['id' => $id]);
 
 			userAuph($user);
@@ -66,16 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button_log'])) {
 		$errMsg = "Не все поля заполнены";
 	} else {
 		$existence = selectOneRes(table: 'users', params: ['login' => $login]);
-		if ($existence && password_verify($password, $existence['password'])) {
-			//Авторизовать
-			userAuph($existence);
-		} else {
-			if (!$existence) {
-				$errMsg = "Неправильный логин";
-				$login = '';
-			} elseif (!password_verify($password, $existence['password'])) {
+		if ($existence){
+			$correctPassword = selectOneRes(table: 'passwords', params: ['user_id' => $existence['id']]);
+			if (password_verify($password, $correctPassword['password'])){
+				userAuph($existence);
+			} else {
 				$errMsg = "Неправильный пароль";
 			};
+		} else {
+				$errMsg = "Неправильный логин";
+				$login = '';
 		};
 	};
 };

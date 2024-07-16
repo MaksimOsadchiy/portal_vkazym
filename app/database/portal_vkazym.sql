@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июл 16 2024 г., 10:28
+-- Время создания: Июл 16 2024 г., 17:30
 -- Версия сервера: 8.0.36
--- Версия PHP: 8.2.19
+-- Версия PHP: 8.2.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,23 +24,89 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `passwords`
+--
+
+CREATE TABLE `passwords` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `passwords`
+--
+
+INSERT INTO `passwords` (`id`, `user_id`, `password`) VALUES
+(1, 29, '$2y$10$IjRH4FqokbP7dokRHQ4iDOK/3jPxHgOQwOfhOGkPqCVWS9swbMnz6'),
+(2, 30, '$2y$10$FhWgc/3WP6G1/2KyvyOlY.g7zOBclp/yVZf9bqEJ/KeT6692FR6mO'),
+(3, 1, '$2y$10$35.yVnFrsE9VXxcIWyziXuPLTxY8jaPKbc3TthHEQ7.aX8AbCpVky'),
+(4, 2, '$2y$10$35.yVnFrsE9VXxcIWyziXuPLTxY8jaPKbc3TthHEQ7.aX8AbCpVky'),
+(5, 3, '$2y$10$Abw38N4RumrLRGEkFtz0rOvR0L39D42gCNp6X7sy6M.KZqP43EWnq'),
+(6, 4, '$2y$10$1HBaOo06MRWeBCMe8BlfzuKuN36AVmzr65f4ZjLVusuAPdSy.ZNUu'),
+(7, 5, '$2y$10$ph2h/Y77Z9bzxB1ZF2Oy8OplNRmD4nMIBDV64N5s7xJTvvjrcQ1I.'),
+(8, 6, '$2y$10$UgHWB.Flt/nAD7ChK9bP4eDgqMUETpBuQdSQk10Bt7yXlFmkjLYo.'),
+(9, 7, '$2y$10$K2IS/sL02aTkKg810UGMEeBUKo438Qah2tCTiBs6E7qt1YBWJV8rK'),
+(10, 8, '$2y$10$VNaMm0xeMOc1YK6Bfobl1OmT35/BPP0e/.Sxo0oDY75GPgl1Xryfy'),
+(11, 9, '$2y$10$uXxWard7vwbZJW1rc6SEhuDtwsrPDfAyFWiXfQUXb5uGCceIaPm2e'),
+(12, 10, '$2y$10$d483T/CxMDPUPaOipnpYneEgAGJLQxsyctMW84qmHBhE9fVvhz9rO'),
+(13, 10, '$2y$10$3dGmTFEQN1G6J4o8oXa21uzt6v7L25eO/4e08ugpZs0c6FsqnP2Uu'),
+(14, 12, '$2y$10$xKN.tTZDDTHp7JC6hYRUAuo3KHLnif9wGODV40NkSWw2EV81tZS0y'),
+(15, 13, '$2y$10$KvdehAHAqfEDPC6LD1TgYuDr3YpLd23h2JDunSbU6QIBmz3tbkhHC'),
+(16, 14, '$2y$10$//AuBTk7bZDrcNNkGyLLZuESbdZYS42BwJPoHvMsUxhwSH/7o6dlu'),
+(17, 15, '$2y$10$kuIMHOCv9RSIMJVvmc054OTGVDjIorrASiMy2.uG7/xq13oJ5pU7y'),
+(18, 16, '$2y$10$IbhVNW3tTjOpOOY5H1yRw.GEDYYBI1dSdQQdG6FwZ/CRghyUR8lG2'),
+(19, 17, '$2y$10$86tevaRXnd0sQO96hTy6BO66Ybr7WV/ObSvfe0JoZgAIgXvBC9yNe'),
+(20, 18, '$2y$10$w9VJ1cr9W8l6pouc8RoFZekB94is/BP6C88HFQomj9.lz9cOnFVM2'),
+(21, 19, '$2y$10$OPK8drX3iEm7Z0S0M5aTb.3uyH1DkPY6m8GNTTYJuGzt7JLdDrOUS'),
+(22, 20, '$2y$10$wDkJ.DKm3FuMGFxXDLmKK.HpP2sUI0lfryD5EhFbE/5PpGZgdYp/O'),
+(23, 21, '$2y$10$OifF9VbxCF/.NXaXdYLlqO73EYCsLVXfaPqYAQ0p.ASqTKkTSkbmu'),
+(24, 22, '$2y$10$FhGDUNnG5NKIGftX9pRKXeDKC6po0WQM/ObkAYZBW2/QH6mHiy.CK'),
+(25, 23, '$2y$10$pqEkF6h9n4AjQt2SzoVRD.QNCvIAn1G6e.ywVtK9btWDFClMuDQv6'),
+(26, 24, '$2y$10$3g5kSGJjbiB7NnSDO3IKcO1aw3rH8y.YPd6Eh.Rd/xLR5hfBzZ7XW'),
+(27, 25, '$2y$10$4ajvUGO3EepMbD5Cwe3sp.tTYwitFWp804ATMpnlrUxhn1iDAe.H2'),
+(28, 26, '$2y$10$wJHaaQYC/3m7QKUAqsCG2e0mtO5Q4Pt2MFgW3NLFjyRXIS7f1dXUi'),
+(29, 27, '$2y$10$IzfnTtrtFnqEDYdpDcZu1.HHg5VaZFQm.vpXvELu.qcdp8L53B2dK');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `privileges`
+--
+
+CREATE TABLE `privileges` (
+  `id` int NOT NULL,
+  `work_position` int NOT NULL DEFAULT '0',
+  `transcript` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `privileges`
+--
+
+INSERT INTO `privileges` (`id`, `work_position`, `transcript`) VALUES
+(1, 0, 'Пользователь(только просмотр)'),
+(2, 1, 'Админ'),
+(3, 2, 'Младший техник(заказ техники)'),
+(4, 3, 'Старший техник(заказ/подтверждение техники)'),
+(5, 4, 'Сотрудник техподдержки(просмотр/ответ на заявки)'),
+(6, 5, 'Мл. техник и сотрудник техподдержки(заказ техники и просмотр/ответ на заявки)'),
+(7, 6, 'Ст. техник и сотрудник техподдержки(заказ/подтверждение техники и просмотр/ответ на заявки)');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `responsible_person`
 --
 
 CREATE TABLE `responsible_person` (
   `id` int NOT NULL,
-  `first_name` text COLLATE utf8mb4_general_ci NOT NULL,
-  `middle_name` text COLLATE utf8mb4_general_ci NOT NULL,
-  `last_name` text COLLATE utf8mb4_general_ci NOT NULL,
+  `first_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `middle_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `last_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `service_id` int NOT NULL,
-  `phone_number` text COLLATE utf8mb4_general_ci
+  `phone_number` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- ССЫЛКИ ТАБЛИЦЫ `responsible_person`:
---   `service_id`
---       `services` -> `id`
---
 
 --
 -- Дамп данных таблицы `responsible_person`
@@ -58,15 +124,9 @@ INSERT INTO `responsible_person` (`id`, `first_name`, `middle_name`, `last_name`
 
 CREATE TABLE `route` (
   `id` int NOT NULL,
-  `route_to` text COLLATE utf8mb4_general_ci NOT NULL,
+  `route_to` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `service_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- ССЫЛКИ ТАБЛИЦЫ `route`:
---   `service_id`
---       `services` -> `id`
---
 
 --
 -- Дамп данных таблицы `route`
@@ -78,7 +138,8 @@ INSERT INTO `route` (`id`, `route_to`, `service_id`) VALUES
 (3, 'Жил поселок', 12),
 (5, 'ДЛО-4', 8),
 (6, 'ДЛО-5', 8),
-(7, 'ДЛО-6', 8);
+(7, 'ДЛО-6', 8),
+(8, 'ДЛО-8', 8);
 
 -- --------------------------------------------------------
 
@@ -88,12 +149,8 @@ INSERT INTO `route` (`id`, `route_to`, `service_id`) VALUES
 
 CREATE TABLE `services` (
   `id` int NOT NULL,
-  `service` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `service` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- ССЫЛКИ ТАБЛИЦЫ `services`:
---
 
 --
 -- Дамп данных таблицы `services`
@@ -125,17 +182,11 @@ INSERT INTO `services` (`id`, `service`) VALUES
 
 CREATE TABLE `technique` (
   `id_technique` int NOT NULL,
-  `name_technique` varchar(70) COLLATE utf8mb4_general_ci NOT NULL,
+  `name_technique` varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `id_type_of_techniques` int NOT NULL,
-  `state_number` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `state_number` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `faulty` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- ССЫЛКИ ТАБЛИЦЫ `technique`:
---   `id_type_of_techniques`
---       `type_of_technique` -> `id`
---
 
 --
 -- Дамп данных таблицы `technique`
@@ -198,29 +249,17 @@ CREATE TABLE `technique_order` (
   `service_id` int NOT NULL,
   `technique_id` int NOT NULL,
   `route_id` int NOT NULL,
-  `work_activity` text COLLATE utf8mb4_general_ci,
+  `work_activity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `responsible_person_id` int NOT NULL,
   `date_from` date NOT NULL,
   `date_to` date NOT NULL,
-  `time_from` varchar(4) COLLATE utf8mb4_general_ci NOT NULL,
-  `time_to` varchar(4) COLLATE utf8mb4_general_ci NOT NULL,
+  `time_from` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `time_to` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `shift` int DEFAULT NULL,
-  `remark` text COLLATE utf8mb4_general_ci,
-  `status` text COLLATE utf8mb4_general_ci,
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `status` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- ССЫЛКИ ТАБЛИЦЫ `technique_order`:
---   `responsible_person_id`
---       `responsible_person` -> `id`
---   `route_id`
---       `route` -> `id`
---   `service_id`
---       `services` -> `id`
---   `technique_id`
---       `technique` -> `id_technique`
---
 
 -- --------------------------------------------------------
 
@@ -230,12 +269,8 @@ CREATE TABLE `technique_order` (
 
 CREATE TABLE `type_of_technique` (
   `id` int NOT NULL,
-  `name` varchar(70) COLLATE utf8mb4_general_ci NOT NULL
+  `name` varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- ССЫЛКИ ТАБЛИЦЫ `type_of_technique`:
---
 
 --
 -- Дамп данных таблицы `type_of_technique`
@@ -279,56 +314,63 @@ INSERT INTO `type_of_technique` (`id`, `name`) VALUES
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
-  `login` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `login` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `privilege` int NOT NULL,
-  `service_id` int DEFAULT NULL,
-  `privilege_technique` int NOT NULL DEFAULT '0',
-  `privilege_support` int NOT NULL DEFAULT '0'
+  `service_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- ССЫЛКИ ТАБЛИЦЫ `users`:
---   `service_id`
---       `services` -> `id`
---
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `privilege`, `service_id`, `privilege_technique`, `privilege_support`) VALUES
-(1, 'ii.ivanov', '$2y$10$35.yVnFrsE9VXxcIWyziXuPLTxY8jaPKbc3TthHEQ7.aX8AbCpVky', 0, NULL, 0, 0),
-(2, 'ii.ivanov2', '$2y$10$5nMCCX7K/3Smk2UwM6bLROJO64v61wzgFKbnwkVQrqOxpXEKiySgG', 0, NULL, 0, 0),
-(3, 'ii.ivanov3', '$2y$10$Abw38N4RumrLRGEkFtz0rOvR0L39D42gCNp6X7sy6M.KZqP43EWnq', 0, NULL, 0, 0),
-(4, 'ii.ivanov4', '$2y$10$1HBaOo06MRWeBCMe8BlfzuKuN36AVmzr65f4ZjLVusuAPdSy.ZNUu', 0, NULL, 0, 0),
-(5, 'ii.ivanov5', '$2y$10$ph2h/Y77Z9bzxB1ZF2Oy8OplNRmD4nMIBDV64N5s7xJTvvjrcQ1I.', 0, NULL, 0, 0),
-(6, 'ii.ivano66', '$2y$10$UgHWB.Flt/nAD7ChK9bP4eDgqMUETpBuQdSQk10Bt7yXlFmkjLYo.', 0, NULL, 0, 0),
-(7, 'wqdqd', '$2y$10$K2IS/sL02aTkKg810UGMEeBUKo438Qah2tCTiBs6E7qt1YBWJV8rK', 0, NULL, 0, 0),
-(8, 'ii.ivanov7', '$2y$10$VNaMm0xeMOc1YK6Bfobl1OmT35/BPP0e/.Sxo0oDY75GPgl1Xryfy', 0, NULL, 0, 0),
-(9, 'ii.ivanov10', '$2y$10$uXxWard7vwbZJW1rc6SEhuDtwsrPDfAyFWiXfQUXb5uGCceIaPm2e', 0, NULL, 0, 0),
-(10, 'ii.ivanov11', '$2y$10$d483T/CxMDPUPaOipnpYneEgAGJLQxsyctMW84qmHBhE9fVvhz9rO', 0, NULL, 0, 0),
-(11, 'ii.ivanov12', '$2y$10$3dGmTFEQN1G6J4o8oXa21uzt6v7L25eO/4e08ugpZs0c6FsqnP2Uu', 0, NULL, 0, 0),
-(12, 'ii.ivanov13', '$2y$10$xKN.tTZDDTHp7JC6hYRUAuo3KHLnif9wGODV40NkSWw2EV81tZS0y', 0, NULL, 0, 0),
-(13, 'ii.ivanov14', '$2y$10$KvdehAHAqfEDPC6LD1TgYuDr3YpLd23h2JDunSbU6QIBmz3tbkhHC', 0, NULL, 0, 0),
-(14, 'ii.ivanov15', '$2y$10$//AuBTk7bZDrcNNkGyLLZuESbdZYS42BwJPoHvMsUxhwSH/7o6dlu', 0, NULL, 0, 0),
-(15, 'ii.ivanov16', '$2y$10$kuIMHOCv9RSIMJVvmc054OTGVDjIorrASiMy2.uG7/xq13oJ5pU7y', 0, NULL, 0, 0),
-(16, 'ii.ivanov17', '$2y$10$IbhVNW3tTjOpOOY5H1yRw.GEDYYBI1dSdQQdG6FwZ/CRghyUR8lG2', 0, NULL, 0, 0),
-(17, 'ii.ivanov18', '$2y$10$86tevaRXnd0sQO96hTy6BO66Ybr7WV/ObSvfe0JoZgAIgXvBC9yNe', 0, NULL, 0, 0),
-(18, 'ii.ivanov19', '$2y$10$w9VJ1cr9W8l6pouc8RoFZekB94is/BP6C88HFQomj9.lz9cOnFVM2', 1, NULL, 0, 0),
-(19, 'ii.ivanov22', '$2y$10$OPK8drX3iEm7Z0S0M5aTb.3uyH1DkPY6m8GNTTYJuGzt7JLdDrOUS', 0, NULL, 0, 0),
-(20, 'ii.ivanov25', '$2y$10$wDkJ.DKm3FuMGFxXDLmKK.HpP2sUI0lfryD5EhFbE/5PpGZgdYp/O', 0, NULL, 0, 0),
-(21, 'ii.ivanov26', '$2y$10$OifF9VbxCF/.NXaXdYLlqO73EYCsLVXfaPqYAQ0p.ASqTKkTSkbmu', 0, NULL, 0, 0),
-(22, 'ii.ivanov001', '$2y$10$FhGDUNnG5NKIGftX9pRKXeDKC6po0WQM/ObkAYZBW2/QH6mHiy.CK', 0, 8, 0, 0),
-(23, 'ee.litva3', '$2y$10$pqEkF6h9n4AjQt2SzoVRD.QNCvIAn1G6e.ywVtK9btWDFClMuDQv6', 0, 8, 0, 0),
-(24, 'ee.litva1', '$2y$10$3g5kSGJjbiB7NnSDO3IKcO1aw3rH8y.YPd6Eh.Rd/xLR5hfBzZ7XW', 0, 8, 0, 0),
-(25, 'ee.litva2', '$2y$10$4ajvUGO3EepMbD5Cwe3sp.tTYwitFWp804ATMpnlrUxhn1iDAe.H2', 0, 8, 0, 0),
-(26, 'ee.litva11', '$2y$10$wJHaaQYC/3m7QKUAqsCG2e0mtO5Q4Pt2MFgW3NLFjyRXIS7f1dXUi', 0, 8, 0, 0),
-(27, 'ee.litva55', '$2y$10$IzfnTtrtFnqEDYdpDcZu1.HHg5VaZFQm.vpXvELu.qcdp8L53B2dK', 0, 8, 0, 0);
+INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
+(1, 'ii.ivanov', 0, NULL),
+(2, 'ii.ivanov2', 0, NULL),
+(3, 'ii.ivanov3', 0, NULL),
+(4, 'ii.ivanov4', 0, NULL),
+(5, 'ii.ivanov5', 0, NULL),
+(6, 'ii.ivano66', 0, NULL),
+(7, 'wqdqd', 0, NULL),
+(8, 'ii.ivanov7', 0, NULL),
+(9, 'ii.ivanov10', 0, NULL),
+(10, 'ii.ivanov11', 0, NULL),
+(11, 'ii.ivanov12', 0, NULL),
+(12, 'ii.ivanov13', 0, NULL),
+(13, 'ii.ivanov14', 0, NULL),
+(14, 'ii.ivanov15', 0, NULL),
+(15, 'ii.ivanov16', 0, NULL),
+(16, 'ii.ivanov17', 0, NULL),
+(17, 'ii.ivanov18', 0, NULL),
+(18, 'ii.ivanov19', 1, NULL),
+(19, 'ii.ivanov22', 0, NULL),
+(20, 'ii.ivanov25', 0, NULL),
+(21, 'ii.ivanov26', 0, NULL),
+(22, 'ii.ivanov001', 0, 8),
+(23, 'ee.litva3', 0, 8),
+(24, 'ee.litva1', 0, 8),
+(25, 'ee.litva2', 0, 8),
+(26, 'ee.litva11', 0, 8),
+(27, 'ee.litva55', 0, 8),
+(29, 'ee.litva23', 0, 8),
+(30, 'ee.litva22', 0, 8);
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `passwords`
+--
+ALTER TABLE `passwords`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Индексы таблицы `privileges`
+--
+ALTER TABLE `privileges`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `work_position` (`work_position`);
 
 --
 -- Индексы таблицы `responsible_person`
@@ -378,11 +420,24 @@ ALTER TABLE `type_of_technique`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `service_id` (`service_id`);
+  ADD KEY `service_id` (`service_id`),
+  ADD KEY `privilege` (`privilege`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
+
+--
+-- AUTO_INCREMENT для таблицы `passwords`
+--
+ALTER TABLE `passwords`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT для таблицы `privileges`
+--
+ALTER TABLE `privileges`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `responsible_person`
@@ -394,7 +449,7 @@ ALTER TABLE `responsible_person`
 -- AUTO_INCREMENT для таблицы `route`
 --
 ALTER TABLE `route`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `services`
@@ -424,11 +479,17 @@ ALTER TABLE `type_of_technique`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
+
+--
+-- Ограничения внешнего ключа таблицы `passwords`
+--
+ALTER TABLE `passwords`
+  ADD CONSTRAINT `passwords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `responsible_person`
@@ -453,7 +514,7 @@ ALTER TABLE `technique`
 --
 ALTER TABLE `technique_order`
   ADD CONSTRAINT `technique_order_ibfk_1` FOREIGN KEY (`responsible_person_id`) REFERENCES `responsible_person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `technique_order_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `tehnika`.`route` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `technique_order_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `route` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `technique_order_ibfk_3` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `technique_order_ibfk_4` FOREIGN KEY (`technique_id`) REFERENCES `technique` (`id_technique`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
@@ -461,7 +522,8 @@ ALTER TABLE `technique_order`
 -- Ограничения внешнего ключа таблицы `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`);
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`privilege`) REFERENCES `privileges` (`work_position`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

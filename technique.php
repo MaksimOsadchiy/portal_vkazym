@@ -1,5 +1,5 @@
 <?php include('path.php');
-include 'app/database/db_main.php';
+include 'app/database/dbFunction.php';
 include 'app/controllers/technique_back.php';
 $pageTitle = "Заказ техники";
 $menuItems = [
@@ -10,7 +10,7 @@ $menuItems = [
 $join = [
     'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
 ];
-$free_technique = selectALL_join('technique', [], joins: $join);
+$free_technique = selectAllJoinRes('technique', [], joins: $join);
 
 ?>
 

@@ -1,10 +1,7 @@
 <?php
     include('path.php');
-    // include 'app/database/db.php';
-    // include 'app/database/db_main.php';
     include 'app/database/dbFunction.php';
 
-    // session_start(); // По идее можно убрать
     $pageTitle = "Заказ техники";
     $menuItems = [
         ['url' => BASE_URL . '123.php', 'label' => 'Статус заявки'],
@@ -31,9 +28,11 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/addTechnique/addTechnique.css">
-    <script defer src="assets/js/addTechnique/addTechnique.js"></script>
+    <script defer src="assets/js/addTechnique/modalWindowRoutes.js"></script>
+    <script defer src="assets/js/addTechnique/modalWindowResponsiblePersons.js"></script>
     <script>
         let routes = <?php echo json_encode($routes); ?>;
+        let responsiblePersons = <?php echo json_encode($responsible_persons); ?>;
         const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
         const SESSION = <?php echo json_encode($_SESSION); ?>;
         const serviceFullName = <?php echo json_encode($serviceFullName); ?>
@@ -131,7 +130,40 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary">Справочник ответственных</button>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2">Справочник ответственных</button>
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Справочник ответственных</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column align-items-center">
+                            <div class="table-persons mb-3">
+                                <div class="tb-header">Ответственных</div>
+                                <table class="table" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-2 text-center">Фамилия</th>
+                                            <th class="col-2 text-center">Имя</th>
+                                            <th class="col-2 text-center">Отчество</th>
+                                            <th class="col-2 text-center">Служба</th>
+                                            <th class="col-2 text-center">Телефон</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-primary add-person">Добавить</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btnСlose" data-bs-dismiss="modal">Закрыть</button>
+                            <!-- <button type="button" class="btn btn-primary">Сохранить изменения</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <table class="table table-bordered">
             <thead>

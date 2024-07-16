@@ -178,6 +178,7 @@ function update($table, $id, $params)
     $query = $pdo->prepare($sql);
     $query->execute();
     dbCheckError($query);
+    return $id;
 }
 
 $param = [

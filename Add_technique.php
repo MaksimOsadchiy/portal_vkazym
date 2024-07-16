@@ -12,9 +12,10 @@
     ];
 
     $techniques = selectALL('technique');
-    $responsible_persons = selectALL('responsible_person');
+    $params = ['service_id' => $_SESSION['service']];
+    $responsible_persons = selectALL('responsible_person', $params);
     $current_service = $_SESSION['service'];
-        $serviceFullName = selectOne_main('services', ['id' => $current_service]);
+    $serviceFullName = selectOne_main('services', ['id' => $current_service]);
     $routes = selectALL('route', params: ['service_id' => $current_service]);
 
 ?>
@@ -31,7 +32,7 @@
     <link rel="stylesheet" href="assets/css/addTechnique/addTechnique.css">
     <script defer src="assets/js/addTechnique/addTechnique.js"></script>
     <script>
-        const routes = <?php echo json_encode($routes); ?>;
+        let routes = <?php echo json_encode($routes); ?>;
         const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
         const SESSION = <?php echo json_encode($_SESSION); ?>;
         const serviceFullName = <?php echo json_encode($serviceFullName); ?>
@@ -95,7 +96,7 @@
             </div>
         </div>
         <div class="form-group mb-4">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-primary btn-open-modal-window" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Справочник маршрутов
             </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -123,8 +124,8 @@
                             <button type="button" class="btn btn-primary add-entry">Добавить запись</button>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                            <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                            <button type="button" class="btn btn-secondary btnСlose" data-bs-dismiss="modal">Закрыть</button>
+                            <!-- <button type="button" class="btn btn-primary">Сохранить изменения</button> -->
                         </div>
                     </div>
                 </div>

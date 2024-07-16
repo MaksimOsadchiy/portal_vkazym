@@ -34,6 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
 					throw new Error(jsonResponse.status);
 				};
 				const resRow = createDefaultRow(jsonResponse.id, nameDir, nameService);		// Создаём обычную строку в таблицу
+				const newElem = {
+					'id': jsonResponse.id,
+					'route_to': nameDir,
+					'service_id': idService,
+				};
+				routes = routes.some((obj) => obj.id === jsonResponse.id)
+					? routes.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
+					: [...routes, newElem];
+
 				addEventEditService(resRow);		// Вешаем на кнопку в новой строке слушатель
 				bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
 			} catch(error) {
@@ -43,6 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 	/**
 	* Функция создает строку таблицы с кнопкой "Редактировать" с заданными данными.
+	* 
+	*	<tr class="appForm" value="ID">
+	*		<td>"Например ДЛО"</td>
+	*		<td>"Например АиМО"</td>
+	*		<td>
+	*			<button type="button" class="btn btn-secondary edit-service-btn">Редактировать</button>
+	*		</td>
+	*	</tr>
 	* 
 	* @param {number} id - Идентификатор записи.
 	* @param {string} dir - Название направления.
@@ -78,17 +95,21 @@ document.addEventListener('DOMContentLoaded', () => {
 		row.appendChild(tdBtnContainer);
 
 		return row;
-		// По итогу получаем это(+-):
-		// <tr class="appForm" value="ID">
-		// 		<td>"Например ДЛО"</td>
-		// 		<td>"Например АиМО"</td>
-		// 		<td>
-		// 			<button type="button" class="btn btn-secondary edit-service-btn">Редактировать</button>
-		// 		</td>
-		// </tr>
 	};
 	/**
 	* Функция создает строку таблицы с кнопкой "Сохранить" с заданными данными.
+	*
+	*	<tr class="appForm new-service" value="ID">
+	*		<td>
+	*			<input type="text" class="form-control name-dir">
+	*		</td>
+	*		<td>
+	*			<input type="text" class="form-control name-service">
+	*		</td>
+	*		<td>
+	*			<button type="button" class="btn btn-secondary save-new-service-btn">Сохранить</button>
+	*		</td>
+	*	</tr>
 	* 
 	* @param {string} dir - Название направления.
 	* @param {string} service - Название сервиса.
@@ -132,18 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		row.appendChild(tdBtnContainer);
 
 		return row;
-		// По итогу получаем это(+-):
-		// <tr class="appForm new-service" value="ID">
-		// 		<td>
-		// 			<input type="text" class="form-control name-dir">
-		// 		</td>
-		// 		<td>
-		// 			<input type="text" class="form-control name-service">
-		// 		</td>
-		// 		<td>
-		// 			<button type="button" class="btn btn-secondary save-new-service-btn">Сохранить</button>
-		// 		</td>
-		// </tr>
 	}
 	/**
 	* Функция добавляет обработчик события на кнопку добавления новой записи.
@@ -152,16 +161,21 @@ document.addEventListener('DOMContentLoaded', () => {
 	* строки для ввода новой записи. Если такой строки нет, создается новая строка
 	* для ввода данных, добавляется обработчик события на кнопку сохранения, и строка
 	* добавляется в тело таблицы.
-	*
+	* 
 	*/
 	const addEventEntry = () => {
 		const btnEntry = document.querySelector('.add-entry');
 		btnEntry.addEventListener('click', () => {
 			const bodyTable = document.querySelector('.table-users').querySelector('tbody');
 			if (!bodyTable.querySelector('.new-service')) {
+				btnEntry.innerText="Отменить";
 				const newRow = createInputRow('', '');
+				newRow.classList.add('tempClass');
 				newRow.querySelector('.save-new-service-btn').addEventListener('click', async () => await saveService(bodyTable, 'POST', bodyTable, newRow));
 				bodyTable.appendChild(newRow);
+			} else if (bodyTable.querySelector('.tempClass')) {
+				btnEntry.innerText="Добавить запись";
+				bodyTable.removeChild(bodyTable.lastChild);
 			};
 		});
 	};
@@ -179,8 +193,29 @@ document.addEventListener('DOMContentLoaded', () => {
 			const tdList = row.querySelectorAll('td');
 			const newRow = createInputRow(tdList[0].textContent, tdList[1].textContent, row.getAttribute('value'));
 			const bodyTable = document.querySelector('.table-users').querySelector('tbody');
-			newRow.querySelector('.save-new-service-btn').addEventListener('click', async () => await saveService(newRow, 'PUT', bodyTable, newRow));
-			bodyTable.replaceChild(newRow, row);
+			if (!bodyTable.querySelector('.new-service')) {
+				newRow.querySelector('.save-new-service-btn').addEventListener('click', async () => await saveService(newRow, 'PUT', bodyTable, newRow));
+				bodyTable.replaceChild(newRow, row);
+			};
+		});
+	};
+	/**
+	* Функция добавляет обработчики событий на кнопки, связанные с открытием и закрытием модального окна.
+	* 
+	* При клике на одну из кнопок (закрытие окна или открытие окна) вызывает перерисовку
+	* таблицы маршрутов и изменяет текст кнопки "Добавить запись".
+	*/
+	const addEventCloseWindow = () => {
+		const btnClose = document.querySelector('.modal-footer').querySelector('.btnСlose');		// По идее можно убрать
+		const btnCross = document.querySelector('.modal-header').querySelector('.btn-close');		// По идее можно убрать
+		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window');		// Оставить только это
+		const arr = [btnClose, btnCross, btnOpenModalWindow];
+		arr.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				drowTableRoutes();
+				const btnEntry = document.querySelector('.add-entry');
+				btnEntry.innerText="Добавить запись";
+			});
 		});
 	};
 	/**
@@ -192,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	*/
 	const drowTableRoutes = () => {
 		const bodyTable = document.querySelector('.table-users').querySelector('tbody');
+		bodyTable.innerText = '';
 		routes.forEach((route) => {
 			const row = createDefaultRow(route.id, route['route_to'], serviceFullName.service);
 			bodyTable.appendChild(row);
@@ -203,4 +239,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Начало скрипта
 	addEventEntry();
 	drowTableRoutes();
+	addEventCloseWindow();
 });

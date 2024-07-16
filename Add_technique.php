@@ -1,16 +1,27 @@
-<?php include('path.php');
-include 'app/database/db.php';
-session_start();
-$pageTitle = "Заказ техники";
-$menuItems = [
-    ['url' => BASE_URL . '123.php', 'label' => 'Статус заявки'],
-    ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-    ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-];
+<?php
+    include('path.php');
+    include 'app/database/db.php';
+    include 'app/database/db_main.php';
+
+    // session_start(); // По идее можно убрать
+    $pageTitle = "Заказ техники";
+    $menuItems = [
+        ['url' => BASE_URL . '123.php', 'label' => 'Статус заявки'],
+        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
+        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
+    ];
+
+    $techniques = selectALL('technique');
+    $params = ['service_id' => $_SESSION['service']];
+    $responsible_persons = selectALL('responsible_person', $params);
+    $current_service = $_SESSION['service'];
+    $serviceFullName = selectOne_main('services', ['id' => $current_service]);
+    $routes = selectALL('route', params: ['service_id' => $current_service]);
+
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <title>Заказ техники</title>
@@ -18,17 +29,17 @@ $menuItems = [
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-
+    <link rel="stylesheet" href="assets/css/addTechnique/addTechnique.css">
+    <script defer src="assets/js/addTechnique/addTechnique.js"></script>
+    <script>
+        let routes = <?php echo json_encode($routes); ?>;
+        const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
+        const SESSION = <?php echo json_encode($_SESSION); ?>;
+        const serviceFullName = <?php echo json_encode($serviceFullName); ?>
+    </script>
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
-<?php
-$techniques = selectALL('technique');
-$responsible_persons = selectALL('responsible_person');
-$current_service = $_SESSION['service'];
-$routes = selectALL('route', params: ['service_id' => $current_service]);
-
-?>
 <?php include("app/include/header.php"); ?>
 
 <div class="container-xl container-teqnique">
@@ -85,7 +96,7 @@ $routes = selectALL('route', params: ['service_id' => $current_service]);
             </div>
         </div>
         <div class="form-group mb-4">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-primary btn-open-modal-window" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Справочник маршрутов
             </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -93,15 +104,28 @@ $routes = selectALL('route', params: ['service_id' => $current_service]);
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Справочник маршрутов</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <!-- Ваше содержимое здесь -->
+                        <div class="modal-body d-flex flex-column align-items-center">
+                            <div class="table-users mb-3">
+                                <div class="tb-header">Маршруты</div>
+                                <table class="table" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-2 text-center">Коды направления</th>
+                                            <th class="col-2 text-center">Служба</th>
+                                            <th class="col-2 text-center">Управление</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-primary add-entry">Добавить запись</button>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                            <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                            <button type="button" class="btn btn-secondary btnСlose" data-bs-dismiss="modal">Закрыть</button>
+                            <!-- <button type="button" class="btn btn-primary">Сохранить изменения</button> -->
                         </div>
                     </div>
                 </div>

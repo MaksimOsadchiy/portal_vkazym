@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					body: JSON.stringify(request),
 				});
 				const jsonResponse = await response.json();		// Получаем тело ответа
-				console.log(jsonResponse);
 				if (!response.ok) {
 					throw new Error(jsonResponse.status);
 				};

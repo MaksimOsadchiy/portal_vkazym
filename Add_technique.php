@@ -66,7 +66,7 @@
                 <div class="row">
                     <div class="col">
                         <label for="timeFrom">Время с</label>
-                        <input type="time" class="form-control time-form" id="timeFrom">
+                        <input type="time" class="form-control time-from" id="timeFrom">
                     </div>
                     <div class="col">
                         <label for="timeTo">Время по</label>
@@ -94,7 +94,7 @@
                             <label class="form-check-label" for="shift1">08:00-20:00</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input, mt-3" type="radio" name="shift" id="shift2" value="20:00-08:00">
+                            <input class="form-check-input" type="radio" name="shift" id="shift2" value="20:00-08:00">
                             <label class="form-check-label" for="shift2">20:00-08:00</label>
                         </div>
                     </div>

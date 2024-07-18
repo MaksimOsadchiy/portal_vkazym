@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июл 16 2024 г., 17:30
+-- Время создания: Июл 18 2024 г., 15:46
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.21
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `portal_vkazym_v2.0.0`
+-- База данных: `portal_vkazym`
 --
 
 -- --------------------------------------------------------
@@ -101,9 +101,9 @@ INSERT INTO `privileges` (`id`, `work_position`, `transcript`) VALUES
 
 CREATE TABLE `responsible_person` (
   `id` int NOT NULL,
-  `first_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `middle_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `last_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `firstname` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `patronymic` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `service_id` int NOT NULL,
   `phone_number` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -112,9 +112,10 @@ CREATE TABLE `responsible_person` (
 -- Дамп данных таблицы `responsible_person`
 --
 
-INSERT INTO `responsible_person` (`id`, `first_name`, `middle_name`, `last_name`, `service_id`, `phone_number`) VALUES
-(1, 'Борис', 'Борисович', 'Б', 4, '00-001'),
-(4, 'Юрий', 'Владимирович', 'С', 8, '89220000000');
+INSERT INTO `responsible_person` (`id`, `lastname`, `firstname`, `patronymic`, `service_id`, `phone_number`) VALUES
+(1, 'Б', 'Борис', 'Борисович', 4, '00-001'),
+(4, 'С', 'Юрий', 'Владимирович', 8, '89220000000'),
+(6, 'П', 'Иван', 'Иванович2', 8, '89876543210');
 
 -- --------------------------------------------------------
 
@@ -253,12 +254,12 @@ CREATE TABLE `technique_order` (
   `responsible_person_id` int NOT NULL,
   `date_from` date NOT NULL,
   `date_to` date NOT NULL,
-  `time_from` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `time_to` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `time_from` time NOT NULL,
+  `time_to` time NOT NULL,
   `shift` int DEFAULT NULL,
   `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `status` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `created_at` datetime DEFAULT NULL
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -443,7 +444,7 @@ ALTER TABLE `privileges`
 -- AUTO_INCREMENT для таблицы `responsible_person`
 --
 ALTER TABLE `responsible_person`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `route`

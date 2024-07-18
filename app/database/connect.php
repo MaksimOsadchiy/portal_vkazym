@@ -2,8 +2,8 @@
 
 $driver = 'mysql';
 $host = 'localhost';
-$db_name = 'portal_vkazym_v2.0.0';
-$db_user = 'portal_vkazym';
+$db_name = 'portal_vkazym';
+$db_user = 'portal_vkazym/';
 $db_pass = 'P@ssw0rd';
 $charset = 'utf8';
 $options = [

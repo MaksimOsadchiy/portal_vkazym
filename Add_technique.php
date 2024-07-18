@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col">
                     <label for="route">Маршрут</label>
-                    <select class="form-select">
+                    <select class="form-select route-select">
                         <option value="" class="default-option"></option>
                         <?php foreach ($routes as $route): ?>
                             <option value="<?= htmlspecialchars($route['id']); ?>">
@@ -190,14 +190,7 @@
                     </td>
                     <td><input type="text" class="form-control"></td>
                     <td>
-                        <select class="form-select">
-                            <option value="" class="default-option"></option>
-                            <?php foreach ($responsible_persons as $responsible_person): ?>
-                                <option value="<?= $responsible_person['id'] !== null ? htmlspecialchars($responsible_person['id']) : ''; ?>">
-                                    <?= htmlspecialchars($responsible_person['lastname']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <select class="form-select person-select"></select>
                     </td>
                     <td><input type="text" class="form-control"></td>
                 </tr>

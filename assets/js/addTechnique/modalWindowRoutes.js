@@ -33,15 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (!response.ok) {
 					throw new Error(jsonResponse.status);
 				};
-				const resRow = createDefaultRow(jsonResponse.id, nameDir, nameService);		// Создаём обычную строку в таблицу
+				const resRow = createDefaultRow(+jsonResponse.id, nameDir, nameService);		// Создаём обычную строку в таблицу
 				const newElem = {
-					'id': jsonResponse.id,
+					'id': +jsonResponse.id,
 					'route_to': nameDir,
 					'service_id': idService,
 				};
+
 				routes = routes.some((obj) => obj.id === jsonResponse.id)
 					? routes.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
 					: [...routes, newElem];
+				updateData();
 
 				addEventEditService(resRow);		// Вешаем на кнопку в новой строке слушатель
 				bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
@@ -228,6 +230,26 @@ document.addEventListener('DOMContentLoaded', () => {
 			const row = createDefaultRow(route.id, route['route_to'], serviceFullName.service);
 			bodyTable.appendChild(row);
 			addEventEditService(row);
+		});
+	};
+	/**
+	* Функция обновляет данные в выпадающем списке (select) на странице.
+	* 
+	* Очищает текущие опции в выпадающем списке и добавляет новые опции на основе массива routes.
+	* Каждая опция представляет собой маршрут (route_to) из объекта route, с установленным значением
+	* id в атрибуте value опции.
+	*
+	*	<option value="ID">"Путь"<option>
+	* 
+	*/
+	const updateData = () => {
+		const formSelect = document.querySelector('.route-select');
+		formSelect.innerHTML = `<option value="" class="default-option"></option>`
+		routes.forEach((route) => {
+			const option = document.createElement('option');
+			option.setAttribute('value', route['id']);
+			option.innerText = route['route_to'];
+			formSelect.appendChild(option);
 		});
 	};
 

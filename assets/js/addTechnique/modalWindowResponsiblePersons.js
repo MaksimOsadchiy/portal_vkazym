@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		const lastname = elem.querySelector('.lastname').value;
 		const firstname = elem.querySelector('.firstname').value;
 		const patronymic = elem.querySelector('.patronymic').value;
-		const phone = elem.querySelector('.phone-number').value;
+		const phone = elem.querySelector('.phone').value;
+		const nameService = elem.querySelector('.service').value;
 		const idService =  SESSION['service'];		// Получаем id сервиса, потом переделать на fetch ???
 		
 		if (lastname && firstname && patronymic && phone){		// Проверка введёных данных
@@ -24,16 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				'phone': phone,
 				'idService': idService,
 			};
-			// админ, 
-			// 0 - пользов.
-			// 1 - адмни
-			// в технике 
-			// 0 - не может зайти
-			// 1 - может заказывать
-			// 2 - может согласовывать
+			
 			query === 'PUT' && (request.id = +elem.getAttribute('value'));		// Если метод 'PUT', то добавляем в тело id изменяемого элемента
 			try {
-				const response = await fetch(`${SERVER_URL}itinerary.php`, {
+				const response = await fetch(`${SERVER_URL}responsiblePersons.php`, {
 					method: query,
 					headers: {
 						'Content-Type': 'application/json',
@@ -44,17 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (!response.ok) {
 					throw new Error(jsonResponse.status);
 				};
-				const resRow = createDefaultRow(jsonResponse.id, lastname, firstname, patronymic, phone, );		// Создаём обычную строку в таблицу
+				const resRow = createDefaultRow(jsonResponse.id, lastname, firstname, patronymic, nameService, phone);		// Создаём обычную строку в таблицу
 				const newElem = {
 					'id': jsonResponse.id,
-					'route_to': nameDir,
+					'firstname': firstname,
+					'patronymic': patronymic,
+					'lastname': lastname,
 					'service_id': idService,
+					'phone_number': phone,
 				};
-				routes = routes.some((obj) => obj.id === jsonResponse.id)
-					? routes.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
-					: [...routes, newElem];
+				responsiblePersons = responsiblePersons.some((obj) => obj.id === jsonResponse.id)
+					? responsiblePersons.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
+					: [...responsiblePersons, newElem];
 
-				addEventEditService(resRow);		// Вешаем на кнопку в новой строке слушатель
+				addEventEditPerson(resRow);		// Вешаем на кнопку в новой строке слушатель
 				bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
 				query === 'POST' && (document.querySelector('.add-person').innerText = 'Добавить');
 			} catch(error) {
@@ -79,31 +77,40 @@ document.addEventListener('DOMContentLoaded', () => {
 	* @returns {HTMLElement} Созданная строка таблицы.
 	* 
 	*/
-	const createDefaultRow = (id, dir, service) => {
+	const createDefaultRow = (id, lastname, firstname, patronymic, service, phone) => {
 		// Создаём DOM элементы
 		const row = document.createElement('tr');
-		const tdDir = document.createElement('td');
+		const tdLastname = document.createElement('td');
+		const tdFirstname = document.createElement('td');
+		const tdPatronymic = document.createElement('td');
 		const tdService = document.createElement('td');
+		const tdPhone = document.createElement('td');
 		const tdBtnContainer = document.createElement('td');
 		const button = document.createElement('button');
 
 		// Добавляем классы
 		row.className = 'appForm';
-		button.className = 'btn btn-secondary edit-service-btn';
+		button.className = 'btn btn-secondary edit-person-btn';
 
 		// Добавляем атрибуты
 		row.setAttribute('value', id);
 		button.setAttribute('type', 'button');
 
 		// Добавляем текст
-		tdDir.innerText = dir;
+		tdLastname.innerText = lastname;
+		tdFirstname.innerText = firstname;
+		tdPatronymic.innerText = patronymic;
 		tdService.innerText = service;
+		tdPhone.innerText = phone;
 		button.innerText = "Редактировать";
 
 		// Собираем части в единую строку
 		tdBtnContainer.appendChild(button);
-		row.appendChild(tdDir);
+		row.appendChild(tdLastname);
+		row.appendChild(tdFirstname);
+		row.appendChild(tdPatronymic);
 		row.appendChild(tdService);
+		row.appendChild(tdPhone);
 		row.appendChild(tdBtnContainer);
 
 		return row;
@@ -129,39 +136,62 @@ document.addEventListener('DOMContentLoaded', () => {
 	* @returns {HTMLElement} Созданная строка таблицы.
 	* 
 	*/
-	const createInputRow = (dir, service, id = -1) => {
+	const createInputRow = (id = -1, lastname = '', firstname = '', patronymic = '', service = '', phone = '') => {
 		// Создаём DOM элементы
 		const row = document.createElement('tr');
-		const tdDirContainer = document.createElement('td');
+		// Контейнеры для инпутов
+		const tdLastnameContainer = document.createElement('td');
+		const tdFirstnameContainer = document.createElement('td');
+		const tdPatronymicContainer = document.createElement('td');
 		const tdServiceContainer = document.createElement('td');
+		const tdPhoneContainer = document.createElement('td');
 		const tdBtnContainer = document.createElement('td');
-		const dirInput = document.createElement('input');
+		// Инпуты
+		const lastnameInput = document.createElement('input');
+		const firstnameInput = document.createElement('input');
+		const patronymicInput = document.createElement('input');
 		const serviceInput = document.createElement('input');
+		const phoneInput = document.createElement('input');
 		const button = document.createElement('button');
 
 		// Добавляем классы
 		row.className = 'appForm new-person';
-		dirInput.className = 'form-control name-dir';
-		serviceInput.className = 'form-control name-service';
+		lastnameInput.className = 'form-control lastname';
+		firstnameInput.className = 'form-control firstname';
+		patronymicInput.className = 'form-control patronymic';
+		serviceInput.className = 'form-control service';
+		phoneInput.className = 'form-control phone';
 		button.className = 'btn btn-secondary save-new-person-btn';
 
 		// Добавляем атрибуты
 		row.setAttribute('value', id);
-		dirInput.setAttribute('type', 'text');
+		lastnameInput.setAttribute('type', 'text');
+		firstnameInput.setAttribute('type', 'text');
+		patronymicInput.setAttribute('type', 'text');
 		serviceInput.setAttribute('type', 'text');
+		phoneInput.setAttribute('type', 'text');
 		button.setAttribute('type', 'button');
 
 		// Добавляем текст
-		dirInput.value = dir;
+		lastnameInput.value = lastname;
+		firstnameInput.value = firstname;
+		patronymicInput.value = patronymic;
 		serviceInput.value = service;
+		phoneInput.value = phone;
 		button.innerText = "Сохранить";
 
 		// Собираем части в единую строку
-		tdDirContainer.appendChild(dirInput);
+		tdLastnameContainer.appendChild(lastnameInput);
+		tdFirstnameContainer.appendChild(firstnameInput);
+		tdPatronymicContainer.appendChild(patronymicInput);
 		tdServiceContainer.appendChild(serviceInput);
+		tdPhoneContainer.appendChild(phoneInput);
 		tdBtnContainer.appendChild(button);
-		row.appendChild(tdDirContainer);
+		row.appendChild(tdLastnameContainer);
+		row.appendChild(tdFirstnameContainer);
+		row.appendChild(tdPatronymicContainer);
 		row.appendChild(tdServiceContainer);
+		row.appendChild(tdPhoneContainer);
 		row.appendChild(tdBtnContainer);
 
 		return row;
@@ -181,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const bodyTable = document.querySelector('.table-persons').querySelector('tbody');
 			if (!bodyTable.querySelector('.new-person')) {
 				btnAddPerson.innerText="Отменить";
-				const newRow = createInputRow('', '');
+				const newRow = createInputRow();
 				newRow.classList.add('tempClass');
 				newRow.querySelector('.save-new-person-btn').addEventListener('click', async () => await savePerson(bodyTable, 'POST', bodyTable, newRow));
 				bodyTable.appendChild(newRow);
@@ -200,10 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	* 
 	* @param {HTMLElement} row - Строка таблицы, в которой содержиться кнопка, для которой добавляется обработчик события.
 	*/
-	const addEventEditService = (row) => {
-		row.querySelector('.edit-service-btn').addEventListener('click', () => {
+	const addEventEditPerson = (row) => {
+		row.querySelector('.edit-person-btn').addEventListener('click', () => {
 			const tdList = row.querySelectorAll('td');
-			const newRow = createInputRow(tdList[0].textContent, tdList[1].textContent, row.getAttribute('value'));
+			const newRow = createInputRow(row.getAttribute('value'), tdList[0].textContent, tdList[1].textContent, tdList[2].textContent, tdList[3].textContent, tdList[4].textContent);
 			const bodyTable = document.querySelector('.table-persons').querySelector('tbody');
 			if (!bodyTable.querySelector('.new-person')) {
 				newRow.querySelector('.save-new-person-btn').addEventListener('click', async () => await savePerson(newRow, 'PUT', bodyTable, newRow));
@@ -217,17 +247,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	* При клике на одну из кнопок (закрытие окна или открытие окна) вызывает перерисовку
 	* таблицы маршрутов и изменяет текст кнопки "Добавить".
 	*/
-	const addEventCloseWindow = () => {
-		const btnClose = document.querySelector('.modal-footer').querySelector('.btnСlose');		// По идее можно убрать
-		const btnCross = document.querySelector('.modal-header').querySelector('.btn-close');		// По идее можно убрать
-		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window');		// Оставить только это
-		const arr = [btnClose, btnCross, btnOpenModalWindow];
-		arr.forEach((btn) => {
-			btn.addEventListener('click', () => {
-				drowTableRoutes();
-				const btnAddPerson = document.querySelector('.add-person');
-				btnAddPerson.innerText="Добавить";
-			});
+	const addEventOpenWindow = () => {
+		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window-persons');		// Оставить только это
+		btnOpenModalWindow.addEventListener('click', () => {
+			drowTablePersons();
+			const btnAddPerson = document.querySelector('.add-person');
+			btnAddPerson.innerText="Добавить";
 		});
 	};
 	/**
@@ -237,19 +262,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	* добавляется в таблицу, и для этой строки добавляется обработчик события на кнопку
 	* редактирования.
 	*/
-	const drowTableRoutes = () => {
+	const drowTablePersons = () => {
 		const bodyTable = document.querySelector('.table-persons').querySelector('tbody');
 		bodyTable.innerText = '';
-		routes.forEach((route) => {
-			const row = createDefaultRow(route.id, route['route_to'], serviceFullName.service);
+		responsiblePersons.forEach((resPerson) => {
+			const row = createDefaultRow(resPerson.id, resPerson['lastname'], resPerson['firstname'], resPerson['patronymic'], serviceFullName.service, resPerson['phone_number']);
 			bodyTable.appendChild(row);
-			addEventEditService(row);
+			addEventEditPerson(row);
 		});
 	};
 
 
 	// Начало скрипта
 	addEventEntry();
-	drowTableRoutes();
-	addEventCloseWindow();
+	addEventOpenWindow();
 });

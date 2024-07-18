@@ -70,7 +70,7 @@ tr:nth-child(2n)  {
 
 /* modal-dialog */
 .modal-dialog {
-   max-width: 50%;
+   max-width: 55%;
    max-height: 80%;
 };
 .modal-content {

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 	/**
-	* Функция сохраняет данные о сервисе, отправляя их на сервер и обновляет таблицу.
+	* Функция сохраняет данные об ответственной персоне, отправляя их на сервер и обновляет таблицу.
 	* 
 	* @param {HTMLElement} elem - Элемент, содержащий введенные данные.
 	* @param {string} query - Метод запроса ('PUT' или 'POST').
@@ -64,16 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	* Функция создает строку таблицы с кнопкой "Редактировать" с заданными данными.
 	* 
 	*	<tr class="appForm" value="ID">
-	*		<td>"Например ДЛО"</td>
-	*		<td>"Например АиМО"</td>
+	*		<td>Фамилия</td>
+	*		<td>Имя</td>
+	*		<td>Отчиство</td>
+	*		<td>Служба</td>
+	*		<td>Номер</td>
 	*		<td>
-	*			<button type="button" class="btn btn-secondary edit-service-btn">Редактировать</button>
+	*			<button class="btn btn-secondary edit-person-btn" type="button">Редактировать</button>
 	*		</td>
 	*	</tr>
 	* 
 	* @param {number} id - Идентификатор записи.
-	* @param {string} dir - Название направления.
-	* @param {string} service - Название сервиса.
+	* @param {string} lastname - Фамилия.
+	* @param {string} firstname - Имя.
+	* @param {string} patronymic - Отчество.
+	* @param {string} service - Название направления.
+	* @param {string} phone - Номер.
 	* @returns {HTMLElement} Созданная строка таблицы.
 	* 
 	*/
@@ -120,19 +126,31 @@ document.addEventListener('DOMContentLoaded', () => {
 	*
 	*	<tr class="appForm new-person" value="ID">
 	*		<td>
-	*			<input type="text" class="form-control name-dir">
+	*			<input type="text" class="form-control lastname">
 	*		</td>
 	*		<td>
-	*			<input type="text" class="form-control name-service">
+	*			<input type="text" class="form-control firstname">
+	*		</td>
+	*		<td>
+	*			<input type="text" class="form-control patronymic">
+	*		</td>
+	*		<td>
+	*			<input type="text" class="form-control service">
+	*		</td>
+	*		<td>
+	*			<input type="text" class="form-control phone">
 	*		</td>
 	*		<td>
 	*			<button type="button" class="btn btn-secondary save-new-person-btn">Сохранить</button>
 	*		</td>
 	*	</tr>
 	* 
-	* @param {string} dir - Название направления.
-	* @param {string} service - Название сервиса.
 	* @param {number} id - Идентификатор записи, по умолчанию '-1'.
+	* @param {string} lastname - Фамилия.
+	* @param {string} firstname - Имя.
+	* @param {string} patronymic - Отчество.
+	* @param {string} service - Название направления.
+	* @param {string} phone - Номер.
 	* @returns {HTMLElement} Созданная строка таблицы.
 	* 
 	*/
@@ -222,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	};
 	/**
-	* Функция добавляет обработчик события на кнопку редактирования сервиса в указанной строке.
+	* Функция добавляет обработчик события на кнопку редактирования персоны в переданной строке.
 	* 
 	* При клике на кнопку "Редактировать" строка заменяется на строку с
 	* полями ввода с текущими значениями. Добавляется обработчик события на кнопку
@@ -232,20 +250,21 @@ document.addEventListener('DOMContentLoaded', () => {
 	*/
 	const addEventEditPerson = (row) => {
 		row.querySelector('.edit-person-btn').addEventListener('click', () => {
-			const tdList = row.querySelectorAll('td');
-			const newRow = createInputRow(row.getAttribute('value'), tdList[0].textContent, tdList[1].textContent, tdList[2].textContent, tdList[3].textContent, tdList[4].textContent);
 			const bodyTable = document.querySelector('.table-persons').querySelector('tbody');
 			if (!bodyTable.querySelector('.new-person')) {
+				const tdList = row.querySelectorAll('td');
+				const newRow = createInputRow(row.getAttribute('value'), tdList[0].textContent, tdList[1].textContent, tdList[2].textContent, tdList[3].textContent, tdList[4].textContent);
 				newRow.querySelector('.save-new-person-btn').addEventListener('click', async () => await savePerson(newRow, 'PUT', bodyTable, newRow));
 				bodyTable.replaceChild(newRow, row);
 			};
 		});
 	};
 	/**
-	* Функция добавляет обработчики событий на кнопки, связанные с открытием и закрытием модального окна.
+	* Функция добавляет обработчики событий на кнопку, связанные с открытием модального окна.
 	* 
-	* При клике на одну из кнопок (закрытие окна или открытие окна) вызывает перерисовку
-	* таблицы маршрутов и изменяет текст кнопки "Добавить".
+	* При клике на кнопку вызывает перерисовку таблицы с ответственными персонами и
+	* изменяет текст кнопки "Добавить".
+	* 
 	*/
 	const addEventOpenWindow = () => {
 		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window-persons');		// Оставить только это
@@ -256,9 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	};
 	/**
-	* Функция отображает таблицу маршрутов, заполняя ее строками с данными из массива маршрутов.
+	* Функция отображает таблицу с ответственными персонами, заполняя ее строками с данными из массива о. персон.
 	* 
-	* Для каждого маршрута создается строка таблицы с данными о маршруте и сервисе,
+	* Для каждой персоны создается строка таблицы с данными о персоне и сервисе,
 	* добавляется в таблицу, и для этой строки добавляется обработчик события на кнопку
 	* редактирования.
 	*/

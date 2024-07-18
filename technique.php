@@ -72,15 +72,17 @@ $free_technique = selectAllJoinRes('technique', [], joins: $join);
                 <th>Гос номер</th>
                 <th>Модель</th>
                 <th>Тип</th>
+                <th>Состояние</th>
             </tr>
             <?php
             if (!empty($free_technique)) {
                 // Вывод данных таблицы
                 foreach ($free_technique as $row) {
                     echo "<tr>";
-                    foreach ($row as $value) {
-                        echo "<td>$value</td>";
-                    }
+                        echo "<td>{$row['state_number']}</td>";
+                        echo "<td>{$row['name_technique']}</td>";
+                        echo "<td>{$row['name']}</td>";
+                        echo "<td>{$row['faulty']}</td>";
                     echo "</tr>";
                 }
             } else {

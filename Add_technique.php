@@ -194,7 +194,7 @@
                             <option value="" class="default-option"></option>
                             <?php foreach ($responsible_persons as $responsible_person): ?>
                                 <option value="<?= $responsible_person['id'] !== null ? htmlspecialchars($responsible_person['id']) : ''; ?>">
-                                    <?= htmlspecialchars($responsible_person['last_name']); ?>
+                                    <?= htmlspecialchars($responsible_person['lastname']); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

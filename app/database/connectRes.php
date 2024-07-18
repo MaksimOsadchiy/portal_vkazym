@@ -3,7 +3,7 @@
 $driver = 'mysql';
 $host = 'localhost';
 $db_name = 'portal_vkazym';
-$db_user = 'portal_vkazym';
+$db_user = 'portal_vkazym/'; // Изменить
 $db_pass = 'P@ssw0rd';
 $charset = 'utf8';
 $options = [

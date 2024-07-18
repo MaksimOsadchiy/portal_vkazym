@@ -206,17 +206,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	* При клике на одну из кнопок (закрытие окна или открытие окна) вызывает перерисовку
 	* таблицы маршрутов и изменяет текст кнопки "Добавить запись".
 	*/
-	const addEventCloseWindow = () => {
-		const btnClose = document.querySelector('.modal-footer').querySelector('.btnСlose');		// По идее можно убрать
-		const btnCross = document.querySelector('.modal-header').querySelector('.btn-close');		// По идее можно убрать
-		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window');		// Оставить только это
-		const arr = [btnClose, btnCross, btnOpenModalWindow];
-		arr.forEach((btn) => {
-			btn.addEventListener('click', () => {
-				drowTableRoutes();
-				const btnEntry = document.querySelector('.add-entry');
-				btnEntry.innerText="Добавить запись";
-			});
+	const addEventOpenWindow = () => {
+		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window-services');
+		btnOpenModalWindow.addEventListener('click', () => {
+			drowTableRoutes();
+			const btnEntry = document.querySelector('.add-entry');
+			btnEntry.innerText="Добавить запись";
 		});
 	};
 	/**
@@ -239,6 +234,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Начало скрипта
 	addEventEntry();
-	drowTableRoutes();
-	addEventCloseWindow();
+	addEventOpenWindow();
 });

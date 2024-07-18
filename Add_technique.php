@@ -96,7 +96,7 @@
             </div>
         </div>
         <div class="form-group mb-4">
-            <button type="button" class="btn btn-primary btn-open-modal-window" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-primary btn-open-modal-window-services" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Справочник маршрутов
             </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -130,7 +130,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2">Справочник ответственных</button>
+            <button type="button" class="btn btn-secondary btn-open-modal-window-persons" data-bs-toggle="modal" data-bs-target="#exampleModal2">Справочник ответственных</button>
             <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable">
@@ -141,7 +141,7 @@
                         </div>
                         <div class="modal-body d-flex flex-column align-items-center">
                             <div class="table-persons mb-3">
-                                <div class="tb-header">Ответственных</div>
+                                <div class="tb-header">Справочник</div>
                                 <table class="table" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -150,6 +150,7 @@
                                             <th class="col-2 text-center">Отчество</th>
                                             <th class="col-2 text-center">Служба</th>
                                             <th class="col-2 text-center">Телефон</th>
+                                            <th class="col-2 text-center">Управление</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

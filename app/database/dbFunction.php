@@ -76,6 +76,7 @@ function selectAllJoinRes($table, $params = [], $joins = []){
     $query = $pdo->prepare($sql);
     $query->execute();
     dbCheckErrorRes($query);
+    echo $sql;
     return $query->fetchAll(PDO::FETCH_ASSOC);
 };
 

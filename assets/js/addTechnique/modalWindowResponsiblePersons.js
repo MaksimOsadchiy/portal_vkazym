@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (!response.ok) {
 					throw new Error(jsonResponse.status);
 				};
-				const resRow = createDefaultRow(jsonResponse.id, lastname, firstname, patronymic, nameService, phone);		// Создаём обычную строку в таблицу
+				const resRow = createDefaultRow(+jsonResponse.id, lastname, firstname, patronymic, nameService, phone);		// Создаём обычную строку в таблицу
 				const newElem = {
-					'id': jsonResponse.id,
+					'id': +jsonResponse.id,
 					'firstname': firstname,
 					'patronymic': patronymic,
 					'lastname': lastname,
@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				responsiblePersons = responsiblePersons.some((obj) => obj.id === jsonResponse.id)
 					? responsiblePersons.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
 					: [...responsiblePersons, newElem];
+				updateData();
 
 				addEventEditPerson(resRow);		// Вешаем на кнопку в новой строке слушатель
 				bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
@@ -290,9 +291,33 @@ document.addEventListener('DOMContentLoaded', () => {
 			addEventEditPerson(row);
 		});
 	};
+	/**
+	* Функция обновляет данные в выпадающем списке (select) на странице.
+	* 
+	* Очищает текущие опции в выпадающем списке и добавляет новые опции на основе массива responsiblePersons.
+	* Каждая опция представляет собой фамилию персоны (lastname) из объекта person, с установленным значением
+	* id в атрибуте value опции.
+	*
+	*	<option value="ID">"Путь"<option>
+	* 
+	*/
+	const updateData = () => {
+		const formSelect = document.querySelectorAll('.person-select');
+		formSelect.forEach((elem) => {
+			elem.innerHTML = `<option value="" class="default-option"></option>`
+			responsiblePersons.forEach((person) => {
+				const option = document.createElement('option');
+				option.setAttribute('value', person['id']);
+				option.innerText = person['lastname'];
+				elem.appendChild(option);
+			});
+		});
+	};
+
 
 
 	// Начало скрипта
+	updateData();
 	addEventEntry();
 	addEventOpenWindow();
 });

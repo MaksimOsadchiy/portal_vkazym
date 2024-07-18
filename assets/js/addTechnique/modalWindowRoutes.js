@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	*/
 	const saveService = async (elem, query, bodyTable, oldRow) => {
 		// Получаем введёные значения
-		const nameDir = elem.querySelector('.name-dir').value;
-		const nameService = elem.querySelector('.name-service').value;
+		const nameDir = elem.querySelector('.name-dir').value.trim();
+		const nameService = elem.querySelector('.name-service').value.trim();
 
 		const idService =  SESSION['service'];		// Получаем id введённого сервиса, потом переделать на fetch ???
 		
@@ -51,7 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			} catch(error) {
 				document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
 			}
-		};
+		} else {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: "Поля должны быть заполнены!" }));
+		}
 	};
 	/**
 	* Функция создает строку таблицы с кнопкой "Редактировать" с заданными данными.

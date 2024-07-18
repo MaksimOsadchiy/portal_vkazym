@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('connectRes.php');
+require('connect.php');
 
 function customPrint($value){
 	echo '<pre>';
@@ -76,7 +76,6 @@ function selectAllJoinRes($table, $params = [], $joins = []){
     $query = $pdo->prepare($sql);
     $query->execute();
     dbCheckErrorRes($query);
-    echo $sql;
     return $query->fetchAll(PDO::FETCH_ASSOC);
 };
 

@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	*/
 	const savePerson = async (elem, query, bodyTable, oldRow) => {
 		// Получаем введёные значения
-		const lastname = elem.querySelector('.lastname').value;
-		const firstname = elem.querySelector('.firstname').value;
-		const patronymic = elem.querySelector('.patronymic').value;
-		const phone = elem.querySelector('.phone').value;
-		const nameService = elem.querySelector('.service').value;
+		const lastname = elem.querySelector('.lastname').value.trim();
+		const firstname = elem.querySelector('.firstname').value.trim();
+		const patronymic = elem.querySelector('.patronymic').value.trim();
+		const phone = elem.querySelector('.phone').value.trim();
+		const nameService = elem.querySelector('.service').value.trim();
 		const idService =  SESSION['service'];		// Получаем id сервиса, потом переделать на fetch ???
 		
 		if (lastname && firstname && patronymic && phone){		// Проверка введёных данных
@@ -58,8 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				query === 'POST' && (document.querySelector('.add-person').innerText = 'Добавить');
 			} catch(error) {
 				document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
-			}
-		};
+			};
+		} else {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: "Поля должны быть заполнены!" }));
+		}
 	};
 	/**
 	* Функция создает строку таблицы с кнопкой "Редактировать" с заданными данными.

@@ -4,7 +4,7 @@
 
     $pageTitle = "Заказ техники";
     $menuItems = [
-        ['url' => BASE_URL . '123.php', 'label' => 'Статус заявки'],
+        ['url' => BASE_URL . 'appsForm.php', 'label' => 'Заявки'],
         ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
         ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
     ];

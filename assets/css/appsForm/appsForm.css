@@ -1,0 +1,142 @@
+:root {
+   font-size: 1em;
+   --baseColor: #398B93;
+   --borderRadius: 0.625rem;
+   --padding: 0.625rem;
+}
+
+
+/* info-block */
+.main-info {
+  height: 10rem;
+  background-color: rgba(40, 40, 40, 0.25);
+}
+
+/* main-block */
+.modal-dialog {
+  min-height: 95%;
+}
+.modal-content {
+  height: 100%;
+}
+.main-block {
+  margin-top: 1.87rem;
+  padding: 1rem;
+  box-shadow: 0 15px 30px 1px rgba(128, 128, 128, 0.31);
+}
+.user {
+/*  height: calc(2rem + 6px);*/
+  border: none;
+  line-height: 38px;
+  box-shadow: none;
+  transition: background-color 0.2s ease-in-out;
+}
+/*.user:focus,
+.user:active,
+.user:hover {
+  background-color: #eee;
+  box-shadow: none;
+}*/
+.title,
+.content {
+  height: calc(2rem + 6px);
+  border: none;
+  box-shadow: none;
+  background-color: #eee;
+  transition: background-color 0.2s ease-in-out;
+}
+.content {
+  max-height: 400px;
+}
+.title:focus,
+.title:active,
+.title:hover,
+.content:focus,
+.content:active,
+.content:hover {
+  background-color: #cfcfcf;
+  box-shadow: none;
+}
+
+/* table */
+.tb-header {
+   background-color: var(--baseColor);
+   color: white;
+   font-size: 1.5rem;
+   padding: 1rem;
+   text-align: center;
+   text-transform: uppercase;
+}
+
+.table-users {
+   max-width: calc(100% - 1rem);
+   min-width: 80%;
+   border: 1px solid var(--baseColor);
+   border-radius: var(--borderRadius);
+   box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+.table {
+   width: 100%;
+   table-layout: fixed; 
+   
+}
+.table p{ 
+   color: var(--baseColor) !important;
+   padding: var(--padding) !important;
+}
+.tb-title {
+   border-bottom: 2px solid var(--baseColor);
+}
+.tbody p {
+   background-color: transparent !important;
+   text-align: center;
+   vertical-align: middle;
+}
+.tbody p :last-child {
+   font-size: 0.95rem;
+   line-height: 1.4;
+/*   text-align: left;*/
+};
+.tb-title p { 
+   background-color: var(--baseColor);
+   font-weight: 300;
+}
+.appForm:nth-child(2n)  {
+   background-color: white;
+}
+.appForm .title-container {
+   background-color: transparent;
+}
+/*.title th{
+   background-color: transparent !important;
+}*/
+.appForm:nth-child(2n+1), .title {
+   background-color: rgba(237, 247, 248, 1) !important;
+}
+.edit-service-btn, .save-new-service-btn {
+   width: calc(100% - (1rem / 2));
+}
+
+/* appForm */
+.appForm {
+   cursor: pointer;
+   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.appForm:hover {
+   box-shadow: 0 0 20px -10px;
+}
+
+/* modal-dialog */
+.modal-dialog {
+   max-width: 55%;
+   max-height: 80%;
+};
+.modal-content {
+   overflow: visible !important;
+}
+.content-container {
+   border-top: 1px solid grey;
+   border-bottom: 1px solid grey;
+   background-color: inherit !important;
+}

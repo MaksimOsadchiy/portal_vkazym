@@ -13,6 +13,7 @@ function customPrint($value){
 function dbCheckErrorRes($query){
     $errInfo = $query->errorInfo();
     if ($errInfo[0] !== PDO::ERR_NONE) {
+		http_response_code(500);
         echo $errInfo[2];
         exit();
     };

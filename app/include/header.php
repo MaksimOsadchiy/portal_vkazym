@@ -22,10 +22,6 @@
                     <?php endforeach; ?>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                 <!--   <li class="nav-item">
-                        <a class="nav-link" href="#">more</a>
-                    </li>
-                    --!>
                     <li class="nav-item dropdown">
                         <?php if(isset($_SESSION['id'])): ?>
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,7 +43,6 @@
                         <a class="nav-link" href="<?php echo BASE_URL . 'log.php' ?>">Вход</a>
                     </li>
                         <?php endif; ?>
-
                     </li>
                 </ul>
             </div>

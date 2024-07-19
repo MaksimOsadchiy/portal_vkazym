@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //
   const createOrder = async () => {
     try {
-      const request = '0'; // Формируем тело запроса
+		const request = getContent(); // Формируем тело запроса
       const response = await fetch(`${SERVER_URL}orders.php`, {
         method: 'POST',
         headers: {
@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const jsonResponse = await response.json(); // Получаем тело ответа
       if (!response.ok) {
         throw new Error(jsonResponse.status);
-      }
+      };
+      document.dispatchEvent(
+        new CustomEvent('updateError', { detail: 'Заказ отправлен на рассмотрение!' })
+      );
     } catch (error) {
       document.dispatchEvent(
         new CustomEvent('updateError', { detail: error.message })
@@ -34,12 +37,26 @@ document.addEventListener('DOMContentLoaded', () => {
       .filter((elem) => elem !== '');
     const dateFrom = document.querySelector('.date-from').value;
     const dateTo = document.querySelector('.date-to').value;
-    const timeFrom = document.querySelector('.time-from').value;
-    const timeTo = document.querySelector('.time-to').value;
+    let timeFrom = document.querySelector('.time-from').value;
+    let timeTo = document.querySelector('.time-to').value;
     const shift = Array.from(
       document.querySelectorAll('.form-check-input')
     ).find((elem) => elem.checked)?.value;
 
+    // Обработчик времени
+  	// const shiftFrom = new Date(`${dateFrom}T${shift.slice(0, 5)}`);
+  	// const shiftTo = +shift[0] ? new Date(`${dateTo}T${shift.slice(0, 5)}`) : new Date(`${dateFrom}T${shift.slice(6, 11)}`);
+  	// const fullDateFrom = new Date(`${dateFrom}T${timeFrom}`);
+  	// const fullDateTo = new Date(`${dateTo}T${timeTo}`);
+  	// console.log(shiftFrom);
+  	// console.log(shiftTo);
+  	// console.log(fullDateFrom);
+  	// console.log(fullDateTo);
+  	// if (shift) {
+  	// 	let flag = fullDateFrom >= shiftFrom && fullDateTo <= shiftTo && fullDateFrom < fullDateTo
+  	// 	flag ? console.log('Верно') : console.log('Не верно');;
+  	// };
+	
     let flag = '';
     if (service) {
       // переписать либо на switch либо придумать логику
@@ -48,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (dateFrom && dateTo) {
             if (route) {
               if ((timeFrom && timeTo) || shift) {
+              	timeFrom = timeFrom ? timeFrom : shift.slice(0, 4);
+              	timeTo = timeTo ? timeTo : shift.slice(6, 11);
                 const combinedArray = [];
                 technique.forEach((item, index) => {
                   if (item && responsiblePerson[index]) {
@@ -57,18 +76,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = [];
                 combinedArray.forEach((subArr) => {
                   const obj = {
-                    service_id: service,
-                    technique_id: subArr[0],
-                    route_id: route,
-                    responsible_person_id: subArr[1],
+                    service_id: +service,
+                    technique_id: +subArr[0],
+                    route_id: +route,
+                    responsible_person_id: +subArr[1],
                     date_from: dateFrom,
                     date_to: dateTo,
-                    time_from: timeFrom,
-                    time_to: timeTo,
+                    time_from: timeFrom + ':00',
+                    time_to: timeTo + ':00',
                   };
+                  shift && (obj.shift = +shift[0] ? 1 : 0)
                   result.push(obj);
                 });
-                console.log(result);
+                return result;
               } else {
                 flag =
                   'Введите время начала и окончания работ или выберите смену!';
@@ -90,26 +110,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (flag) {
-      document.dispatchEvent(new CustomEvent('updateError', { detail: flag }));
+      throw new Error(flag);
     }
-
-    /*
-		'service_id' => service_id,
-		'technique_id' => technique_id,
-		'route_id' => route_id,
-		'responsible_person_id' => responsible_person_id,
-		'date_from' => date_from,
-		'date_to' => date_to,
-		'time_from' => time_from,
-		'time_to' => time_to,
-		*/
-    return {};
   };
   //
   const addEventCreateOrder = () => {
     const btnCreateOrder = document.querySelector('.create-order');
-    btnCreateOrder.addEventListener('click', () => getContent());
-    // btnCreateOrder.addEventListener('click', await createOrder());
+    // btnCreateOrder.addEventListener('click', () => getContent());
+    btnCreateOrder.addEventListener('click', async () => await createOrder());
   };
 
   // Начало скрипта

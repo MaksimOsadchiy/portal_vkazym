@@ -1,16 +1,17 @@
-<?php include('path.php');
-include 'app/database/dbFunction.php';
-include 'app/controllers/technique_back.php';
-$pageTitle = "Заказ техники";
-$menuItems = [
-    ['url' => BASE_URL . '123.php', 'label' => 'Статус заявки'],
-    ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-    ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-];
-$join = [
-    'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
-];
-$free_technique = selectAllJoinRes('technique', [], joins: $join);
+<?php 
+    include('path.php');
+    include 'app/database/dbFunction.php';
+    include 'app/controllers/technique_back.php';
+    $pageTitle = "Заказ техники";
+    $menuItems = [
+        ['url' => BASE_URL . 'appsForm.php', 'label' => 'Заявки'],
+        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
+        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
+    ];
+    $join = [
+        'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
+    ];
+    $free_technique = selectAllJoinRes('technique', [], joins: $join);
 
 ?>
 
@@ -69,7 +70,7 @@ $free_technique = selectAllJoinRes('technique', [], joins: $join);
             </div>
         </div>
 
-        <table class="table table-bordered">
+        <table class="table table-bordered mt-4">
             <tr>
                 <th>Гос номер</th>
                 <th>Модель</th>

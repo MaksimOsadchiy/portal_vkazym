@@ -1,4 +1,4 @@
 <?php
 
-define('BASE_URL', 'http://localhost/TechnikaMainEmm/');
-define('SERVER_URL', 'http://localhost/TechnikaMainEmm/app/controllers/');
+define('BASE_URL', 'http://localhost/portal_vkazym/');
+define('SERVER_URL', 'http://localhost/portal_vkazym/app/controllers/');

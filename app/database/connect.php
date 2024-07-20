@@ -6,6 +6,7 @@ $db_name = 'Введи свою БД';
 $db_user = 'Введи своего юзера';
 $db_pass = 'P@ssw0rd'; // Вроде везде одинаковый
 $charset = 'utf8';
+
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
@@ -18,4 +19,5 @@ try {
     die("Ошибка подключения к базе");
 }
 
+?>
 ?>

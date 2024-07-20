@@ -5,10 +5,13 @@ include '../database/dbFunction.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$requestBody = file_get_contents('php://input');
 	$data = json_decode($requestBody, true);
-	$table = 'route';
+	$table = 'responsible_person';
 	$params = [
-		'route_to' => $data['route_to'],
-		'service_id' => $data['service_id'],
+		'firstname' => $data['firstname'],
+		'patronymic' => $data['patronymic'],
+		'lastname' => $data['lastname'],
+		'service_id' => $data['idService'],
+		'phone_number' => $data['phone'],
 	];
 	$response = insertRes($table, $params);
 	echo json_encode(['id' => $response]);
@@ -16,10 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$requestBody = file_get_contents('php://input');
 	$data = json_decode($requestBody, true);
 	$id = $data['id'];
-	$table = 'route';
+	$table = 'responsible_person';
 	$params = [
-		'route_to' => $data['route_to'],
-		'service_id' => $data['service_id'],
+		'firstname' => $data['firstname'],
+		'patronymic' => $data['patronymic'],
+		'lastname' => $data['lastname'],
+		'service_id' => $data['idService'],
+		'phone_number' => $data['phone'],
 	];
 	$response = updateRes($table, $id, $params);
 	echo json_encode(['id' => $response]);

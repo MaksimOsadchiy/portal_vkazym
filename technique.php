@@ -1,16 +1,17 @@
-<?php include('path.php');
-include 'app/database/db_main.php';
+<?php
+include_once 'app/database/dbFunction.php';
+include('path.php');
 include 'app/controllers/technique_back.php';
 $pageTitle = "Заказ техники";
 $menuItems = [
-    ['url' => BASE_URL . '123.php', 'label' => 'Статус заявки'],
+    ['url' => BASE_URL . 'appsForm.php', 'label' => 'Заявки'],
     ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
     ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
 ];
 $join = [
     'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
 ];
-$free_technique = selectALL_join('technique', [], joins: $join);
+$all_technique = selectAllJoinRes('technique', [], $join);
 
 ?>
 
@@ -23,11 +24,29 @@ $free_technique = selectALL_join('technique', [], joins: $join);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
-
+<script src="assets/js/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Отслеживание изменения значения в select
+        $('#technique-select').on('change', function () {
+            var techniqueId = $(this).val(); // Получение выбранного значения
+            $.ajax({
+                url: 'app/controllers/technique_filter.php', // URL для отправки AJAX запроса
+                type: 'POST', // Метод запроса
+                data: {id_technique: techniqueId}, // Данные, отправляемые на сервер
+                success: function (response) {
+                    $('#technique-table').html(response); // Обновление таблицы данными из ответа
+                }
+            });
+        });
+    });
+</script>
 <?php include("app/include/header.php"); ?>
 
 <section>
@@ -56,8 +75,12 @@ $free_technique = selectALL_join('technique', [], joins: $join);
 
         <div class="col">
             <label for="route">Техника</label>
-            <select class="form-select">
-
+            <select class="form-select" id=technique-select>
+                <?php foreach ($all_technique as $value): ?>
+                    <option value="<?= htmlspecialchars($value['id']); ?>">
+                        <?= htmlspecialchars($value['name']); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
         <div class="col">
@@ -66,29 +89,9 @@ $free_technique = selectALL_join('technique', [], joins: $join);
                 <input type="date" class="form-control" id="dateFrom">
             </div>
         </div>
-
-        <table class="table table-bordered">
-            <tr>
-                <th>Гос номер</th>
-                <th>Модель</th>
-                <th>Тип</th>
-            </tr>
-            <?php
-            if (!empty($free_technique)) {
-                // Вывод данных таблицы
-                foreach ($free_technique as $row) {
-                    echo "<tr>";
-                    foreach ($row as $value) {
-                        echo "<td>$value</td>";
-                    }
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='100%'>No data found</td></tr>";
-            }
-            ?>
-
-        </table>
+        <div id="technique-table">
+            <?php include 'app/controllers/technique_filter.php'; ?>
+        </div>
     </div>
 </div>
 

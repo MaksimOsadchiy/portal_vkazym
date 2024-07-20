@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	*/
 	const saveService = async (elem, query, bodyTable, oldRow) => {
 		// Получаем введёные значения
-		const nameDir = elem.querySelector('.name-dir').value;
-		const nameService = elem.querySelector('.name-service').value;
+		const nameDir = elem.querySelector('.name-dir').value.trim();
+		const nameService = elem.querySelector('.name-service').value.trim();
 
 		const idService =  SESSION['service'];		// Получаем id введённого сервиса, потом переделать на fetch ???
 		
@@ -33,22 +33,27 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (!response.ok) {
 					throw new Error(jsonResponse.status);
 				};
-				const resRow = createDefaultRow(jsonResponse.id, nameDir, nameService);		// Создаём обычную строку в таблицу
+				const resRow = createDefaultRow(+jsonResponse.id, nameDir, nameService);		// Создаём обычную строку в таблицу
 				const newElem = {
-					'id': jsonResponse.id,
+					'id': +jsonResponse.id,
 					'route_to': nameDir,
 					'service_id': idService,
 				};
+
 				routes = routes.some((obj) => obj.id === jsonResponse.id)
 					? routes.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
 					: [...routes, newElem];
+				updateData();
 
 				addEventEditService(resRow);		// Вешаем на кнопку в новой строке слушатель
 				bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
+				query === 'POST' && (document.querySelector('.add-entry').innerText = 'Добавить запись');
 			} catch(error) {
 				document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
 			}
-		};
+		} else {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: "Поля должны быть заполнены!" }));
+		}
 	};
 	/**
 	* Функция создает строку таблицы с кнопкой "Редактировать" с заданными данными.
@@ -205,17 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	* При клике на одну из кнопок (закрытие окна или открытие окна) вызывает перерисовку
 	* таблицы маршрутов и изменяет текст кнопки "Добавить запись".
 	*/
-	const addEventCloseWindow = () => {
-		const btnClose = document.querySelector('.modal-footer').querySelector('.btnСlose');		// По идее можно убрать
-		const btnCross = document.querySelector('.modal-header').querySelector('.btn-close');		// По идее можно убрать
-		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window');		// Оставить только это
-		const arr = [btnClose, btnCross, btnOpenModalWindow];
-		arr.forEach((btn) => {
-			btn.addEventListener('click', () => {
-				drowTableRoutes();
-				const btnEntry = document.querySelector('.add-entry');
-				btnEntry.innerText="Добавить запись";
-			});
+	const addEventOpenWindow = () => {
+		const btnOpenModalWindow = document.querySelector('.btn-open-modal-window-services');
+		btnOpenModalWindow.addEventListener('click', () => {
+			drowTableRoutes();
+			const btnEntry = document.querySelector('.add-entry');
+			btnEntry.innerText="Добавить запись";
 		});
 	};
 	/**
@@ -234,10 +234,29 @@ document.addEventListener('DOMContentLoaded', () => {
 			addEventEditService(row);
 		});
 	};
+	/**
+	* Функция обновляет данные в выпадающем списке (select) на странице.
+	* 
+	* Очищает текущие опции в выпадающем списке и добавляет новые опции на основе массива routes.
+	* Каждая опция представляет собой маршрут (route_to) из объекта route, с установленным значением
+	* id в атрибуте value опции.
+	*
+	*	<option value="ID">"Путь"<option>
+	* 
+	*/
+	const updateData = () => {
+		const formSelect = document.querySelector('.route-select');
+		formSelect.innerHTML = `<option value="" class="default-option"></option>`
+		routes.forEach((route) => {
+			const option = document.createElement('option');
+			option.setAttribute('value', route['id']);
+			option.innerText = route['route_to'];
+			formSelect.appendChild(option);
+		});
+	};
 
 
 	// Начало скрипта
 	addEventEntry();
-	drowTableRoutes();
-	addEventCloseWindow();
+	addEventOpenWindow();
 });

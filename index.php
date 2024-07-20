@@ -1,5 +1,5 @@
 <?php include('path.php');
-include 'app/database/db_main.php';
+session_start();
 $pageTitle = "Главная";
 $menuItems = [];
 ?>
@@ -13,6 +13,8 @@ $menuItems = [];
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>

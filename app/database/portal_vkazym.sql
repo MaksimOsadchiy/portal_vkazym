@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июл 18 2024 г., 15:46
+-- Время создания: Июл 20 2024 г., 09:08
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.21
 
@@ -18,8 +18,30 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `portal_vkazym`
+-- База данных: `Введи свою БД`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `applications`
+--
+
+CREATE TABLE `applications` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` text COLLATE utf8mb4_general_ci NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `applications`
+--
+
+INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`) VALUES
+(2, 24, 'ываммавммвмвмвмвмвавма', 'вамвмвмамвмаммввм', 1),
+(3, 30, 'ЗАГОловок', 'Текстататата', 0);
 
 -- --------------------------------------------------------
 
@@ -96,6 +118,37 @@ INSERT INTO `privileges` (`id`, `work_position`, `transcript`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `responses`
+--
+
+CREATE TABLE `responses` (
+  `id` int NOT NULL,
+  `application_id` int NOT NULL,
+  `response` text COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `responses`
+--
+
+INSERT INTO `responses` (`id`, `application_id`, `response`) VALUES
+(3, 2, 'ывмввамвмвавм');
+
+--
+-- Триггеры `responses`
+--
+DELIMITER $$
+CREATE TRIGGER `after_insert_responses` AFTER INSERT ON `responses` FOR EACH ROW BEGIN
+  UPDATE applications
+  SET status = 1
+  WHERE id = NEW.application_id;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `responsible_person`
 --
 
@@ -115,7 +168,7 @@ CREATE TABLE `responsible_person` (
 INSERT INTO `responsible_person` (`id`, `lastname`, `firstname`, `patronymic`, `service_id`, `phone_number`) VALUES
 (1, 'Б', 'Борис', 'Борисович', 4, '00-001'),
 (4, 'С', 'Юрий', 'Владимирович', 8, '89220000000'),
-(6, 'П', 'Иван', 'Иванович2', 8, '89876543210');
+(6, 'П2', 'Иван', 'Иванович2', 8, '89876543210');
 
 -- --------------------------------------------------------
 
@@ -140,7 +193,9 @@ INSERT INTO `route` (`id`, `route_to`, `service_id`) VALUES
 (5, 'ДЛО-4', 8),
 (6, 'ДЛО-5', 8),
 (7, 'ДЛО-6', 8),
-(8, 'ДЛО-8', 8);
+(8, 'ДЛО-8', 8),
+(9, 'ДЛО-9', 8),
+(10, 'ДЛО-10', 8);
 
 -- --------------------------------------------------------
 
@@ -262,6 +317,15 @@ CREATE TABLE `technique_order` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Дамп данных таблицы `technique_order`
+--
+
+INSERT INTO `technique_order` (`id`, `service_id`, `technique_id`, `route_id`, `work_activity`, `responsible_person_id`, `date_from`, `date_to`, `time_from`, `time_to`, `shift`, `remark`, `status`, `created_at`) VALUES
+(1, 5, 44, 5, NULL, 1, '2024-07-03', '2024-07-04', '20:00:47', '23:00:00', NULL, NULL, NULL, '2024-07-18 20:47:06'),
+(2, 8, 6, 6, NULL, 4, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36'),
+(3, 8, 8, 6, NULL, 6, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36');
+
 -- --------------------------------------------------------
 
 --
@@ -360,6 +424,13 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
 --
 
 --
+-- Индексы таблицы `applications`
+--
+ALTER TABLE `applications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Индексы таблицы `passwords`
 --
 ALTER TABLE `passwords`
@@ -372,6 +443,13 @@ ALTER TABLE `passwords`
 ALTER TABLE `privileges`
   ADD PRIMARY KEY (`id`),
   ADD KEY `work_position` (`work_position`);
+
+--
+-- Индексы таблицы `responses`
+--
+ALTER TABLE `responses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `responses_ibfk_1` (`application_id`);
 
 --
 -- Индексы таблицы `responsible_person`
@@ -429,6 +507,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `applications`
+--
+ALTER TABLE `applications`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT для таблицы `passwords`
 --
 ALTER TABLE `passwords`
@@ -441,6 +525,12 @@ ALTER TABLE `privileges`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT для таблицы `responses`
+--
+ALTER TABLE `responses`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT для таблицы `responsible_person`
 --
 ALTER TABLE `responsible_person`
@@ -450,7 +540,7 @@ ALTER TABLE `responsible_person`
 -- AUTO_INCREMENT для таблицы `route`
 --
 ALTER TABLE `route`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `services`
@@ -468,7 +558,7 @@ ALTER TABLE `technique`
 -- AUTO_INCREMENT для таблицы `technique_order`
 --
 ALTER TABLE `technique_order`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `type_of_technique`
@@ -487,10 +577,22 @@ ALTER TABLE `users`
 --
 
 --
+-- Ограничения внешнего ключа таблицы `applications`
+--
+ALTER TABLE `applications`
+  ADD CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
 -- Ограничения внешнего ключа таблицы `passwords`
 --
 ALTER TABLE `passwords`
   ADD CONSTRAINT `passwords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ограничения внешнего ключа таблицы `responses`
+--
+ALTER TABLE `responses`
+  ADD CONSTRAINT `responses_ibfk_1` FOREIGN KEY (`application_id`) REFERENCES `applications` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `responsible_person`

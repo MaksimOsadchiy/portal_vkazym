@@ -20,7 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 	$table = 'applications';
-	$response = selectAllRes($table);
+	$params = [
+		'user_id' => $_GET['id'],
+	];
+	$response = selectAllRes($table, $params);
 	echo json_encode(['apps' => $response]);
 	return;
 

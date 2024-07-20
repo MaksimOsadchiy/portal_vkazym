@@ -2,9 +2,9 @@
 
 $driver = 'mysql';
 $host = 'localhost';
-$db_name = 'portal_vkazym_v2.0.0';
-$db_user = 'portal_vkazym';
-$db_pass = 'P@ssw0rd';
+$db_name = 'Введи свою БД';
+$db_user = 'Введи своего юзера';
+$db_pass = 'P@ssw0rd'; // Вроде везде одинаковый
 $charset = 'utf8';
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

@@ -13,8 +13,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	const getApplications = async () => {
 		try {
-			const qparametr = `?id=${SESSION.id}`; // Устанавливаем кверипараметры
-			const response = await fetch(`${SERVER_URL}appForm.php${qparametr}`);
+			// Старый запрос (Монолит)
+			// const qparametr = `?id=${SESSION.id}`; // Устанавливаем кверипараметры
+			// const response = await fetch(`${SERVER_URL}appForm.php${qparametr}`);
+			// Новый запрос
+			const qparametr = `?user_id=${SESSION.id}`; // Устанавливаем кверипараметры
+			const response = await fetch(`${NEW_SERVER_URL}applications${qparametr}`);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 

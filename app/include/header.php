@@ -22,28 +22,7 @@
                     <?php endforeach; ?>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <?php if(isset($_SESSION['id'])): ?>
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?php echo $_SESSION['login']; ?>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <?php if($_SESSION['privilege'] = 1): ?>
-                                    <li><a class="dropdown-item" href="#">Администрирование</a></li>
-                                <?php endif; ?>
-                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'index.php' ?>">Главная</a></li>
-                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'technique.php' ?>">Заказ техники</a></li>
-                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'log.php' ?>">Печать ЛКРИ</a></li>
-                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'log.php' ?>">Сменить пользователя</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'logout.php' ?>">Выйти</a></li>
-                            </ul>
-                        <?php else: ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL . 'log.php' ?>">Вход</a>
-                    </li>
-                        <?php endif; ?>
-                    </li>
+                    <li class="nav-item dropdown list-references"></li>
                 </ul>
             </div>
 

@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Устанавливаем базовый путь для переадресаций
+    RewriteBase /portal_vkazym/backend/
+
+    # Условие: если запрашиваемый файл или директория не существует
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Перенаправление на index.php
+    RewriteRule ^(.+)$ index.php?q=$1 [L,QSA]
+
+    # Установка кодировки по умолчанию
+    AddDefaultCharset UTF-8
+
+    # Включение отображения ошибок (если поддерживается сервером)
+    php_flag display_errors on
+</IfModule>

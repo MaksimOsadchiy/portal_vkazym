@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июл 20 2024 г., 09:08
+-- Время создания: Июл 21 2024 г., 16:36
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.21
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `Введи свою БД`
+-- База данных: `portal_vkazym`
 --
 
 -- --------------------------------------------------------
@@ -41,7 +41,18 @@ CREATE TABLE `applications` (
 
 INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`) VALUES
 (2, 24, 'ываммавммвмвмвмвмвавма', 'вамвмвмамвмаммввм', 1),
-(3, 30, 'ЗАГОловок', 'Текстататата', 0);
+(3, 30, 'ЗАГОловок', 'Текстататата', 0),
+(4, 30, 'Тема длинной заявки', 'Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, Тест длинной заявки, ', 0),
+(5, 30, '', 'dfvdvdvfvvfvfvfvf', 0),
+(6, 30, '', 'fsfvvfvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', 0),
+(7, 30, '', 'nfnfnfn', 0),
+(8, 30, '', 'sdfsdsfds', 0),
+(9, 30, '', 'fffffffffffffffffffffffff', 0),
+(10, 30, '', 'sdvsvschhhh sdvsvschhhhsdvsvschhhh sdvsvschhhh', 0),
+(11, 30, '', 'ccccccccccccccccccccccccccccccccccc', 0),
+(12, 30, 'Теммммамаа', 'Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка Длинная заявка', 1),
+(13, 30, '', 'ываываыва', 0),
+(14, 30, '', 'Последняя', 0);
 
 -- --------------------------------------------------------
 
@@ -132,7 +143,8 @@ CREATE TABLE `responses` (
 --
 
 INSERT INTO `responses` (`id`, `application_id`, `response`) VALUES
-(3, 2, 'ывмввамвмвавм');
+(3, 2, 'ывмввамвмвавм'),
+(4, 12, 'ОТтвет на длинную заявку ОТтвет на длинную заявку ОТтвет на длинную заявкуОТтвет на длинную заявку ОТтвет на длинную заявку ОТтвет на длинную заявку ОТтвет на длинную заявку');
 
 --
 -- Триггеры `responses`
@@ -195,7 +207,8 @@ INSERT INTO `route` (`id`, `route_to`, `service_id`) VALUES
 (7, 'ДЛО-6', 8),
 (8, 'ДЛО-8', 8),
 (9, 'ДЛО-9', 8),
-(10, 'ДЛО-10', 8);
+(10, 'ДЛО-10', 8),
+(11, 'dss', 8);
 
 -- --------------------------------------------------------
 
@@ -324,7 +337,26 @@ CREATE TABLE `technique_order` (
 INSERT INTO `technique_order` (`id`, `service_id`, `technique_id`, `route_id`, `work_activity`, `responsible_person_id`, `date_from`, `date_to`, `time_from`, `time_to`, `shift`, `remark`, `status`, `created_at`) VALUES
 (1, 5, 44, 5, NULL, 1, '2024-07-03', '2024-07-04', '20:00:47', '23:00:00', NULL, NULL, NULL, '2024-07-18 20:47:06'),
 (2, 8, 6, 6, NULL, 4, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36'),
-(3, 8, 8, 6, NULL, 6, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36');
+(3, 8, 8, 6, NULL, 6, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36'),
+(4, 8, 6, 5, NULL, 6, '2024-07-01', '2024-07-03', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 17:44:17'),
+(5, 8, 6, 5, NULL, 4, '2024-07-01', '2024-07-03', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 17:44:17'),
+(6, 8, 8, 5, NULL, 4, '2024-07-01', '2024-07-03', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 17:44:17'),
+(7, 8, 5, 8, NULL, 6, '2024-07-11', '2024-07-04', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-20 18:25:15'),
+(8, 8, 11, 8, NULL, 4, '2024-07-11', '2024-07-04', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-20 18:25:16'),
+(9, 8, 5, 6, NULL, 6, '2024-07-04', '2024-07-19', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-20 22:18:44'),
+(10, 8, 21, 6, NULL, 4, '2024-07-04', '2024-07-19', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-20 22:18:44');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `tokens`
+--
+
+CREATE TABLE `tokens` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -417,7 +449,7 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
 (26, 'ee.litva11', 0, 8),
 (27, 'ee.litva55', 0, 8),
 (29, 'ee.litva23', 0, 8),
-(30, 'ee.litva22', 0, 8);
+(30, 'ee.litva22', 1, 8);
 
 --
 -- Индексы сохранённых таблиц
@@ -489,6 +521,14 @@ ALTER TABLE `technique_order`
   ADD KEY `technique_order_ibfk_1` (`responsible_person_id`);
 
 --
+-- Индексы таблицы `tokens`
+--
+ALTER TABLE `tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Индексы таблицы `type_of_technique`
 --
 ALTER TABLE `type_of_technique`
@@ -510,7 +550,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `passwords`
@@ -528,7 +568,7 @@ ALTER TABLE `privileges`
 -- AUTO_INCREMENT для таблицы `responses`
 --
 ALTER TABLE `responses`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `responsible_person`
@@ -540,7 +580,7 @@ ALTER TABLE `responsible_person`
 -- AUTO_INCREMENT для таблицы `route`
 --
 ALTER TABLE `route`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `services`
@@ -558,7 +598,13 @@ ALTER TABLE `technique`
 -- AUTO_INCREMENT для таблицы `technique_order`
 --
 ALTER TABLE `technique_order`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT для таблицы `tokens`
+--
+ALTER TABLE `tokens`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT для таблицы `type_of_technique`
@@ -620,6 +666,12 @@ ALTER TABLE `technique_order`
   ADD CONSTRAINT `technique_order_ibfk_2` FOREIGN KEY (`route_id`) REFERENCES `route` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `technique_order_ibfk_3` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `technique_order_ibfk_4` FOREIGN KEY (`technique_id`) REFERENCES `technique` (`id_technique`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ограничения внешнего ключа таблицы `tokens`
+--
+ALTER TABLE `tokens`
+  ADD CONSTRAINT `tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `users`

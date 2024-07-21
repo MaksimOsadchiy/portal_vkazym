@@ -25,6 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/modalWindowNotif/modalWindowNotif.css">
 	<script>
 		const SERVER_URL = <?php echo json_encode(SERVER_URL) ?>;
+		const NEW_SERVER_URL = <?php echo json_encode(NEW_SERVER_URL) ?>;
         const SESSION = <?php echo json_encode($_SESSION); ?>;
 	</script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/appsForm/appsForm.js"></script>

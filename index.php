@@ -1,7 +1,8 @@
-<?php include('path.php');
-session_start();
-$pageTitle = "Главная";
-$menuItems = [];
+<?php 
+	include('path.php');
+	// session_start();
+	$pageTitle = "Главная";
+	$menuItems = [];
 ?>
 
 <!doctype html>
@@ -16,6 +17,11 @@ $menuItems = [];
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+	<script>
+        const NEW_SERVER_URL = <?php echo json_encode(NEW_SERVER_URL); ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
+    </script>
+	<script defer type="module" src="assets/js/headerMian/headerMian.js"></script>
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>

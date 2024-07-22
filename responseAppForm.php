@@ -3,7 +3,11 @@
     include('path.php');
     session_start();
     $pageTitle = "ОТВЕТЫ";
-    $menuItems = [];
+    $menuItems = [
+        ['url' => BASE_URL, 'label' => 'Главная'],
+        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
+        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
+    ];
 ?>
 
 <!doctype html>
@@ -84,6 +88,5 @@
         </div>
     </section>
 
-    <!-- <script src="<?php echo BASE_URL ?>assets/js/bootstrap/bootstrap.js"></script> -->
 </body>
 </html>

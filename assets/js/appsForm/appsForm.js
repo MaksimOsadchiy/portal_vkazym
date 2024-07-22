@@ -200,12 +200,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const tdContent = document.createElement('p');
 		const tdStatus = document.createElement('p');
 
+		const statusObj = {
+			0: {text: 'На рассмотрении', style: ''},
+			1: {text: 'Рассмотренно', style: 'green'},
+			2: {text: 'Отклонено', style: 'red'},
+		};
+
 		// Добавляем классы
 		row.className = 'appForm d-flex flex-column';
 		container.className = 'title-container d-flex flex-row';
-		tdTitle.className = 'col-3 text-center';
+		tdTitle.className = 'col-2 text-center';
 		tdContent.className = 'col-8 text-center';
-		tdStatus.className = 'col-1 text-center status';
+		tdStatus.className = `col-2 text-center status ${statusObj[app.status].style}`;
 
 		// Добавляем атрибуты
 		row.setAttribute('value', app.id);
@@ -213,7 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		// Добавляем текст
 		tdTitle.innerText = app.title ? formContent(app.title, 50) : 'Темы нет';
 		tdContent.innerText = formContent(app.content, 170);
-		tdStatus.innerText = app.status;
+		tdStatus.innerText = statusObj[app.status].text;
 
 		// Собираем части в единую строку
 		container.appendChild(tdTitle);
@@ -246,16 +252,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 		container.className = 'content-container d-flex flex-column row-gap-4';
 		appTextContainer.className = 'd-flex flex-row align-items-center';
 		appResponseContainer.className = 'd-flex flex-row align-items-center';
-		appTextTitle.className = 'col-3';
-		appResponseTitle.className = 'col-3';
-		appText.className = 'col-8';
-		appResponse.className = 'col-8';
+		appTextTitle.className = 'col-2';
+		appResponseTitle.className = 'col-2';
+		appText.className = 'col-9';
+		appResponse.className = 'col-9';
 
 		// Добавляем текст
 		appTextTitle.innerText = 'Текст:';
 		appResponseTitle.innerText = 'Ответ:';
 		appText.innerText = apps.filter((obj) => obj.id === +row.getAttribute('value'))[0].content;
-		appResponse.innerText = +row.querySelector('.status').textContent ? await getResponse(+row.getAttribute('value')) : 'Ответа нет!'; // Продолжить...
+		appResponse.innerText = row.querySelector('.status').textContent !== 'На рассмотрении' ? await getResponse(+row.getAttribute('value')) : 'Ответа нет!'; // Продолжить...
 
 		// Собираем части в единую строку
 		appTextContainer.appendChild(appTextTitle);

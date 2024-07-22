@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			modalBodyId.value = id;
 
 			const modalTitle = document.querySelector('.modal-title');
-			modalTitle.innerText = title !== "" ? title : login;
+			modalTitle.innerText = title !== "" ? formContent(title, 35) : login;
 
 			const modalBodyTitle = document.querySelector('.modal-body-title');
 			modalBodyTitle.innerText = title !== "" ? title : "Темы нет!";
@@ -110,25 +110,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 	* затем для каждой заявки создает строку таблицы с данными и добавляет к ней обработчик событий.
 	*/
 	const drawContent = () => {
-		const table = document.querySelector('.table').querySelector('tbody');
-		const columns = table.querySelector('.title'); // Запоминаем строку с заголовками колонок
-		table.innerHTML = ''; // Очищаем содержимое таблицы
-		table.appendChild(columns); // Добавляем заголовки колонок обратно в таблицу
+		const tableBody = document.querySelector('.table').querySelector('.tbody');
+		tableBody.innerHTML = ''; // Очищаем содержимое таблицы
 
 		// Пробегаемся по заявкам и для каждой создаём строку с данными по заявке, навешиваем обработчик событий на эту строку
 		data.forEach((el, i) => {
-			const row = document.createElement('tr');
-			row.className = 'appForm fs-6';
-			row.id = el['id'];
-			row.setAttribute('data-bs-target', '#exampleModalToggle');
-			row.setAttribute('data-bs-toggle', 'modal');
-			row.innerHTML = `<td>Пока нет</td>
-						        <td id="login">${users[el['user_id']]['login']}</td>
-						        <td>Пока нет</td>
-						        <td>${el['title']}</td>
-						        <td>${formContent(el['content'])}</td>`;
+			const row = createRow(
+				el.id,
+				'Пока нет',
+				users[el['user_id']]['login'],
+				'Пока нет',
+				formContent(el.title, 10),
+				formContent(el.content, 70),
+				'appForm fs-6'
+			);
 			addEventRow(row);
-			table.appendChild(row);
+			tableBody.appendChild(row);
 		});
 	};
 	/**
@@ -138,16 +135,70 @@ document.addEventListener('DOMContentLoaded', async () => {
 	* затем вызывает функцию drawContent для отрисовки содержимого таблицы.
 	*/
 	const drawTable = () => {
-		const table = document.querySelector('.table').querySelector('tbody');
-		const columns = document.createElement('tr');
-		columns.className = 'title';
-		columns.innerHTML = `<th class="col-1 text-center">ФИО</th>
-						<th class="col-2 text-center login">Логин</th>
-						<th class="col-2 text-center">Телефон</th>
-						<th class="col-3 text-center">Тема</th>
-						<th class="col-4 text-center">Содержание</th>`;
-		table.appendChild(columns); // Добавляем строку заголовков колонок в таблиц
+		const tableTitle = document.querySelector('.table').querySelector('.tb-title');
+		const columnsName = createRow();
+		tableTitle.appendChild(columnsName); // Добавляем строку заголовков колонок в таблиц
 		drawContent(); // Вызываем функцию для отрисовки содержимого таблицы
+	};
+	/**
+	* Функция для создания строки с данными.
+	*
+	* Функция выполняет следующие действия:
+	* 1. Создает контейнеры для каждого поля данных.
+	* 2. Добавляет соответствующие классы к каждому контейнеру.
+	* 3. Устанавливает атрибуты для модального окна, если id больше 0.
+	* 4. Заполняет контейнеры переданными данными.
+	* 5. Объединяет все контейнеры в одну строку и возвращает её.
+	*
+	* @param {number} id - Идентификатор строки, по умолчанию -1.
+	* @param {string} fio - ФИО пользователя, по умолчанию 'ФИО'.
+	* @param {string} login - Логин пользователя, по умолчанию 'Логин'.
+	* @param {string} phone - Телефон пользователя, по умолчанию 'Телефон'.
+	* @param {string} title - Тема заявки, по умолчанию 'Тема'.
+	* @param {string} content - Содержание заявки, по умолчанию 'Содержание'.
+	* @param {string} style - Стиль строки, по умолчанию 'tb-title'.
+	*
+	* @returns {HTMLElement} Возвращает строку с данными в виде div элемента.
+	*/
+	const createRow = (id = -1, fio = 'ФИО', login = 'Логин', phone = 'Телефон', title = 'Тема', content = 'Содержание', style = 'tb-title') => {
+		const row = document.createElement('div');
+		const fioContainer = document.createElement('p');
+		const loginContainer = document.createElement('p');
+		const phoneContainer = document.createElement('p');
+		const titleContainer = document.createElement('p');
+		const contentContainer = document.createElement('p');
+
+		// Добавляем классы
+		row.className = `${style} d-flex flex-row`;
+		fioContainer.className = 'col-1 text-center';
+		loginContainer.className = 'col-2 text-center login';
+		phoneContainer.className = 'col-2 text-center';
+		titleContainer.className = 'col-3 text-center';
+		contentContainer.className = 'col-4 text-center';
+
+		// 
+		row.id = id;
+		if (id > 0) {
+			row.setAttribute('data-bs-target', '#exampleModalToggle');
+			row.setAttribute('data-bs-toggle', 'modal');
+			loginContainer.setAttribute('id', 'login');
+		};
+
+		// Добавляем текст
+		fioContainer.innerText = fio;
+		loginContainer.innerText = login;
+		phoneContainer.innerText = phone;
+		titleContainer.innerText = title;
+		contentContainer.innerText = content;
+
+		// Собираем части в единую строку
+		row.appendChild(fioContainer);
+		row.appendChild(loginContainer);
+		row.appendChild(phoneContainer);
+		row.appendChild(titleContainer);
+		row.appendChild(contentContainer);
+
+		return row;
 	};
 	/**
 	* Функция для ограничениея текста по длине.
@@ -161,8 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	*
 	* @returns {string} Возвращает обработанный текст, который либо обрезан с многоточием, либо остается неизменным.
 	*/
-	const formContent = (text) => {
-		const limit = 170;
+	const formContent = (text, limit) => {
 		return text.length > limit ? text.substring(0, limit) + '...' : text;
 	};
 

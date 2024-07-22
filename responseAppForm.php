@@ -43,9 +43,10 @@
                 <div class="col-11 d-flex flex-column align-items-center mt-3 mb-3">
                     <div class="table-users">
                         <div class="tb-header">Заявки</div>
-                        <table class="table" cellspacing="0">
-                            <tbody></tbody>
-                        </table>
+                        <div class="table" cellspacing="0">
+                            <div class="tb-title"></div>
+                            <div class='tbody'></div>
+                        </div>
                     </div>
                     <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">

@@ -12,6 +12,11 @@
 .modal-body-content {
    border-radius: 1rem;
    background-color: rgba(235, 235, 235, 0.5);
+   overflow-x: auto;
+}
+.modal-body-title {
+   max-height: 5rem;
+   overflow: auto;
 }
 .response{
    border-top: 2px solid grey;

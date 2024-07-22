@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const content = form.querySelector('.content').value;
 
 			// Проверка данных
+			if (title.length > 128) throw new Error(`Заголовок не может быть динее 128 символов!(${title.length})`);
 			if (!content) throw new Error('Запрос не может быть пустым!');
 			if (content.length < 5) throw new Error('Текст должен быть не менее 5ти символов!');
 
@@ -210,8 +211,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		row.setAttribute('value', app.id);
 
 		// Добавляем текст
-		tdTitle.innerText = app.title ? app.title : 'Темы нет';
-		tdContent.innerText = formContent(app.content);
+		tdTitle.innerText = app.title ? formContent(app.title, 50) : 'Темы нет';
+		tdContent.innerText = formContent(app.content, 170);
 		tdStatus.innerText = app.status;
 
 		// Собираем части в единую строку
@@ -243,8 +244,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		// Добавляем классы
 		container.className = 'content-container d-flex flex-column row-gap-4';
-		appTextContainer.className = 'd-flex flex-row align-items-center column-gap-3';
-		appResponseContainer.className = 'd-flex flex-row align-items-center column-gap-3';
+		appTextContainer.className = 'd-flex flex-row align-items-center';
+		appResponseContainer.className = 'd-flex flex-row align-items-center';
+		appTextTitle.className = 'col-3';
+		appResponseTitle.className = 'col-3';
+		appText.className = 'col-8';
+		appResponse.className = 'col-8';
 
 		// Добавляем текст
 		appTextTitle.innerText = 'Текст:';
@@ -262,19 +267,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 		row.appendChild(container);
 	};
 	/**
-	 * Функция для ограничениея текста по длине.
-	 *
-	 * Функция выполняет следующие действия:
-	 * 1. Проверяет длину входного текста.
-	 * 2. Если длина текста превышает установленный лимит, обрезает текст и добавляет многоточие.
-	 * 3. Если длина текста не превышает лимит, возвращает текст без изменений.
-	 *
-	 * @param {string} text - Текст, который нужно обработать.
-	 *
-	 * @returns {string} Возвращает обработанный текст, который либо обрезан с многоточием, либо остается неизменным.
-	 */
-	const formContent = (text) => {
-		const limit = 170;
+	* Функция для ограничения длины текста и добавления многоточия при необходимости.
+	*
+	* Функция выполняет следующие действия:
+	* 1. Проверяет длину входного текста.
+	* 2. Если длина текста превышает установленный лимит, обрезает текст до лимита и добавляет многоточие.
+	* 3. Если длина текста не превышает лимит, возвращает текст без изменений.
+	*
+	* @param {string} text - Текст, который нужно обработать.
+	* @param {number} limit - Максимальная длина текста.
+	*
+	* @returns {string} Возвращает обработанный текст, который либо обрезан с многоточием, либо остается неизменным.
+	*/
+	const formContent = (text, limit) => {
 		return text.length > limit ? text.substring(0, limit) + '...' : text; // (Тоже тернарный оператор)
 	};
 

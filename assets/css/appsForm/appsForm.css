@@ -89,6 +89,13 @@
 	text-align: center;
 	vertical-align: middle;
 }
+.tbody .title-container p,
+.content-container p{
+	overflow-x: auto;
+}
+.content-container p:nth-child(2n){
+	text-align: left;
+}
 .tbody p :last-child {
 	font-size: 0.95rem;
 	line-height: 1.4;

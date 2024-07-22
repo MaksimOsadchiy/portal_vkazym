@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июл 20 2024 г., 09:08
+-- Время создания: Июл 22 2024 г., 03:20
 -- Версия сервера: 8.0.36
--- Версия PHP: 8.2.21
+-- Версия PHP: 8.2.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `Введи свою БД`
+-- База данных: `portal_vkazym`
 --
 
 -- --------------------------------------------------------
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `applications` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `content` text COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -41,7 +41,9 @@ CREATE TABLE `applications` (
 
 INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`) VALUES
 (2, 24, 'ываммавммвмвмвмвмвавма', 'вамвмвмамвмаммввм', 1),
-(3, 30, 'ЗАГОловок', 'Текстататата', 0);
+(3, 30, 'ЗАГОловок', 'Текстататата', 0),
+(4, 26, 'ТТТЕММа', 'ТЕксста ТЕксста ТЕксста ТЕксста', 0),
+(5, 26, '', 'выаааааааааа', 1);
 
 -- --------------------------------------------------------
 
@@ -52,7 +54,7 @@ INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`) VALUE
 CREATE TABLE `passwords` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
-  `password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -99,7 +101,7 @@ INSERT INTO `passwords` (`id`, `user_id`, `password`) VALUES
 CREATE TABLE `privileges` (
   `id` int NOT NULL,
   `work_position` int NOT NULL DEFAULT '0',
-  `transcript` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `transcript` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -124,7 +126,7 @@ INSERT INTO `privileges` (`id`, `work_position`, `transcript`) VALUES
 CREATE TABLE `responses` (
   `id` int NOT NULL,
   `application_id` int NOT NULL,
-  `response` text COLLATE utf8mb4_general_ci NOT NULL
+  `response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -132,7 +134,8 @@ CREATE TABLE `responses` (
 --
 
 INSERT INTO `responses` (`id`, `application_id`, `response`) VALUES
-(3, 2, 'ывмввамвмвавм');
+(3, 2, 'ывмввамвмвавм'),
+(4, 5, 'ОТВТТВТТВТВТвет');
 
 --
 -- Триггеры `responses`
@@ -168,7 +171,8 @@ CREATE TABLE `responsible_person` (
 INSERT INTO `responsible_person` (`id`, `lastname`, `firstname`, `patronymic`, `service_id`, `phone_number`) VALUES
 (1, 'Б', 'Борис', 'Борисович', 4, '00-001'),
 (4, 'С', 'Юрий', 'Владимирович', 8, '89220000000'),
-(6, 'П2', 'Иван', 'Иванович2', 8, '89876543210');
+(6, 'П2', 'Иван', 'Иванович2', 8, '89876543210'),
+(7, 'Т3', 'Василий', 'Васильевич', 8, '89876543210');
 
 -- --------------------------------------------------------
 
@@ -187,7 +191,7 @@ CREATE TABLE `route` (
 --
 
 INSERT INTO `route` (`id`, `route_to`, `service_id`) VALUES
-(1, 'ДЛО', 8),
+(1, 'ДЛО-1', 8),
 (2, 'ДЛО-2', 8),
 (3, 'Жил поселок', 12),
 (5, 'ДЛО-4', 8),
@@ -324,7 +328,10 @@ CREATE TABLE `technique_order` (
 INSERT INTO `technique_order` (`id`, `service_id`, `technique_id`, `route_id`, `work_activity`, `responsible_person_id`, `date_from`, `date_to`, `time_from`, `time_to`, `shift`, `remark`, `status`, `created_at`) VALUES
 (1, 5, 44, 5, NULL, 1, '2024-07-03', '2024-07-04', '20:00:47', '23:00:00', NULL, NULL, NULL, '2024-07-18 20:47:06'),
 (2, 8, 6, 6, NULL, 4, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36'),
-(3, 8, 8, 6, NULL, 6, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36');
+(3, 8, 8, 6, NULL, 6, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36'),
+(4, 8, 7, 6, NULL, 4, '2024-07-03', '2024-07-02', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-22 08:16:07'),
+(5, 8, 5, 6, NULL, 6, '2024-07-03', '2024-07-02', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-22 08:16:07'),
+(6, 8, 12, 6, NULL, 7, '2024-07-03', '2024-07-02', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-22 08:16:07');
 
 -- --------------------------------------------------------
 
@@ -499,6 +506,7 @@ ALTER TABLE `type_of_technique`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`),
   ADD KEY `service_id` (`service_id`),
   ADD KEY `privilege` (`privilege`);
 
@@ -510,7 +518,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `passwords`
@@ -528,13 +536,13 @@ ALTER TABLE `privileges`
 -- AUTO_INCREMENT для таблицы `responses`
 --
 ALTER TABLE `responses`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `responsible_person`
 --
 ALTER TABLE `responsible_person`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `route`
@@ -558,7 +566,7 @@ ALTER TABLE `technique`
 -- AUTO_INCREMENT для таблицы `technique_order`
 --
 ALTER TABLE `technique_order`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `type_of_technique`

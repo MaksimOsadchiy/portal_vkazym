@@ -35,6 +35,7 @@
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'technique.php' ?>">Заказ техники</a></li>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'log.php' ?>">Печать ЛКРИ</a></li>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'log.php' ?>">Сменить пользователя</a></li>
+                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'responseAppForm.php' ?>">Отыеты на заявки</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'logout.php' ?>">Выйти</a></li>
                             </ul>

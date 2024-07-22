@@ -51,20 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		let timeTo = document.querySelector('.time-to').value;
 		const shift = Array.from(document.querySelectorAll('.form-check-input')).find((elem) => elem.checked)?.value;
 
-		// Обработчик времени доделать...
-		// const shiftFrom = new Date(`${dateFrom}T${shift.slice(0, 5)}`);
-		// const shiftTo = +shift[0] ? new Date(`${dateTo}T${shift.slice(0, 5)}`) : new Date(`${dateFrom}T${shift.slice(6, 11)}`);
-		// const fullDateFrom = new Date(`${dateFrom}T${timeFrom}`);
-		// const fullDateTo = new Date(`${dateTo}T${timeTo}`);
-		// console.log(shiftFrom);
-		// console.log(shiftTo);
-		// console.log(fullDateFrom);
-		// console.log(fullDateTo);
-		// if (shift) {
-		// 	let flag = fullDateFrom >= shiftFrom && fullDateTo <= shiftTo && fullDateFrom < fullDateTo
-		// 	flag ? console.log('Верно') : console.log('Не верно');;
-		// };
-
 		validateInputs(service, technique, responsiblePerson, dateFrom, dateTo, route, timeFrom, timeTo, shift);
 		timeFrom = timeFrom ? timeFrom : shift.slice(0, 4);
 		timeTo = timeTo ? timeTo : shift.slice(6, 11);

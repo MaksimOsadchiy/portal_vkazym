@@ -1,0 +1,35 @@
+:root {
+   font-size: 1em;
+}
+
+/* modal window */
+.modal-dialog {
+   max-width: calc(100% - 2 * var(--bs-modal-width)) !important;
+}
+.modal-body-id {
+   display: none;
+} 
+.modal-body-content {
+   border-radius: 1rem;
+   background-color: rgba(235, 235, 235, 0.5);
+}
+.response{
+   border-top: 2px solid grey;
+}
+.response textarea {
+   min-height: 2.7rem;
+   outline: none;
+   border: none;
+   border-radius: 0.5rem;
+   background-color: rgba(235, 235, 235, 0.5);
+}
+
+/* search-panel */
+.search-panel {
+   padding-left: 50px !important;
+   border-radius: 1.5rem;
+   background-color: rgba(245, 245, 245, 1);
+   background-image: url('../../img/Лупа.png');
+   background-repeat: no-repeat;
+   background-position: 5px center;
+}

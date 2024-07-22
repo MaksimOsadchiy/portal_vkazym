@@ -2,8 +2,8 @@
 
 $driver = 'mysql';
 $host = 'localhost';
-$db_name = 'Введи свою БД';
-$db_user = 'Введи своего юзера';
+$db_name = 'portal_vkazym';
+$db_user = 'portal_vkazym';
 $db_pass = 'P@ssw0rd'; // Вроде везде одинаковый
 $charset = 'utf8';
 

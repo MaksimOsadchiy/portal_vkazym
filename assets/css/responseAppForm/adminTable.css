@@ -1,0 +1,68 @@
+:root {
+   font-size: 1em;
+   --baseColor: #398B93;
+   --borderRadius: 0.625rem;
+   --padding: 0.625rem;
+}
+
+/* table */
+.table-users {
+   min-width: 70%;
+}
+.tb-header {
+   background-color: var(--baseColor);
+   color: white;
+   font-size: 1.5rem;
+   padding: 1rem;
+   text-align: center;
+   text-transform: uppercase;
+}
+
+.table-users {
+   border: 1px solid var(--baseColor);
+   border-radius: var(--borderRadius);
+   box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+   max-width: calc(100% - 2rem);
+   overflow: hidden;
+}
+
+table {
+   width: 100%;
+}
+td, th { 
+   color: var(--baseColor) !important;
+   padding: var(--padding) !important;
+}
+td {
+   background-color: transparent !important;
+   text-align: center;
+   vertical-align: middle;
+}
+td:last-child {
+   font-size: 0.95rem;
+   line-height: 1.4;
+/*   text-align: left;*/
+};
+th { 
+   background-color: var(--baseColor);
+   font-weight: 300;
+}
+tr:nth-child(2n)  {
+   background-color: white;
+}
+.title th{
+   background-color: transparent !important;
+}
+.appForm:nth-child(2n+1), .title {
+   background-color: rgba(237, 247, 248, 1) !important;
+}
+
+/* appForm */
+.appForm {
+   cursor: pointer;
+   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.appForm:hover {
+   transform: translate(5px, 5px);
+   box-shadow: -8px -3px 20px -10px;
+}

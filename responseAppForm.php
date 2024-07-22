@@ -1,7 +1,9 @@
-<?php include('path.php');
-session_start();
-$pageTitle = "ОТВЕТЫ";
-$menuItems = [];
+<?php 
+
+    include('path.php');
+    session_start();
+    $pageTitle = "ОТВЕТЫ";
+    $menuItems = [];
 ?>
 
 <!doctype html>

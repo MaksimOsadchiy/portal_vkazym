@@ -9,7 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	$table = 'responses';
 	$params = [
+		'user_id' => $data['user_id'],
 		'application_id' => $data['application_id'],
+		'status' => $data['status'],
 		'response' => $data['response'],
 	];
 	

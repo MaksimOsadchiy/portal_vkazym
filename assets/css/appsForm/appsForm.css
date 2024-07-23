@@ -58,7 +58,7 @@
 	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 .title-container:hover {
-	box-shadow: 0 0 20px -10px;
+	box-shadow: 1px 1px 20px -10px;
 }
 .appForm .title-container {
 	background-color: transparent;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июл 22 2024 г., 03:20
+-- Время создания: Июл 23 2024 г., 05:50
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `applications` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `title` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -43,7 +43,41 @@ INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`) VALUE
 (2, 24, 'ываммавммвмвмвмвмвавма', 'вамвмвмамвмаммввм', 1),
 (3, 30, 'ЗАГОловок', 'Текстататата', 0),
 (4, 26, 'ТТТЕММа', 'ТЕксста ТЕксста ТЕксста ТЕксста', 0),
-(5, 26, '', 'выаааааааааа', 1);
+(5, 26, '', 'выаааааааааа', 1),
+(6, 26, '', 'авпымводшмв', 1),
+(7, 26, '', 'дщдщдolololooolooolo', 1),
+(8, 26, '', 'ещё заявввввккакакакакаааа', 1),
+(9, 29, 'ТЕмамамама', 'Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее ', 0),
+(11, 29, 'Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема ', 'СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание ', 0),
+(12, 29, 'ТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТема ', 'СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  ', 1),
+(13, 29, '', 'СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕ', 0),
+(14, 29, 'ffffffffff', 'xxxxxxxxxxxxxxxxxcccccccccccccccccccc', 3),
+(15, 27, 'fsf', 'fffffffffffffffffffffffffffffffffffff', 2),
+(16, 27, 'ЗАПРОС', 'ЗЗЗАЗАЗАЗАЗ', 3),
+(17, 27, 'sdfffffff', 'sdfsccccccccccccccccccccc', 0),
+(18, 27, 'sdd', 'cccccccccccccccccccccccccccccccccccccccccxxxxx', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `application_status`
+--
+
+CREATE TABLE `application_status` (
+  `id` int NOT NULL,
+  `value` tinyint NOT NULL,
+  `transcript` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `application_status`
+--
+
+INSERT INTO `application_status` (`id`, `value`, `transcript`) VALUES
+(1, 0, 'Заявка в очереди на рассмотрение'),
+(2, 1, 'Заявка в работе'),
+(3, 2, 'Заявка выполнена'),
+(4, 3, 'Заявка отклонена');
 
 -- --------------------------------------------------------
 
@@ -126,16 +160,32 @@ INSERT INTO `privileges` (`id`, `work_position`, `transcript`) VALUES
 CREATE TABLE `responses` (
   `id` int NOT NULL,
   `application_id` int NOT NULL,
-  `response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `user_id` int NOT NULL,
+  `response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `status` tinyint(1) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Дамп данных таблицы `responses`
 --
 
-INSERT INTO `responses` (`id`, `application_id`, `response`) VALUES
-(3, 2, 'ывмввамвмвавм'),
-(4, 5, 'ОТВТТВТТВТВТвет');
+INSERT INTO `responses` (`id`, `application_id`, `user_id`, `response`, `status`, `date`) VALUES
+(3, 2, 24, 'ывмввамвмвавм', 0, '2024-07-22 17:13:32'),
+(4, 5, 24, 'ОТВТТВТТВТВТвет', 0, '2024-07-22 17:13:32'),
+(5, 6, 24, 'ОООООТТТ', 0, '2024-07-22 17:13:32'),
+(6, 7, 24, 'ОТЫКТ', 0, '2024-07-22 17:13:32'),
+(7, 8, 24, 'ещё ответтт', 0, '2024-07-22 17:13:32'),
+(8, 12, 24, '\nСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО', 0, '2024-07-22 17:13:32'),
+(9, 14, 24, 'ffffffff', 3, '2024-07-22 17:17:21'),
+(10, 15, 27, '', 1, '2024-07-23 08:36:06'),
+(11, 15, 27, '', 1, '2024-07-23 09:23:33'),
+(12, 15, 27, '', 1, '2024-07-23 09:23:48'),
+(13, 15, 24, 'Работа была выполнена', 2, '2024-07-23 09:25:26'),
+(14, 16, 27, 'Заявка в работе', 1, '2024-07-23 10:06:04'),
+(15, 16, 27, 'теперь коммент', 1, '2024-07-23 10:06:57'),
+(16, 16, 27, 'Не правильное оформление!', 3, '2024-07-23 10:07:39'),
+(17, 18, 27, '', 1, '2024-07-23 10:43:25');
 
 --
 -- Триггеры `responses`
@@ -143,7 +193,7 @@ INSERT INTO `responses` (`id`, `application_id`, `response`) VALUES
 DELIMITER $$
 CREATE TRIGGER `after_insert_responses` AFTER INSERT ON `responses` FOR EACH ROW BEGIN
   UPDATE applications
-  SET status = 1
+  SET status = NEW.status
   WHERE id = NEW.application_id;
 END
 $$
@@ -418,13 +468,13 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
 (20, 'ii.ivanov25', 0, NULL),
 (21, 'ii.ivanov26', 0, NULL),
 (22, 'ii.ivanov001', 0, 8),
-(23, 'ee.litva3', 0, 8),
-(24, 'ee.litva1', 0, 8),
-(25, 'ee.litva2', 0, 8),
-(26, 'ee.litva11', 0, 8),
-(27, 'ee.litva55', 0, 8),
-(29, 'ee.litva23', 0, 8),
-(30, 'ee.litva22', 0, 8);
+(23, 'ee.litva3', 3, 8),
+(24, 'ee.litva1', 1, 8),
+(25, 'ee.litva2', 2, 8),
+(26, 'ee.litva4', 4, 8),
+(27, 'ee.litva5', 5, 8),
+(29, 'ee.litva6', 6, 8),
+(30, 'ee.litva0', 0, 8);
 
 --
 -- Индексы сохранённых таблиц
@@ -435,7 +485,15 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
 --
 ALTER TABLE `applications`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `status` (`status`);
+
+--
+-- Индексы таблицы `application_status`
+--
+ALTER TABLE `application_status`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `value` (`value`);
 
 --
 -- Индексы таблицы `passwords`
@@ -456,7 +514,9 @@ ALTER TABLE `privileges`
 --
 ALTER TABLE `responses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `responses_ibfk_1` (`application_id`);
+  ADD KEY `responses_ibfk_1` (`application_id`),
+  ADD KEY `status` (`status`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Индексы таблицы `responsible_person`
@@ -518,7 +578,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT для таблицы `application_status`
+--
+ALTER TABLE `application_status`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `passwords`
@@ -536,7 +602,7 @@ ALTER TABLE `privileges`
 -- AUTO_INCREMENT для таблицы `responses`
 --
 ALTER TABLE `responses`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT для таблицы `responsible_person`
@@ -588,7 +654,8 @@ ALTER TABLE `users`
 -- Ограничения внешнего ключа таблицы `applications`
 --
 ALTER TABLE `applications`
-  ADD CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `applications_ibfk_2` FOREIGN KEY (`status`) REFERENCES `application_status` (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `passwords`
@@ -600,7 +667,9 @@ ALTER TABLE `passwords`
 -- Ограничения внешнего ключа таблицы `responses`
 --
 ALTER TABLE `responses`
-  ADD CONSTRAINT `responses_ibfk_1` FOREIGN KEY (`application_id`) REFERENCES `applications` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+  ADD CONSTRAINT `responses_ibfk_1` FOREIGN KEY (`application_id`) REFERENCES `applications` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  ADD CONSTRAINT `responses_ibfk_2` FOREIGN KEY (`status`) REFERENCES `application_status` (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `responses_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `responsible_person`

@@ -29,6 +29,9 @@
    color: var(--baseColor) !important;
    padding: var(--padding) !important;
 }
+.tb-title {
+   padding: 0 0.5rem;
+}
 .tb-title p { 
    background-color: var(--baseColor);
    font-weight: 300;
@@ -49,6 +52,7 @@
 }
 /* appForm */
 .appForm {
+   padding: 0 0.5rem;
    cursor: pointer;
    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -61,4 +65,16 @@
 .appForm:hover {
    transform: translate(5px, 5px);
    box-shadow: -8px -3px 20px -10px;
+}
+.appForm p.yellow{
+   color: darkblue !important;
+}
+.appForm p.green{
+   color: green !important;
+}
+.appForm p.red{
+   color: red !important;
+}
+.appForm p:last-child{
+   font-weight: 600;
 }

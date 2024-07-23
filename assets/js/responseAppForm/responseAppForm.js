@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', async () => {
+	// 
+	const getAppResponse = async (id) => {
+		try {
+			const qparametr = `?id=${id}`;
+			const response = await fetch(`${SERVER_URL}appResponse.php${qparametr}`);
+			const jsonResponse = await response.json(); // Достаём тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse.response[jsonResponse.response.length - 1];
+		} catch (error) {
+			// Если была ошибка, то обновляем переменную
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+		}
+	};
 	/**
 	* Асинхронная функция для получения данных о заявках и их отправителей.
 	*
@@ -34,9 +48,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 	*/
 	const postAppResponse = async () => {
 		try {
+			const status = +document.querySelector('.form-select').value;
+			if (isNaN(status)) throw new Error('Укажите сатус!');
 			const params = {
+				'user_id': SESSION.id,
 				'application_id': document.querySelector('.modal-body-id').value,
 				'response': document.querySelector('.textRes').value,
+				'status': status,
 			};
 			// Формируем запрос к серверу
 			const response = await fetch(`${SERVER_URL}appResponse.php`, {
@@ -50,12 +68,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const jsonResponse = await response.json();	// Получаем тело ответа в формате JSON
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 			
-			data = data.filter((elem) => elem.id != document.querySelector('.modal-body-id').value); // Обновляем таблицу, удаляя элемент с отправленным ответом
-			drawContent(); // Перерисовываем контент таблицы
+			data = data.map((elem) => {
+				if (elem.id === +document.querySelector('.modal-body-id').value) {
+					const newObj = {
+						content: elem.content,
+						id: elem.id,
+						status: status,
+						title: elem.title,
+						user_id: elem.user_id,
+					};
+					insertTableNewRow(createRow(
+						newObj.id,
+						'Пока нет',
+						users[newObj['user_id']]['login'],
+						'Пока нет',
+						formContent(newObj.title, 10),
+						formContent(newObj.content, 70),
+						newObj.status,
+						'appForm fs-6',
+					), newObj.id);
+					return newObj;
+				};
+				return elem;
+
+			}); // Обновляем таблицу, удаляя элемент с отправленным ответом
+			// drawContent(); // Перерисовываем контент таблицы
 			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Ответ отправлен!' }));
 		} catch(error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если была ошибка, то обновляем переменную
 		};
+	};
+	// 
+	const insertTableNewRow = (newRow, id) => {
+		const oldRow = document.querySelector(`.appForm[id="${id}"]`);
+		oldRow.replaceWith(newRow);
 	};
 	/**
 	* Функция для добавления обработчика события на кнопку ответа.
@@ -77,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	* @param {HTMLElement} elem - Элемент, на который добавляется обработчик события.
 	*/
 	const addEventRow = (elem) => {
-		elem.addEventListener('click', () => { // Вешаем слушатель на событие 'click'
+		elem.addEventListener('click', async () => { // Вешаем слушатель на событие 'click'
 			const id = elem.id;	// Получаем id из атрибута элемента
 			const app = data.find(obj => obj.id === +id); // Находим заявку по id
 			const user = users[app.user_id]; // Находим пользователя по user_id заявки
@@ -85,6 +131,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const title = app.title;
 			const phone = 'Пока нет!';
 			const content = app.content;
+			let comment = '';
+			const status = app.status;
+			if (status > 0) {
+				comment = (await getAppResponse(app.id)).response;
+			};
 
 			// Заполняем поля в модальном окне
 			const modalBodyId = document.querySelector('.modal-body-id');
@@ -101,6 +152,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			const modalBodyContent = document.querySelector('.modal-body-content');
 			modalBodyContent.innerText = content;
+
+			const modalBodyComment = document.querySelector('.textRes');
+			modalBodyComment.value = comment;
+
+			const modalBodyStatus = document.querySelector('.form-select');
+			modalBodyStatus.value = status;
 		});
 	};
 	/**
@@ -122,7 +179,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 				'Пока нет',
 				formContent(el.title, 10),
 				formContent(el.content, 70),
-				'appForm fs-6'
+				el.status,
+				'appForm fs-6',
 			);
 			addEventRow(row);
 			tableBody.appendChild(row);
@@ -160,25 +218,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 	*
 	* @returns {HTMLElement} Возвращает строку с данными в виде div элемента.
 	*/
-	const createRow = (id = -1, fio = 'ФИО', login = 'Логин', phone = 'Телефон', title = 'Тема', content = 'Содержание', style = 'tb-title') => {
+	const createRow = (id = -1, fio = 'ФИО', login = 'Логин', phone = 'Телефон', title = 'Тема', content = 'Содержание', status = 'Статус', style = '') => {
 		const row = document.createElement('div');
 		const fioContainer = document.createElement('p');
 		const loginContainer = document.createElement('p');
 		const phoneContainer = document.createElement('p');
 		const titleContainer = document.createElement('p');
 		const contentContainer = document.createElement('p');
+		const statusContainer = document.createElement('p');
 
 		// Добавляем классы
 		row.className = `${style} d-flex flex-row`;
 		fioContainer.className = 'col-1 text-center';
-		loginContainer.className = 'col-2 text-center login';
-		phoneContainer.className = 'col-2 text-center';
+		loginContainer.className = 'col-1 text-center login';
+		phoneContainer.className = 'col-1 text-center';
 		titleContainer.className = 'col-3 text-center';
 		contentContainer.className = 'col-4 text-center';
+		statusContainer.className = 'col-2 text-center';
 
+		// 
+		const statusObj = {
+			0: {text: 'Не рассмотрено', style: ''},
+			1: {text: 'В работе', style: 'yellow'},
+			2: {text: 'Выполнено', style: 'green'},
+			3: {text: 'Отклонено', style: 'red'},
+		};
 		// 
 		row.id = id;
 		if (id > 0) {
+			statusContainer.className = `col-2 text-center ${statusObj[status].style}`;
 			row.setAttribute('data-bs-target', '#exampleModalToggle');
 			row.setAttribute('data-bs-toggle', 'modal');
 			loginContainer.setAttribute('id', 'login');
@@ -190,6 +258,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		phoneContainer.innerText = phone;
 		titleContainer.innerText = title;
 		contentContainer.innerText = content;
+		statusContainer.innerText = status !== 'Статус' ? statusObj[status].text : status;
 
 		// Собираем части в единую строку
 		row.appendChild(fioContainer);
@@ -197,6 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		row.appendChild(phoneContainer);
 		row.appendChild(titleContainer);
 		row.appendChild(contentContainer);
+		row.appendChild(statusContainer);
 
 		return row;
 	};

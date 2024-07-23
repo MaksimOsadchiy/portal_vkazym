@@ -30,6 +30,7 @@
 
     <script>
         const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
+        const SESSION = <?php echo json_encode($_SESSION); ?>;
     </script>
     <script defer src="<?php echo BASE_URL ?>assets/js/responseAppForm/responseAppForm.js"></script>
     <script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
@@ -44,7 +45,7 @@
     <section>
         <div class="container-xl">
             <div class="d-flex gap-5 col-12 justify-content-center">
-                <div class="col-11 d-flex flex-column align-items-center mt-3 mb-3">
+                <div class="col-12 d-flex flex-column align-items-center mt-3 mb-3">
                     <div class="table-users">
                         <div class="tb-header">Заявки</div>
                         <div class="table" cellspacing="0">
@@ -71,9 +72,15 @@
                                         <h3 class="col-3 text-end">Содержание:</h3>
                                         <p class="modal-body-content col-8 px-3 pb-2 pt-1"></p>
                                     </div>
-                                    <div class="response d-flex flex-row column-gap-4 pt-2 mt-5">
-                                        <h3 class="col-3 text-end">Ответить:</h3>
-                                        <textarea name="response" class="textRes col-8 p-2"></textarea>
+                                    <div class="response d-flex flex-row column-gap-4 pt-2 mt-5 align-items-start">
+                                        <h3 class="col-3 text-end">Комментарий:</h3>
+                                        <textarea name="response" class="textRes col-5 p-2"></textarea>
+                                        <select class="form-select col-3">
+                                            <option value="0" select>Статус</option>
+                                            <option value="1">В работе</option>
+                                            <option value="2">Выполнена</option>
+                                            <option value="3">Отклонена</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">

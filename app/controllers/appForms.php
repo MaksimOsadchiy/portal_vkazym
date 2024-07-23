@@ -7,8 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// CODE...
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 	$table = 'applications';
-	$params = ['status' => 0];
-	$response = selectAllRes($table, $params);
+	$response = selectAllRes($table);
 	$users = [];
 	foreach ($response as $key => $value) {
 		$table = 'users';

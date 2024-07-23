@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', async () => {
+	// 
+	const getResponsiblePersonForResponse = async (user_id) => {
+		try {
+			const qparametr = `?id=${user_id}`; // Устанавливаем кверипараметры
+			const response = await fetch(`${SERVER_URL}user.php${qparametr}`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			return jsonResponse;
+		} catch(e) {
+			// Если была ошибка, то обновляем переменную
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+		}
+	};
 	/**
 	 * Асинхронная функция для получения заявок.
 	 *
@@ -49,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const jsonResponse = await response.json(); // Достаём тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			return jsonResponse.response[0].response;
+			return jsonResponse.response[jsonResponse.response.length - 1];
 		} catch (error) {
 			// Если была ошибка, то обновляем переменную
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
@@ -202,8 +214,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		const statusObj = {
 			0: {text: 'На рассмотрении', style: ''},
-			1: {text: 'Рассмотренно', style: 'green'},
-			2: {text: 'Отклонено', style: 'red'},
+			1: {text: 'В работе', style: 'green'},
+			2: {text: 'Выполнено', style: 'green'},
+			3: {text: 'Отклонено', style: 'red'},
 		};
 
 		// Добавляем классы
@@ -244,6 +257,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const appTextContainer = document.createElement('div');
 		const appTextTitle = document.createElement('p');
 		const appText = document.createElement('p');
+		const appPersonContainer = document.createElement('div');
+		const appPersonTitle = document.createElement('p');
+		const appPerson = document.createElement('p');
 		const appResponseContainer = document.createElement('div');
 		const appResponseTitle = document.createElement('p');
 		const appResponse = document.createElement('p');
@@ -251,24 +267,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 		// Добавляем классы
 		container.className = 'content-container d-flex flex-column row-gap-4';
 		appTextContainer.className = 'd-flex flex-row align-items-center';
+		appPersonContainer.className = 'd-flex flex-row align-items-center';
 		appResponseContainer.className = 'd-flex flex-row align-items-center';
 		appTextTitle.className = 'col-2';
+		appPersonTitle.className = 'col-2';
 		appResponseTitle.className = 'col-2';
 		appText.className = 'col-9';
+		appPerson.className = 'col-9';
 		appResponse.className = 'col-9';
 
 		// Добавляем текст
 		appTextTitle.innerText = 'Текст:';
+		appPersonTitle.innerText = 'Ответственный:';
 		appResponseTitle.innerText = 'Ответ:';
 		appText.innerText = apps.filter((obj) => obj.id === +row.getAttribute('value'))[0].content;
-		appResponse.innerText = row.querySelector('.status').textContent !== 'На рассмотрении' ? await getResponse(+row.getAttribute('value')) : 'Ответа нет!'; // Продолжить...
+		appPerson.innerText = 'Отсутствует';
+		appResponse.innerText = 'Отсутствует';
+		if (row.querySelector('.status').textContent !== 'На рассмотрении') {
+			const response = await getResponse(+row.getAttribute('value'));
+			console.log(response);
+			const person = await getResponsiblePersonForResponse(response['user_id']);
+			appPerson.innerText = person.login;
+			appResponse.innerText = response.response; 
+		};
 
 		// Собираем части в единую строку
 		appTextContainer.appendChild(appTextTitle);
 		appTextContainer.appendChild(appText);
+		appPersonContainer.appendChild(appPersonTitle);
+		appPersonContainer.appendChild(appPerson);
 		appResponseContainer.appendChild(appResponseTitle);
 		appResponseContainer.appendChild(appResponse);
 		container.appendChild(appTextContainer);
+		container.appendChild(appPersonContainer);
 		container.appendChild(appResponseContainer);
 		row.appendChild(container);
 	};

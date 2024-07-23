@@ -76,7 +76,7 @@
                                         <h3 class="col-3 text-end">Комментарий:</h3>
                                         <textarea name="response" class="textRes col-5 p-2"></textarea>
                                         <select class="form-select col-3">
-                                            <option value="0" select>Статус</option>
+                                            <option value="0" select disabled>Статус</option>
                                             <option value="1">В работе</option>
                                             <option value="2">Выполнена</option>
                                             <option value="3">Отклонена</option>
@@ -84,7 +84,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-secondary res-btn" name="res-btn" data-bs-toggle="modal">Отправить</button>
+                                    <button class="btn btn-secondary res-btn" name="res-btn" data-bs-toggle="modal" disabled>Отправить</button>
                                 </div>
                             </div>
                         </div>

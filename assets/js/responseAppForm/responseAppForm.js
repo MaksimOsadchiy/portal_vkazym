@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', async () => {
-	// 
+	/**
+	* Асинхронная функция для получения ответа на заявку.
+	*
+	* Функция отправляет запрос на сервер для получения данных о заявке,
+	* используя переданный идентификатор заявки. Возвращает последний элемент из массива ответов.
+	* В случае ошибки, функция генерирует событие 'updateError' с сообщением об ошибке.
+	*
+	* @param {number} id - Идентификатор заявки.
+	* @returns {Object} Последний объект ответа из массива ответов.
+	*
+	* @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с кодом статуса или сообщением об ошибке.
+	*/
 	const getAppResponse = async (id) => {
 		try {
 			const qparametr = `?id=${id}`;
@@ -49,11 +60,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const postAppResponse = async () => {
 		try {
 			const status = +document.querySelector('.form-select').value;
-			if (isNaN(status)) throw new Error('Укажите сатус!');
+			if (!status) throw new Error('Укажите статус!');
 			const params = {
 				'user_id': SESSION.id,
 				'application_id': document.querySelector('.modal-body-id').value,
-				'response': document.querySelector('.textRes').value,
+				'response': document.querySelector('.textRes').value.trim(),
 				'status': status,
 			};
 			// Формируем запрос к серверу
@@ -77,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 						title: elem.title,
 						user_id: elem.user_id,
 					};
-					insertTableNewRow(createRow(
+					const row = createRow(
 						newObj.id,
 						'Пока нет',
 						users[newObj['user_id']]['login'],
@@ -86,7 +97,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 						formContent(newObj.content, 70),
 						newObj.status,
 						'appForm fs-6',
-					), newObj.id);
+					);
+					addEventRow(row);
+					insertTableNewRow(row, newObj.id);
 					return newObj;
 				};
 				return elem;
@@ -111,16 +124,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 	*/
 	const addEventRes = () => {
 		const resBtn = document.querySelector('.res-btn');
-		resBtn.addEventListener('click', async () => await postAppResponse());
+		resBtn.addEventListener('click', async () => {
+			// const newStatus = document.querySelector('.response').querySelector('.form-select').value;
+			// const currentStatus = document.querySelector('.modalBodyId');
+			// if (status === currentStatus) 
+			await postAppResponse();
+		});
 	};
-
 	/**
-	* Функция для добавления обработчика события на строку элемента.
+	* Функция, добавляющая обработчик события клика к элементу строки.
 	*
-	* Функция добавляет обработчик события 'click' на переданный элемент.
-	* При клике на элемент, данные заявки и пользователя используются для заполнения полей в модальном окне.
+	* Функция выполняет следующие шаги:
+	* 1. Вешает обработчик события 'click' на переданный элемент.
+	* 2. Получает идентификатор элемента и находит соответствующую заявку в массиве данных.
+	* 3. Извлекает информацию о пользователе, связанном с заявкой, и другие данные заявки.
+	* 4. Если статус заявки больше 0, запрашивает данные ответа для этой заявки с сервера.
+	* 5. Заполняет модальное окно соответствующей информацией из заявки.
+	* 6. Вешает обработчик события 'change' на элемент выбора статуса в модальном окне, чтобы отслеживать изменения и включать/отключать кнопку отправки.
 	*
-	* @param {HTMLElement} elem - Элемент, на который добавляется обработчик события.
+	* @param {HTMLElement} elem - Элемент строки, к которому добавляется обработчик события.
 	*/
 	const addEventRow = (elem) => {
 		elem.addEventListener('click', async () => { // Вешаем слушатель на событие 'click'
@@ -158,6 +180,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			const modalBodyStatus = document.querySelector('.form-select');
 			modalBodyStatus.value = status;
+
+	        const initialStatus = modalBodyStatus.value; // Сохраняем начальное значение
+	        let hasChangedSelect = false; // Переменная для отслеживания изменений
+	        const sendBtn = document.querySelector('.res-btn');
+	        modalBodyStatus.addEventListener('change', (event) => {
+				if (event.target.value === initialStatus) {
+					sendBtn.disabled = true;
+					hasChangedSelect = false;
+	            } else {
+					sendBtn.disabled = false;
+	                hasChangedSelect = true;
+	            }
+	        });
+	        // Лучше не надо !)
+	        // modalBodyComment.addEventListener('change', (event) => {
+	        //     if (event.target.value.trim() === initialComment && !hasChangedSelect) {
+            //         sendBtn.disabled = true;
+            //         hasChangedComment = false;
+	        //     } else if (event.target.value.trim() === initialComment && hasChangedSelect) {
+	        //     	sendBtn.disabled = false;
+	        //         hasChangedComment = false;
+	        //     } else {
+			// 		sendBtn.disabled = false;
+	        //         hasChangedComment = true;
+	        //     }
+	        // });
+	        modalBodyStatus.querySelectorAll('option').forEach((elem) => +elem.value <= initialStatus || +initialStatus === 2 ? elem.disabled = true : elem.disabled = false);
 		});
 	};
 	/**

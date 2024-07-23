@@ -270,6 +270,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const appPersonContainer = document.createElement('div');
 		const appPersonTitle = document.createElement('p');
 		const appPerson = document.createElement('p');
+		const appTimeTitle = document.createElement('p');
+		const appTime = document.createElement('p');
 		const appResponseContainer = document.createElement('div');
 		const appResponseTitle = document.createElement('p');
 		const appResponse = document.createElement('p');
@@ -281,23 +283,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 		appResponseContainer.className = 'd-flex flex-row align-items-center';
 		appTextTitle.className = 'col-2';
 		appPersonTitle.className = 'col-2';
+		appTimeTitle.className = 'col-2';
 		appResponseTitle.className = 'col-2';
 		appText.className = 'col-9';
-		appPerson.className = 'col-9';
+		appPerson.className = 'col-2';
+		appTime.className = 'col-3';
 		appResponse.className = 'col-9';
 
 		// Добавляем текст
 		appTextTitle.innerText = 'Текст:';
 		appPersonTitle.innerText = 'Ответственный:';
+		appTimeTitle.innerText = 'Дата:';
 		appResponseTitle.innerText = 'Ответ:';
 		appText.innerText = apps.filter((obj) => obj.id === +row.getAttribute('value'))[0].content;
 		appPerson.innerText = 'Отсутствует';
+		appTime.innerText = 'Отсутствует';
 		appResponse.innerText = 'Отсутствует';
 		if (row.querySelector('.status').textContent !== 'На рассмотрении') {
 			const response = await getResponse(+row.getAttribute('value'));
-			console.log(response);
 			const person = await getResponsiblePersonForResponse(response['user_id']);
 			appPerson.innerText = person.login;
+			appTime.innerText = response.date;
 			appResponse.innerText = response.response === '' ? 'Отсутствует' : response.response; 
 		};
 
@@ -306,6 +312,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		appTextContainer.appendChild(appText);
 		appPersonContainer.appendChild(appPersonTitle);
 		appPersonContainer.appendChild(appPerson);
+		appPersonContainer.appendChild(appTimeTitle);
+		appPersonContainer.appendChild(appTime);
 		appResponseContainer.appendChild(appResponseTitle);
 		appResponseContainer.appendChild(appResponse);
 		container.appendChild(appTextContainer);

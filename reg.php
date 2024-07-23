@@ -1,5 +1,4 @@
 <?php
-
 	include("path.php");
 	include("app/controllers/users.php");
 	$service = selectALLRes('services');
@@ -59,8 +58,8 @@
 		</div>
 		<div class="w100"></div>
 		<div class="mb-3 col-12 col-md-4">
-			<label for="exampleInputPassword1" class="form-label">Повторите пароль</label>
-			<input type="password" name="second_password" class="form-control" id="exampleInputPassword1"
+			<label for="exampleInputPassword2" class="form-label">Повторите пароль</label>
+			<input type="password" name="second_password" class="form-control" id="exampleInputPassword2"
 				   placeholder="">
 		</div>
 		<div class="w100"></div>

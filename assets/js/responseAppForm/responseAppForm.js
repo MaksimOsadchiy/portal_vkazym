@@ -104,8 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				};
 				return elem;
 
-			}); // Обновляем таблицу, удаляя элемент с отправленным ответом
-			// drawContent(); // Перерисовываем контент таблицы
+			});
 			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Ответ отправлен!' }));
 		} catch(error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если была ошибка, то обновляем переменную
@@ -124,12 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	*/
 	const addEventRes = () => {
 		const resBtn = document.querySelector('.res-btn');
-		resBtn.addEventListener('click', async () => {
-			// const newStatus = document.querySelector('.response').querySelector('.form-select').value;
-			// const currentStatus = document.querySelector('.modalBodyId');
-			// if (status === currentStatus) 
-			await postAppResponse();
-		});
+		resBtn.addEventListener('click', async () => await postAppResponse());
 	};
 	/**
 	* Функция, добавляющая обработчик события клика к элементу строки.
@@ -193,19 +187,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	                hasChangedSelect = true;
 	            }
 	        });
-	        // Лучше не надо !)
-	        // modalBodyComment.addEventListener('change', (event) => {
-	        //     if (event.target.value.trim() === initialComment && !hasChangedSelect) {
-            //         sendBtn.disabled = true;
-            //         hasChangedComment = false;
-	        //     } else if (event.target.value.trim() === initialComment && hasChangedSelect) {
-	        //     	sendBtn.disabled = false;
-	        //         hasChangedComment = false;
-	        //     } else {
-			// 		sendBtn.disabled = false;
-	        //         hasChangedComment = true;
-	        //     }
-	        // });
 	        modalBodyStatus.querySelectorAll('option').forEach((elem) => +elem.value <= initialStatus || +initialStatus === 2 ? elem.disabled = true : elem.disabled = false);
 		});
 	};

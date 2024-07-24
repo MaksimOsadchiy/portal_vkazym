@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июл 18 2024 г., 15:46
+-- Время создания: Июл 23 2024 г., 05:50
 -- Версия сервера: 8.0.36
--- Версия PHP: 8.2.21
+-- Версия PHP: 8.2.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,13 +24,71 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `applications`
+--
+
+CREATE TABLE `applications` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `title` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `applications`
+--
+
+INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`) VALUES
+(2, 24, 'ываммавммвмвмвмвмвавма', 'вамвмвмамвмаммввм', 1),
+(3, 30, 'ЗАГОловок', 'Текстататата', 0),
+(4, 26, 'ТТТЕММа', 'ТЕксста ТЕксста ТЕксста ТЕксста', 0),
+(5, 26, '', 'выаааааааааа', 1),
+(6, 26, '', 'авпымводшмв', 1),
+(7, 26, '', 'дщдщдolololooolooolo', 1),
+(8, 26, '', 'ещё заявввввккакакакакаааа', 1),
+(9, 29, 'ТЕмамамама', 'Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее Соедержаниееееее ', 0),
+(11, 29, 'Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема Тема ', 'СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание СОдержание ', 0),
+(12, 29, 'ТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТемаТема ', 'СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО  ', 1),
+(13, 29, '', 'СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕ', 0),
+(14, 29, 'ffffffffff', 'xxxxxxxxxxxxxxxxxcccccccccccccccccccc', 3),
+(15, 27, 'fsf', 'fffffffffffffffffffffffffffffffffffff', 2),
+(16, 27, 'ЗАПРОС', 'ЗЗЗАЗАЗАЗАЗ', 3),
+(17, 27, 'sdfffffff', 'sdfsccccccccccccccccccccc', 0),
+(18, 27, 'sdd', 'cccccccccccccccccccccccccccccccccccccccccxxxxx', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `application_status`
+--
+
+CREATE TABLE `application_status` (
+  `id` int NOT NULL,
+  `value` tinyint NOT NULL,
+  `transcript` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `application_status`
+--
+
+INSERT INTO `application_status` (`id`, `value`, `transcript`) VALUES
+(1, 0, 'Заявка в очереди на рассмотрение'),
+(2, 1, 'Заявка в работе'),
+(3, 2, 'Заявка выполнена'),
+(4, 3, 'Заявка отклонена');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `passwords`
 --
 
 CREATE TABLE `passwords` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
-  `password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -77,7 +135,7 @@ INSERT INTO `passwords` (`id`, `user_id`, `password`) VALUES
 CREATE TABLE `privileges` (
   `id` int NOT NULL,
   `work_position` int NOT NULL DEFAULT '0',
-  `transcript` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `transcript` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -92,6 +150,54 @@ INSERT INTO `privileges` (`id`, `work_position`, `transcript`) VALUES
 (5, 4, 'Сотрудник техподдержки(просмотр/ответ на заявки)'),
 (6, 5, 'Мл. техник и сотрудник техподдержки(заказ техники и просмотр/ответ на заявки)'),
 (7, 6, 'Ст. техник и сотрудник техподдержки(заказ/подтверждение техники и просмотр/ответ на заявки)');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `responses`
+--
+
+CREATE TABLE `responses` (
+  `id` int NOT NULL,
+  `application_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `status` tinyint(1) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `responses`
+--
+
+INSERT INTO `responses` (`id`, `application_id`, `user_id`, `response`, `status`, `date`) VALUES
+(3, 2, 24, 'ывмввамвмвавм', 0, '2024-07-22 17:13:32'),
+(4, 5, 24, 'ОТВТТВТТВТВТвет', 0, '2024-07-22 17:13:32'),
+(5, 6, 24, 'ОООООТТТ', 0, '2024-07-22 17:13:32'),
+(6, 7, 24, 'ОТЫКТ', 0, '2024-07-22 17:13:32'),
+(7, 8, 24, 'ещё ответтт', 0, '2024-07-22 17:13:32'),
+(8, 12, 24, '\nСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО СОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕОСОЕДЕО', 0, '2024-07-22 17:13:32'),
+(9, 14, 24, 'ffffffff', 3, '2024-07-22 17:17:21'),
+(10, 15, 27, '', 1, '2024-07-23 08:36:06'),
+(11, 15, 27, '', 1, '2024-07-23 09:23:33'),
+(12, 15, 27, '', 1, '2024-07-23 09:23:48'),
+(13, 15, 24, 'Работа была выполнена', 2, '2024-07-23 09:25:26'),
+(14, 16, 27, 'Заявка в работе', 1, '2024-07-23 10:06:04'),
+(15, 16, 27, 'теперь коммент', 1, '2024-07-23 10:06:57'),
+(16, 16, 27, 'Не правильное оформление!', 3, '2024-07-23 10:07:39'),
+(17, 18, 27, '', 1, '2024-07-23 10:43:25');
+
+--
+-- Триггеры `responses`
+--
+DELIMITER $$
+CREATE TRIGGER `after_insert_responses` AFTER INSERT ON `responses` FOR EACH ROW BEGIN
+  UPDATE applications
+  SET status = NEW.status
+  WHERE id = NEW.application_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -115,7 +221,8 @@ CREATE TABLE `responsible_person` (
 INSERT INTO `responsible_person` (`id`, `lastname`, `firstname`, `patronymic`, `service_id`, `phone_number`) VALUES
 (1, 'Б', 'Борис', 'Борисович', 4, '00-001'),
 (4, 'С', 'Юрий', 'Владимирович', 8, '89220000000'),
-(6, 'П', 'Иван', 'Иванович2', 8, '89876543210');
+(6, 'П2', 'Иван', 'Иванович2', 8, '89876543210'),
+(7, 'Т3', 'Василий', 'Васильевич', 8, '89876543210');
 
 -- --------------------------------------------------------
 
@@ -134,13 +241,15 @@ CREATE TABLE `route` (
 --
 
 INSERT INTO `route` (`id`, `route_to`, `service_id`) VALUES
-(1, 'ДЛО', 8),
+(1, 'ДЛО-1', 8),
 (2, 'ДЛО-2', 8),
 (3, 'Жил поселок', 12),
 (5, 'ДЛО-4', 8),
 (6, 'ДЛО-5', 8),
 (7, 'ДЛО-6', 8),
-(8, 'ДЛО-8', 8);
+(8, 'ДЛО-8', 8),
+(9, 'ДЛО-9', 8),
+(10, 'ДЛО-10', 8);
 
 -- --------------------------------------------------------
 
@@ -262,6 +371,18 @@ CREATE TABLE `technique_order` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Дамп данных таблицы `technique_order`
+--
+
+INSERT INTO `technique_order` (`id`, `service_id`, `technique_id`, `route_id`, `work_activity`, `responsible_person_id`, `date_from`, `date_to`, `time_from`, `time_to`, `shift`, `remark`, `status`, `created_at`) VALUES
+(1, 5, 44, 5, NULL, 1, '2024-07-03', '2024-07-04', '20:00:47', '23:00:00', NULL, NULL, NULL, '2024-07-18 20:47:06'),
+(2, 8, 6, 6, NULL, 4, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36'),
+(3, 8, 8, 6, NULL, 6, '2024-07-02', '2024-07-05', '08:00:00', '20:00:00', 0, NULL, NULL, '2024-07-20 13:47:36'),
+(4, 8, 7, 6, NULL, 4, '2024-07-03', '2024-07-02', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-22 08:16:07'),
+(5, 8, 5, 6, NULL, 6, '2024-07-03', '2024-07-02', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-22 08:16:07'),
+(6, 8, 12, 6, NULL, 7, '2024-07-03', '2024-07-02', '20:00:00', '08:00:00', 1, NULL, NULL, '2024-07-22 08:16:07');
+
 -- --------------------------------------------------------
 
 --
@@ -347,17 +468,32 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
 (20, 'ii.ivanov25', 0, NULL),
 (21, 'ii.ivanov26', 0, NULL),
 (22, 'ii.ivanov001', 0, 8),
-(23, 'ee.litva3', 0, 8),
-(24, 'ee.litva1', 0, 8),
-(25, 'ee.litva2', 0, 8),
-(26, 'ee.litva11', 0, 8),
-(27, 'ee.litva55', 0, 8),
-(29, 'ee.litva23', 0, 8),
-(30, 'ee.litva22', 0, 8);
+(23, 'ee.litva3', 3, 8),
+(24, 'ee.litva1', 1, 8),
+(25, 'ee.litva2', 2, 8),
+(26, 'ee.litva4', 4, 8),
+(27, 'ee.litva5', 5, 8),
+(29, 'ee.litva6', 6, 8),
+(30, 'ee.litva0', 0, 8);
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `applications`
+--
+ALTER TABLE `applications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `status` (`status`);
+
+--
+-- Индексы таблицы `application_status`
+--
+ALTER TABLE `application_status`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `value` (`value`);
 
 --
 -- Индексы таблицы `passwords`
@@ -372,6 +508,15 @@ ALTER TABLE `passwords`
 ALTER TABLE `privileges`
   ADD PRIMARY KEY (`id`),
   ADD KEY `work_position` (`work_position`);
+
+--
+-- Индексы таблицы `responses`
+--
+ALTER TABLE `responses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `responses_ibfk_1` (`application_id`),
+  ADD KEY `status` (`status`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Индексы таблицы `responsible_person`
@@ -421,12 +566,25 @@ ALTER TABLE `type_of_technique`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`),
   ADD KEY `service_id` (`service_id`),
   ADD KEY `privilege` (`privilege`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
+
+--
+-- AUTO_INCREMENT для таблицы `applications`
+--
+ALTER TABLE `applications`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT для таблицы `application_status`
+--
+ALTER TABLE `application_status`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `passwords`
@@ -441,16 +599,22 @@ ALTER TABLE `privileges`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT для таблицы `responses`
+--
+ALTER TABLE `responses`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
 -- AUTO_INCREMENT для таблицы `responsible_person`
 --
 ALTER TABLE `responsible_person`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `route`
 --
 ALTER TABLE `route`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `services`
@@ -468,7 +632,7 @@ ALTER TABLE `technique`
 -- AUTO_INCREMENT для таблицы `technique_order`
 --
 ALTER TABLE `technique_order`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `type_of_technique`
@@ -487,10 +651,25 @@ ALTER TABLE `users`
 --
 
 --
+-- Ограничения внешнего ключа таблицы `applications`
+--
+ALTER TABLE `applications`
+  ADD CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `applications_ibfk_2` FOREIGN KEY (`status`) REFERENCES `application_status` (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
 -- Ограничения внешнего ключа таблицы `passwords`
 --
 ALTER TABLE `passwords`
   ADD CONSTRAINT `passwords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ограничения внешнего ключа таблицы `responses`
+--
+ALTER TABLE `responses`
+  ADD CONSTRAINT `responses_ibfk_1` FOREIGN KEY (`application_id`) REFERENCES `applications` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  ADD CONSTRAINT `responses_ibfk_2` FOREIGN KEY (`status`) REFERENCES `application_status` (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `responses_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `responsible_person`

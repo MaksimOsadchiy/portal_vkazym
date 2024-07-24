@@ -28,13 +28,19 @@
                                 <?php echo $_SESSION['login']; ?>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <?php if($_SESSION['privilege'] = 1): ?>
+                                <?php if($_SESSION['privilege'] === 1): ?>
                                     <li><a class="dropdown-item" href="#">Администрирование</a></li>
                                 <?php endif; ?>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'index.php' ?>">Главная</a></li>
-                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'technique.php' ?>">Заказ техники</a></li>
+                                <?php if($_SESSION['privilege'] !== 0 and $_SESSION['privilege'] !== 4): ?>
+                                    <li><a class="dropdown-item" href="<?php echo BASE_URL . 'technique.php' ?>">Заказ техники</a></li>
+                                <?php endif; ?>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'log.php' ?>">Печать ЛКРИ</a></li>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'log.php' ?>">Сменить пользователя</a></li>
+                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'appsForm.php' ?>">Заявки</a></li>
+                                <?php if($_SESSION['privilege'] !== 0 and $_SESSION['privilege'] !== 2 and $_SESSION['privilege'] !== 3): ?>
+                                    <li><a class="dropdown-item" href="<?php echo BASE_URL . 'responseAppForm.php' ?>">Отыеты на заявки</a></li>
+                                <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'logout.php' ?>">Выйти</a></li>
                             </ul>

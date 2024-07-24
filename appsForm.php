@@ -24,7 +24,8 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/appsForm/appsForm.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/modalWindowNotif/modalWindowNotif.css">
 	<script>
-		const SERVER_URL = <?php echo json_encode(SERVER_URL) ?>
+		const SERVER_URL = <?php echo json_encode(SERVER_URL) ?>;
+        const SESSION = <?php echo json_encode($_SESSION); ?>;
 	</script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/appsForm/appsForm.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
@@ -79,13 +80,13 @@
 	            </div>
 	        </div>
 	    </div>
-	    <div class="table-appsForm mb-3 col-10">
+	    <div class="table-appsForm mb-3 col-11">
             <div class="tb-header">Ваши заявки</div>
             <div class="table">
                 <div class="tb-title d-flex flex-row">
-                    <p class="col-3 text-center">Тема</p>
+                    <p class="col-2 text-center">Тема</p>
                     <p class="col-8 text-center">Контент</p>
-                    <p class="col-1 text-center">Статус</p>
+                    <p class="col-2 text-center">Статус</p>
                 </div>
                 <div class="tbody"></div>
             </div>

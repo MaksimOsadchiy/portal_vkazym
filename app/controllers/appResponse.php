@@ -4,20 +4,21 @@ include_once("../database/dbFunction.php");
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	// $requestBody = file_get_contents('php://input');
-	// $data = json_decode($requestBody, true);
+	$requestBody = file_get_contents('php://input');
+	$data = json_decode($requestBody, true);
 
-	// $table = 'applications';
-	// $params = [
-	// 	'user_id' => $data['login'],
-	// 	'title' => $data['title'],
-	// 	'content' => $data['content'],
-	// ];
+	$table = 'responses';
+	$params = [
+		'user_id' => $data['user_id'],
+		'application_id' => $data['application_id'],
+		'status' => $data['status'],
+		'response' => $data['response'],
+	];
 	
-	// $response = insertRes($table, $params);
-	// echo json_encode(['id' => $response]);
-	// return;
-	
+	$response = insertRes($table, $params);
+	echo json_encode(['response' => $response]);
+	return;
+
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 	$table = 'responses';
 	$params = [

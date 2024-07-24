@@ -7,7 +7,7 @@ function userAuph($user){
 	$_SESSION['login'] = $user['login'];
 	$_SESSION['privilege'] = $user['privilege'];
 	$_SESSION['service'] = $user['service_id'];
-	if ($_SESSION['admin']) {
+	if ($user['privilege'] === 1) {
 		header('location: ' . BASE_URL . 'admin/admin.php');
 	} else {
 		header('location: ' . BASE_URL);

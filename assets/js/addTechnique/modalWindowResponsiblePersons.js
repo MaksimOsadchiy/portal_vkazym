@@ -16,16 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		const phone = elem.querySelector('.phone').value.trim();
 		const nameService = elem.querySelector('.service').value.trim();
 		const idService =  SESSION['service'];		// Получаем id сервиса, потом переделать на fetch ???
-		
 		if (lastname && firstname && patronymic && phone){		// Проверка введёных данных
 			const request = {		// Формируем тело запроса 
-				'lastname': lastname,
-				'firstname': firstname,
-				'patronymic': patronymic,
-				'phone': phone,
-				'idService': idService,
+				'last_name': lastname,
+				'first_name': firstname,
+				'middle_name': patronymic,
+				'phone_number': phone,
+				'service_id': idService,
 			};
-			
 			query === 'PUT' && (request.id = +elem.getAttribute('value'));		// Если метод 'PUT', то добавляем в тело id изменяемого элемента
 			try {
 				const response = await fetch(`${SERVER_URL}responsiblePersons.php`, {
@@ -42,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				const resRow = createDefaultRow(+jsonResponse.id, lastname, firstname, patronymic, nameService, phone);		// Создаём обычную строку в таблицу
 				const newElem = {
 					'id': +jsonResponse.id,
-					'firstname': firstname,
-					'patronymic': patronymic,
-					'lastname': lastname,
+					'first_name': firstname,
+					'middle_name': patronymic,
+					'last_name': lastname,
 					'service_id': idService,
 					'phone_number': phone,
 				};
@@ -288,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const bodyTable = document.querySelector('.table-persons').querySelector('tbody');
 		bodyTable.innerText = '';
 		responsiblePersons.forEach((resPerson) => {
-			const row = createDefaultRow(resPerson.id, resPerson['lastname'], resPerson['firstname'], resPerson['patronymic'], serviceFullName.service, resPerson['phone_number']);
+			const row = createDefaultRow(resPerson.id, resPerson['last_name'], resPerson['first_name'], resPerson['middle_name'], serviceFullName.service, resPerson['phone_number']);
 			bodyTable.appendChild(row);
 			addEventEditPerson(row);
 		});

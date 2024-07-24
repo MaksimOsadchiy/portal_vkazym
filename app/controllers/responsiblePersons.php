@@ -7,11 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = json_decode($requestBody, true);
 	$table = 'responsible_person';
 	$params = [
-		'firstname' => $data['firstname'],
-		'patronymic' => $data['patronymic'],
-		'lastname' => $data['lastname'],
-		'service_id' => $data['idService'],
-		'phone_number' => $data['phone'],
+		'first_name' => $data['first_name'],
+		'middle_name' => $data['middle_name'],
+		'last_name' => $data['last_name'],
+		'service_id' => $data['service_id'],
+		'phone_number' => $data['phone_number'],
 	];
 	$response = insertRes($table, $params);
 	echo json_encode(['id' => $response]);
@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$id = $data['id'];
 	$table = 'responsible_person';
 	$params = [
-		'firstname' => $data['firstname'],
-		'patronymic' => $data['patronymic'],
-		'lastname' => $data['lastname'],
-		'service_id' => $data['idService'],
-		'phone_number' => $data['phone'],
+		'first_name' => $data['first_name'],
+		'middle_name' => $data['middle_name'],
+		'last_name' => $data['last_name'],
+		'service_id' => $data['service_id'],
+		'phone_number' => $data['phone_number'],
 	];
 	$response = updateRes($table, $id, $params);
 	echo json_encode(['id' => $response]);

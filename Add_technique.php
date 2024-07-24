@@ -15,7 +15,6 @@
     $current_service = $_SESSION['service'];
     $serviceFullName = selectOneRes('services', ['id' => $current_service]);
     $routes = selectALLRes('route', params: ['service_id' => $current_service]);
-
 ?>
 
 <!doctype html>
@@ -196,6 +195,7 @@
                         <td><input type="text" class="form-control"></td>
                         <td>
                             <select class="form-select person-select">
+                                <option value="" class="default-option"></option>
                                 <?php foreach ($responsible_persons as $value): ?>
                                     <option value="<?= htmlspecialchars($value['id']); ?>">
                                         <?= htmlspecialchars($value['last_name']); ?>

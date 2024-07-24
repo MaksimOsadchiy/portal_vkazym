@@ -26,7 +26,9 @@
 	<script>
 		const SERVER_URL = <?php echo json_encode(SERVER_URL) ?>;
         const SESSION = <?php echo json_encode($_SESSION); ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
 	</script>
+    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/appsForm/appsForm.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 	<title>Заявки</title>

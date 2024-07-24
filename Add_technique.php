@@ -14,7 +14,7 @@
     $responsible_persons = selectALLRes('responsible_person', $params);
     $current_service = $_SESSION['service'];
     $serviceFullName = selectOneRes('services', ['id' => $current_service]);
-    $routes = selectALLRes('route', params: ['service_id' => $current_service]);
+    $routes = selectALLRes('route', ['service_id' => $current_service]);
 
 ?>
 
@@ -31,16 +31,18 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/addTechnique/addTechnique.css">
     <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
-    <script defer src="assets/js/addTechnique/modalWindowRoutes.js"></script>
-    <script defer src="assets/js/addTechnique/modalWindowResponsiblePersons.js"></script>
-    <script defer src="assets/js/addTechnique/placeOrder.js"></script>
     <script>
         let routes = <?php echo json_encode($routes); ?>;
         let responsiblePersons = <?php echo json_encode($responsible_persons); ?>;
         const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
         const SESSION = <?php echo json_encode($_SESSION); ?>;
         const serviceFullName = <?php echo json_encode($serviceFullName); ?>
     </script>
+    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
+    <script defer src="assets/js/addTechnique/modalWindowRoutes.js"></script>
+    <script defer src="assets/js/addTechnique/modalWindowResponsiblePersons.js"></script>
+    <script defer src="assets/js/addTechnique/placeOrder.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 </head>
 <body>

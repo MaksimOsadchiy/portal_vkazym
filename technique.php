@@ -11,7 +11,7 @@
     $join = [
         'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
     ];
-    $free_technique = selectAllJoinRes('technique', [], joins: $join);
+    $free_technique = selectAllJoinRes('technique', [], $join);
 
 ?>
 
@@ -27,6 +27,11 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        const SESSION = <?php echo json_encode($_SESSION); ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
+    </script>
+    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>

@@ -5,7 +5,7 @@
         <th>Тип</th>
     </tr>
     <?php
-    include_once 'E:/repository/portal_vkazym/portal_vkazym/app/database/dbFunction.php';
+    include_once __DIR__ . '/../database/dbFunction.php';
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $join = [
             'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
@@ -32,7 +32,7 @@
         ];
         $id = $_POST['id_technique'];
         $params = ['id' => $id, 'faulty' => 0];
-        $free_technique = selectAllJoinRes('technique', $params, joins: $join);
+        $free_technique = selectAllJoinRes('technique', $params, $join);
         if (!empty($free_technique)) {
             foreach ($free_technique as $row) {
                 echo "<tr>";

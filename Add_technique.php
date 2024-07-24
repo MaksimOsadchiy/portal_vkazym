@@ -195,7 +195,13 @@
                         </td>
                         <td><input type="text" class="form-control"></td>
                         <td>
-                            <select class="form-select person-select"></select>
+                            <select class="form-select person-select">
+                                <?php foreach ($responsible_persons as $value): ?>
+                                    <option value="<?= htmlspecialchars($value['id']); ?>">
+                                        <?= htmlspecialchars($value['last_name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </td>
                         <td><input type="text" class="form-control"></td>
                     </tr>

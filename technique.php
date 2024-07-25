@@ -31,6 +31,10 @@ $all_technique = selectAllJoinRes('technique', [], $join);
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/jquery-3.7.1.min.js"></script>
+<script src="assets/js/technique/freeTechniqueFilter.js"></script>
+<script>
+    let allTechnique = <?php echo json_encode($all_technique); ?>;
+</script>
 <script>
     $(document).ready(function () {
         // Отслеживание изменения значения в select
@@ -47,7 +51,7 @@ $all_technique = selectAllJoinRes('technique', [], $join);
         });
     });
 </script>
-<?php include("app/include/header.php"); ?>
+ <?php include("app/include/header.php"); ?>
 
 <section>
     <div class="container-xl">
@@ -89,8 +93,18 @@ $all_technique = selectAllJoinRes('technique', [], $join);
                 <input type="date" class="form-control" id="dateFrom">
             </div>
         </div>
-        <div id="technique-table">
-            <?php include 'app/controllers/technique_filter.php'; ?>
+        <div class="technique-table">
+            <table class="table table-bordered mt-4">
+                <thead>
+                <tr>
+                    <th>Гос номер</th>
+                    <th>Модель</th>
+                    <th>Тип</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <?php// include 'app/controllers/technique_filter.php'; ?>
         </div>
     </div>
 </div>

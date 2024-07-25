@@ -86,8 +86,9 @@
             <div class="tb-header">Ваши заявки</div>
             <div class="table">
                 <div class="tb-title d-flex flex-row">
+                    <p class="col-2 text-center">Дата</p>
                     <p class="col-2 text-center">Тема</p>
-                    <p class="col-8 text-center">Контент</p>
+                    <p class="col-6 text-center">Контент</p>
                     <p class="col-2 text-center">Статус</p>
                 </div>
                 <div class="tbody"></div>

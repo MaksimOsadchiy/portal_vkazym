@@ -210,6 +210,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 * @param {Object} app - Объект, представляющий данные заявки.
 	 * @param {number} app.id - Идентификатор заявки.
 	 * @param {string} app.title - Заголовок заявки.
+	 * @param {string} app.date - Дата создания заявки.
 	 * @param {string} app.content - Содержание заявки.
 	 * @param {number} app.status - Статус заявки.
 	 *
@@ -218,6 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const createRow = (app) => {
 		const row = document.createElement('div');
 		const container = document.createElement('div');
+		const tdTime = document.createElement('p');
 		const tdTitle = document.createElement('p');
 		const tdContent = document.createElement('p');
 		const tdStatus = document.createElement('p');
@@ -232,19 +234,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 		// Добавляем классы
 		row.className = 'appForm d-flex flex-column';
 		container.className = 'title-container d-flex flex-row';
+		tdTime.className = 'col-2 text-center';
 		tdTitle.className = 'col-2 text-center';
-		tdContent.className = 'col-8 text-center';
+		tdContent.className = 'col-6 text-center';
 		tdStatus.className = `col-2 text-center status ${statusObj[app.status].style}`;
 
 		// Добавляем атрибуты
 		row.setAttribute('value', app.id);
 
 		// Добавляем текст
+		tdTime.innerText = app.date;
 		tdTitle.innerText = app.title ? formContent(app.title, 50) : 'Темы нет';
 		tdContent.innerText = formContent(app.content, 170);
 		tdStatus.innerText = statusObj[app.status].text;
 
 		// Собираем части в единую строку
+		container.appendChild(tdTime);
 		container.appendChild(tdTitle);
 		container.appendChild(tdContent);
 		container.appendChild(tdStatus);

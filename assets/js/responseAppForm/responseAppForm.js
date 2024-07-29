@@ -179,17 +179,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			modalBodyStatus.value = status;
 
 	        const initialStatus = modalBodyStatus.value; // Сохраняем начальное значение
-	        let hasChangedSelect = false; // Переменная для отслеживания изменений
 	        const sendBtn = document.querySelector('.res-btn');
-	        modalBodyStatus.addEventListener('change', (event) => {
-				if (event.target.value === initialStatus) {
-					sendBtn.disabled = true;
-					hasChangedSelect = false;
-	            } else {
-					sendBtn.disabled = false;
-	                hasChangedSelect = true;
-	            }
-	        });
+			sendBtn.disabled = true;
+	        modalBodyStatus.addEventListener('change', (event) => sendBtn.disabled = event.target.value === initialStatus);
 	        modalBodyStatus.querySelectorAll('option').forEach((elem) => +elem.value <= initialStatus || +initialStatus === 2 ? elem.disabled = true : elem.disabled = false);
 		});
 	};

@@ -1,0 +1,22 @@
+
+/* select */
+.choice {
+    width: 20rem;
+}
+
+/* table */
+.table-container {
+    width: 95%;
+    margin: 0 auto;
+}
+tr th {
+    text-align: center;
+    line-height: 50px;
+}
+tr td {
+    font-size: 0.875rem;
+    text-align: center;
+}
+.choice-status {
+    width: 10rem;
+}

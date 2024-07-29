@@ -1,5 +1,5 @@
 <?php 
-    // include ('path.php');
+     include ('../path.php');
     session_start();
     $pageTitle = "АДМИНКА";
     $menuItems = [];
@@ -13,10 +13,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script>
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
+    </script>
     <title>АДМИНКА</title>
 </head>
 <body>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script>
+    window.location.href = BASE_URL;
+</script>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
 
     <?php include ("../app/include/header.php"); ?>
     <section>

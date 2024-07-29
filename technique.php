@@ -4,10 +4,13 @@
     include 'app/controllers/technique_back.php';
     $pageTitle = "Заказ техники";
     $menuItems = [
-        ['url' => BASE_URL . 'appsForm.php', 'label' => 'Заявки'],
+        ['url' => BASE_URL . 'orderTechnique.php', 'label' => 'Мои заказы'],
         ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
         ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
     ];
+    if (+$_SESSION['privilege'] !== 5 and +$_SESSION['privilege'] !== 2) {
+        array_unshift($menuItems, ['url' => BASE_URL . 'allOrders.php', 'label' => 'Заказанная техника']);
+    };
     $join = [
         'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
     ];
@@ -22,7 +25,6 @@
     <title>Заказ техники</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">

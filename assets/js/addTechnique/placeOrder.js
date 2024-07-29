@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	 *
 	 * Функция выполняет следующие шаги:
 	 * 1. Вызывает функцию `collectContent` для сбора данных заказа, которые будут отправлены на сервер.
-	 * 2. Отправляет HTTP POST запрос на сервер по адресу `orders.php` с данными заказа в формате JSON.
+	 * 2. Отправляет HTTP POST запрос на сервер по адресу `allOrders.php` с данными заказа в формате JSON.
 	 * 3. Ожидает получения ответа от сервера и преобразует его в формат JSON.
 	 * 4. Проверяет, успешен ли ответ сервера (статус ответа `ok`). Если нет, выбрасывает ошибку с кодом статуса.
 	 * 5. Если запрос успешен, создаёт и диспатчит событие `updateError` с сообщением об успешной отправке заказа.
@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const result = [];
 		combinedArray.forEach((subArr) => {
 			const obj = {
+				user_id: SESSION.id,
 				service_id: +service,
 				technique_id: +subArr[0],
 				route_id: +route,
@@ -100,10 +101,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	//
 	const addEventCreateOrder = () => {
 		const btnCreateOrder = document.querySelector('.create-order');
-		// btnCreateOrder.addEventListener('click', () => collectContent());
 		btnCreateOrder.addEventListener('click', async () => await createOrder());
 	};
+	// Доделать потом...
+	// const tempFunc = () => {
+	// 	const dateFrom = document.querySelector('#dateFrom');
+	// 	const
+	// 	dateFrom.addEventListener('change', () => {
+	// 		console.log(new Date(dateFrom.value));
+	// 	});
+	// };
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	addEventCreateOrder();
+	// tempFunc();
 });

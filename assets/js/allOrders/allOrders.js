@@ -239,12 +239,12 @@ document.addEventListener("DOMContentLoaded", () => {
            else {
                const [year, month, day] = dateElem.value.split('-');
                const selDate = `${day}.${month}.${year}`;
-               const filterOrders = orders.filter((order) => {
+               tempOrders = orders.filter((order) => {
                    let flag = false;
                    order.date.split('<br>-<br>')[0] === selDate && (flag = true);
                    return flag;
                });
-               drawTable(filterOrders);
+               drawTable(tempOrders);
            };
        });
     };
@@ -296,11 +296,24 @@ document.addEventListener("DOMContentLoaded", () => {
             updateTable(select.value);
         });
     };
+    //
+    const addEventBtnPdf = () => {
+        const btn = document.querySelector('.btn-pdf');
+        btn.addEventListener('click', () => {
+            const data = { 'orders': tempOrders};
+            const newWindow = window.open(`${BASE_URL}orderPdf.php`, 'blank');
+            setTimeout(() => {
+                newWindow.postMessage(data, BASE_URL);
+            }, 500);
+        });
+    };
 
 
     // Основной блок кода, который выполняет начальные операции при загрузке скрипта.
     let orders = [];
+    let tempOrders = []
     updateTable();
     addEventSelectChange();
     addEventDateChange();
+    addEventBtnPdf();
 });

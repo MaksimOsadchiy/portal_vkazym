@@ -47,6 +47,7 @@
                     <option value="1">Подтвержденные заявки</option>
                     <option value="2">Отклоненные заявки</option>
                 </select>
+                <button class="btn btn-secondary btn-pdf">Сформировать PDF</button>
             </div>
             <table class="table table-bordered mt-4">
                 <thead>

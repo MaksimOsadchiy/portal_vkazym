@@ -1,0 +1,14 @@
+/* table */
+.table-container {
+    width: 80%;
+    margin: 0 auto;
+}
+tr {
+    font-size: 0.875rem;
+}
+tr th {
+    text-align: center;
+}
+tr td {
+    text-align: center;
+}

@@ -1,10 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-    //
-    const saveChanges = async (value, order) => {
+    /**
+     * Функция сохраняет изменения для указанного заказа и обновляет таблицу.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Формирует параметры запроса на основе переданных значений.
+     * 2. Отправляет PUT-запрос на сервер для обновления данных.
+     * 3. Обрабатывает ответ от сервера и проверяет успешность операции.
+     * 4. Если операция успешна, удаляет соответствующую строку из таблицы.
+     * 5. В случае ошибки, генерирует событие 'updateError' с описанием ошибки.
+     *
+     * @param {number} newStatus - новый статус заказа, который нужно сохранить на сервере.
+     * @param {number|string} id - Уникальный идентификатор заказы, данные которого нужно обновить.
+     */
+    const saveChanges = async (newStatus, id) => {
         try {
-            const qparametr = `?id=${order.id}`
+            const qparametr = `?id=${id}`; // Устанавливаем кверипараметры
             const params = {
-                value: value,
+                status: newStatus,
             };
             const response = await fetch(`${SERVER_URL}orders.php${qparametr}`, {
                 method: 'PUT',
@@ -16,43 +28,73 @@ document.addEventListener("DOMContentLoaded", () => {
             const jsonResponse = await response.json(); // Получаем тело ответа
             if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
             const tbody = document.querySelector('tbody');
-            const childRow = document.querySelector(`tr#${order.id}`);
+            const childRow = document.querySelector(`tr[id="${id}"]`);
             tbody.removeChild(childRow);
         } catch (error) {
-            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
         };
     };
-    //
-    const getOrders = async (param) => {
+    /**
+     * Функция получает заказы с сервера с определённым статусом.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Формирует строку запроса с параметром статуса.
+     * 2. Отправляет GET-запрос на сервер для получения данных о заказах.
+     * 3. Обрабатывает ответ от сервера и проверяет успешность операции.
+     * 4. В случае успешного ответа возвращает данные заказов.
+     * 5. В случае ошибки генерирует событие 'updateError' с описанием ошибки и возвращает пустой объект.
+     *
+     * @param {number|string} status - Статус заказов, по которому нужно выполнить запрос.
+     * @returns {Promise<Object>} - Объект с данными заказов или пустой объект в случае ошибки.
+     */
+    const getOrders = async (status) => {
         try {
-            const qparametr = `?status=${param}`; // Устанавливаем кверипараметры
+            const qparametr = `?status=${status}`; // Устанавливаем кверипараметры
             const response = await fetch(`${SERVER_URL}orders.php${qparametr}`);
             const jsonResponse = await response.json(); // Получаем тело ответа
             if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
             return jsonResponse;
         } catch (error) {
-            // Если была ошибка, то обновляем переменную
-            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
             return {};
         };
     };
-    //
-    const drawTable = async (param = 0) => {
+    /**
+     * Функция рисует таблицу заказов на основе полученных данных с сервера.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Отображает индикатор загрузки (спиннер) в теле таблицы.
+     * 2. Запрашивает данные заказов с сервера с учетом переданного параметра.
+     * 3. Очищает тело таблицы и заполняет его строками с данными заказов.
+     *
+     * @param {number|string} status - Статус для фильтрации заказов при запросе на сервер. По умолчанию 0.
+     */
+    const drawTable = async (status = 0) => {
         const bodyTable = document.querySelector('tbody');
+        // Отображаем индикатор загрузки (спиннер) в таблице
         bodyTable.innerHTML = `
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div> 
         `;
-        const dataOrders = Object.values(await getOrders(param));
+        const dataOrders = Object.values(await getOrders(status));
         bodyTable.innerText = '';
-        dataOrders.forEach((order) => {
-            const row = createRow(order);
-            bodyTable.appendChild(row);
-        });
+        dataOrders.forEach((order) => bodyTable.appendChild(createRow(order))); // Перебираем массив данных заказов и создаем строки таблицы для каждого заказа, сразу добавляем созданную строку в таблицу
     };
-    //
+    /**
+     * Функция создает HTML-строку таблицы для отображения информации о заказе.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Создает элемент строки таблицы `<tr>`.
+     * 2. Создает и заполняет ячейки строки данными из объекта заказа.
+     * 3. Устанавливает уникальный идентификатор для строки на основе ID заказа.
+     * 4. Добавляет созданные ячейки в строку.
+     * 5. Возвращает готовую строку для последующего добавления в таблицу.
+     *
+     * @param {Object} order - Объект, содержащий данные о заказе.
+     * @returns {HTMLElement} - Элемент строки таблицы, заполненный данными заказа.
+     */
     const createRow = (order) => {
         const row = document.createElement('tr');
         const tdService = document.createElement('td');
@@ -91,7 +133,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return row;
     };
-    //
+    /**
+     * Функция создает HTML-элемент ячейки таблицы с выпадающим списком для изменения статуса заказа.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Создает элемент ячейки таблицы `<td>`.
+     * 2. Создает контейнер для выпадающего списка и кнопки.
+     * 3. Создает и заполняет выпадающий список возможными статусами заказа.
+     * 4. Создает кнопку для сохранения изменений.
+     * 5. Добавляет обработчики событий для изменения статуса и сохранения изменений.
+     * 6. Добавляет выпадающий список и кнопку в контейнер, а затем контейнер в ячейку таблицы.
+     * 7. Возвращает готовую ячейку таблицы.
+     *
+     * @param {Object} order - Объект, содержащий данные о заказе.
+     * @returns {HTMLElement} - Элемент ячейки таблицы с выпадающим списком и кнопкой.
+     */
     const createSelect = (order) => {
         const tdSelect =  document.createElement('td');
         const container = document.createElement('div');
@@ -111,11 +167,13 @@ document.addEventListener("DOMContentLoaded", () => {
         list.forEach((elem, index) => {
             const option = document.createElement('option');
             option.setAttribute('value', (index).toString());
+            // Если статус заказа совпадает с текущим индексом, устанавливаем опцию как выбранную
             if (+index === +order.status) option.selected = true;
             option.innerText = elem;
             select.appendChild(option);
         });
 
+        // Добавляем обработчики событий для изменения статуса и сохранения изменений
         addEventSelectStatusChange(select, btn);
         addEventBtnSave(btn, select, order);
 
@@ -124,7 +182,18 @@ document.addEventListener("DOMContentLoaded", () => {
         tdSelect.appendChild(container);
         return tdSelect;
     };
-    //
+    /**
+     * Функция создает HTML-элемент кнопки для сохранения изменений статуса заказа.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Создает элемент кнопки `<button>`.
+     * 2. Присваивает кнопке классы для стилизации.
+     * 3. Устанавливает кнопку в неактивное состояние (disabled).
+     * 4. Добавляет иконку сохранения внутри кнопки.
+     * 5. Возвращает готовую кнопку.
+     *
+     * @returns {HTMLElement} - Элемент кнопки для сохранения изменений.
+     */
     const createBtn = () => {
         const btn = document.createElement('button');
         btn.classList = 'btn btn-secondary';
@@ -132,16 +201,48 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.innerHTML = '<img src="assets/image/save.png"/>';
         return btn;
     };
-    //
+    /**
+     * Функция добавляет обработчик события на кнопку для сохранения изменений статуса заказа.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Добавляет обработчик события `click` на кнопку.
+     * 2. При нажатии на кнопку выполняется асинхронная функция, которая вызывает `saveChanges`.
+     * 3. Функция `saveChanges` сохраняет новый статус заказа на сервере, используя идентификатор заказа и выбранное значение из выпадающего списка.
+     *
+     * @param {HTMLElement} btn - Элемент кнопки, на который добавляется обработчик.
+     * @param {HTMLElement} select - Элемент выпадающего списка, из которого берется новое значение статуса.
+     * @param {Object} order - Объект заказа, содержащий информацию о заказе, включая его идентификатор.
+     */
     const addEventBtnSave = (btn, select, order) => {
         btn.addEventListener('click', async () => await saveChanges(select.value, order.id));
     };
-    //
+    /**
+     * Функция добавляет обработчик события для изменения статуса заказа и контролирует активность кнопки сохранения.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Сохраняет начальное значение статуса из выпадающего списка.
+     * 2. Добавляет обработчик события `change` на выпадающий список.
+     * 3. При изменении выбранного статуса проверяет, совпадает ли новое значение с начальным.
+     * 4. Если новое значение отличается от начального, кнопка сохранения активируется, иначе остается неактивной.
+     *
+     * @param {HTMLElement} select - Элемент выпадающего списка для выбора статуса.
+     * @param {HTMLElement} btn - Элемент кнопки, которая будет активирована при изменении статуса.
+     */
     const addEventSelectStatusChange = (select, btn) => {
         const initialStatus = select.value; // Сохраняем начальное значение
         select.addEventListener('change', (event) => btn.disabled =  event.target.value === initialStatus);
     };
-    //
+    /**
+     * Функция добавляет обработчик события изменения значения для выпадающего списка,
+     * который вызывает перерисовку таблицы в зависимости от выбранного значения.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Находит элемент выпадающего списка в документе.
+     * 2. Добавляет обработчик события `change` на этот элемент.
+     * 3. При изменении значения в выпадающем списке вызывает функцию `drawTable`, передавая выбранный статус в качестве параметра.
+     *
+     * @returns {void}
+     */
     const addEventSelectChange = () => {
         const select = document.querySelector('.form-select');
         select.addEventListener('change', () => {

@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode($requestBody, true);
     $table = 'technique_order';
     $id = $_GET['id'];
-    $params = ['status' => intval($data['value'])];
+    $params = ['status' => intval($data['status'])];
     $response = updateRes($table, $id, $params);
     echo json_encode($response);
     return;

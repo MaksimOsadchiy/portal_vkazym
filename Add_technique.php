@@ -4,10 +4,13 @@
 
     $pageTitle = "Заказ техники";
     $menuItems = [
-        ['url' => BASE_URL . 'appsForm.php', 'label' => 'Заявки'],
+        ['url' => BASE_URL . 'orderTechnique.php', 'label' => 'Мои заказы'],
         ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
         ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
     ];
+    if (+$_SESSION['privilege'] !== 5 and +$_SESSION['privilege'] !== 2) {
+        array_unshift($menuItems, ['url' => BASE_URL . 'allOrders.php', 'label' => 'Заказанная техника']);
+    };
 
     $techniques = selectALLRes('technique');
     $params = ['service_id' => $_SESSION['service']];
@@ -195,11 +198,11 @@
                                 <?php endforeach; ?>
                             </select>
                         </td>
-                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control work-activity"></td>
                         <td>
                             <select class="form-select person-select"></select>
                         </td>
-                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control remark"></td>
                     </tr>
                 <?php endfor; ?>
                 </tbody>

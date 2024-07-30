@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'date_to' => $obj['date_to'],
 			'time_from' => $obj['time_from'],
 			'time_to' => $obj['time_to'],
+            'work_activity' => $obj['work_activity'],
+            'remark' => $obj['remark'],
 		];
 		if (isset($obj['shift'])) $params['shift'] = $obj['shift'];
 		$response[] = insertRes($table, $params);

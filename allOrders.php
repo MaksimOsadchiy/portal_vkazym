@@ -5,7 +5,7 @@
     $pageTitle = "Заказаная техника";
     $menuItems = [
         ['url' => BASE_URL . 'orderTechnique.php', 'label' => 'Мои заказы'],
-        ['url' => BASE_URL, 'label' => 'Главная'],
+        ['url' => BASE_URL . 'technique.php', 'label' => 'Техника'],
         ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
         ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
     ];

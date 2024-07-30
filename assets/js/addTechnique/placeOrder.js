@@ -39,17 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	const collectContent = () => {
 		const service = SESSION['service'];
 		const technique = Array.from(document.querySelectorAll('.technique-select'))
-			.map((elem) => elem.value)
-			.filter((elem) => elem !== '');
+			.map((elem) => elem.value);
 		const route = document.querySelector('.route-select').value;
 		const responsiblePerson = Array.from(document.querySelectorAll('.person-select'))
 			.map((elem) => elem.value)
-			.filter((elem) => elem !== '');
 		const dateFrom = document.querySelector('.date-from').value;
 		const dateTo = document.querySelector('.date-to').value;
 		let timeFrom = document.querySelector('.time-from').value;
 		let timeTo = document.querySelector('.time-to').value;
 		const shift = Array.from(document.querySelectorAll('.form-check-input')).find((elem) => elem.checked)?.value;
+		const workActivity = Array.from(document.querySelectorAll('.work-activity'))
+			.map((elem) => elem.value);
+		const remark = Array.from(document.querySelectorAll('.remark'))
+			.map((elem) => elem.value);
 
 		validateInputs(service, technique, responsiblePerson, dateFrom, dateTo, route, timeFrom, timeTo, shift);
 		timeFrom = timeFrom ? timeFrom : shift.slice(0, 4);
@@ -57,9 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		const combinedArray = [];
 		technique.forEach((item, index) => {
 			if (item && responsiblePerson[index]) {
-				combinedArray.push([item, responsiblePerson[index]]);
+				combinedArray.push([item, responsiblePerson[index], workActivity[index], remark[index]]);
 			}
 		});
+		combinedArray.filter((elem) => elem[0] !== '' && elem[2] !== '');
 		const result = [];
 		combinedArray.forEach((subArr) => {
 			const obj = {
@@ -72,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				date_to: dateTo,
 				time_from: timeFrom + ':00',
 				time_to: timeTo + ':00',
+				work_activity: subArr[2],
+				remark: subArr[3],
 			};
 			shift && (obj.shift = +shift[0] ? 1 : 0);
 			result.push(obj);

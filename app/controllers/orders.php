@@ -2,6 +2,14 @@
 
 include("../database/dbFunction.php");
 
+function rightDate($sting){
+    $dateAndTime = explode(' ', $sting);
+    $dateIntoParts = explode('-', $dateAndTime[0]);
+    $time = ($dateAndTime[1] ?? '') ? ' ' . $dateAndTime[1] : '';
+    $result = "$dateIntoParts[2].$dateIntoParts[1].$dateIntoParts[0]" . $time;
+    return $result;
+};
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$requestBody = file_get_contents('php://input');
 	$data = json_decode($requestBody, true);
@@ -68,14 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response[$order['id']] = [
             'id' => $order['id'],
             'service' => $services[$order['service_id']]['service'],
-            'date' => $order['date_from'] . '<br>-<br>' . $order['date_to'],
+            'date' => rightDate($order['date_from']) . '<br>-<br>' . rightDate($order['date_to']),
             'time' => $order['time_from'] . '<br>-<br>' . $order['time_to'],
             'technique' => $technique[$order['technique_id']]['name_technique'],
             'route' => $route[$order['route_id']]['route_to'],
             'workActivity' => $order['work_activity'],
             'remark' => $order['remark'],
             'responsiblePerson' => $responsiblePerson[$order['responsible_person_id']],
-            'created_at' => $order['created_at'],
+            'created_at' => rightDate($order['created_at']),
             'status' => $order['status'],
         ];
     };

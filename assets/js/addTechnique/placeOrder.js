@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					detail: 'Заказ отправлен на рассмотрение!',
 				})
 			);
+			clearFields();
 		} catch (error) {
 			// Если была ошибка, то обновляем переменную
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
@@ -82,6 +83,24 @@ document.addEventListener('DOMContentLoaded', () => {
 			result.push(obj);
 		});
 		return result;
+	};
+	//
+	const clearFields = () => {
+		document.querySelectorAll('.technique-select')
+			.forEach((elem) => elem.value = '');
+		document.querySelector('.route-select').value = '';
+		document.querySelectorAll('.person-select')
+			.forEach((elem) => elem.value = '');
+		document.querySelector('.date-from').value = '';
+		document.querySelector('.date-to').value = '';
+		document.querySelector('.time-from').value = '';
+		document.querySelector('.time-to').value = '';
+		document.querySelectorAll('.form-check-input')
+			.forEach((elem) => elem.checked = false);
+		document.querySelectorAll('.work-activity')
+			.forEach((elem) => elem.value = '');
+		document.querySelectorAll('.remark')
+			.forEach((elem) => elem.value = '');
 	};
 	//
 	const validateInputs = (service, technique, responsiblePerson, dateFrom, dateTo, route, timeFrom, timeTo, shift) => {

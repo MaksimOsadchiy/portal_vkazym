@@ -37,11 +37,17 @@
     <?php include("app/include/header.php"); ?>
     <section>
         <div class="table-container d-flex flex-column align-items-center pt-3">
-            <select class="form-select choice" aria-label="Default select example">
-                <option value="0">Заявки на рассмотрении</option>
-                <option value="1">Подтвержденные заявки</option>
-                <option value="2">Отклоненные заявки</option>
-            </select>
+            <div class="management-container d-flex flex-row justify-content-between column-gap-2">
+                <div class="date-container d-flex flex-row align-items-center column-gap-2">
+                    <label for="dateFrom">Дата</label>
+                        <input type="date" class="form-control date-from" id="dateFrom">
+                </div>
+                <select class="form-select choice" aria-label="Default select example">
+                    <option value="0">Заявки на рассмотрении</option>
+                    <option value="1">Подтвержденные заявки</option>
+                    <option value="2">Отклоненные заявки</option>
+                </select>
+            </div>
             <table class="table table-bordered mt-4">
                 <thead>
                     <tr>

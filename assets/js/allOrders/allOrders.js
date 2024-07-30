@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * 4. В случае успешного ответа возвращает данные заказов.
      * 5. В случае ошибки генерирует событие 'updateError' с описанием ошибки и возвращает пустой объект.
      *
-     * @param {number|string} status - Статус заказов, по которому нужно выполнить запрос.
+     * @param {number|string} status - Статус заказов, по которому нужно выполнить запрос, по умолчанию 0.
      * @returns {Promise<Object>} - Объект с данными заказов или пустой объект в случае ошибки.
      */
     const getOrders = async (status) => {
@@ -61,16 +61,16 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     };
     /**
-     * Функция рисует таблицу заказов на основе полученных данных с сервера.
+     * Функция обновляет таблицу заказов на основе полученных данных с сервера.
      *
      * Функция выполняет следующие действия:
      * 1. Отображает индикатор загрузки (спиннер) в теле таблицы.
-     * 2. Запрашивает данные заказов с сервера с учетом переданного параметра.
+     * 2. Запрашивает данные заказов с сервера с учетом статуса.
      * 3. Очищает тело таблицы и заполняет его строками с данными заказов.
      *
      * @param {number|string} status - Статус для фильтрации заказов при запросе на сервер. По умолчанию 0.
      */
-    const drawTable = async (status = 0) => {
+    const updateTable = async (status = 0) => {
         const bodyTable = document.querySelector('tbody');
         // Отображаем индикатор загрузки (спиннер) в таблице
         bodyTable.innerHTML = `
@@ -78,9 +78,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="visually-hidden">Loading...</span>
             </div> 
         `;
-        const dataOrders = Object.values(await getOrders(status));
+        orders = Object.values(await getOrders(status));
+        drawTable(orders);
+    };
+    /**
+     * Функция отрисовывает содержимое таблицы, создавая строки для каждого заказа из глобального массива `orders`.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Находит элемент `<tbody>` таблицы в документе.
+     * 2. Очищает содержимое `<tbody>`, чтобы удалить все существующие строки.
+     * 3. Перебирает массив `orders`, создавая строку таблицы для каждого заказа с помощью функции `createRow`.
+     * 4. Добавляет созданные строки непосредственно в элемент `<tbody>`.
+     *
+     * @returns {void} - Функция не возвращает значение.
+     */
+    const drawTable = (orders) => {
+        const bodyTable = document.querySelector('tbody');
         bodyTable.innerText = '';
-        dataOrders.forEach((order) => bodyTable.appendChild(createRow(order))); // Перебираем массив данных заказов и создаем строки таблицы для каждого заказа, сразу добавляем созданную строку в таблицу
+        orders.forEach((order) => bodyTable.appendChild(createRow(order))); // Перебираем массив данных заказов и создаем строки таблицы для каждого заказа, сразу добавляем созданную строку в таблицу
     };
     /**
      * Функция создает HTML-строку таблицы для отображения информации о заказе.
@@ -117,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tdRoute.innerText = order.route;
         tdWork.innerText = order.workActivity;
         tdRemark.innerText = order.remark;
-        tdResponsible.innerText = order.responsiblePerson.lastname;
+        tdResponsible.innerHTML = `${order.responsiblePerson.lastname}<br>${order.responsiblePerson.firstname}<br>${order.responsiblePerson.patronymic}`;
         tdCreatedAt.innerText = order.created_at;
 
         row.appendChild(tdService);
@@ -202,6 +217,38 @@ document.addEventListener("DOMContentLoaded", () => {
         return btn;
     };
     /**
+     * Функция добавляет обработчик события изменения даты для элемента выбора даты.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Находит элемент выбора даты с классом `.date-from`.
+     * 2. Добавляет обработчик события `change` на элемент выбора даты.
+     * 3. При изменении значения даты проверяет, если дата не выбрана - вызывает функцию
+     * `drawTable()` с исходным списком заказов `orders`.
+     * 4. Если дата выбрана:
+     *    - Разбивает строку даты на компоненты год, месяц и день.
+     *    - Форматирует дату в строку `DD.MM.YYYY`.
+     *    - Фильтрует заказы, оставляя только те, где хотя бы одна дата совпадает с выбранной.
+     *    - Вызывает функцию `drawTable()` с отфильтрованным списком заказов.
+     *
+     * @global  {Array} orders - Глобальная переменная, содержащая массив объектов заказов.
+     */
+    const addEventDateChange = () => {
+       const dateElem = document.querySelector('.date-from');
+       dateElem.addEventListener('change', () => {
+           if (!dateElem.value) drawTable(orders);
+           else {
+               const [year, month, day] = dateElem.value.split('-');
+               const selDate = `${day}.${month}.${year}`;
+               const filterOrders = orders.filter((order) => {
+                   let flag = false;
+                   order.date.split('<br>-<br>')[0] === selDate && (flag = true);
+                   return flag;
+               });
+               drawTable(filterOrders);
+           };
+       });
+    };
+    /**
      * Функция добавляет обработчик события на кнопку для сохранения изменений статуса заказа.
      *
      * Функция выполняет следующие действия:
@@ -246,12 +293,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const addEventSelectChange = () => {
         const select = document.querySelector('.form-select');
         select.addEventListener('change', () => {
-            drawTable(select.value);
+            updateTable(select.value);
         });
     };
 
 
     // Основной блок кода, который выполняет начальные операции при загрузке скрипта.
-    drawTable(0);
+    let orders = [];
+    updateTable();
     addEventSelectChange();
+    addEventDateChange();
 });

@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tdRoute.innerText = order.route;
         tdWork.innerText = order.workActivity;
         tdRemark.innerText = order.remark;
-        tdResponsible.innerText = order.responsiblePerson.lastname;
+        tdResponsible.innerHTML = `${order.responsiblePerson.lastname}<br>${order.responsiblePerson.firstname}<br>${order.responsiblePerson.patronymic}`;
         tdCreatedAt.innerText = order.created_at;
 
         row.appendChild(tdDate);

@@ -11,6 +11,7 @@
     margin: 0 auto;
 }
 .table {
+    margin-bottom: 130px;
     table-layout: fixed;
 }
 .table>:not(caption)>*>* {

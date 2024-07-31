@@ -20,7 +20,7 @@
 <body>
     <section>
         <div class="table-container d-flex flex-column align-items-center pt-3">
-            <h4 class="align-self-end text-end mb-5">Начальнику<br>Верхнеказымского ЛПУМГ<br>А.В. Митину</h4>
+            <h4 class="align-self-end text-end mb-5">Начальник<br>Верхнеказымского ЛПУМГ<br>А.В. Митин</h4>
             <h4 class="title"></h4>
             <h4>на выезд техники для работ в Верхнеказымском ЛПУМГ</h4>
             <table class="table table-bordered mt-4">
@@ -40,6 +40,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <p class="align-self-end">Диспетчер по транспорту _______/___________</p>
         </div>
     </section>
     <script src="<?php echo BASE_URL ?>assets/js/orderPdf/orderPdf.js"></script>

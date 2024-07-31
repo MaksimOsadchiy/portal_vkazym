@@ -366,6 +366,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 	};
 
+
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	let { apps } = await getApplications();
 	addEventSend();

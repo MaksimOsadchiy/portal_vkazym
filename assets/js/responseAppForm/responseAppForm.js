@@ -113,7 +113,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если была ошибка, то обновляем переменную
 		};
 	};
-	// 
+	/**
+	 * Функция `insertTableNewRow` заменяет существующую строку таблицы новой строкой на основе уникального идентификатора.
+	 * Она находит старую строку таблицы с заданным идентификатором и заменяет её новой строкой.
+	 *
+	 * Функция выполняет следующие действия:
+	 * 1. Находит существующую строку таблицы с использованием класса `.appForm` и заданного атрибута `id`.
+	 * 2. Заменяет найденную строку на новую строку, переданную в качестве аргумента.
+	 *
+	 * @param {HTMLTableRowElement} newRow - Новый элемент строки таблицы, который заменит старый.
+	 * @param {string} id - Уникальный идентификатор строки таблицы, которая должна быть заменена.
+	 * @returns {void}
+	 */
 	const insertTableNewRow = (newRow, id) => {
 		const oldRow = document.querySelector(`.appForm[id="${id}"]`);
 		oldRow.replaceWith(newRow);
@@ -261,14 +272,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 		contentContainer.className = 'col-4 text-center';
 		statusContainer.className = 'col-2 text-center';
 
-		// 
 		const statusObj = {
 			0: {text: 'Не рассмотрено', style: ''},
 			1: {text: 'В работе', style: 'yellow'},
 			2: {text: 'Выполнено', style: 'green'},
 			3: {text: 'Отклонено', style: 'red'},
 		};
-		// 
 		row.id = id;
 		if (id > 0) {
 			statusContainer.className = `col-2 text-center ${statusObj[status].style}`;

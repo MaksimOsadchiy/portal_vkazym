@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * Функция выполняет следующие действия:
      * 1. Отображает индикатор загрузки (спиннер) в теле таблицы.
      * 2. Запрашивает данные заказов с сервера с учетом статуса.
-     * 3. Очищает тело таблицы и заполняет его строками с данными заказов.
+     * 3. Вызывает функцию `filterOrders`, которая фильтрует и отображает заказы в зависимости от выбранной даты.
      *
      * @param {number|string} status - Статус для фильтрации заказов при запросе на сервер. По умолчанию 0.
      */
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div> 
         `;
         orders = Object.values(await getOrders(status));
-        drawTable(orders);
+        filterOrders()
     };
     /**
      * Функция отрисовывает содержимое таблицы, создавая строки для каждого заказа из глобального массива `orders`.
@@ -213,40 +213,55 @@ document.addEventListener("DOMContentLoaded", () => {
         const btn = document.createElement('button');
         btn.classList = 'btn btn-secondary';
         btn.disabled = true;
-        btn.innerHTML = '<img src="assets/image/save.png"/>';
+        btn.innerHTML = '<img src="assets/image/save.png" alt="Кнопка сохранить"/>';
         return btn;
     };
     /**
-     * Функция добавляет обработчик события изменения даты для элемента выбора даты.
+     * Функция фильтрует заказы по дате и обновляет состояние кнопки PDF в зависимости от выбранной даты.
      *
      * Функция выполняет следующие действия:
-     * 1. Находит элемент выбора даты с классом `.date-from`.
-     * 2. Добавляет обработчик события `change` на элемент выбора даты.
-     * 3. При изменении значения даты проверяет, если дата не выбрана - вызывает функцию
-     * `drawTable()` с исходным списком заказов `orders`.
-     * 4. Если дата выбрана:
-     *    - Разбивает строку даты на компоненты год, месяц и день.
-     *    - Форматирует дату в строку `DD.MM.YYYY`.
-     *    - Фильтрует заказы, оставляя только те, где хотя бы одна дата совпадает с выбранной.
-     *    - Вызывает функцию `drawTable()` с отфильтрованным списком заказов.
+     * 1. Находит элемент с классом "date-from" в документе, который содержит выбранную пользователем дату.
+     * 2. Находит элемент кнопки с классом "btn-pdf".
+     * 3. Проверяет, установлена ли дата:
+     *    a. Если дата не выбрана (пустое значение), отключает кнопку "PDF" и отображает все заказы в таблице.
+     *    b. Если дата выбрана, включает кнопку "PDF" и фильтрует заказы, отображая только те, которые соответствуют выбранной дате.
+     * 4. Фильтрация выполняется по дате заказа, которая сравнивается с выбранной датой.
+     * 5. Обновляет отображение таблицы в зависимости от отфильтрованных заказов.
      *
-     * @global  {Array} orders - Глобальная переменная, содержащая массив объектов заказов.
+     * @returns {void}
+     */
+    const filterOrders = () => {
+        const dateElem = document.querySelector('.date-from');
+        const btn = document.querySelector('.btn-pdf');
+        if (!dateElem.value) {
+            btn.disabled = true;
+            drawTable(orders)
+        } else {
+            const [year, month, day] = dateElem.value.split('-');
+            const selDate = `${day}.${month}.${year}`;
+            tempOrders = orders.filter((order) => {
+                let flag = false;
+                order.date.split('<br>-<br>')[0] === selDate && (flag = true);
+                return flag;
+            });
+            btn.disabled = !(tempOrders.length && tempOrders[0].status === 1);
+            drawTable(tempOrders);
+        };
+    };
+    /**
+     * Функция добавляет обработчик события изменения даты для элемента ввода даты,
+     * который вызывает фильтрацию заказов при изменении выбранной даты.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Находит элемент ввода даты с классом "date-from" в документе.
+     * 2. Добавляет обработчик события `change` на этот элемент.
+     * 3. При изменении даты вызывает функцию `filterOrders`, которая фильтрует и отображает заказы в зависимости от выбранной даты.
+     *
+     * @returns {void}
      */
     const addEventDateChange = () => {
        const dateElem = document.querySelector('.date-from');
-       dateElem.addEventListener('change', () => {
-           if (!dateElem.value) drawTable(orders);
-           else {
-               const [year, month, day] = dateElem.value.split('-');
-               const selDate = `${day}.${month}.${year}`;
-               tempOrders = orders.filter((order) => {
-                   let flag = false;
-                   order.date.split('<br>-<br>')[0] === selDate && (flag = true);
-                   return flag;
-               });
-               drawTable(tempOrders);
-           };
-       });
+       dateElem.addEventListener('change', () => filterOrders());
     };
     /**
      * Функция добавляет обработчик события на кнопку для сохранения изменений статуса заказа.
@@ -292,15 +307,32 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     const addEventSelectChange = () => {
         const select = document.querySelector('.form-select');
-        select.addEventListener('change', () => {
-            updateTable(select.value);
-        });
+        select.addEventListener('change', () => updateTable(select.value));
     };
-    //
+    /**
+     * Функция добавляет обработчик события нажатия для кнопки "Сформировать PDF",
+     * который открывает новое окно для генерации PDF-документа с данными о заказах.
+     *
+     * Функция выполняет следующие действия:
+     * 1. Находит элемент кнопки с классом "btn-pdf" в документе.
+     * 2. Добавляет обработчик события `click` на этот элемент.
+     * 3. При нажатии на кнопку:
+     *    - Получает дату из элемента с классом "date-from" и разбивает её на год, месяц и день.
+     *    - Формирует объект `data`, содержащий заказы (из переменной `tempOrders`) и отформатированную дату.
+     *    - Открывает новое окно с указанным URL для генерации PDF-документа.
+     *    - Через 500 миллисекунд отправляет объект `data` в новое окно с использованием метода `postMessage`.
+     *
+     * @returns {void}
+     */
     const addEventBtnPdf = () => {
         const btn = document.querySelector('.btn-pdf');
         btn.addEventListener('click', () => {
-            const data = { 'orders': tempOrders};
+            const [year, month, day] = document.querySelector('.date-from').value.split('-');
+            const data = {
+                orders: tempOrders,
+                date: `${day}.${month}.${year}`,
+            };
+            console.log((data));
             const newWindow = window.open(`${BASE_URL}orderPdf.php`, 'blank');
             setTimeout(() => {
                 newWindow.postMessage(data, BASE_URL);

@@ -1,6 +1,8 @@
 window.addEventListener('message', (event) => {
     //
     const drowTable = () => {
+        const title = document.querySelector('.title');
+        title.innerText = `Заявка на ${date}`;
         const bodyTable = document.querySelector('tbody');
         bodyTable.innerText = '';
         orders.forEach((order) => bodyTable.appendChild(createRow(order))); // Перебираем массив данных заказов и создаем строки таблицы для каждого заказа, сразу добавляем созданную строку в таблицу
@@ -22,12 +24,12 @@ window.addEventListener('message', (event) => {
         row.setAttribute('id', order.id)
 
         tdTechnique.innerText = order.technique;
-        stateNumber.innerText = 'Пока нет';
+        stateNumber.innerText = order.stateNumber;
         tdService.innerHTML = order.service;
-        tdTimeFrom.innerHTML = order.time.split('<br>-<br>')[0];
-        tdTimeTo.innerHTML = order.time.split('<br>-<br>')[1];
+        tdTimeFrom.innerHTML = order.time.split('<br>-<br>')[0].substring(0, 5);
+        tdTimeTo.innerHTML = order.time.split('<br>-<br>')[1].substring(0, 5);
         tdResponsible.innerHTML = `${order.responsiblePerson.lastname}<br>${order.responsiblePerson.firstname}<br>${order.responsiblePerson.patronymic}`;
-        phone.innerHTML = 'Пока нет';
+        phone.innerHTML = order.responsiblePerson.phone_number;
         tdRoute.innerText = order.route;
         tdWork.innerText = order.workActivity;
         tdRemark.innerText = order.remark;
@@ -49,13 +51,18 @@ window.addEventListener('message', (event) => {
 
     //
     let orders = [];
+    let date = ''
 
     if (event.origin === 'http://localhost') {
         const data = event.data;
         if (data && data.orders) {
             orders = data.orders;
-            console.log(orders);
+            date = data.date;
             drowTable(orders);
+            window.onafterprint = function() {
+                window.close();
+            };
+            window.print();
         };
     };
 });

@@ -1,14 +1,58 @@
+:root {
+    --size: calc((100/18) * 1%);
+}
+
+* {
+    box-sizing: border-box;
+}
 /* table */
 .table-container {
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
 }
+.table {
+    table-layout: fixed;
+}
+.table>:not(caption)>*>* {
+    padding: 0.3rem 0.3rem;
+}
 tr {
-    font-size: 0.875rem;
+    width: var(--size);
+    font-size: 0.625rem;
+}
+th:nth-child(1),
+th:nth-child(3),
+th:nth-child(6),
+th:nth-child(8) {
+    width: calc(var(--size) * 2);
+}
+th:nth-child(2) {
+    width: calc(var(--size) * 1.5);
+}
+th:nth-child(4),
+th:nth-child(5) {
+    width: calc(var(--size) * 0.8);
+    padding: 0;
+    line-height: 32px;
+}
+th:nth-child(7) {
+    width: calc(var(--size) * 1.55);
+}
+th:nth-child(9) {
+    width: calc(var(--size) * 2.5);
+}
+th:nth-child(10) {
+    width: calc(var(--size) * 2.7);
 }
 tr th {
     text-align: center;
 }
 tr td {
     text-align: center;
+}
+
+@media print {
+    @page {
+        size: landscape; /* Принудительная печать в горизонтальном формате */
+    }
 }

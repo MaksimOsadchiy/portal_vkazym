@@ -20,20 +20,22 @@
 <body>
     <section>
         <div class="table-container d-flex flex-column align-items-center pt-3">
-            <h1>00.00.0000</h1>
+            <h4 class="align-self-end text-end mb-5">Начальнику<br>Верхнеказымского ЛПУМГ<br>А.В. Митину</h4>
+            <h4 class="title"></h4>
+            <h4>на выезд техники для работ в Верхнеказымском ЛПУМГ</h4>
             <table class="table table-bordered mt-4">
                 <thead>
                 <tr>
-                    <th class="col-2">Транспорт</th>
-                    <th class="col-1">Гос&nbsp;Номер</th>
-                    <th class="col-1">Служба</th>
-                    <th class="col-1">Время с</th>
-                    <th class="col-1">Время по</th>
-                    <th class="col-1">Ответственный</th>
-                    <th class="col-1">Телефон</th>
-                    <th class="col-1">Маршрут</th>
-                    <th class="col-2">Краткое содержание работ</th>
-                    <th class="col-1">Примечание</th>
+                    <th>Транспорт</th>
+                    <th>Гос&nbsp;Номер</th>
+                    <th>Служба</th>
+                    <th>Время с</th>
+                    <th>Время по</th>
+                    <th>Ответственный</th>
+                    <th>Телефон</th>
+                    <th>Маршрут</th>
+                    <th>Краткое содержание работ</th>
+                    <th>Примечание</th>
                 </tr>
                 </thead>
                 <tbody></tbody>

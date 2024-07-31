@@ -79,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'date' => rightDate($order['date_from']) . '<br>-<br>' . rightDate($order['date_to']),
             'time' => $order['time_from'] . '<br>-<br>' . $order['time_to'],
             'technique' => $technique[$order['technique_id']]['name_technique'],
+            'stateNumber' => $technique[$order['technique_id']]['state_number'],
             'route' => $route[$order['route_id']]['route_to'],
             'workActivity' => $order['work_activity'],
             'remark' => $order['remark'],

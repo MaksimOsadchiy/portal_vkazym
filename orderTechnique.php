@@ -53,7 +53,7 @@
                         <th class="col-2">Вид работ</th>
                         <th class="col-2">Примечания</th>
                         <th class="col-1">Ответственный</th>
-                        <th class="col-2">Дата создания</th>
+                        <th class="col-1">Дата создания</th>
                     </tr>
                 </thead>
                 <tbody></tbody>

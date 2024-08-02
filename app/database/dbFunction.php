@@ -163,6 +163,7 @@ function deleteRes($table, $id){
 	$query = $pdo->prepare($sql);
 	$query->execute();
 	dbCheckErrorRes($query);
+    return $id;
 };
 
 function selectOrderByDate($table, $params){

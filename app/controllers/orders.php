@@ -102,6 +102,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode($response);
     return;
 
+} else if ($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+    $id = $_GET['id'];
+    $table = 'technique_order';
+    $response = deleteRes($table, $id);
+    echo $response;
+    return;
+
 } else {
 	http_response_code(405);
 	echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);

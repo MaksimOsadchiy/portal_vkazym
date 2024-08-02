@@ -26,6 +26,23 @@ document.addEventListener('DOMContentLoaded', () => {
 			return {};
 		}
 	};
+	//
+	const deleteOrder = async (id) => {
+		try {
+			const qparametr = `?id=${id}`; // Устанавливаем кверипараметры
+			const response = await fetch(`${SERVER_URL}orders.php${qparametr}`, {
+				method: 'DELETE',
+			});
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+			const bodyTable = document.querySelector('tbody');
+			bodyTable.removeChild(bodyTable.querySelector(`tr[value="${id}"]`));
+		} catch (error) {
+			// Если была ошибка, то обновляем переменную
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+			return {};
+		}
+	};
 	/**
 	 * Функция рисует таблицу заказов на основе полученных данных с сервера.
 	 *
@@ -37,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	 * @param {number|string} status - Статус для фильтрации заказов при запросе на сервер. По умолчанию 0.
 	 */
 	const drawTable = async (status = 0) => {
+		const headTable = document.querySelector('thead').querySelector('tr');
+		if (headTable.lastElementChild.textContent === "Управление") headTable.removeChild(headTable.lastElementChild);
+		if (!+status) headTable.insertAdjacentHTML('beforeend', '<th class="col-1">Управление</th>');
 		const bodyTable = document.querySelector('tbody');
 		bodyTable.innerHTML = `
             <div class="spinner-border" role="status">
@@ -70,6 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		const tdRemark = document.createElement('td');
 		const tdResponsible = document.createElement('td');
 		const tdCreatedAt = document.createElement('td');
+		const tdManagment = document.createElement('td');
+		const btnManagment = document.createElement('button');
+
+		btnManagment.classList = 'btn btn-danger';
+
+		row.setAttribute('value', order.id);
 
 		tdDate.innerHTML = order.date;
 		tdTime.innerHTML = order.time;
@@ -79,7 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		tdRemark.innerText = order.remark;
 		tdResponsible.innerHTML = `${order.responsiblePerson.lastname}<br>${order.responsiblePerson.firstname}<br>${order.responsiblePerson.patronymic}`;
 		tdCreatedAt.innerText = order.created_at;
+		btnManagment.innerText = 'Удалить';
 
+		addEventBtnDelete(btnManagment, order.id);
+
+		tdManagment.appendChild(btnManagment);
 		row.appendChild(tdDate);
 		row.appendChild(tdTime);
 		row.appendChild(tdTechnique);
@@ -88,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		row.appendChild(tdRemark);
 		row.appendChild(tdResponsible);
 		row.appendChild(tdCreatedAt);
+		if (!+order.status) row.appendChild(tdManagment);
 
 		return row;
 	};
@@ -107,6 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		select.addEventListener('change', () => {
 			drawTable(select.value);
 		});
+	};
+	//
+	const addEventBtnDelete = (btn, id) => {
+		btn.addEventListener('click', () => deleteOrder(id));
 	};
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.

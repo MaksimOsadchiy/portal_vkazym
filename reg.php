@@ -12,22 +12,22 @@
 <html lang="en">
 
 <head>
-	<title>Заказ техники</title>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Bootstrap demo</title>
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
-	<link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Портал В.Казым</title>
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 
 <?php include("app/include/header.php"); ?>
 
-<div class="container reg_form">
-	<form class="row justify-content-md-center" method="post" action="reg.php">
+<div class="container reg_form pt-4">
+	<form class="row justify-content-md-center main-form" method="post" action="reg.php">
 		<h2>Форма регистрации</h2>
 		<div class="mb-3 col-12 col-md-4 err">
 			<p><?= $errMsg ?></p>
@@ -40,8 +40,8 @@
 		</div>
 		<div class="w100"></div>
 		<div class="mb-3 col-12 col-md-4">
-			<select class="form-select" name="service">
-				<option value="" class="default-option"></option>
+			<select class="form-select" name="service" placeholder="Пример: aa.ivanov">
+				<option value="-1" class="default-option" selected disabled>Выберите свою службу</option>
 				<?php foreach ($service as $services): ?>
 					<option value="<?= htmlspecialchars($services['id']); ?>">
 						<?= htmlspecialchars($services['service']); ?>
@@ -60,7 +60,7 @@
 		<div class="mb-3 col-12 col-md-4">
 			<label for="exampleInputPassword2" class="form-label">Повторите пароль</label>
 			<input type="password" name="second_password" class="form-control" id="exampleInputPassword2"
-				   placeholder="">
+				   placeholder="Пароли должны совпадать">
 		</div>
 		<div class="w100"></div>
 		<div class="mb-3 col-12 col-md-4">

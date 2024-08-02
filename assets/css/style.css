@@ -1,3 +1,7 @@
+.my-container{
+    max-width: 1600px;
+    margin: 0 auto;
+}
 .multi-line-link {
     display: inline-block; /* или block в зависимости от нужного контекста */
     width: 150px; /* установите ширину по необходимости */
@@ -66,6 +70,10 @@
 /*
 FORMS
  */
+.main-form {
+    background: rgba(174, 174, 174, 0.3);
+    border-radius: 10px;
+}
 .reg_form h2 {
     text-align: center;
     margin: 30px 0;

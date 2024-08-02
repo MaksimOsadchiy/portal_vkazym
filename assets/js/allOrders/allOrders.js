@@ -329,7 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
 				orders: tempOrders,
 				date: `${day}.${month}.${year}`,
 			};
-			console.log(data);
 			const newWindow = window.open(`${BASE_URL}orderPdf.php`, 'blank');
 			setTimeout(() => {
 				newWindow.postMessage(data, BASE_URL);

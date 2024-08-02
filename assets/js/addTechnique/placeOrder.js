@@ -185,11 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		};
 
 		if (!service) throw new Error(errors.noService);
-		if (!technique.length) throw new Error(errors.noTechnique);
-		if (!responsiblePerson.length) throw new Error(errors.noResponsiblePerson);
+		if (!technique.find((el) => el!='')) throw new Error(errors.noTechnique);
+		if (!responsiblePerson.find((el) => el!='')) throw new Error(errors.noResponsiblePerson);
 		if (!dateFrom || !dateTo) throw new Error(errors.noDate);
 		if (!(timeFrom || shift) || !(timeTo || shift)) throw new Error(errors.noTimeOrShift);
 		if (!route) throw new Error(errors.noRoute);
+
 
 		return true;
 	};

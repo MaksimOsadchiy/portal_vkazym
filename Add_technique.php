@@ -12,7 +12,7 @@
         array_unshift($menuItems, ['url' => BASE_URL . 'allOrders.php', 'label' => 'Заказанная техника']);
     };
 
-    $techniques = selectALLRes('technique');
+//    $techniques = selectALLRes('technique');
     $params = ['service_id' => $_SESSION['service']];
     $responsible_persons = selectALLRes('responsible_person', $params);
     $current_service = $_SESSION['service'];
@@ -46,6 +46,7 @@
     <script defer src="assets/js/addTechnique/modalWindowRoutes.js"></script>
     <script defer src="assets/js/addTechnique/modalWindowResponsiblePersons.js"></script>
     <script defer src="assets/js/addTechnique/placeOrder.js"></script>
+    <script defer src="assets/js/addTechnique/getTechnique.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 </head>
 <body>
@@ -59,11 +60,11 @@
                 <div class="row">
                     <div class="col">
                         <label for="dateFrom">Дата с</label>
-                        <input type="date" class="form-control date-from" id="dateFrom">
+                        <input type="date" class="form-control date-from check-datetime" id="dateFrom">
                     </div>
                     <div class="col">
                         <label for="dateTo">Дата по</label>
-                        <input type="date" class="form-control date-to" id="dateTo">
+                        <input type="date" class="form-control date-to check-datetime" id="dateTo">
                     </div>
                 </div>
             </div>
@@ -71,11 +72,11 @@
                 <div class="row">
                     <div class="col">
                         <label for="timeFrom">Время с</label>
-                        <input type="time" class="form-control time-from" id="timeFrom">
+                        <input type="time" class="form-control time-from check-datetime" id="timeFrom">
                     </div>
                     <div class="col">
                         <label for="timeTo">Время по</label>
-                        <input type="time" class="form-control time-to" id="timeTo">
+                        <input type="time" class="form-control time-to check-datetime" id="timeTo">
                     </div>
                 </div>
             </div>
@@ -95,11 +96,11 @@
                     <div class="col">
                         <label>Смена</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="shift" id="shift1" value="08:00-20:00">
+                            <input class="form-check-input check-datetime" type="radio" name="shift" id="shift1" value="08:00-20:00">
                             <label class="form-check-label" for="shift1">08:00-20:00</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="shift" id="shift2" value="20:00-08:00">
+                            <input class="form-check-input check-datetime" type="radio" name="shift" id="shift2" value="20:00-08:00">
                             <label class="form-check-label" for="shift2">20:00-08:00</label>
                         </div>
                     </div>
@@ -190,12 +191,12 @@
                     <tr>
                         <td>
                             <select class="form-select technique-select">
-                                <option value="" class="default-option"></option>
-                                <?php foreach ($techniques as $technique): ?>
-                                    <option value="<?= htmlspecialchars($technique['id_technique']); ?>">
-                                        <?= htmlspecialchars($technique['name_technique']); ?>
-                                    </option>
-                                <?php endforeach; ?>
+
+<!--                                --><?php //foreach ($techniques as $technique): ?>
+<!--                                    <option value="--><?php //= htmlspecialchars($technique['id_technique']); ?><!--">-->
+<!--                                        --><?php //= htmlspecialchars($technique['name_technique']); ?>
+<!--                                    </option>-->
+<!--                                --><?php //endforeach; ?>
                             </select>
                         </td>
                         <td><input type="text" class="form-control work-activity"></td>

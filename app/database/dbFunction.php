@@ -209,4 +209,89 @@ function selectTechniqueException($table, $params){
     return $query->fetchALL();
 };
 
+// TEMP
+function selectAllCranes(){
+    global $pdo;
+    $sql = "SELECT 
+                        f.id,
+                        hw.lpumg AS `Наименование ЛПУМГ`, 
+                        f.name_highways AS `Наименование МГ`, 
+                        ac.name AS `accessories`,
+                        f.location_crane AS `КМ`, 
+                        f.technical_number AS `Тех.№ ТПА`, 
+                        CONCAT(f.company , ',' , c.location) AS `Производитель ТПА`,
+                        f.year_manufacture AS `Год изготовления ТПА`, 
+                        f.Dn AS `DN`, 
+                        m.workability AS `workability`,
+                        m.tightness AS `tightness`,
+                        m.drainage AS `Дренаж`, 
+                        m.packing_pipelines AS `Набивочные трубопроводы`, 
+                        f.plan_replacement AS `Плановый год замены`, 
+                        f.presence_act AS `Наличие акта`
+                FROM 
+                    fittings f
+                LEFT JOIN 
+                    highways hw ON f.name_highways = hw.name
+                LEFT JOIN 
+                    accessories_reinforcement ac ON f.accessories = ac.name
+                LEFT JOIN 
+                    companies c ON f.company = c.firm
+                LEFT JOIN 
+                    malfunctions m ON f.id_malfunction = m.id;";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $query->fetchALL();
+};
+function selectOneCranes($id){
+    global $pdo;
+    $sql = "SELECT 
+                    f.id,
+                    f.IUS AS `ius`, 
+                    m.result AS `result`,
+                    hw.lpumg AS `lpumg`, 
+                    f.name_highways AS `highways`, 
+					ac.name AS `accessories`,
+                    f.location_crane AS `location`,
+                    f.technical_number AS `technical_number`, 
+                    f.type_reinforcement AS `type_reinforcement`,
+                    CONCAT(f.company, ',' , c.location) AS `company`, 
+                    f.factory_number AS `factory_number`, 
+                    f.Dn AS `dn`, 
+                    f.pressure AS `pressure`, 
+                    f.execution AS `execution`, 
+                    f.year_manufacture AS `f_manufacture`,
+                    f.year_commission AS `f_commission`,
+                    d.type_drive AS `type_drive`,
+                    CONCAT(f.company, ',', c.location) AS `drive_company`, 
+                    d.factory_number AS `drive_factory_number`,
+                    d.liquid AS `liquid`,
+                    d.year_commission AS `drive_year_commission`,
+                    m.workability AS `workability`,
+                    m.tightness AS `tightness`,
+                    m.leakage AS `leakage`,
+                    m.act_leakage AS `act_leakage`,
+                    m.drainage AS `drainage`,
+                    m.packing_pipelines AS `pipelines`
+            FROM 
+                fittings f
+            LEFT JOIN 
+                highways hw ON f.name_highways = hw.name
+            LEFT JOIN 
+                accessories_reinforcement ac ON f.accessories = ac.name
+            LEFT JOIN 
+                drives d ON f.id_drive = d.id
+            LEFT JOIN 
+                companies c ON f.company = c.firm
+            LEFT JOIN 
+                malfunctions m ON f.id_malfunction = m.id
+            WHERE
+                f.id = $id AND m.result = 1;";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $query->fetch();
+};
 ?>

@@ -214,20 +214,22 @@ function selectAllCranes(){
     global $pdo;
     $sql = "SELECT 
                         f.id,
-                        hw.lpumg AS `Наименование ЛПУМГ`, 
-                        f.name_highways AS `Наименование МГ`, 
+                        m.result AS `result`,
+                        hw.lpumg AS `lpumg`,
+                        f.name_highways AS `highways`,
+                        f.unification_crane AS `unification_crane`,
                         ac.name AS `accessories`,
-                        f.location_crane AS `КМ`, 
-                        f.technical_number AS `Тех.№ ТПА`, 
-                        CONCAT(f.company , ',' , c.location) AS `Производитель ТПА`,
-                        f.year_manufacture AS `Год изготовления ТПА`, 
-                        f.Dn AS `DN`, 
-                        m.workability AS `workability`,
+                        f.location_crane AS `location`,
+                        f.technical_number AS `technical_number`,
+                        CONCAT(f.company , ', ' , c.location) AS `company`,
+                        f.year_manufacture AS `f_manufacture`,
+                        f.Dn AS `DN`,
+                        m.general_description AS `general_description`,
                         m.tightness AS `tightness`,
-                        m.drainage AS `Дренаж`, 
-                        m.packing_pipelines AS `Набивочные трубопроводы`, 
-                        f.plan_replacement AS `Плановый год замены`, 
-                        f.presence_act AS `Наличие акта`
+                        m.drainage AS `drainage`,
+                        m.packing_pipelines AS `pipelines`,
+                        f.plan_replacement AS `replacement`,
+                        f.presence_act AS `presence_act`
                 FROM 
                     fittings f
                 LEFT JOIN 
@@ -268,7 +270,7 @@ function selectOneCranes($id){
                     d.factory_number AS `drive_factory_number`,
                     d.liquid AS `liquid`,
                     d.year_commission AS `drive_year_commission`,
-                    m.workability AS `workability`,
+                    m.general_description AS `general_description`,
                     m.tightness AS `tightness`,
                     m.leakage AS `leakage`,
                     m.act_leakage AS `act_leakage`,
@@ -287,7 +289,7 @@ function selectOneCranes($id){
             LEFT JOIN 
                 malfunctions m ON f.id_malfunction = m.id
             WHERE
-                f.id = $id AND m.result = 1;";
+                f.id = $id;";
 
     $query = $pdo->prepare($sql);
     $query->execute();

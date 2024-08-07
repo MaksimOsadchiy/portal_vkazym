@@ -126,27 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 	/**
 	* Функция создает строку таблицы с кнопкой "Сохранить" с заданными данными.
-	*
-	*	<tr class="appForm new-person" value="ID">
-	*		<td>
-	*			<input type="text" class="form-control lastname">
-	*		</td>
-	*		<td>
-	*			<input type="text" class="form-control firstname">
-	*		</td>
-	*		<td>
-	*			<input type="text" class="form-control patronymic">
-	*		</td>
-	*		<td>
-	*			<input type="text" class="form-control service">
-	*		</td>
-	*		<td>
-	*			<input type="text" class="form-control phone">
-	*		</td>
-	*		<td>
-	*			<button type="button" class="btn btn-secondary save-new-person-btn">Сохранить</button>
-	*		</td>
-	*	</tr>
 	* 
 	* @param {number} id - Идентификатор записи, по умолчанию '-1'.
 	* @param {string} lastname - Фамилия.
@@ -318,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-	// Начало скрипта
+	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	updateData();
 	addEventEntry();
 	addEventOpenWindow();

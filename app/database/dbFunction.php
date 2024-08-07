@@ -163,6 +163,50 @@ function deleteRes($table, $id){
 	$query = $pdo->prepare($sql);
 	$query->execute();
 	dbCheckErrorRes($query);
+    return $id;
+};
+
+function selectOrderByDate($table, $params){
+    global $pdo;
+
+    $sql = "SELECT technique_id FROM $table WHERE
+                        (
+                            (datetime_from <= :date_to AND datetime_to >= :date_from)
+                            OR
+                            (datetime_from >= :date_from AND datetime_to <= :date_to)
+                        )
+                        AND
+                        status = '1'
+                ";
+
+    // Подготовка выражения
+    $query = $pdo->prepare($sql);
+
+    // Привязка параметров
+    $query->bindParam(':date_from', $params['date_from']);
+    $query->bindParam(':date_to', $params['date_to']);
+
+    // Выполнение запроса
+    $query->execute();
+
+    dbCheckErrorRes($query);
+    return $query->fetchALL();
+};
+
+function selectTechniqueException($table, $params){
+    global $pdo;
+    $str = implode(', ', $params);
+
+    $sql = "SELECT * FROM $table INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id WHERE faulty = 0 AND id_technique NOT IN ($str)";
+
+    // Подготовка выражения
+    $query = $pdo->prepare($sql);
+
+    // Выполнение запроса
+    $query->execute();
+
+    dbCheckErrorRes($query);
+    return $query->fetchALL();
 };
 
 ?>

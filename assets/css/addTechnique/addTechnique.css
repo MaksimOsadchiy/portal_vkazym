@@ -41,7 +41,7 @@ td:last-child {
    font-size: 0.95rem;
    line-height: 1.4;
 /*   text-align: left;*/
-};
+}
 th { 
    background-color: var(--baseColor);
    font-weight: 300;
@@ -72,7 +72,7 @@ tr:nth-child(2n)  {
 .modal-dialog {
    max-width: 55%;
    max-height: 80%;
-};
+}
 .modal-content {
    overflow: visible !important;
 }

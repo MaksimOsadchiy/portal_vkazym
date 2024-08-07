@@ -26,7 +26,9 @@
 	<script>
 		const SERVER_URL = <?php echo json_encode(SERVER_URL) ?>;
         const SESSION = <?php echo json_encode($_SESSION); ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
 	</script>
+    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/appsForm/appsForm.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 	<title>Заявки</title>
@@ -84,8 +86,9 @@
             <div class="tb-header">Ваши заявки</div>
             <div class="table">
                 <div class="tb-title d-flex flex-row">
+                    <p class="col-2 text-center">Дата</p>
                     <p class="col-2 text-center">Тема</p>
-                    <p class="col-8 text-center">Контент</p>
+                    <p class="col-6 text-center">Контент</p>
                     <p class="col-2 text-center">Статус</p>
                 </div>
                 <div class="tbody"></div>

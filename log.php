@@ -10,21 +10,21 @@
 <html lang="ru">
 
 <head>
-	<title>Заказ техники</title>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
-	<link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Портал В.Казым</title>
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 
 <?php include("app/include/header.php"); ?>
 
-<div class="container log_form">
-	<form class="row justify-content-md-center" method="post" action="log.php">
+<div class="container log_form pt-4">
+	<form class="row justify-content-md-center main-form" method="post" action="log.php">
 		<h2>Вход на портал</h2>
 		<div class="mb-3 col-12 col-md-4 err">
 			<p><?= $errMsg ?></p>
@@ -37,8 +37,8 @@
 		</div>
 		<div class="w100"></div>
 		<div class="mb-3 col-12 col-md-4">
-			<label for="exampleInputPassword1" class="form-label">Password</label>
-			<input type="password" name="password" class="form-control" id="exampleInputPassword1">
+			<label for="exampleInputPassword1" class="form-label">Введите пароль</label>
+			<input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль">
 		</div>
 		<div class="w100"></div>
 		<div class="mb-3 col-12 col-md-4 form-check">

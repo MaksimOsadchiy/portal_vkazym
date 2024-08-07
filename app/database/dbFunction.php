@@ -229,7 +229,7 @@ function selectAllCranes(){
                         m.drainage AS `drainage`,
                         m.packing_pipelines AS `pipelines`,
                         f.plan_replacement AS `replacement`,
-                        f.presence_act AS `presence_act`
+                        m.act_leakage AS `act_leakage`
                 FROM 
                     fittings f
                 LEFT JOIN 

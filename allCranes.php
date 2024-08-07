@@ -34,7 +34,9 @@
         <div class="table-container d-flex flex-column align-items-center pt-3">
             <select class="form-select choice" aria-label="Default select example">
                 <option value="-1" selected>Все краны</option>
-                <option value="0">Дефективные краны</option>
+                <option value="2">Дефективные краны</option>
+                <option value="1">Работающие  краны</option>
+                <option value="0">Неработающие  краны</option>
             </select>
             <div class="table table-cranes d-flex flex-column align-items-center mt-4">
                 <div class="thead d-flex flex-column">
@@ -58,6 +60,7 @@
                 <div class="tbody d-flex flex-column"></div>
             </div>
         </div>
+        <?php require("components/modalWindowNotif.php"); ?>
     </section>
 </body>
 </html>

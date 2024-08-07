@@ -98,10 +98,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const addEventSelectChange = () => {
        const select = document.querySelector('.choice');
        select.addEventListener('change', () => {
-           if (+select.value === 0){
+           if (+select.value >= 0){
                let newCranes = JSON.parse(JSON.stringify(cranes));
                for (const key in newCranes) {
-                   newCranes[key] = newCranes[key].filter((item) => item.result === 0);
+                   newCranes[key] = newCranes[key].filter((item) => item.result === +select.value);
                };
                 drawTable(newCranes);
            } else {

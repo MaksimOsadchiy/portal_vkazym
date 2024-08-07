@@ -7,45 +7,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
     $response = selectOneCranes($id);
     $mainInfo = [
-        'ius' => $response['ius'],
-        'result' => $response['result'],
-        'lpumg' => $response['lpumg'],
-        'highways' => $response['highways'],
-        'accessories' => $response['accessories'],
-        'location' => $response['location'],
-        'technical_number' => $response['technical_number'],
-        'type_reinforcement' => $response['type_reinforcement'],
-        'company' => $response['company'],
-        'factory_number' => $response['factory_number'],
-        'dn' => $response['dn'],
-        'pressure' => $response['pressure'],
-        'execution' => $response['execution'],
-        'f_manufacture' => $response['f_manufacture'],
-        'f_commission' => $response['f_commission'],
-        'type_drive' => $response['type_drive'],
-        'drive_company' => $response['drive_company'],
-        'drive_factory_number' => $response['drive_factory_number'],
-        'liquid' => $response['liquid'],
-        'drive_year_commission' => $response['drive_year_commission'],
+        'Основное' => [
+            'ius' => ['title' => 'ИУС', 'value' => $response['ius']],
+            'result' => ['title' => 'Исправность', 'value' => $response['result']],
+            'lpumg' => ['title' => 'Наименование ЛПУМГ', 'value' => $response['lpumg']],
+            'name_highways' => ['title' => 'Наименование газопровода', 'value' => $response['highways']],
+            'accessories' => ['title' => 'Класс крана', 'value' => $response['accessories']],
+            'location_crane' => ['title' => 'Местонахождения крана', 'value' => $response['location']],
+            'technical_number' => ['title' => 'Технологический номер крана', 'value' => $response['technical_number']],
+            'type_reinforcement' => ['title' => 'ТИП', 'value' => $response['type_reinforcement']],
+            'company' => ['title' => 'Фирма, завод изготовитель', 'value' => $response['company']],
+            'factory_number' => ['title' => 'Заводской номер', 'value' => $response['factory_number']],
+            'dn' => ['title' => 'Dn,мм', 'value' => $response['dn']],
+            'pressure' => ['title' => 'Р, кгс/см2', 'value' => $response['pressure']],
+            'execution' => ['title' => 'Исполнение', 'value' => $response['execution']],
+            'f_manufacture' => ['title' => 'Год изготовления', 'value' => $response['f_manufacture']],
+            'f_commission' => ['title' => 'Дата ввода в эксплуатацию', 'value' => $response['f_commission']],
+        ],
+        'Привод' => [
+            'type_drive' => ['title' => 'ТИП', 'value' => $response['type_drive']],
+            'drive_company' => ['title' => 'Фирма, завод', 'value' => $response['drive_company']],
+            'drive_factory_number' => ['title' => 'Заводской номер', 'value' => $response['drive_factory_number']],
+            'liquid' => ['title' => 'Гидравлическая жидкость', 'value' => $response['liquid']],
+            'drive_year_commission' => ['title' => 'Дата ввода в эксплуатацию', 'value' => $response['drive_year_commission']],
+        ],
     ];
     $secInfo = [
-        'result' => $response['result'],
-        'general_description' => $response['general_description'],
-        'tightness' => $response['tightness'],
-        'leakage' => $response['leakage'],
-        'act_leakage' => $response['act_leakage'],
-        'drainage' => $response['drainage'],
-        'pipelines' => $response['pipelines'],
+        'result' => ['title' => 'Итоговое состояние', 'value' => $response['result']],
+        'general_description' => ['title' => 'Особенности', 'value' => $response['general_description']],
+        'tightness' => ['title' => 'Герметичность ШЗ', 'value' => $response['tightness']],
+        'leakage' => ['title' => 'Утечка по ТПА', 'value' => $response['leakage']],
+        'act_leakage' => ['title' => 'АКТ о негерметичности', 'value' => $response['act_leakage']],
+        'drainage' => ['title' => 'Наличие дренажных линий', 'value' => $response['drainage']],
+        'packing_pipelines' => ['title' => 'Наличие набивочных линий', 'value' => $response['pipelines']],
     ];
 
     $table = 'list_general_descriptions';
-    $general_description = selectAllRes($table);
+    $general_descriptions = selectAllRes($table);
 
     $table = 'list_results';
     $list_results = selectAllRes($table);
 
     $table = 'list_tightness';
     $tightness = selectAllRes($table);
+
+    $table = 'list_act_leakages';
+    $list_act_leakages = selectAllRes($table);
 
     $table = 'list_leakages';
     $list_leakages = selectAllRes($table);
@@ -55,13 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $result = [
         'id' => $response['id'],
-        'main' => $mainInfo,
+        'mainInfo' => $mainInfo,
         'secondary' => $secInfo,
-        'general_description' => $general_description,
-        'list_results' => $list_results,
-        'tightness' => $tightness,
-        'list_leakages' => $list_leakages,
-        'list_strapping' => $list_strapping,
+        'list_general_description' => $general_descriptions,
+        'list_result' => $list_results,
+        'list_tightness' => $tightness,
+        'list_leakage' => $list_leakages,
+        'list_act_leakage' => $list_act_leakages,
+        'list_drainage' => $list_strapping,
+        'list_packing_pipelines' => $list_strapping,
     ];
     echo json_encode($result);
     return;

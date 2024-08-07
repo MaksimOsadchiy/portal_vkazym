@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Авг 06 2024 г., 12:19
+-- Время создания: Авг 07 2024 г., 11:26
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -211,9 +211,9 @@ CREATE TABLE `fittings` (
 
 INSERT INTO `fittings` (`id`, `name_highways`, `accessories`, `location_crane`, `technical_number`, `company`, `year_manufacture`, `factory_number`, `Dn`, `id_malfunction`, `plan_replacement`, `presence_act`, `IUS`, `unification_crane`, `type_reinforcement`, `pressure`, `execution`, `year_commission`, `id_drive`) VALUES
                                                                                                                                                                                                                                                                                                                                (6, 'Поволжье', 'ЛК', 853, '930-1', 'АЗТП', '1984', '2545', 300, 6, NULL, NULL, '409', 'КЦ', 'Шаровой', 80, 'Подземное', '1985', 1),
-                                                                                                                                                                                                                                                                                                                               (7, 'Центр-2', 'ЛК', 539, '539-3.2', 'Волгограднефтемаш', '2003', '852', 300, 7, NULL, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 4),
+                                                                                                                                                                                                                                                                                                                               (7, 'Центр-2', 'ЛК', 539, '539-3.2', 'Волгограднефтемаш', '2003', '852', 300, 7, NULL, NULL, '409', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 4),
                                                                                                                                                                                                                                                                                                                                (8, 'Центр-2', 'ЛК', 539, '539-3.3', 'Волгограднефтемаш', '2003', '857', 300, 8, NULL, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 3),
-                                                                                                                                                                                                                                                                                                                               (9, 'Уренгой-Ужгород', 'ЛК', 538, '538-1.3', 'Грове', '1983', NULL, 300, 9, NULL, NULL, '409', '537 КрУ', 'Шаровой', 80, 'Подземное', '1984', 7);
+                                                                                                                                                                                                                                                                                                                               (9, 'Уренгой-Ужгород', 'ЛК', 538, '538-1.3', 'Грове', '1983', NULL, 300, 9, NULL, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '1984', 7);
 
 --
 -- Триггеры `fittings`
@@ -300,6 +300,26 @@ INSERT INTO `liquids` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `list_act_leakages`
+--
+
+CREATE TABLE `list_act_leakages` (
+                                     `id` int NOT NULL,
+                                     `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `list_act_leakages`
+--
+
+INSERT INTO `list_act_leakages` (`id`, `name`) VALUES
+                                                   (1, 'нет'),
+                                                   (2, 'есть'),
+                                                   (3, 'Ввести свое значение');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `list_general_descriptions`
 --
 
@@ -313,7 +333,8 @@ CREATE TABLE `list_general_descriptions` (
 --
 
 INSERT INTO `list_general_descriptions` (`id`, `name`) VALUES
-                                                           (2, 'Работоспособный'),
+                                                           (2, 'Ввести свое значение'),
+                                                           (3, 'Неполадок не обнаружено '),
                                                            (1, 'Требует замену');
 
 -- --------------------------------------------------------
@@ -324,7 +345,7 @@ INSERT INTO `list_general_descriptions` (`id`, `name`) VALUES
 
 CREATE TABLE `list_leakages` (
                                  `id` int NOT NULL,
-                                 `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+                                 `name` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -332,8 +353,12 @@ CREATE TABLE `list_leakages` (
 --
 
 INSERT INTO `list_leakages` (`id`, `name`) VALUES
-                                               (1, 'нет'),
-                                               (2, 'есть');
+                                               (1, 0),
+                                               (2, 1),
+                                               (3, 2),
+                                               (4, 3),
+                                               (5, 4),
+                                               (6, 5);
 
 -- --------------------------------------------------------
 
@@ -343,16 +368,18 @@ INSERT INTO `list_leakages` (`id`, `name`) VALUES
 
 CREATE TABLE `list_results` (
                                 `id` int NOT NULL,
-                                `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+                                `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                                `description` varchar(127) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Дамп данных таблицы `list_results`
 --
 
-INSERT INTO `list_results` (`id`, `name`) VALUES
-                                              (1, '1'),
-                                              (2, '0');
+INSERT INTO `list_results` (`id`, `name`, `description`) VALUES
+                                                             (1, '0', 'Неработающие краны'),
+                                                             (2, '1', 'Работающие краны'),
+                                                             (3, '2', 'Дефективные краны');
 
 -- --------------------------------------------------------
 
@@ -442,8 +469,8 @@ CREATE TABLE `malfunctions` (
                                 `tightness` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
                                 `leakage` int DEFAULT NULL,
                                 `act_leakage` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-                                `drainage` tinyint DEFAULT NULL,
-                                `packing_pipelines` tinyint DEFAULT NULL,
+                                `drainage` varchar(127) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                                `packing_pipelines` varchar(127) COLLATE utf8mb4_general_ci DEFAULT NULL,
                                 `result` tinyint NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -452,10 +479,10 @@ CREATE TABLE `malfunctions` (
 --
 
 INSERT INTO `malfunctions` (`id`, `general_description`, `tightness`, `leakage`, `act_leakage`, `drainage`, `packing_pipelines`, `result`) VALUES
-                                                                                                                                               (6, 'Требует замену', NULL, NULL, NULL, NULL, NULL, 0),
-                                                                                                                                               (7, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+                                                                                                                                               (6, 'Требует замену', 'Негерметичен', 4, 'нет', 'В наличии', 'В наличии', 0),
+                                                                                                                                               (7, 'Слома, сломан, сломан', 'Герметичен', 0, 'нет', 'В наличии', 'В наличии', 1),
                                                                                                                                                (8, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-                                                                                                                                               (9, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+                                                                                                                                               (9, 'Требует замену', 'Негерметичен', 5, 'нет', 'Нет в наличии', 'Нет в наличии', 0);
 
 -- --------------------------------------------------------
 
@@ -505,6 +532,27 @@ INSERT INTO `passwords` (`id`, `user_id`, `password`) VALUES
                                                           (29, 27, '$2y$10$IzfnTtrtFnqEDYdpDcZu1.HHg5VaZFQm.vpXvELu.qcdp8L53B2dK'),
                                                           (30, 31, '$2y$10$sg1cngrBCveuMRIXIDor7e8956khQWLv2xdwQUqv2h2cFTySDrohO'),
                                                           (31, 32, '$2y$10$8xSYPFNFb7loLPKEWOdUzOXQykxq7S.Wo35Od8k5am4JB9t3328t.');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `photo_cranes`
+--
+
+CREATE TABLE `photo_cranes` (
+                                `id` int NOT NULL,
+                                `id_fitting` int NOT NULL,
+                                `photo_url` varchar(1023) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `photo_cranes`
+--
+
+INSERT INTO `photo_cranes` (`id`, `id_fitting`, `photo_url`) VALUES
+                                                                 (1, 6, 'http://localhost/portal_vkazym/app/assets/img/crane_6_2024-08-07T101756.png'),
+                                                                 (2, 6, 'http://localhost/portal_vkazym/app/assets/img/crane_6_2024-09-07T101756.png'),
+                                                                 (3, 6, 'http://localhost/portal_vkazym/app/assets/img/crane_6_2024-08-07T112407.png');
 
 -- --------------------------------------------------------
 
@@ -1082,6 +1130,12 @@ ALTER TABLE `liquids`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Индексы таблицы `list_act_leakages`
+--
+ALTER TABLE `list_act_leakages`
+    ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `list_general_descriptions`
 --
 ALTER TABLE `list_general_descriptions`
@@ -1139,6 +1193,13 @@ ALTER TABLE `malfunctions`
 ALTER TABLE `passwords`
     ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Индексы таблицы `photo_cranes`
+--
+ALTER TABLE `photo_cranes`
+    ADD PRIMARY KEY (`id`),
+  ADD KEY `id_fitting` (`id_fitting`);
 
 --
 -- Индексы таблицы `privileges`
@@ -1295,22 +1356,28 @@ ALTER TABLE `liquids`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT для таблицы `list_act_leakages`
+--
+ALTER TABLE `list_act_leakages`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT для таблицы `list_general_descriptions`
 --
 ALTER TABLE `list_general_descriptions`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `list_leakages`
 --
 ALTER TABLE `list_leakages`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `list_results`
 --
 ALTER TABLE `list_results`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `list_strapping`
@@ -1347,6 +1414,12 @@ ALTER TABLE `malfunctions`
 --
 ALTER TABLE `passwords`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT для таблицы `photo_cranes`
+--
+ALTER TABLE `photo_cranes`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `privileges`
@@ -1470,6 +1543,12 @@ ALTER TABLE `highways`
 --
 ALTER TABLE `passwords`
     ADD CONSTRAINT `passwords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ограничения внешнего ключа таблицы `photo_cranes`
+--
+ALTER TABLE `photo_cranes`
+    ADD CONSTRAINT `photo_cranes_ibfk_1` FOREIGN KEY (`id_fitting`) REFERENCES `fittings` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `responses`

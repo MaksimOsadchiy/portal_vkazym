@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 
-	// Начало скрипта
+	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	addEventEntry();
 	addEventOpenWindow();
 });

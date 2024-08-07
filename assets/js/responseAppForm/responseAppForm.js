@@ -87,10 +87,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 						status: status,
 						title: elem.title,
 						user_id: elem.user_id,
+						date: elem.date,
 					};
+
+					console.log(newObj.date.substring(0, 5));
 					const row = createRow(
 						newObj.id,
-						'Пока нет',
+						newObj.date.substring(0, 10),
 						users[newObj['user_id']]['login'],
 						'Пока нет',
 						formContent(newObj.title, 10),
@@ -110,7 +113,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если была ошибка, то обновляем переменную
 		};
 	};
-	// 
+	/**
+	 * Функция `insertTableNewRow` заменяет существующую строку таблицы новой строкой на основе уникального идентификатора.
+	 * Она находит старую строку таблицы с заданным идентификатором и заменяет её новой строкой.
+	 *
+	 * Функция выполняет следующие действия:
+	 * 1. Находит существующую строку таблицы с использованием класса `.appForm` и заданного атрибута `id`.
+	 * 2. Заменяет найденную строку на новую строку, переданную в качестве аргумента.
+	 *
+	 * @param {HTMLTableRowElement} newRow - Новый элемент строки таблицы, который заменит старый.
+	 * @param {string} id - Уникальный идентификатор строки таблицы, которая должна быть заменена.
+	 * @returns {void}
+	 */
 	const insertTableNewRow = (newRow, id) => {
 		const oldRow = document.querySelector(`.appForm[id="${id}"]`);
 		oldRow.replaceWith(newRow);
@@ -176,17 +190,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			modalBodyStatus.value = status;
 
 	        const initialStatus = modalBodyStatus.value; // Сохраняем начальное значение
-	        let hasChangedSelect = false; // Переменная для отслеживания изменений
 	        const sendBtn = document.querySelector('.res-btn');
-	        modalBodyStatus.addEventListener('change', (event) => {
-				if (event.target.value === initialStatus) {
-					sendBtn.disabled = true;
-					hasChangedSelect = false;
-	            } else {
-					sendBtn.disabled = false;
-	                hasChangedSelect = true;
-	            }
-	        });
+			sendBtn.disabled = true;
+	        modalBodyStatus.addEventListener('change', (event) => sendBtn.disabled = event.target.value === initialStatus);
 	        modalBodyStatus.querySelectorAll('option').forEach((elem) => +elem.value <= initialStatus || +initialStatus === 2 ? elem.disabled = true : elem.disabled = false);
 		});
 	};
@@ -204,7 +210,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		data.forEach((el, i) => {
 			const row = createRow(
 				el.id,
-				'Пока нет',
+				el.date.substring(0, 10),
 				users[el['user_id']]['login'],
 				'Пока нет',
 				formContent(el.title, 10),
@@ -239,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	* 5. Объединяет все контейнеры в одну строку и возвращает её.
 	*
 	* @param {number} id - Идентификатор строки, по умолчанию -1.
-	* @param {string} fio - ФИО пользователя, по умолчанию 'ФИО'.
+	* @param {string} date - Дата создания заявки.
 	* @param {string} login - Логин пользователя, по умолчанию 'Логин'.
 	* @param {string} phone - Телефон пользователя, по умолчанию 'Телефон'.
 	* @param {string} title - Тема заявки, по умолчанию 'Тема'.
@@ -248,9 +254,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	*
 	* @returns {HTMLElement} Возвращает строку с данными в виде div элемента.
 	*/
-	const createRow = (id = -1, fio = 'ФИО', login = 'Логин', phone = 'Телефон', title = 'Тема', content = 'Содержание', status = 'Статус', style = '') => {
+	const createRow = (id = -1, date = 'Дата', login = 'Логин', phone = 'Телефон', title = 'Тема', content = 'Содержание', status = 'Статус', style = '') => {
 		const row = document.createElement('div');
-		const fioContainer = document.createElement('p');
+		const dateContainer = document.createElement('p');
 		const loginContainer = document.createElement('p');
 		const phoneContainer = document.createElement('p');
 		const titleContainer = document.createElement('p');
@@ -259,21 +265,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		// Добавляем классы
 		row.className = `${style} d-flex flex-row`;
-		fioContainer.className = 'col-1 text-center';
+		dateContainer.className = 'col-1 text-center';
 		loginContainer.className = 'col-1 text-center login';
 		phoneContainer.className = 'col-1 text-center';
 		titleContainer.className = 'col-3 text-center';
 		contentContainer.className = 'col-4 text-center';
 		statusContainer.className = 'col-2 text-center';
 
-		// 
 		const statusObj = {
 			0: {text: 'Не рассмотрено', style: ''},
 			1: {text: 'В работе', style: 'yellow'},
 			2: {text: 'Выполнено', style: 'green'},
 			3: {text: 'Отклонено', style: 'red'},
 		};
-		// 
 		row.id = id;
 		if (id > 0) {
 			statusContainer.className = `col-2 text-center ${statusObj[status].style}`;
@@ -283,7 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		};
 
 		// Добавляем текст
-		fioContainer.innerText = fio;
+		dateContainer.innerText = date;
 		loginContainer.innerText = login;
 		phoneContainer.innerText = phone;
 		titleContainer.innerText = title;
@@ -291,7 +295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		statusContainer.innerText = status !== 'Статус' ? statusObj[status].text : status;
 
 		// Собираем части в единую строку
-		row.appendChild(fioContainer);
+		row.appendChild(dateContainer);
 		row.appendChild(loginContainer);
 		row.appendChild(phoneContainer);
 		row.appendChild(titleContainer);

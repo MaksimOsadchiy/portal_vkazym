@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-xxl flex-container">
+        <div class="container-xxl flex- my-container">
             <a class="navbar-brand" href="#"><img src="assets/image/car.png" alt="car" width="64" height="64"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,6 +32,7 @@
                                     <li><a class="dropdown-item" href="#">Администрирование</a></li>
                                 <?php endif; ?>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'index.php' ?>">Главная</a></li>
+                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'allCranes.php' ?>">Краны</a></li>
                                 <?php if($_SESSION['privilege'] !== 0 and $_SESSION['privilege'] !== 4): ?>
                                     <li><a class="dropdown-item" href="<?php echo BASE_URL . 'technique.php' ?>">Заказ техники</a></li>
                                 <?php endif; ?>

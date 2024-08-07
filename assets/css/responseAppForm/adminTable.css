@@ -46,6 +46,9 @@
    vertical-align: middle;
    overflow-x: auto;
 }
+.tbody p:first-child {
+   font-size: 0.90rem;
+}
 .tbody p:last-child {
    font-size: 0.95rem;
    line-height: 1.4;

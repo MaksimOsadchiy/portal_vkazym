@@ -37,13 +37,13 @@
             <div class="content__header d-flex flex-row justify-content-between pb-2">
                 <div class="content__img-managment d-flex flex-column align-items-center row-gap-3">
                     <div class="content__img-container d-flex flex-row justify-content-center">
-                        <button class="arrow-slider arrow-left" disabled><</button>
+                        <button class="arrow-slider arrow-left d-flex flex-row justify-content-center align-items-center" disabled><</button>
                         <img src='<?=BASE_URL?>assets/image/tempImg.png' class="input__picture" alt="Фото ТПА"/>
                         <input type="file" accept="image/*, .png, .jpg, .web" class="input__file" id="file"/>
                         <label for="file" class="d-flex justify-content-center align-items-center input__uploadbtn">
                             <img src='<?=BASE_URL?>assets/image/downArrow.png' class="arrow"/>
                         </label>
-                        <button class="arrow-slider arrow-right" disabled>></button>
+                        <button class="arrow-slider arrow-right d-flex flex-row justify-content-center align-items-center" disabled>></button>
                     </div>
                     <button class="btn btn-secondary btn-save-img">Сохраить фото</button>
                 </div>

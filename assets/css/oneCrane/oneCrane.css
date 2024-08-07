@@ -23,28 +23,39 @@
     backdrop-filter: blur(10px);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    overflow-x: auto;
 }
 .arrow-slider {
     position: absolute;
     top: 50%;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
     padding: 0;
     outline: none;
-    border-radius: 0.5rem;
     border: none;
     background-color: transparent;
+    font-size: 24px;
+    line-height: 1rem;
     transition: background-color 0.2s ease-in-out;
 }
-.arrow-slider:hover {
+.arrow-active {
+    color: rgba(26, 26, 31, 1);
+}
+.arrow-active:hover {
     background-color: rgba(156, 156, 156, 0.8);
  }
 .arrow-slider.arrow-left {
-    left: 0.5rem;
+    left: -0.135rem;
+    border-top-left-radius: 0rem;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 0rem;
 }
 .arrow-slider.arrow-right {
-    right: 0.5rem;
+    right: -0.135rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+    border-bottom-left-radius: 1rem;
 }
 /*Кастомный input файла*/
 .input__user-img {

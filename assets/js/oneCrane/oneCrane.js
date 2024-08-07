@@ -256,19 +256,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addEventBtnSlideClick = () => {
         const left = document.querySelector('.arrow-left');
         const right = document.querySelector('.arrow-right');
-        urlImg.length > 1 && (right.disabled = false);
+        if (urlImg.length > 1) {
+            right.classList.add('arrow-active');
+            right.disabled = false;
+        };
         left.addEventListener('click', () => {
             right.disabled = false;
+            right.classList.add('arrow-active');
             indexListUrl -= 1;
             drawImage(urlImg[indexListUrl].photo_url);
-            indexListUrl - 1 < 0 && (left.disabled = true);
-            console.log(urlImg);
+            indexListUrl - 1 < 0 && (left.disabled = true) && (left.classList.remove('arrow-active'));
         });
         right.addEventListener('click', () => {
             left.disabled = false;
+            left.classList.add('arrow-active');
             indexListUrl += 1;
             drawImage(urlImg[indexListUrl].photo_url);
-            indexListUrl + 1 > urlImg.length - 1 && (right.disabled = true);
+            indexListUrl + 1 > urlImg.length - 1 && (right.disabled = true) && (right.classList.remove('arrow-active'));
         });
     };
 

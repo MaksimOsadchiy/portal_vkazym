@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return jsonResponse;
         } catch (error) {
             document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
-            return [];
+            return false;
         }
     };
     //
@@ -439,7 +439,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (choosedFile) {
                 const documentCrane = choosedFile;
                 const newDocument = await postDocument(documentCrane);
-                drawDocument([newDocument]);
+                newDocument && drawDocument([newDocument]);
+                e.target.value = '';
             };
         });
     };

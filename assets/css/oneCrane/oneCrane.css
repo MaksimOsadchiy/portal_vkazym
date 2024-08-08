@@ -159,3 +159,11 @@ textarea.column{
     min-height: 3rem;
     max-height: 6rem;
 }
+.document-container {
+    width: 80%;
+    border-radius: 1rem;
+    border: 1px solid grey;
+}
+.document-row {
+    width: 100%;
+}

@@ -45,7 +45,10 @@
                         </label>
                         <button class="arrow-slider arrow-right d-flex flex-row justify-content-center align-items-center" disabled>></button>
                     </div>
-                    <button class="btn btn-secondary btn-save-img">Сохраить фото</button>
+                    <div class="content__btn-managment d-flex flex-row column-gap-2">
+                        <button class="btn btn-secondary btn-save-img" disabled>Сохраить фото</button>
+                        <button class="btn btn-danger btn-delete-img">Удалить фото</button>
+                    </div>
                 </div>
                 <div class="content__malfunction-info">
                     <div class="table table-malfunction d-flex flex-column align-items-center">
@@ -70,6 +73,10 @@
                         </div>
                     </div>
                     <div class="tbody d-flex flex-column"></div>
+                </div>
+                <div class="document-container d-flex flex-column align-items-center px-3 py-2">
+                    <p class="fs-5 mb-2">Файлы</p>
+                    <input type='file' class="input_document btn btn-secondary" />
                 </div>
             </div>
         </div>

@@ -41,12 +41,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     //
     const postImage = async (data) => {
         try {
-            console.log(data);
             const url = new URL(window.location.href);
             const id = new URLSearchParams(url.search).get('id');
             const qparametr = `?id=${id}`;
             const formData = new FormData();
             formData.append('image', data);
+            formData.append('accessories', craneData.mainInfo['Основное'].accessories.value);
+            formData.append('name_highways', craneData.mainInfo['Основное'].name_highways.value);
+            formData.append('location_crane', craneData.mainInfo['Основное'].location_crane.value);
+            formData.append('technical_number', craneData.mainInfo['Основное'].technical_number.value);
+
             const response = await fetch(`${SERVER_URL}cranes/image.php${qparametr}`, {
                 method: 'POST',
                 body: formData,
@@ -54,11 +58,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             const jsonResponse = await response.json(); // Получаем тело ответа
             if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-            document.dispatchEvent(new CustomEvent('updateError', { detail: 'Фото добавленно!'})); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            document.dispatchEvent(new CustomEvent('updateError', { detail: 'Фото добавлено!'})); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
             return jsonResponse;
         } catch (error) {
             document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
             return [];
+        }
+    };
+    //
+    const deletePhoto = async (name) => {
+        try {
+            const url = new URL(window.location.href);
+            const id = new URLSearchParams(url.search).get('id');
+            console.log(name);
+            const qparametr = `?id=${id}&name=${name}`;
+
+            const response = await fetch(`${SERVER_URL}cranes/image.php${qparametr}`, {
+                method: 'DELETE',
+            });
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            document.dispatchEvent(new CustomEvent('updateError', { detail: 'Фото удалено!'})); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
         }
     };
     //
@@ -68,6 +91,49 @@ document.addEventListener('DOMContentLoaded', async () => {
             const id = new URLSearchParams(url.search).get('id');
             const qparametr = `?id=${id}`;
             const response = await fetch(`${SERVER_URL}cranes/image.php${qparametr}`);
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            return jsonResponse;
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return [];
+        };
+    };
+    //
+    const postDocument = async (data) => {
+        try {
+            const url = new URL(window.location.href);
+            const id = new URLSearchParams(url.search).get('id');
+            const qparametr = `?id=${id}`;
+            const formData = new FormData();
+            formData.append('image', data);
+            formData.append('accessories', craneData.mainInfo['Основное'].accessories.value);
+            formData.append('name_highways', craneData.mainInfo['Основное'].name_highways.value);
+            formData.append('location_crane', craneData.mainInfo['Основное'].location_crane.value);
+            formData.append('technical_number', craneData.mainInfo['Основное'].technical_number.value);
+
+            const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`, {
+                method: 'POST',
+                body: formData,
+            });
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            document.dispatchEvent(new CustomEvent('updateError', { detail: 'Документ добавлен!'})); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return jsonResponse;
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return [];
+        }
+    };
+    //
+    const getDocument = async () => {
+        try {
+            const url = new URL(window.location.href);
+            const id = new URLSearchParams(url.search).get('id');
+            const qparametr = `?id=${id}`;
+            const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`);
             const jsonResponse = await response.json(); // Получаем тело ответа
             if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
@@ -94,46 +160,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             bodyTable.appendChild(createSection(key));
             for (const keyTwo in crane.mainInfo[key]){
                 const title = crane.mainInfo[key][keyTwo].title;
-                const value = crane.mainInfo[key][keyTwo].value;
+                const value = key === 'Исправность' ? crane.mainInfo[key][keyTwo].description : crane.mainInfo[key][keyTwo].value;
                bodyTable.appendChild(createRowMainInfo(title, value));
             };
         };
     };
     //
-    const drawImage = (url) => {
+    const drawImage = (url, name) => {
         const img = document.querySelector('.content__img-container').querySelector('.input__picture');
         img.setAttribute('src', url);
+        img.setAttribute('name', name);
     };
     //
-    const createSection = (name) => {
-        const row = document.createElement('div');
-        row.className = 'row-section text-center py-2';
-        row.innerText = name;
-
-        return row;
-    };
-    //
-    const collectContent = () => {
-       const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
-
-       const result = {};
-       const allRow = bodyTable.querySelectorAll('.t-row');
-        allRow.forEach((row) => {
-            const key = row.getAttribute('key');
-            const isTextarea = row.lastChild.tagName === 'TEXTAREA';
-            if (row.lastChild.value >= 0 && !isTextarea) {
-                result[key] = craneData[`list_${key}`]
-                    .find((el) => +el.id === +row.lastChild.value)
-                    .name;
-                if (key === 'result') {
-                    document.querySelector('.table-main-info').querySelector(' .tbody').querySelectorAll('.t-row')[1].querySelectorAll('p')[1].innerText = result[key];
-                };
-            } else if (isTextarea && row.lastChild.value){
-                result[key] = row.lastChild.value;
-            };
-        });
-
-       return result;
+    const drawDocument = (data) => {
+        const container = document.querySelector('.document-container');
+        data.forEach((obj) => container.appendChild(createRowDocument(obj.document_url, obj.name)));
     };
     //
     const createRowMalfunction = (title, name, list, attr) => {
@@ -174,6 +215,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         return row;
     };
     //
+    const createRowDocument = (ref, name) => {
+       const row = document.createElement('div');
+       const link = document.createElement('a');
+
+       row.className = 'document-row my-1 py-1 fs-5';
+       link.className = 'document-link';
+
+       link.setAttribute('href', ref);
+       link.setAttribute('download', name);
+
+       link.innerText = name;
+
+       row.appendChild(link);
+       return row;
+    };
+    //
     const createSelect = (title, name, list) => {
         const select = document.createElement('select');
         const option = document.createElement('option');
@@ -206,7 +263,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         return textarea;
     };
     //
-    const addEventBtnClick = () => {
+    const createSection = (name) => {
+        const row = document.createElement('div');
+        row.className = 'row-section text-center py-2';
+        row.innerText = name;
+
+        return row;
+    };
+    //
+    const collectContent = () => {
+        const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
+
+        const result = {};
+        const allRow = bodyTable.querySelectorAll('.t-row');
+        allRow.forEach((row) => {
+            const key = row.getAttribute('key');
+            const isTextarea = row.lastChild.tagName === 'TEXTAREA';
+            if (row.lastChild.value >= 0 && !isTextarea) {
+                result[key] = craneData[`list_${key}`]
+                    .find((el) => +el.id === +row.lastChild.value)
+                    .name;
+                if (key === 'result') {
+                    document.querySelector('.table-main-info')
+                        .querySelector(' .tbody')
+                        .querySelectorAll('.t-row')[1]
+                        .querySelectorAll('p')[1]
+                        .innerText = craneData.list_result.find((elem) => +elem.name === +result[key])
+                        .description;
+                };
+            } else if (isTextarea && row.lastChild.value){
+                result[key] = row.lastChild.value;
+            };
+        });
+
+        return result;
+    };
+    //
+    const addEventBtnMalfunctionClick = () => {
         const btn = document.querySelector('.btn-save-malfunction');
         btn.addEventListener('click', async () => {
             const data = collectContent();
@@ -239,10 +332,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                     document
                         .querySelector('.input__picture')
                         .setAttribute('src', reader.result);
-                    urlImg.push({photo_url: reader.result});
-                    indexListUrl += 1;
+                    document
+                        .querySelector('.input__picture')
+                        .setAttribute('name', urlImg.length + 1);
+                    document.querySelector('.btn-save-img')
+                        .disabled = false;
+                    document.querySelector('.btn-delete-img')
+                        .disabled = false;
+                    const obj = {photo_url: reader.result, name: urlImg.length + 1, file: choosedFile};
+                    urlImg.push(obj);
+                    if (urlImg.length > 1) {
+                        document.querySelector('.arrow-left').disabled = false;
+                        document.querySelector('.arrow-right').disabled = true;
+                        document.querySelector('.arrow-right').classList.remove('arrow-active');
+                    };
+                    indexListUrl = urlImg.length - 1;
                 });
-                reader.readAsDataURL(choosedFile)
+                reader.readAsDataURL(choosedFile);
                 photoCrane = choosedFile;
             };
         });
@@ -250,12 +356,60 @@ document.addEventListener('DOMContentLoaded', async () => {
     //
     const addEventBtnSavePhoto = () => {
        const btn = document.querySelector('.btn-save-img');
-       btn.addEventListener('click', async () => await postImage(photoCrane));
+       btn.addEventListener('click', async () => {
+           const data = await postImage(urlImg[indexListUrl].file);
+           urlImg[indexListUrl] = data;
+           drawImage(data.photo_url, data.name);
+           btn.disabled = true;
+       });
+    };
+    // Переделать логику !!!!!!!!
+    const addEventBtnDeletePhoto = () => {
+       const btn = document.querySelector('.btn-delete-img');
+       const img =  document.querySelector('.input__picture');
+        btn.addEventListener('click', async () => {
+            const name = img.getAttribute('name');
+            if (!urlImg[indexListUrl].file) {
+                await deletePhoto(name);
+            };
+            urlImg = urlImg.filter((elem) => elem.name != name);
+            if (indexListUrl - 1 >= 0) {
+                drawImage(urlImg[indexListUrl - 1].photo_url, urlImg[indexListUrl - 1].name);
+                const btnSave = document.querySelector('.btn-save-img');
+                urlImg[indexListUrl - 1].file ? btnSave.disabled = false : btnSave.disabled = true;
+                indexListUrl -= 1;
+                if (+indexListUrl === 0) {
+                    const arrow = document.querySelector('.arrow-left');
+                    arrow.classList.remove('arrow-active');
+                    arrow.disabled = true;
+                };
+            } else if (urlImg.length) {
+                drawImage(urlImg[indexListUrl].photo_url, urlImg[indexListUrl].name);
+                const btnSave = document.querySelector('.btn-save-img');
+                urlImg[indexListUrl].file ? btnSave.disabled = false : btnSave.disabled = true;
+                const arrow = document.querySelector('.arrow-left');
+                arrow.classList.remove('arrow-active');
+                arrow.disabled = true;
+                if (+indexListUrl === urlImg.length - 1) {
+                    const arrow = document.querySelector('.arrow-right');
+                    arrow.classList.remove('arrow-active');
+                    arrow.disabled = true;
+                };
+            } else {
+                img.setAttribute('src', `${BASE_URL}assets/image/tempImg.png`);
+                img.setAttribute('name', '');
+                btn.disabled = true;
+                document.querySelector('.btn-save-img').disabled = true;
+            };
+        });
     };
     //
     const addEventBtnSlideClick = () => {
         const left = document.querySelector('.arrow-left');
         const right = document.querySelector('.arrow-right');
+        const saveBtn = document.querySelector('.btn-save-img');
+        const deleteBtn = document.querySelector('.btn-delete-img');
+        if (urlImg.length === 0) deleteBtn.disabled = true
         if (urlImg.length > 1) {
             right.classList.add('arrow-active');
             right.disabled = false;
@@ -264,15 +418,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             right.disabled = false;
             right.classList.add('arrow-active');
             indexListUrl -= 1;
-            drawImage(urlImg[indexListUrl].photo_url);
+            drawImage(urlImg[indexListUrl].photo_url, urlImg[indexListUrl].name);
             indexListUrl - 1 < 0 && (left.disabled = true) && (left.classList.remove('arrow-active'));
+            urlImg[indexListUrl].file ? saveBtn.disabled = false : saveBtn.disabled = true;
         });
         right.addEventListener('click', () => {
             left.disabled = false;
             left.classList.add('arrow-active');
             indexListUrl += 1;
-            drawImage(urlImg[indexListUrl].photo_url);
+            drawImage(urlImg[indexListUrl].photo_url, urlImg[indexListUrl].name);
             indexListUrl + 1 > urlImg.length - 1 && (right.disabled = true) && (right.classList.remove('arrow-active'));
+            urlImg[indexListUrl].file ? saveBtn.disabled = false : saveBtn.disabled = true;
+        });
+    };
+    //
+    const addEventInputLoadDocument = () => {
+        const input = document.querySelector('.input_document');
+        input.addEventListener('change', async (e) => {
+            const choosedFile = e.target.files[0];
+            if (choosedFile) {
+                const documentCrane = choosedFile;
+                const newDocument = await postDocument(documentCrane);
+                drawDocument([newDocument]);
+            };
         });
     };
 
@@ -280,14 +448,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     //
     let photoCrane;
     let indexListUrl = 0;
-    const urlImg = await getImage();
+    let urlImg = await getImage();
+    const documentUrl = await getDocument();
     let craneData = await getOneCrane();
     drawTableMalfunction(craneData);
     drawTableMainInfo(craneData);
-    if (urlImg.length) drawImage(urlImg[0].photo_url);
-    addEventBtnClick();
+    urlImg.length && drawImage(urlImg[0].photo_url, urlImg[0].name);
+    documentUrl.length && drawDocument(documentUrl);
+    addEventBtnMalfunctionClick();
     addEventSelectOtherCheck();
     addEventInputChang();
     addEventBtnSavePhoto();
+    addEventBtnDeletePhoto();
     addEventBtnSlideClick();
+    addEventInputLoadDocument();
 });

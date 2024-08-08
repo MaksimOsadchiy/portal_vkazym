@@ -251,7 +251,7 @@ function selectOneCranes($id){
     $sql = "SELECT 
                     f.id,
                     f.IUS AS `ius`, 
-                    m.result AS `result`,
+                    res.description AS `result`,
                     hw.lpumg AS `lpumg`, 
                     f.name_highways AS `highways`, 
 					ac.name AS `accessories`,
@@ -288,6 +288,8 @@ function selectOneCranes($id){
                 companies c ON f.company = c.firm
             LEFT JOIN 
                 malfunctions m ON f.id_malfunction = m.id
+            LEFT JOIN 
+                list_results res ON m.result = res.name
             WHERE
                 f.id = $id;";
 
@@ -295,5 +297,27 @@ function selectOneCranes($id){
     $query->execute();
     dbCheckErrorRes($query);
     return $query->fetch();
+};
+function deletePhotoRes($table, $params = []){
+    global $pdo;
+    $sql = "DELETE FROM $table";
+    if (!empty($params)) {
+        $i = 0;
+        foreach ($params as $key => $value) {
+            if (!is_numeric($value)) {
+                $value = "'" . $value . "'";
+            };
+            if ($i === 0) {
+                $sql = $sql . " WHERE $key=$value";
+            } else {
+                $sql = $sql . " AND $key=$value";
+            }
+            $i++;
+        };
+    };
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $params['id_fitting'];
 };
 ?>

@@ -218,10 +218,10 @@ function selectAllCranes(){
                         hw.lpumg AS `lpumg`,
                         f.name_highways AS `highways`,
                         f.unification_crane AS `unification_crane`,
-                        ac.name AS `accessories`,
+                        CONCAT(f.crane_class, ', ', f.name_crane) AS `crane_class`,
                         f.location_crane AS `location`,
                         f.technical_number AS `technical_number`,
-                        CONCAT(f.company , ', ' , c.location) AS `company`,
+                        CONCAT(f.company, ', ', c.location) AS `company`,
                         f.year_manufacture AS `f_manufacture`,
                         f.Dn AS `DN`,
                         m.general_description AS `general_description`,
@@ -234,8 +234,6 @@ function selectAllCranes(){
                     fittings f
                 LEFT JOIN 
                     highways hw ON f.name_highways = hw.name
-                LEFT JOIN 
-                    accessories_reinforcement ac ON f.accessories = ac.name
                 LEFT JOIN 
                     companies c ON f.company = c.firm
                 LEFT JOIN 
@@ -254,7 +252,7 @@ function selectOneCranes($id){
                     res.description AS `result`,
                     hw.lpumg AS `lpumg`, 
                     f.name_highways AS `highways`, 
-					ac.name AS `accessories`,
+                    CONCAT(f.crane_class, ', ', f.name_crane) AS `crane_class`,
                     f.location_crane AS `location`,
                     f.technical_number AS `technical_number`, 
                     f.type_reinforcement AS `type_reinforcement`,
@@ -280,8 +278,6 @@ function selectOneCranes($id){
                 fittings f
             LEFT JOIN 
                 highways hw ON f.name_highways = hw.name
-            LEFT JOIN 
-                accessories_reinforcement ac ON f.accessories = ac.name
             LEFT JOIN 
                 drives d ON f.id_drive = d.id
             LEFT JOIN 

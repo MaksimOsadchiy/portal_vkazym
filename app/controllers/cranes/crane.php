@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'result' => ['title' => 'Исправность', 'value' => $response['result']],
             'lpumg' => ['title' => 'Наименование ЛПУМГ', 'value' => $response['lpumg']],
             'name_highways' => ['title' => 'Наименование газопровода', 'value' => $response['highways']],
-            'accessories' => ['title' => 'Класс крана', 'value' => $response['accessories']],
+            'crane_class' => ['title' => 'Класс крана', 'value' => $response['crane_class']],
             'location_crane' => ['title' => 'Местонахождения крана', 'value' => $response['location']],
             'technical_number' => ['title' => 'Технологический номер крана', 'value' => $response['technical_number']],
             'type_reinforcement' => ['title' => 'ТИП', 'value' => $response['type_reinforcement']],

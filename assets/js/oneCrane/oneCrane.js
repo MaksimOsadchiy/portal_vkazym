@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const qparametr = `?id=${id}`;
             const formData = new FormData();
             formData.append('image', data);
-            formData.append('accessories', craneData.mainInfo['Основное'].accessories.value);
+            formData.append('crane_class', craneData.mainInfo['Основное'].crane_class.value);
             formData.append('name_highways', craneData.mainInfo['Основное'].name_highways.value);
             formData.append('location_crane', craneData.mainInfo['Основное'].location_crane.value);
             formData.append('technical_number', craneData.mainInfo['Основное'].technical_number.value);
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const qparametr = `?id=${id}`;
             const formData = new FormData();
             formData.append('image', data);
-            formData.append('accessories', craneData.mainInfo['Основное'].accessories.value);
+            formData.append('crane_class', craneData.mainInfo['Основное'].crane_class.value);
             formData.append('name_highways', craneData.mainInfo['Основное'].name_highways.value);
             formData.append('location_crane', craneData.mainInfo['Основное'].location_crane.value);
             formData.append('technical_number', craneData.mainInfo['Основное'].technical_number.value);
@@ -166,10 +166,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     };
     //
-    const drawImage = (url, name) => {
+    const drawImage = (obj) => {
         const img = document.querySelector('.content__img-container').querySelector('.input__picture');
-        img.setAttribute('src', url);
-        img.setAttribute('name', name);
+
+        const btnSave = document.querySelector('.btn-save-img');
+        const btnDelete = document.querySelector('.btn-delete-img');
+
+        const arrowLeft = document.querySelector('.arrow-left');
+        const arrowRight = document.querySelector('.arrow-right');
+
+        img.setAttribute('src', obj.photo_url);
+        img.setAttribute('name', obj.name);
+
+        obj.name === '' ? btnDelete.disabled = true : btnDelete.disabled = false;
+        obj.file ? btnSave.disabled = false : btnSave.disabled = true;
+
+        if (urlImg.length < 2) {
+            [arrowLeft, arrowRight].forEach(elem => {
+                elem.disabled = true;
+                elem.classList.remove('arrow-active');
+            });
+        } else {
+            if (urlImg.length - 1 === indexListUrl) {
+                arrowLeft.disabled = false;
+                arrowRight.disabled = true;
+                arrowLeft.classList.add('arrow-active');
+                arrowRight.classList.remove('arrow-active');
+            } else if (!indexListUrl) {
+                arrowLeft.disabled = true;
+                arrowRight.disabled = false;
+                arrowLeft.classList.remove('arrow-active');
+                arrowRight.classList.add('arrow-active');
+            } else {
+                [arrowLeft, arrowRight].forEach(elem => {
+                    elem.disabled = false;
+                    elem.disabled = false;
+                    arrowRight.classList.add('arrow-active');
+                });
+            };
+        };
     };
     //
     const drawDocument = (data) => {
@@ -329,24 +364,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (choosedFile) {
                 const reader = new FileReader();
                 reader.addEventListener('load', () => {
-                    document
-                        .querySelector('.input__picture')
-                        .setAttribute('src', reader.result);
-                    document
-                        .querySelector('.input__picture')
-                        .setAttribute('name', urlImg.length + 1);
-                    document.querySelector('.btn-save-img')
-                        .disabled = false;
-                    document.querySelector('.btn-delete-img')
-                        .disabled = false;
-                    const obj = {photo_url: reader.result, name: urlImg.length + 1, file: choosedFile};
-                    urlImg.push(obj);
-                    if (urlImg.length > 1) {
-                        document.querySelector('.arrow-left').disabled = false;
-                        document.querySelector('.arrow-right').disabled = true;
-                        document.querySelector('.arrow-right').classList.remove('arrow-active');
-                    };
+                    const imgData = {photo_url: reader.result, name: urlImg.length + 1, file: choosedFile};
+                    urlImg.push(imgData);
                     indexListUrl = urlImg.length - 1;
+                    drawImage(imgData);
                 });
                 reader.readAsDataURL(choosedFile);
                 photoCrane = choosedFile;
@@ -357,13 +378,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addEventBtnSavePhoto = () => {
        const btn = document.querySelector('.btn-save-img');
        btn.addEventListener('click', async () => {
-           const data = await postImage(urlImg[indexListUrl].file);
-           urlImg[indexListUrl] = data;
-           drawImage(data.photo_url, data.name);
-           btn.disabled = true;
+           const imgData = await postImage(urlImg[indexListUrl].file);
+           urlImg[indexListUrl] = imgData;
+           drawImage(imgData);
        });
     };
-    // Переделать логику !!!!!!!!
+    //
     const addEventBtnDeletePhoto = () => {
        const btn = document.querySelector('.btn-delete-img');
        const img =  document.querySelector('.input__picture');
@@ -374,32 +394,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
             urlImg = urlImg.filter((elem) => elem.name != name);
             if (indexListUrl - 1 >= 0) {
-                drawImage(urlImg[indexListUrl - 1].photo_url, urlImg[indexListUrl - 1].name);
-                const btnSave = document.querySelector('.btn-save-img');
-                urlImg[indexListUrl - 1].file ? btnSave.disabled = false : btnSave.disabled = true;
                 indexListUrl -= 1;
-                if (+indexListUrl === 0) {
-                    const arrow = document.querySelector('.arrow-left');
-                    arrow.classList.remove('arrow-active');
-                    arrow.disabled = true;
-                };
+                drawImage(urlImg[indexListUrl]);
             } else if (urlImg.length) {
-                drawImage(urlImg[indexListUrl].photo_url, urlImg[indexListUrl].name);
-                const btnSave = document.querySelector('.btn-save-img');
-                urlImg[indexListUrl].file ? btnSave.disabled = false : btnSave.disabled = true;
-                const arrow = document.querySelector('.arrow-left');
-                arrow.classList.remove('arrow-active');
-                arrow.disabled = true;
-                if (+indexListUrl === urlImg.length - 1) {
-                    const arrow = document.querySelector('.arrow-right');
-                    arrow.classList.remove('arrow-active');
-                    arrow.disabled = true;
-                };
+                drawImage(urlImg[indexListUrl]);
             } else {
-                img.setAttribute('src', `${BASE_URL}assets/image/tempImg.png`);
-                img.setAttribute('name', '');
-                btn.disabled = true;
-                document.querySelector('.btn-save-img').disabled = true;
+                const imgData = {
+                    photo_url: `${BASE_URL}assets/image/tempImg.png`,
+                    name: '',
+                };
+                drawImage(imgData);
             };
         });
     };
@@ -407,28 +411,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addEventBtnSlideClick = () => {
         const left = document.querySelector('.arrow-left');
         const right = document.querySelector('.arrow-right');
-        const saveBtn = document.querySelector('.btn-save-img');
-        const deleteBtn = document.querySelector('.btn-delete-img');
-        if (urlImg.length === 0) deleteBtn.disabled = true
-        if (urlImg.length > 1) {
-            right.classList.add('arrow-active');
-            right.disabled = false;
-        };
         left.addEventListener('click', () => {
-            right.disabled = false;
-            right.classList.add('arrow-active');
             indexListUrl -= 1;
-            drawImage(urlImg[indexListUrl].photo_url, urlImg[indexListUrl].name);
-            indexListUrl - 1 < 0 && (left.disabled = true) && (left.classList.remove('arrow-active'));
-            urlImg[indexListUrl].file ? saveBtn.disabled = false : saveBtn.disabled = true;
+            drawImage(urlImg[indexListUrl]);
         });
         right.addEventListener('click', () => {
-            left.disabled = false;
-            left.classList.add('arrow-active');
             indexListUrl += 1;
-            drawImage(urlImg[indexListUrl].photo_url, urlImg[indexListUrl].name);
-            indexListUrl + 1 > urlImg.length - 1 && (right.disabled = true) && (right.classList.remove('arrow-active'));
-            urlImg[indexListUrl].file ? saveBtn.disabled = false : saveBtn.disabled = true;
+            drawImage(urlImg[indexListUrl]);
         });
     };
     //
@@ -454,7 +443,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let craneData = await getOneCrane();
     drawTableMalfunction(craneData);
     drawTableMainInfo(craneData);
-    urlImg.length && drawImage(urlImg[0].photo_url, urlImg[0].name);
+    urlImg.length && drawImage(urlImg[0]);
     documentUrl.length && drawDocument(documentUrl);
     addEventBtnMalfunctionClick();
     addEventSelectOtherCheck();

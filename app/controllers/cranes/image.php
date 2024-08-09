@@ -14,11 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $id = $_GET['id'];
     $table = 'photo_cranes';
     $date= date('Y-m-d\THis');
-    $accessories = $_POST['accessories'];
+    $temp = explode(', ', $_POST['crane_class']);
+    $craneClass = "{$temp[0]}_{$temp[1]}";
     $highway = $_POST['name_highways'];
     $location = $_POST['location_crane'];
     $number = $_POST['technical_number'];
-    $targetDir = "../../assets/crane_data/{$accessories}_{$highway}_{$location}_{$number}/img/";
+    $targetDir = "../../assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/img/";
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0755, true);
     };
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $targetFilePath = $targetDir . $newFileName;
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-        $str = "http://localhost/portal_vkazym/app/assets/crane_data/{$accessories}_{$highway}_{$location}_{$number}/img/{$newFileName}";
+        $str = "http://localhost/portal_vkazym/app/assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/img/{$newFileName}";
         $params = [
             'photo_url' => $str,
             'id_fitting' => $id,

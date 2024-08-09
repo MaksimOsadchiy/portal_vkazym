@@ -47,7 +47,7 @@
                     </div>
                     <div class="content__btn-managment d-flex flex-row column-gap-2">
                         <button class="btn btn-secondary btn-save-img" disabled>Сохраить фото</button>
-                        <button class="btn btn-danger btn-delete-img">Удалить фото</button>
+                        <button class="btn btn-danger btn-delete-img" disabled>Удалить фото</button>
                     </div>
                 </div>
                 <div class="content__malfunction-info">

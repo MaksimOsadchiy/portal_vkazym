@@ -13,11 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_GET['id'];
     $table = 'document_cranes';
-    $accessories = $_POST['accessories'];
+    $temp = explode(', ', $_POST['crane_class']);
+    $craneClass = "{$temp[0]}_{$temp[1]}";
     $highway = $_POST['name_highways'];
     $location = $_POST['location_crane'];
     $number = $_POST['technical_number'];
-    $targetDir = "../../assets/crane_data/{$accessories}_{$highway}_{$location}_{$number}/documents/";
+    $targetDir = "../../assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/documents/";
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0755, true);
     };
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
         http_response_code(400);
         echo json_encode(['status' => 'Файл с таким именем уже существует!']);
     } else if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-        $str = "http://localhost/portal_vkazym/app/assets/crane_data/{$accessories}_{$highway}_{$location}_{$number}/documents/{$fileName}";
+        $str = "http://localhost/portal_vkazym/app/assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/documents/{$fileName}";
         $params = [
             'document_url' => $str,
             'id_fitting' => $id,

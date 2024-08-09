@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const id = document.createElement('p');
 		const lpumg = document.createElement('p');
 		const highways = document.createElement('p');
-		const accessories = document.createElement('p');
+		const craneClass = document.createElement('p');
 		const location = document.createElement('p');
 		const technical_number = document.createElement('p');
 		const company = document.createElement('p');
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			id,
 			lpumg,
 			highways,
-			accessories,
+			craneClass,
 			location,
 			technical_number,
 			company,
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		// id.innerText = crane.id;
 		lpumg.innerText = crane.lpumg;
 		highways.innerText = crane.highways;
-		accessories.innerText = crane.accessories;
+		craneClass.innerText = crane.crane_class;
 		location.innerText = crane.location;
 		technical_number.innerText = crane.technical_number;
 		company.innerText = crane.company;

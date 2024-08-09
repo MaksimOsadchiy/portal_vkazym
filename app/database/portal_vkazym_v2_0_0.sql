@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Авг 08 2024 г., 11:44
+-- Время создания: Авг 09 2024 г., 10:56
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -20,29 +20,6 @@ SET time_zone = "+00:00";
 --
 -- База данных: `portal_vkazym_v2.0.0`
 --
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `accessories_reinforcement`
---
-
-CREATE TABLE `accessories_reinforcement` (
-                                             `id` int NOT NULL,
-                                             `name` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Дамп данных таблицы `accessories_reinforcement`
---
-
-INSERT INTO `accessories_reinforcement` (`id`, `name`) VALUES
-                                                           (6, 'ЛК'),
-                                                           (2, 'СБ'),
-                                                           (5, 'Свеча'),
-                                                           (4, 'СП'),
-                                                           (1, 'ЮБ'),
-                                                           (3, 'ЮП');
 
 -- --------------------------------------------------------
 
@@ -123,11 +100,46 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `firm`, `location`) VALUES
-                                                       (1, 'АЗТП', 'Россия'),
+                                                       (1, 'АЗТПА', 'Россия'),
                                                        (2, 'Волгограднефтемаш', 'Россия'),
                                                        (3, 'Уралхиммаш', 'Россия'),
                                                        (4, 'Грове', 'Италия'),
-                                                       (5, 'Дзержинскхиммаш', 'Россия');
+                                                       (5, 'Дзержинскхиммаш', 'Россия'),
+                                                       (6, 'JSW', 'Япония'),
+                                                       (7, 'Борзиг', 'Германия'),
+                                                       (8, 'Китамура', 'Япония'),
+                                                       (9, 'Кобе Стил', 'Япония'),
+                                                       (10, 'Минхиммаш', 'Россия'),
+                                                       (11, 'Петрозаводскбуммаш', 'Россия'),
+                                                       (12, 'Сигма Дольни Бенешов', 'Чехия'),
+                                                       (13, 'Усть-Каменогорский АЗ', 'Казахстан'),
+                                                       (14, 'Цимлянский МЗ', 'Россия'),
+                                                       (15, 'ЧКД Бланско', 'Чехия'),
+                                                       (16, 'Электрохимприбор', 'Россия'),
+                                                       (17, 'Биффи', 'Италия'),
+                                                       (18, 'Днепртяжбуммаш', 'Украина'),
+                                                       (19, 'Ледиин', 'Италия');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `crane_classes`
+--
+
+CREATE TABLE `crane_classes` (
+                                 `id` int NOT NULL,
+                                 `name` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `crane_classes`
+--
+
+INSERT INTO `crane_classes` (`id`, `name`) VALUES
+                                               (6, 'Линейный'),
+                                               (4, 'Перемчка'),
+                                               (8, 'Северная перемычка(СП)'),
+                                               (3, 'Южная перемычка(ЮП)');
 
 -- --------------------------------------------------------
 
@@ -147,9 +159,9 @@ CREATE TABLE `document_cranes` (
 --
 
 INSERT INTO `document_cranes` (`id`, `id_fitting`, `document_url`, `name`) VALUES
-                                                                               (1, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/ЛК_Поволжье_853_930-1/documents/PDF.pdf', 'PDF.pdf'),
-                                                                               (4, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/ЛК_Уренгой-Ужгород_538_538-1.3/documents/PDF.pdf', 'PDF.pdf'),
-                                                                               (5, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/ЛК_Уренгой-Ужгород_538_538-1.3/documents/downArrow.png', 'downArrow.png');
+                                                                               (8, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/documents/PDF.pdf', 'PDF.pdf'),
+                                                                               (9, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/documents/car.png', 'car.png'),
+                                                                               (10, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/documents/PDF.pdf', 'PDF.pdf');
 
 -- --------------------------------------------------------
 
@@ -171,7 +183,7 @@ CREATE TABLE `drives` (
 --
 
 INSERT INTO `drives` (`id`, `type_drive`, `company`, `factory_number`, `liquid`, `year_commission`) VALUES
-                                                                                                        (1, 'Пневмогидравлический', 'АЗТП', NULL, NULL, '1984'),
+                                                                                                        (1, 'Пневмогидравлический', 'АЗТПА', NULL, NULL, '1984'),
                                                                                                         (3, 'Пневмогидравлический', 'Волгограднефтемаш', '587', 'ПМС-20 Югра', '2005'),
                                                                                                         (4, 'Пневмогидравлический', 'Волгограднефтемаш', NULL, 'ПМС-20 Югра', '2005'),
                                                                                                         (5, 'Пневмогидравлический', 'Уралхиммаш', '7679', 'ПМС-20 Югра', '1986'),
@@ -208,7 +220,8 @@ INSERT INTO `executions` (`id`, `name`) VALUES
 CREATE TABLE `fittings` (
                             `id` int NOT NULL,
                             `name_highways` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                            `accessories` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                            `crane_class` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                            `name_crane` varchar(31) COLLATE utf8mb4_general_ci NOT NULL,
                             `location_crane` int NOT NULL,
                             `technical_number` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                             `company` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -223,18 +236,19 @@ CREATE TABLE `fittings` (
                             `pressure` int NOT NULL,
                             `execution` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                             `year_commission` year NOT NULL,
-                            `id_drive` int NOT NULL
+                            `id_drive` int NOT NULL,
+                            `classification_installation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Дамп данных таблицы `fittings`
 --
 
-INSERT INTO `fittings` (`id`, `name_highways`, `accessories`, `location_crane`, `technical_number`, `company`, `year_manufacture`, `factory_number`, `Dn`, `id_malfunction`, `plan_replacement`, `IUS`, `unification_crane`, `type_reinforcement`, `pressure`, `execution`, `year_commission`, `id_drive`) VALUES
-                                                                                                                                                                                                                                                                                                               (6, 'Поволжье', 'ЛК', 853, '930-1', 'АЗТП', '1984', '2545', 300, 6, NULL, '409', 'КЦ', 'Шаровой', 80, 'Подземное', '1985', 1),
-                                                                                                                                                                                                                                                                                                               (7, 'Центр-2', 'ЛК', 539, '539-3.2', 'Волгограднефтемаш', '2003', '852', 300, 7, NULL, '409', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 4),
-                                                                                                                                                                                                                                                                                                               (8, 'Центр-2', 'ЛК', 539, '539-3.3', 'Волгограднефтемаш', '2003', '857', 300, 8, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 3),
-                                                                                                                                                                                                                                                                                                               (9, 'Уренгой-Ужгород', 'ЛК', 538, '538-1.3', 'Грове', '1983', NULL, 300, 9, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '1984', 7);
+INSERT INTO `fittings` (`id`, `name_highways`, `crane_class`, `name_crane`, `location_crane`, `technical_number`, `company`, `year_manufacture`, `factory_number`, `Dn`, `id_malfunction`, `plan_replacement`, `IUS`, `unification_crane`, `type_reinforcement`, `pressure`, `execution`, `year_commission`, `id_drive`, `classification_installation`) VALUES
+                                                                                                                                                                                                                                                                                                                                                            (6, 'между Ямбург-Елец 2 и Ямбург-Зап.граница', 'Линейный', 'Стояк отбора газа', 853, '853-1', 'АЗТПА', '1984', '2545', 300, 6, NULL, '409', 'КЦ', 'Шаровой', 80, 'Подземное', '1985', 1, NULL),
+                                                                                                                                                                                                                                                                                                                                                            (7, 'Уренгой-Центр 2', 'Линейный', 'на ЛК', 539, '539-3.2', 'Волгограднефтемаш', '2003', '852', 300, 7, NULL, '409', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 4, NULL),
+                                                                                                                                                                                                                                                                                                                                                            (8, 'Уренгой-Центр 2', 'Линейный', 'на ЛК', 539, '539-3.3', 'Волгограднефтемаш', '2003', '857', 300, 8, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 3, NULL),
+                                                                                                                                                                                                                                                                                                                                                            (9, 'Уренгой-Ужгород', 'Линейный', 'на ЛК', 538, '538-1.3', 'Грове', '1983', NULL, 300, 9, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '1984', 7, NULL);
 
 --
 -- Триггеры `fittings`
@@ -268,17 +282,24 @@ CREATE TABLE `highways` (
 
 INSERT INTO `highways` (`id`, `name`, `lpumg`) VALUES
                                                    (49, 'Уренгой-Ужгород', 'Верхнеказымское'),
-                                                   (50, 'Центр-1', 'Верхнеказымское'),
-                                                   (61, 'Центр-2', 'Верхнеказымское'),
-                                                   (73, 'Елец-1', 'Верхнеказымское'),
-                                                   (74, 'Елец-2', 'Верхнеказымское'),
-                                                   (75, 'Ямбург', 'Верхнеказымское'),
-                                                   (76, 'Прогресс', 'Верхнеказымское'),
-                                                   (77, 'Тула-1', 'Верхнеказымское'),
-                                                   (78, 'Тула-2', 'Верхнеказымское'),
-                                                   (79, 'Поволжье', 'Верхнеказымское'),
-                                                   (80, 'СРТО', 'Верхнеказымское'),
-                                                   (81, 'Западная граница', 'Верхнеказымское');
+                                                   (50, 'Уренгой-Центр 1', 'Верхнеказымское'),
+                                                   (61, 'Уренгой-Центр 2', 'Верхнеказымское'),
+                                                   (73, 'Ямбург-Елец 1', 'Верхнеказымское'),
+                                                   (74, 'Ямбург-Елец 2', 'Верхнеказымское'),
+                                                   (75, 'Ямбург-Зап.граница', 'Верхнеказымское'),
+                                                   (76, 'Ямбург-Тула 1', 'Верхнеказымское'),
+                                                   (77, 'Ямбург-Тула 2', 'Верхнеказымское'),
+                                                   (79, 'Ямбург-Поволжье', 'Верхнеказымское'),
+                                                   (80, 'СРТО-Урал', 'Верхнеказымское'),
+                                                   (91, 'между Уренгой-Ужгород и Уренгой-Центр 1', 'Верхнеказымское'),
+                                                   (92, 'между Уренгой-Центр 1 и Уренгой-Центр 2', 'Верхнеказымское'),
+                                                   (93, 'между Уренгой-Центр 2 и Ямбург-Елец 1', 'Верхнеказымское'),
+                                                   (94, 'между Ямбург-Елец 1 и Ямбург-Елец 2', 'Верхнеказымское'),
+                                                   (95, 'между Ямбург-Елец 2 и Ямбург-Зап.граница', 'Верхнеказымское'),
+                                                   (96, 'между Ямбург-Зап.граница и Ямбург-Тула 1', 'Верхнеказымское'),
+                                                   (97, 'между Ямбург-Тула 1 и Ямбург-Тула 2', 'Верхнеказымское'),
+                                                   (98, 'между Ямбург-Тула 2 и Ямбург-Поволжье', 'Верхнеказымское'),
+                                                   (99, 'между Ямбург-Поволжье и СРТО-Урал', 'Верхнеказымское');
 
 -- --------------------------------------------------------
 
@@ -337,6 +358,25 @@ INSERT INTO `list_act_leakages` (`id`, `name`) VALUES
                                                    (1, 'нет'),
                                                    (2, 'есть'),
                                                    (3, 'Ввести свое значение');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `list_classification_installations`
+--
+
+CREATE TABLE `list_classification_installations` (
+                                                     `id` int NOT NULL,
+                                                     `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `list_classification_installations`
+--
+
+INSERT INTO `list_classification_installations` (`id`, `name`) VALUES
+                                                                   (1, 'Камера запуска'),
+                                                                   (2, 'Камера приема');
 
 -- --------------------------------------------------------
 
@@ -456,8 +496,12 @@ CREATE TABLE `location` (
 --
 
 INSERT INTO `location` (`id`, `name`) VALUES
+                                          (4, 'Германия'),
                                           (3, 'Италия'),
+                                          (6, 'Казахстан'),
                                           (1, 'Россия'),
+                                          (7, 'Украина'),
+                                          (5, 'Чехия'),
                                           (2, 'Япония');
 
 -- --------------------------------------------------------
@@ -476,7 +520,8 @@ CREATE TABLE `lpumgs` (
 --
 
 INSERT INTO `lpumgs` (`id`, `name`) VALUES
-    (1, 'Верхнеказымское');
+                                        (2, 'temp'),
+                                        (1, 'Верхнеказымское');
 
 -- --------------------------------------------------------
 
@@ -500,10 +545,33 @@ CREATE TABLE `malfunctions` (
 --
 
 INSERT INTO `malfunctions` (`id`, `general_description`, `tightness`, `leakage`, `act_leakage`, `drainage`, `packing_pipelines`, `result`) VALUES
-                                                                                                                                               (6, 'Требует замену', 'Негерметичен', 4, 'нет', 'В наличии', 'В наличии', 2),
+                                                                                                                                               (6, 'Требует замену', 'Негерметичен', 4, 'АКТ', 'В наличии', 'В наличии', 0),
                                                                                                                                                (7, 'Слома, сломан, сломан', 'Герметичен', 0, 'нет', 'В наличии', 'В наличии', 1),
                                                                                                                                                (8, NULL, NULL, NULL, NULL, NULL, NULL, 1),
                                                                                                                                                (9, 'Требует замену', 'Негерметичен', 5, 'нет', 'Нет в наличии', 'Нет в наличии', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `name_cranes`
+--
+
+CREATE TABLE `name_cranes` (
+                               `id` int NOT NULL,
+                               `name` varchar(31) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `name_cranes`
+--
+
+INSERT INTO `name_cranes` (`id`, `name`) VALUES
+                                             (1, 'на ЛК'),
+                                             (2, 'на перемычке'),
+                                             (4, 'Обводной'),
+                                             (6, 'Отсечной'),
+                                             (7, 'Свечной'),
+                                             (8, 'Стояк отбора газа');
 
 -- --------------------------------------------------------
 
@@ -566,6 +634,18 @@ CREATE TABLE `photo_cranes` (
                                 `photo_url` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                                 `name` varchar(511) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `photo_cranes`
+--
+
+INSERT INTO `photo_cranes` (`id`, `id_fitting`, `photo_url`, `name`) VALUES
+                                                                         (96, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/img/crane_img_6_2024-08-09T065335.png', 'downArrow.png'),
+                                                                         (97, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/img/crane_img_6_2024-08-09T065337.png', 'car.png'),
+                                                                         (98, 7, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.2/img/crane_img_7_2024-08-09T065420.png', 'кран.png'),
+                                                                         (99, 7, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.2/img/crane_img_7_2024-08-09T065424.png', 'save.png'),
+                                                                         (100, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/img/crane_img_9_2024-08-09T065434.jpeg', 'noimage.jpeg'),
+                                                                         (101, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/img/crane_img_9_2024-08-09T065436.png', 'downArrow.png');
 
 -- --------------------------------------------------------
 
@@ -921,7 +1001,11 @@ CREATE TABLE `types_drives` (
 --
 
 INSERT INTO `types_drives` (`id`, `name`) VALUES
-    (1, 'Пневмогидравлический');
+                                              (2, 'Гидравлический'),
+                                              (3, 'Пневматический'),
+                                              (1, 'Пневмогидравлический'),
+                                              (4, 'Пневмогидравлический с ААЗК'),
+                                              (5, 'Ручной');
 
 -- --------------------------------------------------------
 
@@ -1060,13 +1144,6 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
 --
 
 --
--- Индексы таблицы `accessories_reinforcement`
---
-ALTER TABLE `accessories_reinforcement`
-    ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
 -- Индексы таблицы `applications`
 --
 ALTER TABLE `applications`
@@ -1088,6 +1165,13 @@ ALTER TABLE `companies`
     ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `firm` (`firm`),
   ADD KEY `location` (`location`);
+
+--
+-- Индексы таблицы `crane_classes`
+--
+ALTER TABLE `crane_classes`
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Индексы таблицы `document_cranes`
@@ -1123,9 +1207,10 @@ ALTER TABLE `fittings`
   ADD KEY `company` (`company`),
   ADD KEY `IUS` (`IUS`),
   ADD KEY `unification_crane` (`unification_crane`),
-  ADD KEY `accessories` (`accessories`),
+  ADD KEY `accessories` (`crane_class`),
   ADD KEY `type_reinforcement` (`type_reinforcement`),
-  ADD KEY `execution` (`execution`);
+  ADD KEY `execution` (`execution`),
+  ADD KEY `name_crane` (`name_crane`);
 
 --
 -- Индексы таблицы `highways`
@@ -1153,6 +1238,12 @@ ALTER TABLE `liquids`
 -- Индексы таблицы `list_act_leakages`
 --
 ALTER TABLE `list_act_leakages`
+    ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `list_classification_installations`
+--
+ALTER TABLE `list_classification_installations`
     ADD PRIMARY KEY (`id`);
 
 --
@@ -1206,6 +1297,13 @@ ALTER TABLE `lpumgs`
 --
 ALTER TABLE `malfunctions`
     ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `name_cranes`
+--
+ALTER TABLE `name_cranes`
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Индексы таблицы `passwords`
@@ -1316,12 +1414,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT для таблицы `accessories_reinforcement`
---
-ALTER TABLE `accessories_reinforcement`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- AUTO_INCREMENT для таблицы `applications`
 --
 ALTER TABLE `applications`
@@ -1337,13 +1429,19 @@ ALTER TABLE `application_status`
 -- AUTO_INCREMENT для таблицы `companies`
 --
 ALTER TABLE `companies`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT для таблицы `crane_classes`
+--
+ALTER TABLE `crane_classes`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `document_cranes`
 --
 ALTER TABLE `document_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `drives`
@@ -1367,7 +1465,7 @@ ALTER TABLE `fittings`
 -- AUTO_INCREMENT для таблицы `highways`
 --
 ALTER TABLE `highways`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT для таблицы `ius`
@@ -1386,6 +1484,12 @@ ALTER TABLE `liquids`
 --
 ALTER TABLE `list_act_leakages`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `list_classification_installations`
+--
+ALTER TABLE `list_classification_installations`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `list_general_descriptions`
@@ -1421,19 +1525,25 @@ ALTER TABLE `list_tightness`
 -- AUTO_INCREMENT для таблицы `location`
 --
 ALTER TABLE `location`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `lpumgs`
 --
 ALTER TABLE `lpumgs`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `malfunctions`
 --
 ALTER TABLE `malfunctions`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT для таблицы `name_cranes`
+--
+ALTER TABLE `name_cranes`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `passwords`
@@ -1445,7 +1555,7 @@ ALTER TABLE `passwords`
 -- AUTO_INCREMENT для таблицы `photo_cranes`
 --
 ALTER TABLE `photo_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT для таблицы `privileges`
@@ -1493,7 +1603,7 @@ ALTER TABLE `technique_order`
 -- AUTO_INCREMENT для таблицы `types_drives`
 --
 ALTER TABLE `types_drives`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `types_reinforcement`
@@ -1547,19 +1657,20 @@ ALTER TABLE `document_cranes`
 --
 ALTER TABLE `drives`
     ADD CONSTRAINT `drives_ibfk_1` FOREIGN KEY (`type_drive`) REFERENCES `types_drives` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `drives_ibfk_2` FOREIGN KEY (`company`) REFERENCES `companies` (`firm`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `drives_ibfk_2` FOREIGN KEY (`company`) REFERENCES `companies` (`firm`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `drives_ibfk_3` FOREIGN KEY (`liquid`) REFERENCES `liquids` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `fittings`
 --
 ALTER TABLE `fittings`
-    ADD CONSTRAINT `fittings_ibfk_1` FOREIGN KEY (`name_highways`) REFERENCES `highways` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fittings_ibfk_2` FOREIGN KEY (`company`) REFERENCES `companies` (`firm`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    ADD CONSTRAINT `fittings_ibfk_1` FOREIGN KEY (`name_highways`) REFERENCES `highways` (`name`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `fittings_ibfk_10` FOREIGN KEY (`crane_class`) REFERENCES `crane_classes` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fittings_ibfk_11` FOREIGN KEY (`name_crane`) REFERENCES `name_cranes` (`name`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `fittings_ibfk_2` FOREIGN KEY (`company`) REFERENCES `companies` (`firm`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fittings_ibfk_3` FOREIGN KEY (`id_malfunction`) REFERENCES `malfunctions` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fittings_ibfk_4` FOREIGN KEY (`IUS`) REFERENCES `ius` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fittings_ibfk_5` FOREIGN KEY (`unification_crane`) REFERENCES `unification_cranes` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fittings_ibfk_6` FOREIGN KEY (`accessories`) REFERENCES `accessories_reinforcement` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fittings_ibfk_7` FOREIGN KEY (`type_reinforcement`) REFERENCES `types_reinforcement` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fittings_ibfk_8` FOREIGN KEY (`execution`) REFERENCES `executions` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fittings_ibfk_9` FOREIGN KEY (`id_drive`) REFERENCES `drives` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;

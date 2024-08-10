@@ -1,4 +1,5 @@
 <?php
+	include 'src/functions/status.php';
 
 	function getData($method){
 		$data = new stdClass;
@@ -36,7 +37,8 @@
 			dsn: "$driver:host=$host;dbname=$db_name;charset=$charset", username: $db_user, password: $db_pass, options: $options
 		);
 	} catch (PDOException $i) {
-		die("Ошибка подключения к базе");
+		setHttpStatus(500, "Ошибка подключения к базе");
+		die();
 	};
 
 	$url = isset($_GET['q']) ? $_GET['q'] : '';
@@ -51,10 +53,16 @@
 		include_once 'src/routers/' . $router . '.php';
 		
 		$method = getMethod();
-		$requestData = getData($method);
-		route($method, $urlList, $requestData);
+		$nextUrlList = array_slice($urlList, 1);
+		if (in_array($method, ['GET', 'POST', 'PUT', 'DELETE'])){
+			// echo "3\n";
+			$requestData = getData($method);
+			route($method, $nextUrlList, $requestData);
+		} else {
+			setHttpStatus(501, "Метод запроса не известен серверу");
+		};
 	} else {
-		echo "404 Not found";
+		setHttpStatus(404, "Ресурс не существует!");
 	}
 
 ?>

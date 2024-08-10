@@ -1,78 +1,90 @@
 :root {
-   font-size: 1em;
-   --baseColor: #398B93;
-   --borderRadius: 0.625rem;
-   --padding: 0.625rem;
+	font-size: 1em;
+	--baseColor: #398b93;
+	--borderRadius: 0.625rem;
+	--padding: 0.625rem;
+}
+
+.container-teqnique h2 {
+	text-align: center;
+	margin: 30px 0;
+}
+
+.container-technique h2 {
+	text-align: center;
+	margin: 30px 0;
 }
 
 /* table */
 .tb-header {
-   background-color: var(--baseColor);
-   color: white;
-   font-size: 1.5rem;
-   padding: 1rem;
-   text-align: center;
-   text-transform: uppercase;
+	background-color: var(--baseColor);
+	color: white;
+	font-size: 1.5rem;
+	padding: 1rem;
+	text-align: center;
+	text-transform: uppercase;
 }
 
 .table-users {
-   max-width: calc(100% - 1rem);
-   min-width: 80%;
-   border: 1px solid var(--baseColor);
-   border-radius: var(--borderRadius);
-   box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+	max-width: calc(100% - 1rem);
+	min-width: 80%;
+	border: 1px solid var(--baseColor);
+	border-radius: var(--borderRadius);
+	box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 table {
-   width: 100%;
-   table-layout: fixed; 
-   
+	width: 100%;
+	table-layout: fixed;
 }
-td, th { 
-   color: var(--baseColor) !important;
-   padding: var(--padding) !important;
+td,
+th {
+	color: var(--baseColor) !important;
+	padding: var(--padding) !important;
 }
 td {
-   background-color: transparent !important;
-   text-align: center;
-   vertical-align: middle;
+	background-color: transparent !important;
+	text-align: center;
+	vertical-align: middle;
 }
 td:last-child {
-   font-size: 0.95rem;
-   line-height: 1.4;
-/*   text-align: left;*/
-};
-th { 
-   background-color: var(--baseColor);
-   font-weight: 300;
+	font-size: 0.95rem;
+	line-height: 1.4;
+	/*   text-align: left;*/
 }
-tr:nth-child(2n)  {
-   background-color: white;
+th {
+	background-color: var(--baseColor);
+	font-weight: 300;
 }
-.title th{
-   background-color: transparent !important;
+tr:nth-child(2n) {
+	background-color: white;
 }
-.appForm:nth-child(2n+1), .title {
-   background-color: rgba(237, 247, 248, 1) !important;
+.title th {
+	background-color: transparent !important;
 }
-.edit-service-btn, .save-new-service-btn {
-   width: calc(100% - (1rem / 2));
+.appForm:nth-child(2n + 1),
+.title {
+	background-color: rgba(237, 247, 248, 1) !important;
+}
+.edit-service-btn,
+.save-new-service-btn {
+	width: calc(100% - (1rem / 2));
 }
 
 /* appForm */
 .appForm {
-   cursor: pointer;
-   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+	cursor: pointer;
+	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 .appForm:hover {
-   box-shadow: 0 0 20px -10px;
+	box-shadow: 0 0 20px -10px;
 }
 
 /* modal-dialog */
 .modal-dialog {
-   max-width: 55%;
-   max-height: 80%;
-};
+	max-width: 55%;
+	max-height: 80%;
+}
 .modal-content {
-   overflow: visible !important;
+	overflow: visible !important;
 }

@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 			deleteCookie('auth_token');
-			window.location.href = BASE_URL;
+			window.location.href = `${BASE_URL}log.php`;
 		} catch (error) {
 			// Если была ошибка, то обновляем переменную
-			console.log(error);
+			// console.log(error);
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
 		}
 	};
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				{ href: `${BASE_URL}index.php`, text: 'Главная', style: '' },
 				{ href: `${BASE_URL}technique.php`, text: 'Заказ техник', style: '' },
 				{ href: `${BASE_URL}log.php`, text: 'Печать ЛКРИ', style: '' },
-				{ href: `${BASE_URL}log.php`, text: 'Сменить пользователя', style: '' },
+				{ href: `#`, text: 'Сменить пользователя', style: 'change-user' },
 				{ href: `#`, text: 'Выйти', style: 'btn-exit' },
 			];
 			const dividingLine = document.createElement('li');
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			});
 			container.appendChild(loginBlock);
 			container.appendChild(listContainer);
-			addEventExitBtn(listLiElemetns[listLiElemetns.length - 1]);
+			addEventExitBtn(listContainer);
 		} else {
 			const component = `<li class="nav-item">
 							<a class="nav-link" href="${BASE_URL}log.php">Вход</a>
@@ -109,9 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	};
 	//
-	const addEventExitBtn = (elem) => {
-		const btnExit = elem.querySelector('.btn-exit');
-		btnExit.addEventListener('click', async () => await logout());
+	const addEventExitBtn = (list) => {
+		const btnExit = list.querySelector('.btn-exit');
+		const btnChangeUser = list.querySelector('.change-user');
+		[btnExit, btnChangeUser].forEach((elem) => elem.addEventListener('click', async () => await logout()));
 	};
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.

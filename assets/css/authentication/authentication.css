@@ -1,0 +1,11 @@
+.form a {
+	font-size: 1.2rem;
+	transition: all 0.3s;
+	color: #5c5b5b;
+	text-decoration: none;
+	margin-left: 40px;
+}
+.form a:hover {
+	margin-left: 55px;
+	transition: all 0.3s;
+}

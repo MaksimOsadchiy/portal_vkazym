@@ -8,7 +8,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav2">
                     <li class="nav-item">
-                        <a class="first-line" href="<?php echo BASE_URL ?>" aria-current="page">
+                        <a class="first-line" href="#" aria-current="page">
                             <span class="First-line">Верхнеказымское ЛПУМГ</span><br>
                             <span class="second-line"><?php echo $pageTitle; ?></span>
                         </a>

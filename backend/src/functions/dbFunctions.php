@@ -9,12 +9,22 @@ function customPrint($value){
 //Проверка выполнения запроса к БД
 function dbCheckError($query){
     $errInfo = $query->errorInfo();
+	echo "123123\r\n123\r\n";
     if ($errInfo[0] !== PDO::ERR_NONE) {
-		http_response_code(500);
+		setHttpStatus(500, $errInfo[2]);
         echo $errInfo[2];
         exit();
     };
     return true;
+};
+
+function executeRequest($query) {
+	try {
+		$query->execute();
+	} catch (PDOException $e) {
+		setHttpStatus(500, $e->getMessage());
+		exit();
+	};
 };
 
 //Запрос на получение данных с одной таблицы
@@ -38,8 +48,7 @@ function selectAll($table, $params = []){
 	};
 
 	$query = $pdo->prepare($sql);
-	$query->execute();
-	dbCheckError($query);
+	executeRequest($query);
 	return $query->fetchALL();
 };
 
@@ -98,8 +107,8 @@ function selectOne($table, $params = []){
 	};
 
 	$query = $pdo->prepare($sql);
-	$query->execute();
-	dbCheckError($query);
+	executeRequest($query);
+
 	return $query->fetch();
 };
 
@@ -124,8 +133,7 @@ function insert($table, $params){
 	$sql = "INSERT INTO $table ($coll) VALUES ($mask)";
 
 	$query = $pdo->prepare($sql);
-	$query->execute();
-	dbCheckError($query);
+	executeRequest($query);
 	return ($pdo->lastInsertId());
 };
 
@@ -158,8 +166,7 @@ function delete($table, $id){
 	global $pdo;
 	$sql = "DELETE FROM $table WHERE id = $id";
 	$query = $pdo->prepare($sql);
-	$query->execute();
-	dbCheckError($query);
+	executeRequest($query);
 };
 
 ?>

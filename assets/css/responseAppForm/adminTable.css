@@ -1,0 +1,84 @@
+:root {
+	font-size: 1em;
+	--baseColor: #398b93;
+	--borderRadius: 0.625rem;
+	--padding: 0.625rem;
+}
+
+/* table */
+.table-users {
+	border: 1px solid var(--baseColor);
+	border-radius: var(--borderRadius);
+	box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+	max-width: 100%;
+	min-width: 85%;
+	overflow: hidden;
+}
+.tb-header {
+	background-color: var(--baseColor);
+	color: white;
+	font-size: 1.5rem;
+	padding: 1rem;
+	text-align: center;
+	text-transform: uppercase;
+}
+.table {
+	width: 100%;
+}
+.table p {
+	color: var(--baseColor) !important;
+	padding: var(--padding) !important;
+}
+.tb-title {
+	padding: 0 0.5rem;
+}
+.tb-title p {
+	background-color: var(--baseColor);
+	font-weight: 300;
+	background-color: transparent !important;
+}
+.tbody div {
+	background: transparent;
+}
+.tbody p {
+	background-color: transparent !important;
+	text-align: center;
+	vertical-align: middle;
+	overflow-x: auto;
+}
+.tbody p:first-child {
+	font-size: 0.9rem;
+}
+.tbody p:last-child {
+	font-size: 0.95rem;
+	line-height: 1.4;
+}
+/* appForm */
+.appForm {
+	padding: 0 0.5rem;
+	cursor: pointer;
+	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.appForm:nth-child(2n) {
+	background-color: white;
+}
+.appForm:nth-child(2n + 1),
+.title {
+	background-color: rgba(237, 247, 248, 1) !important;
+}
+.appForm:hover {
+	transform: translate(5px, 5px);
+	box-shadow: -8px -3px 20px -10px;
+}
+.appForm p.yellow {
+	color: darkblue !important;
+}
+.appForm p.green {
+	color: green !important;
+}
+.appForm p.red {
+	color: red !important;
+}
+.appForm p:last-child {
+	font-weight: 600;
+}

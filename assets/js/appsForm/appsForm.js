@@ -1,5 +1,28 @@
 document.addEventListener('DOMContentLoaded', async () => {
 	/**
+	 * Асинхронная функция для получения ответственного пользователя(который откликнулся на заявку).
+	 *
+	 * Функция отправляет запрос на сервер для получения данных о пользователе,
+	 * используя переданный идентификатор пользователя. Возвращает объект с данными пользователя.
+	 * В случае ошибки, функция генерирует событие 'updateError' с сообщением об ошибке.
+	 *
+	 * @param {number} user_id - Идентификатор пользователя.
+	 * @returns {Object} Объект с данными пользователя.
+	 *
+	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с кодом статуса или сообщением об ошибке.
+	 */
+	const getResponsiblePersonForResponse = async (user_id) => {
+		try {
+			const qparametr = `?id=${user_id}`; // Устанавливаем кверипараметры
+			const response = await fetch(`${NEW_SERVER_URL}responsiblePerson${qparametr}`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			return jsonResponse;
+		} catch (e) {
+			// Если была ошибка, то обновляем переменную
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+		}
+	};
+	/**
 	 * Асинхронная функция для получения заявок.
 	 *
 	 * Функция отправляет запрос на сервер для получения данных о заявках,
@@ -10,15 +33,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 *
 	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с кодом статуса или сообщением об ошибке.
 	 */
-
 	const getApplications = async () => {
 		try {
-			// Старый запрос (Монолит)
-			// const qparametr = `?id=${SESSION.id}`; // Устанавливаем кверипараметры
-			// const response = await fetch(`${SERVER_URL}appForm.php${qparametr}`);
-			// Новый запрос
-			const qparametr = `?user_id=${SESSION.id}`; // Устанавливаем кверипараметры
-			const response = await fetch(`${NEW_SERVER_URL}applications${qparametr}`);
+			const response = await fetch(`${NEW_SERVER_URL}yourApplications`);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
@@ -26,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return jsonResponse;
 		} catch (error) {
 			// Если была ошибка, то обновляем переменную
+			console.log(error);
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
 			return { apps: [] };
 		}
@@ -49,11 +67,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const getResponse = async (id) => {
 		try {
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}appResponse.php${qparametr}`);
+			const response = await fetch(`${NEW_SERVER_URL}response${qparametr}`);
 			const jsonResponse = await response.json(); // Достаём тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			return jsonResponse.response[0].response;
+			return jsonResponse.response[jsonResponse.response.length - 1];
 		} catch (error) {
 			// Если была ошибка, то обновляем переменную
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
@@ -76,22 +94,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 		try {
 			// Находим основные пункты заявки (заголовок/основной контент/email)
 			const form = document.querySelector('.forma');
-			const login = form.querySelector('.user').getAttribute('value');
+			const id = form.querySelector('.user').getAttribute('value');
 			const title = form.querySelector('.title').value;
 			const content = form.querySelector('.content').value;
 
 			// Проверка данных
+			if (title.length > 128) throw new Error(`Заголовок не может быть динее 128 символов!(${title.length})`);
 			if (!content) throw new Error('Запрос не может быть пустым!');
 			if (content.length < 5) throw new Error('Текст должен быть не менее 5ти символов!');
 
 			// Формируем объект
 			const params = {
-				login: +login,
+				id: +id,
 				title: title,
 				content: content,
 			};
 			// Формируем запрос
-			const response = await fetch(`${SERVER_URL}appForm.php`, {
+			const response = await fetch(`${NEW_SERVER_URL}application`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -108,12 +127,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 			// Создаём объект только что созданной заявки и добавляем в начало списка заявок на странице
 			const obj = {
 				id: +jsonResponse.id,
-				user_id: SESSION.id,
+				user_id: user.id,
 				title: title,
 				content: content,
 				status: 0,
+				date: formatDate(),
 			};
 			apps = [obj, ...apps];
+			console.log(apps);
 			const bodyTable = document.querySelector('.tbody');
 			const row = createRow(obj);
 			bodyTable.insertBefore(row, bodyTable.firstChild); // Добавляем строчку в начало тела таблицы
@@ -179,6 +200,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 			addEventAccordion(row);
 		});
 	};
+	//
+	const drawEmail = () => {
+		const par = document.querySelector('.user');
+		par.setAttribute('value', user.id);
+		par.innerText = user.login;
+	};
 	/**
 	 * Функция для создания строки таблицы на основе данных заявки.
 	 *
@@ -191,6 +218,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 * @param {Object} app - Объект, представляющий данные заявки.
 	 * @param {number} app.id - Идентификатор заявки.
 	 * @param {string} app.title - Заголовок заявки.
+	 * @param {string} app.date - Дата создания заявки.
 	 * @param {string} app.content - Содержание заявки.
 	 * @param {number} app.status - Статус заявки.
 	 *
@@ -199,26 +227,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const createRow = (app) => {
 		const row = document.createElement('div');
 		const container = document.createElement('div');
+		const tdTime = document.createElement('p');
 		const tdTitle = document.createElement('p');
 		const tdContent = document.createElement('p');
 		const tdStatus = document.createElement('p');
 
+		const statusObj = {
+			0: { text: 'На рассмотрении', style: '' },
+			1: { text: 'В работе', style: 'green' },
+			2: { text: 'Выполнено', style: 'green' },
+			3: { text: 'Отклонено', style: 'red' },
+		};
+
 		// Добавляем классы
 		row.className = 'appForm d-flex flex-column';
 		container.className = 'title-container d-flex flex-row';
-		tdTitle.className = 'col-3 text-center';
-		tdContent.className = 'col-8 text-center';
-		tdStatus.className = 'col-1 text-center status';
+		tdTime.className = 'col-2 text-center';
+		tdTitle.className = 'col-2 text-center';
+		tdContent.className = 'col-6 text-center';
+		tdStatus.className = `col-2 text-center status ${statusObj[app.status].style}`;
 
 		// Добавляем атрибуты
 		row.setAttribute('value', app.id);
 
 		// Добавляем текст
-		tdTitle.innerText = app.title ? app.title : 'Темы нет';
-		tdContent.innerText = formContent(app.content);
-		tdStatus.innerText = app.status;
+		tdTime.innerText = app.date;
+		tdTitle.innerText = app.title ? formContent(app.title, 50) : 'Темы нет';
+		tdContent.innerText = formContent(app.content, 170);
+		tdStatus.innerText = statusObj[app.status].text;
 
 		// Собираем части в единую строку
+		container.appendChild(tdTime);
 		container.appendChild(tdTitle);
 		container.appendChild(tdContent);
 		container.appendChild(tdStatus);
@@ -241,49 +280,103 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const appTextContainer = document.createElement('div');
 		const appTextTitle = document.createElement('p');
 		const appText = document.createElement('p');
+		const appPersonContainer = document.createElement('div');
+		const appPersonTitle = document.createElement('p');
+		const appPerson = document.createElement('p');
+		const appTimeTitle = document.createElement('p');
+		const appTime = document.createElement('p');
 		const appResponseContainer = document.createElement('div');
 		const appResponseTitle = document.createElement('p');
 		const appResponse = document.createElement('p');
 
 		// Добавляем классы
 		container.className = 'content-container d-flex flex-column row-gap-4';
-		appTextContainer.className = 'd-flex flex-row align-items-center column-gap-3';
-		appResponseContainer.className = 'd-flex flex-row align-items-center column-gap-3';
+		appTextContainer.className = 'd-flex flex-row align-items-center';
+		appPersonContainer.className = 'd-flex flex-row align-items-center';
+		appResponseContainer.className = 'd-flex flex-row align-items-center';
+		appTextTitle.className = 'col-2';
+		appPersonTitle.className = 'col-2';
+		appTimeTitle.className = 'col-2';
+		appResponseTitle.className = 'col-2';
+		appText.className = 'col-9';
+		appPerson.className = 'col-2';
+		appTime.className = 'col-3';
+		appResponse.className = 'col-9';
 
 		// Добавляем текст
 		appTextTitle.innerText = 'Текст:';
+		appPersonTitle.innerText = 'Ответственный:';
+		appTimeTitle.innerText = 'Дата:';
 		appResponseTitle.innerText = 'Ответ:';
 		appText.innerText = apps.filter((obj) => obj.id === +row.getAttribute('value'))[0].content;
-		appResponse.innerText = +row.querySelector('.status').textContent ? await getResponse(+row.getAttribute('value')) : 'Ответа нет!'; // Продолжить...
+		appPerson.innerText = 'Отсутствует';
+		appTime.innerText = 'Отсутствует';
+		appResponse.innerText = 'Отсутствует';
+		if (row.querySelector('.status').textContent !== 'На рассмотрении') {
+			const response = await getResponse(+row.getAttribute('value'));
+			const person = await getResponsiblePersonForResponse(response['user_id']);
+			appPerson.innerText = person.login;
+			appTime.innerText = response.date;
+			appResponse.innerText = response.response === '' ? 'Отсутствует' : response.response;
+		}
 
 		// Собираем части в единую строку
 		appTextContainer.appendChild(appTextTitle);
 		appTextContainer.appendChild(appText);
+		appPersonContainer.appendChild(appPersonTitle);
+		appPersonContainer.appendChild(appPerson);
+		appPersonContainer.appendChild(appTimeTitle);
+		appPersonContainer.appendChild(appTime);
 		appResponseContainer.appendChild(appResponseTitle);
 		appResponseContainer.appendChild(appResponse);
 		container.appendChild(appTextContainer);
+		container.appendChild(appPersonContainer);
 		container.appendChild(appResponseContainer);
 		row.appendChild(container);
 	};
 	/**
-	 * Функция для ограничениея текста по длине.
+	 * Функция для ограничения длины текста и добавления многоточия при необходимости.
 	 *
 	 * Функция выполняет следующие действия:
 	 * 1. Проверяет длину входного текста.
-	 * 2. Если длина текста превышает установленный лимит, обрезает текст и добавляет многоточие.
+	 * 2. Если длина текста превышает установленный лимит, обрезает текст до лимита и добавляет многоточие.
 	 * 3. Если длина текста не превышает лимит, возвращает текст без изменений.
 	 *
 	 * @param {string} text - Текст, который нужно обработать.
+	 * @param {number} limit - Максимальная длина текста.
 	 *
 	 * @returns {string} Возвращает обработанный текст, который либо обрезан с многоточием, либо остается неизменным.
 	 */
-	const formContent = (text) => {
-		const limit = 170;
+	const formContent = (text, limit) => {
 		return text.length > limit ? text.substring(0, limit) + '...' : text; // (Тоже тернарный оператор)
+	};
+	/**
+	 * Функция для форматирования текущей даты и времени в строку формата 'YYYY-MM-DD HH:MM:SS'.
+	 *
+	 * Функция выполняет следующие действия:
+	 * 1. Создает новый объект Date, представляющий текущую дату и время.
+	 * 2. Извлекает год, месяц, день, часы, минуты и секунды из объекта Date.
+	 * 3. Форматирует каждый компонент даты и времени, добавляя ведущие нули при необходимости.
+	 * 4. Объединяет компоненты в строку формата 'YYYY-MM-DD HH:MM:SS' и возвращает её.
+	 *
+	 * @returns {string} Возвращает строку с текущей датой и временем в формате 'YYYY-MM-DD HH:MM:SS'.
+	 */
+	const formatDate = () => {
+		const date = new Date();
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы идут от 0 до 11, поэтому нужно добавить 1
+		const day = String(date.getDate()).padStart(2, '0');
+		const hours = String(date.getHours()).padStart(2, '0');
+		const minutes = String(date.getMinutes()).padStart(2, '0');
+		const seconds = String(date.getSeconds()).padStart(2, '0');
+
+		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 	};
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
+	const user = window.sharedData.user;
 	let { apps } = await getApplications();
+	drawEmail();
 	addEventSend();
 	drowTable();
 });

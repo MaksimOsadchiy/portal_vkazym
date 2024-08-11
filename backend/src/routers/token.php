@@ -1,7 +1,10 @@
 <?php
+
 	include_once 'vendor/autoload.php';
 	use Firebase\JWT\JWT;
+
 	function route($method, $urlList, $requestData){
+		$secretKey = 'secret@#_KeY--+!!ooopL;235@**)(87HJfv'; // по идее выноситься в отдельный файл
 		switch ($method) {
 			case 'POST':
 				$userId = $requestData->body->id;
@@ -9,7 +12,6 @@
 				$privilege = $requestData->body->privilege;
 				$serviceId = $requestData->body->service_id;
 
-				$secretKey = 'secret@#_KeY--+!!ooopL;235@**)(87HJfv'; // по идее выноситься в отдельный файл
 				$issuedAt = time();
 				$expirationTime = $issuedAt + 3600; // время по идее выноситься в отдельный файл
 
@@ -51,8 +53,10 @@
 				$response = ['status' => 'success'];
 				echo json_encode($response);
 				break;
+			case 'GET':
+				setHttpStatus(503, 'Запрос не реализован');
 			default:
-				setHttpStatus(405, "Не поддерживается целевым ресурсом!");
+				setHttpStatus(400, "Тут не должен оказаться!");
 				break;
 		};
 	};

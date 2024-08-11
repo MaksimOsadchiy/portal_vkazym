@@ -38,12 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			const loginBlock = document.createElement('a');
 			const listContainer = document.createElement('ul');
 			const listElemens = [
-				{ href: '#', text: 'Администрирование', style: '' },
-				{ href: `${BASE_URL}index.php`, text: 'Главная', style: '' },
-				{ href: `${BASE_URL}technique.php`, text: 'Заказ техник', style: '' },
-				{ href: `${BASE_URL}log.php`, text: 'Печать ЛКРИ', style: '' },
-				{ href: `#`, text: 'Сменить пользователя', style: 'change-user' },
-				{ href: `#`, text: 'Выйти', style: 'btn-exit' },
+				{ href: '#', text: 'Администрирование', style: '', appurtenance: [1] },
+				{ href: `${BASE_URL}index.php`, text: 'Главная', style: '', appurtenance: [0, 1, 2, 3, 4, 5, 6] },
+				{ href: `${BASE_URL}technique.php`, text: 'Заказ техник', style: '', appurtenance: [1, 2, 3, 5, 6] },
+				{ href: `${BASE_URL}appsForm.php`, text: 'Заявки', style: '', appurtenance: [0, 1, 2, 3, 4, 5, 6] },
+				{ href: `${BASE_URL}responseAppForm.php`, text: 'Отыеты на заявки', style: '', appurtenance: [1, 4, 5, 6] },
+				{ href: `${BASE_URL}log.php`, text: 'Печать ЛКРИ', style: '', appurtenance: [0, 1, 2, 3, 4, 5, 6] },
+				{ href: `#`, text: 'Сменить пользователя', style: 'change-user', appurtenance: [0, 1, 2, 3, 4, 5, 6] },
+				{ href: `#`, text: 'Выйти', style: 'btn-exit', appurtenance: [0, 1, 2, 3, 4, 5, 6] },
 			];
 			const dividingLine = document.createElement('li');
 			const line = document.createElement('hr');
@@ -63,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			//
 			const listLiElemetns = listElemens
 				.map((obj) => {
-					if (user.privilege === 1) {
+					if (obj.appurtenance.includes(user.privilege)) {
 						const liContainer = document.createElement('li');
 						const link = document.createElement('a');
 
@@ -74,19 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
 						link.innerText = obj.text;
 						liContainer.appendChild(link);
 						return liContainer;
-					} else {
-						if (obj.text !== 'Администрирование') {
-							const liContainer = document.createElement('li');
-							const link = document.createElement('a');
-
-							link.classList = `dropdown-item ${obj.style}`;
-
-							link.setAttribute('href', obj.href);
-
-							link.innerText = obj.text;
-							liContainer.appendChild(link);
-							return liContainer;
-						}
 					}
 				})
 				.filter((elem) => elem !== undefined);
@@ -116,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
-	const user = getCookie('auth_token') ? jwtDecode(getCookie('auth_token')) : '';
-	drowMainServeces(user);
+	window.sharedData = {
+		user: getCookie('auth_token') ? jwtDecode(getCookie('auth_token')) : '',
+	};
+	drowMainServeces(window.sharedData.user);
 });

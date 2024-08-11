@@ -26,8 +26,8 @@
 					$response = file_get_contents($url, false, $context);
 					echo $response;
 				} else {
-					setHttpStatus(400, "Токен не обнаружен!");
-				}
+					setHttpStatus(401, "Вы не авторизованы!");
+				};
 				break;
 			default:
 				setHttpStatus(405, "Не поддерживается целевым ресурсом!");

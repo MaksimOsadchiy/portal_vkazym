@@ -1,7 +1,7 @@
 <?php
 
     include('path.php');
-    include 'app/database/dbFunction.php';
+    // include 'app/database/dbFunction.php';
     $pageTitle = "Заявки";
 	$menuItems = [
         ['url' => BASE_URL, 'label' => 'Главная'],
@@ -17,23 +17,23 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/normalize.css">
- 	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/mainStyles.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/style.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/appsForm/appsForm.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/modalWindowNotif/modalWindowNotif.css">
+	<link rel="stylesheet" href="<?=BASE_URL?>assets/css/normalize.css">
+ 	<link rel="stylesheet" href="<?=BASE_URL?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/style.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/header/header.css">
+	<link rel="stylesheet" href="<?=BASE_URL?>assets/css/modalWindowNotif/modalWindowNotif.css">
+	<link rel="stylesheet" href="<?=BASE_URL?>assets/css/appsForm/appsForm.css">
 	<script>
-		const SERVER_URL = <?php echo json_encode(SERVER_URL) ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
 		const NEW_SERVER_URL = <?php echo json_encode(NEW_SERVER_URL) ?>;
-        const SESSION = <?php echo json_encode($_SESSION); ?>;
 	</script>
-	<script defer src="<?php echo BASE_URL ?>assets/js/appsForm/appsForm.js"></script>
+	<script defer type="module" src="<?=BASE_URL?>assets/js/headerMain/headerMain.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
-	<title>Заявки</title>
+	<script defer src="<?php echo BASE_URL ?>assets/js/appsForm/appsForm.js"></script>
+	<title>Портал В-Казым</title>
 </head>
 <body>
-    <?php include("app/include/header.php"); ?>
+    <?php include("components/header.php"); ?>
 
 	<div class="main-info container d-flex flex-row justify-content-center align-items-center">
 		<p>Основная информация....</p>
@@ -55,9 +55,9 @@
 						<div class="forma container d-flex flex-column justify-content-center align-items-center">
 							<h2>Заполните заявку</h2>
 							<div class="d-flex flex-row column-gap-2 justify-content-between col-10 mt-3 mb-3 row">
-								<label for="staticEmail" class="col-sm-2 col-form-label ">Email:</label>
+								<label for="staticEmail" class="col-sm-2 col-form-label">Email:</label>
 								<div class="col-sm-9">
-									<p class="user" value="<?=$_SESSION['id']?>"><?=$_SESSION['login']?></p>
+									<p class="user"></p>
 								</div>
 							</div>
 							<div class="d-flex flex-row column-gap-2  justify-content-between col-10 mb-3 row">
@@ -81,13 +81,14 @@
 	            </div>
 	        </div>
 	    </div>
-	    <div class="table-appsForm mb-3 col-10">
+	    <div class="table-appsForm mb-3 col-11">
             <div class="tb-header">Ваши заявки</div>
             <div class="table">
                 <div class="tb-title d-flex flex-row">
-                    <p class="col-3 text-center">Тема</p>
-                    <p class="col-8 text-center">Контент</p>
-                    <p class="col-1 text-center">Статус</p>
+                    <p class="col-2 text-center">Дата</p>
+                    <p class="col-2 text-center">Тема</p>
+                    <p class="col-6 text-center">Контент</p>
+                    <p class="col-2 text-center">Статус</p>
                 </div>
                 <div class="tbody"></div>
             </div>

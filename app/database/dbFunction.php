@@ -340,5 +340,31 @@ function getAllMaintenance($id) {
     $query->execute();
     dbCheckErrorRes($query);
     return $query->fetchAll();
+};
+
+function getAllIdentifiedFaults($id) {
+    global $pdo;
+    $sql = "SELECT 
+                    i.id,
+                    i.date_detection,
+                    i.date_troubleshooting,
+                    i.possible_cause,
+                    i.complete_activities,
+                    i.note,
+                    CONCAT(us_d.login, ', ФИО скоро...') AS `login_detected`,
+                    CONCAT(us_t.login, ', ФИО скоро...') AS `login_troubleshooting`
+            FROM 
+                identified_faults i
+            LEFT JOIN 
+                users us_d ON us_d.id = i.id_user_detection
+			LEFT JOIN 
+				users us_t ON us_t.id = i.id_user_troubleshooting
+            WHERE
+                i.id_fitting = $id;";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $query->fetchAll();
 }
 ?>

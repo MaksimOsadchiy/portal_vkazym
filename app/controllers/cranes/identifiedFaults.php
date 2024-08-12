@@ -4,9 +4,7 @@ include_once("../../database/dbFunction.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
-    $table = 'identified_faults';
-    $params = ['id_fitting' => $id];
-    $response = selectAllRes($table, $params);
+    $response = getAllIdentifiedFaults($id);
     echo json_encode($response);
     return;
 

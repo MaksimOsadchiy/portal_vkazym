@@ -316,4 +316,29 @@ function deletePhotoRes($table, $params = []){
     dbCheckErrorRes($query);
     return $params['id_fitting'];
 };
+
+function getAllMaintenance($id) {
+    global $pdo;
+    $sql = "SELECT 
+                    m.id,
+                    m.date,
+                    m.type_maintenance,
+                    s.service,
+                    m.content_work, 
+                    m.result, 
+                    CONCAT(us.login, ', ФИО скоро...') AS `login`
+            FROM 
+                maintenance m
+            LEFT JOIN 
+                users us ON us.id = m.id_user
+            LEFT JOIN 
+                services s ON s.id = us.service_id
+            WHERE
+                m.id_fitting = $id;";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $query->fetchAll();
+}
 ?>

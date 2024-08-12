@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
+	const drawSelectAffiliation = () => {
+		const select = document.querySelector('.affiliation');
+		for (const key in cranes) {
+			select.appendChild(createOption(key));
+		};
+	};
+	//
 	const drawTable = (cranes) => {
 		const tbody = document.querySelector('.tbody');
 		tbody.innerText = '';
@@ -24,6 +31,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 		const allRow = tbody.querySelectorAll('.t-row');
 		allRow.forEach((row, index) => (row.querySelector('.column').innerText = index + 1));
+	};
+	//
+	const createOption = (name) => {
+		const option = document.createElement('option');
+		option.setAttribute('value', name);
+		option.innerText = name;
+		return option;
 	};
 	//
 	const createSection = (name) => {
@@ -97,19 +111,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 		return row;
 	};
 	//
-	const addEventSelectChange = () => {
+	const addEventSelectChoiceChange = () => {
 		const select = document.querySelector('.choice');
-		select.addEventListener('change', () => {
-			if (+select.value >= 0) {
-				let newCranes = JSON.parse(JSON.stringify(cranes));
-				for (const key in newCranes) {
-					newCranes[key] = newCranes[key].filter((item) => item.result === +select.value);
-				}
-				drawTable(newCranes);
-			} else {
-				drawTable(cranes);
-			}
-		});
+		select.addEventListener('change', () => filterFunc());
+	};
+	//
+	const addEventSelectAffiliationChange = () => {
+		const select = document.querySelector('.affiliation');
+		select.addEventListener('change', () => filterFunc());
+	}
+	//
+	const addEventInputNumberChang = () => {
+		const input = document.querySelector('.input-number');
+		input.addEventListener('input', () => filterFunc())
 	};
 	//
 	const addEventRowClick = (row) => {
@@ -117,10 +131,36 @@ document.addEventListener('DOMContentLoaded', async () => {
 			window.location.href = `${BASE_URL}oneCrane.php?id=${+row.getAttribute('value')}`;
 		});
 	};
+	//
+	const filterFunc = () => {
+		const selectChoice = document.querySelector('.choice');
+		const selectAffiliation = document.querySelector('.affiliation');
+		const inputNumber = document.querySelector('.input-number');
+
+		let filterCranes = JSON.parse(JSON.stringify(cranes));
+		if (+selectChoice.value >= 0) {
+			for (const key in filterCranes){
+				filterCranes[key] = filterCranes[key].filter((item) => item.result === +selectChoice.value);
+			};
+		};
+		if (selectAffiliation.value != -1) {
+			filterCranes = {[selectAffiliation.value]: filterCranes[selectAffiliation.value]}
+		};
+		if (inputNumber.value.trim()) {
+			for (const key in filterCranes){
+				// filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.includes(inputNumber.value)); // Так мы просто проверяем является ли введённая строка подстрокой
+				filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.startsWith(inputNumber.value)); // Так мы проверяем является ли введённая строка началом главной строки
+			};
+		};
+		drawTable(filterCranes);
+	};
 
 	//
 	const cranes = await getAllCreanes();
 	console.log(cranes);
+	drawSelectAffiliation();
 	drawTable(cranes);
-	addEventSelectChange();
+	addEventSelectChoiceChange();
+	addEventSelectAffiliationChange();
+	addEventInputNumberChang();
 });

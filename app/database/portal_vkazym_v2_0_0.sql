@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Авг 09 2024 г., 10:56
+-- Время создания: Авг 12 2024 г., 11:49
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -161,7 +161,8 @@ CREATE TABLE `document_cranes` (
 INSERT INTO `document_cranes` (`id`, `id_fitting`, `document_url`, `name`) VALUES
                                                                                (8, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/documents/PDF.pdf', 'PDF.pdf'),
                                                                                (9, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/documents/car.png', 'car.png'),
-                                                                               (10, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/documents/PDF.pdf', 'PDF.pdf');
+                                                                               (10, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/documents/PDF.pdf', 'PDF.pdf'),
+                                                                               (11, 8, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.3/documents/PDF.pdf', 'PDF.pdf');
 
 -- --------------------------------------------------------
 
@@ -245,7 +246,7 @@ CREATE TABLE `fittings` (
 --
 
 INSERT INTO `fittings` (`id`, `name_highways`, `crane_class`, `name_crane`, `location_crane`, `technical_number`, `company`, `year_manufacture`, `factory_number`, `Dn`, `id_malfunction`, `plan_replacement`, `IUS`, `unification_crane`, `type_reinforcement`, `pressure`, `execution`, `year_commission`, `id_drive`, `classification_installation`) VALUES
-                                                                                                                                                                                                                                                                                                                                                            (6, 'между Ямбург-Елец 2 и Ямбург-Зап.граница', 'Линейный', 'Стояк отбора газа', 853, '853-1', 'АЗТПА', '1984', '2545', 300, 6, NULL, '409', 'КЦ', 'Шаровой', 80, 'Подземное', '1985', 1, NULL),
+                                                                                                                                                                                                                                                                                                                                                            (6, 'между Ямбург-Елец 2 и Ямбург-Зап.граница', 'Перемчка', 'Стояк отбора газа', 853, '853-1', 'АЗТПА', '1984', '2545', 300, 6, NULL, '409', 'КЦ', 'Шаровой', 80, 'Подземное', '1985', 1, NULL),
                                                                                                                                                                                                                                                                                                                                                             (7, 'Уренгой-Центр 2', 'Линейный', 'на ЛК', 539, '539-3.2', 'Волгограднефтемаш', '2003', '852', 300, 7, NULL, '409', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 4, NULL),
                                                                                                                                                                                                                                                                                                                                                             (8, 'Уренгой-Центр 2', 'Линейный', 'на ЛК', 539, '539-3.3', 'Волгограднефтемаш', '2003', '857', 300, 8, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 3, NULL),
                                                                                                                                                                                                                                                                                                                                                             (9, 'Уренгой-Ужгород', 'Линейный', 'на ЛК', 538, '538-1.3', 'Грове', '1983', NULL, 300, 9, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '1984', 7, NULL);
@@ -300,6 +301,39 @@ INSERT INTO `highways` (`id`, `name`, `lpumg`) VALUES
                                                    (97, 'между Ямбург-Тула 1 и Ямбург-Тула 2', 'Верхнеказымское'),
                                                    (98, 'между Ямбург-Тула 2 и Ямбург-Поволжье', 'Верхнеказымское'),
                                                    (99, 'между Ямбург-Поволжье и СРТО-Урал', 'Верхнеказымское');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `identified_faults`
+--
+
+CREATE TABLE `identified_faults` (
+                                     `id` int NOT NULL,
+                                     `id_fitting` int NOT NULL,
+                                     `possible_cause` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                                     `id_user_detection` int NOT NULL,
+                                     `id_user_troubleshooting` int DEFAULT NULL,
+                                     `complete_activities` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                                     `note` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                                     `date_detection` date NOT NULL,
+                                     `date_troubleshooting` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `identified_faults`
+--
+
+INSERT INTO `identified_faults` (`id`, `id_fitting`, `possible_cause`, `id_user_detection`, `id_user_troubleshooting`, `complete_activities`, `note`, `date_detection`, `date_troubleshooting`) VALUES
+                                                                                                                                                                                                    (1, 6, 'ТЕТЕ', 29, NULL, NULL, NULL, '2024-08-13', NULL),
+                                                                                                                                                                                                    (2, 6, 'ТЕТЕ', 29, 29, 'СМСМСМСМ', NULL, '2024-08-13', '2024-08-07'),
+                                                                                                                                                                                                    (3, 6, 'ТЕТЕ', 29, 29, 'СМСМСМСМ', 'аааааа', '2024-08-13', '2024-08-07'),
+                                                                                                                                                                                                    (4, 6, 'ТЕТЕ', 29, 29, 'СМСМСМСМ', 'аааааа', '2024-08-13', '2024-08-07'),
+                                                                                                                                                                                                    (5, 6, 'sdf', 29, NULL, NULL, NULL, '2024-08-21', NULL),
+                                                                                                                                                                                                    (6, 6, 'ММММВМ', 29, NULL, NULL, NULL, '2024-08-13', NULL),
+                                                                                                                                                                                                    (7, 6, 'df', 29, 29, 'vv', 'vvvvv', '2024-08-14', '2024-08-07'),
+                                                                                                                                                                                                    (8, 6, 'bbbbbbbbbb', 29, NULL, NULL, NULL, '2024-07-30', NULL),
+                                                                                                                                                                                                    (9, 7, 'утечка', 29, NULL, NULL, NULL, '2024-08-12', NULL);
 
 -- --------------------------------------------------------
 
@@ -526,6 +560,33 @@ INSERT INTO `lpumgs` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `maintenance`
+--
+
+CREATE TABLE `maintenance` (
+                               `id` int NOT NULL,
+                               `id_fitting` int NOT NULL,
+                               `type_maintenance` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                               `content_work` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                               `result` varchar(511) COLLATE utf8mb4_general_ci NOT NULL,
+                               `id_user` int NOT NULL,
+                               `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `maintenance`
+--
+
+INSERT INTO `maintenance` (`id`, `id_fitting`, `type_maintenance`, `content_work`, `result`, `id_user`, `date`) VALUES
+                                                                                                                    (12, 6, 'Вывод ЗРА в ремонт', 'sdf', 'ffff', 29, '2024-08-12 15:47:50'),
+                                                                                                                    (13, 6, 'Вывод ЗРА в ремонт', 'ddddddddddddd', 'dvvvvvvvvvvvvv', 29, '2024-08-12 16:13:55'),
+                                                                                                                    (14, 6, 'Вывод ЗРА в ремонт', '555', '11111', 29, '2024-08-12 16:20:29'),
+                                                                                                                    (15, 6, 'Вывод ЗРА в ремонт', 'sssss', 'cccccccccccccccccccc', 29, '2024-08-12 16:21:06'),
+                                                                                                                    (16, 6, 'Вывод ЗРА в ремонт', 'dsfsfdf', 'scccccccccccxxx', 29, '2024-08-12 16:22:26');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `malfunctions`
 --
 
@@ -545,9 +606,9 @@ CREATE TABLE `malfunctions` (
 --
 
 INSERT INTO `malfunctions` (`id`, `general_description`, `tightness`, `leakage`, `act_leakage`, `drainage`, `packing_pipelines`, `result`) VALUES
-                                                                                                                                               (6, 'Требует замену', 'Негерметичен', 4, 'АКТ', 'В наличии', 'В наличии', 0),
-                                                                                                                                               (7, 'Слома, сломан, сломан', 'Герметичен', 0, 'нет', 'В наличии', 'В наличии', 1),
-                                                                                                                                               (8, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+                                                                                                                                               (6, 'Требует замену', 'Негерметичен', 4, 'АКТ', 'В наличии', 'В наличии', 2),
+                                                                                                                                               (7, 'Слома, сломан, сломан', 'Негерметичен', 3, 'нет', 'В наличии', 'В наличии', 0),
+                                                                                                                                               (8, NULL, NULL, NULL, NULL, NULL, NULL, 0),
                                                                                                                                                (9, 'Требует замену', 'Негерметичен', 5, 'нет', 'Нет в наличии', 'Нет в наличии', 0);
 
 -- --------------------------------------------------------
@@ -644,7 +705,6 @@ INSERT INTO `photo_cranes` (`id`, `id_fitting`, `photo_url`, `name`) VALUES
                                                                          (97, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/img/crane_img_6_2024-08-09T065337.png', 'car.png'),
                                                                          (98, 7, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.2/img/crane_img_7_2024-08-09T065420.png', 'кран.png'),
                                                                          (99, 7, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.2/img/crane_img_7_2024-08-09T065424.png', 'save.png'),
-                                                                         (100, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/img/crane_img_9_2024-08-09T065434.jpeg', 'noimage.jpeg'),
                                                                          (101, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/img/crane_img_9_2024-08-09T065436.png', 'downArrow.png');
 
 -- --------------------------------------------------------
@@ -1010,6 +1070,24 @@ INSERT INTO `types_drives` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `types_maintenance`
+--
+
+CREATE TABLE `types_maintenance` (
+                                     `id` int NOT NULL,
+                                     `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `types_maintenance`
+--
+
+INSERT INTO `types_maintenance` (`id`, `name`) VALUES
+    (1, 'Вывод ЗРА в ремонт');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `types_reinforcement`
 --
 
@@ -1221,6 +1299,15 @@ ALTER TABLE `highways`
   ADD KEY `name` (`name`);
 
 --
+-- Индексы таблицы `identified_faults`
+--
+ALTER TABLE `identified_faults`
+    ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user_detection` (`id_user_detection`,`id_user_troubleshooting`),
+  ADD KEY `id_user_troubleshooting` (`id_user_troubleshooting`),
+  ADD KEY `id_fitting` (`id_fitting`);
+
+--
 -- Индексы таблицы `ius`
 --
 ALTER TABLE `ius`
@@ -1291,6 +1378,15 @@ ALTER TABLE `location`
 ALTER TABLE `lpumgs`
     ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Индексы таблицы `maintenance`
+--
+ALTER TABLE `maintenance`
+    ADD PRIMARY KEY (`id`),
+  ADD KEY `id_fitting` (`id_fitting`),
+  ADD KEY `type_maintenance` (`type_maintenance`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Индексы таблицы `malfunctions`
@@ -1381,6 +1477,13 @@ ALTER TABLE `types_drives`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Индексы таблицы `types_maintenance`
+--
+ALTER TABLE `types_maintenance`
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
 -- Индексы таблицы `types_reinforcement`
 --
 ALTER TABLE `types_reinforcement`
@@ -1441,7 +1544,7 @@ ALTER TABLE `crane_classes`
 -- AUTO_INCREMENT для таблицы `document_cranes`
 --
 ALTER TABLE `document_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `drives`
@@ -1466,6 +1569,12 @@ ALTER TABLE `fittings`
 --
 ALTER TABLE `highways`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+
+--
+-- AUTO_INCREMENT для таблицы `identified_faults`
+--
+ALTER TABLE `identified_faults`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `ius`
@@ -1534,6 +1643,12 @@ ALTER TABLE `lpumgs`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT для таблицы `maintenance`
+--
+ALTER TABLE `maintenance`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT для таблицы `malfunctions`
 --
 ALTER TABLE `malfunctions`
@@ -1555,7 +1670,7 @@ ALTER TABLE `passwords`
 -- AUTO_INCREMENT для таблицы `photo_cranes`
 --
 ALTER TABLE `photo_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT для таблицы `privileges`
@@ -1604,6 +1719,12 @@ ALTER TABLE `technique_order`
 --
 ALTER TABLE `types_drives`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT для таблицы `types_maintenance`
+--
+ALTER TABLE `types_maintenance`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `types_reinforcement`
@@ -1680,6 +1801,22 @@ ALTER TABLE `fittings`
 --
 ALTER TABLE `highways`
     ADD CONSTRAINT `highways_ibfk_1` FOREIGN KEY (`lpumg`) REFERENCES `lpumgs` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `identified_faults`
+--
+ALTER TABLE `identified_faults`
+    ADD CONSTRAINT `identified_faults_ibfk_1` FOREIGN KEY (`id_user_detection`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `identified_faults_ibfk_2` FOREIGN KEY (`id_user_troubleshooting`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `identified_faults_ibfk_3` FOREIGN KEY (`id_fitting`) REFERENCES `fittings` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ограничения внешнего ключа таблицы `maintenance`
+--
+ALTER TABLE `maintenance`
+    ADD CONSTRAINT `maintenance_ibfk_1` FOREIGN KEY (`id_fitting`) REFERENCES `fittings` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `maintenance_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `maintenance_ibfk_3` FOREIGN KEY (`type_maintenance`) REFERENCES `types_maintenance` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `passwords`

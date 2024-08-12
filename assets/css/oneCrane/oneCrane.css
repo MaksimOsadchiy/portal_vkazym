@@ -1,5 +1,5 @@
 .content {
-    width: 60%;
+    width: 80%;
     border-radius: 1rem;
     border: 1px solid grey;
 }
@@ -11,7 +11,7 @@
     width: 100%;
 }
 .content__img-managment {
-    width: 40%;
+    width: 30%;
 }
 .content__img-container {
     position: relative;
@@ -92,11 +92,20 @@
     height: 100%;
     object-fit: contain;
 }
-.content__malfunction-info {
+.content__malfunction-container {
+    width: 64%;
+}
+.content__malfunction-info,
+.content__identified-faults{
     width: 50%;
 }
-.content__body .table {
-    width: 80%;
+.content__malfunction-info a {
+    text-decoration: underline;
+}
+.content__body .table,
+.document-container,
+.affiliation-container{
+    width: 70%;
 }
 
 .table {
@@ -159,11 +168,31 @@ textarea.column{
     min-height: 3rem;
     max-height: 6rem;
 }
-.document-container {
-    width: 80%;
+.complete-activities,
+.possible-cause {
+    max-height: 59px;
+}
+.note {
+    max-height: 8rem;
+}
+.document-container{
     border-radius: 1rem;
     border: 1px solid grey;
 }
 .document-row {
     width: 100%;
+}
+
+.modal-dialog {
+    width: 40rem;
+    max-width: 55rem;
+}
+.date,
+.types-work {
+    width: 233px;
+}
+.form-control.content-work,
+.form-control.result-work {
+    min-height: 3.5rem;
+    max-height: 13rem;
 }

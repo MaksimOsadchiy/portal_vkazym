@@ -1,6 +1,9 @@
 .table-container {
     width: 95%;
 }
+.input-group {
+    height: 38px;
+}
 .table {
     width: 100%;
     border-radius: 0.5rem;

@@ -32,12 +32,28 @@
     <?php include("app/include/header.php"); ?>
     <section class="d-flex flex-column align-items-center">
         <div class="table-container d-flex flex-column align-items-center pt-3">
-            <select class="form-select choice" aria-label="Default select example">
-                <option value="-1" selected>Все краны</option>
-                <option value="2">Дефективные краны</option>
-                <option value="1">Работающие  краны</option>
-                <option value="0">Неработающие  краны</option>
-            </select>
+            <div class="managment d-flex flex-column align-items-center row-gap-4 col-6 p-3">
+                <select class="form-select choice" aria-label="Default select example">
+                    <option value="-1" selected>Все краны</option>
+                    <option value="2">Дефективные краны</option>
+                    <option value="1">Работающие  краны</option>
+                    <option value="0">Неработающие  краны</option>
+                </select>
+                <div class="d-flex flex-row column-gap-5">
+                    <div class="d-flex flex-column row-gap-3">
+                        <p class="fs-5">Принадлежность</p>
+                        <select class="form-select affiliation" aria-label="Default select example">
+                            <option value="-1" selected></option>
+                        </select>
+                    </div>
+                    <div class="d-flex flex-column row-gap-3">
+                        <p class="fs-5">Номер крана</p>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control input-number" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="table table-cranes d-flex flex-column align-items-center mt-4">
                 <div class="thead d-flex flex-column">
                     <div class="t-row d-flex flex-row justify-content-center">

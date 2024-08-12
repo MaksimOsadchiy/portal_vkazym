@@ -16,11 +16,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     };
     //
-    const putCrane = async (data) => {
+    const putCrane = async () => {
         try {
             const url = new URL(window.location.href);
             const id = new URLSearchParams(url.search).get('id');
             const qparametr = `?id=${id}`;
+            const [data, obj] = collectContentChangeMalfunction();
+            if (Object.keys(obj).length) await postIdentifiedFaults(obj);
             const response = await fetch(`${SERVER_URL}cranes/malfunction.php${qparametr}`, {
                 method: 'PUT',
                 headers: {
@@ -70,7 +72,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const url = new URL(window.location.href);
             const id = new URLSearchParams(url.search).get('id');
-            console.log(name);
             const qparametr = `?id=${id}&name=${name}`;
 
             const response = await fetch(`${SERVER_URL}cranes/image.php${qparametr}`, {
@@ -144,6 +145,128 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     };
     //
+    const getMaintenance = async () => {
+        try {
+            const url = new URL(window.location.href);
+            const id = new URLSearchParams(url.search).get('id');
+            const qparametr = `?id=${id}`;
+            const response = await fetch(`${SERVER_URL}cranes/maintenance.php${qparametr}`);
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            jsonResponse.reverse();
+            return jsonResponse;
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return [];
+        };
+    };
+    //
+    const getTypesWork = async () => {
+        try {
+            const response = await fetch(`${SERVER_URL}cranes/typesMaintenance.php`);
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            return jsonResponse;
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return [];
+        };
+    };
+    //
+    const getIdentifiedFaults = async () => {
+        try {
+            const url = new URL(window.location.href);
+            const id = new URLSearchParams(url.search).get('id');
+            const qparametr = `?id=${id}`;
+            const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`);
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            return jsonResponse;
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return [];
+        };
+    }
+    //
+    const postNewMaintenance = async () => {
+        try {
+            const url = new URL(window.location.href);
+            const id = new URLSearchParams(url.search).get('id');
+            const qparametr = `?id=${id}`;
+            const data = collectContentPostMaintenance();
+
+            const response = await fetch(`${SERVER_URL}cranes/maintenance.php${qparametr}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            document.dispatchEvent(new CustomEvent('updateError', { detail: 'ТОиР добавлен!'})); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            clearDataModalWindow();
+            const newObj = {
+                id: +jsonResponse,
+                login: SESSION['login'],
+                date: data.date,
+                type_maintenance: data.typeWork,
+                service: SESSION['service'],
+                content_work: data.contentWork,
+                result: data.result,
+            };
+            maintenance = [newObj, ...maintenance];
+            drawTableAffiliation(maintenance);
+            return jsonResponse;
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return false;
+        }
+    };
+    //
+    const postIdentifiedFaults = async (data) => {
+        try {
+            const url = new URL(window.location.href);
+            const id = new URLSearchParams(url.search).get('id');
+            const qparametr = `?id=${id}`;
+
+            const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const jsonResponse = await response.json(); // Получаем тело ответа
+            if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+            document.dispatchEvent(new CustomEvent('updateError', { detail: 'Неисправность добавлена!'})); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            clearDataIdentifiedFaults();
+            const newObj = {
+                id: +jsonResponse,
+                id_fitting: 6,
+                possible_cause: data.possibleCause,
+                id_user_detection: data.userDetectionId,
+                id_user_troubleshooting: data.completeActivities ? data.userDetectionId : '',
+                complete_activities: data.completeActivities ? data.completeActivities : '',
+                note: data.note ? data.note : '',
+                date_detection: data.dateDetection,
+                date_troubleshooting: data.dateTroubleshooting ? data.dateTroubleshooting : '',
+            };
+            identifiedFaults = [newObj, ...identifiedFaults];
+            drawTableIdentifiedFaults(identifiedFaults);
+            return jsonResponse;
+        } catch (error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+            return false;
+        }
+    }
+    //
     const drawTableMalfunction = (crane) => {
         const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
         for(const key in crane.secondary) {
@@ -212,6 +335,49 @@ document.addEventListener('DOMContentLoaded', async () => {
         data.forEach((obj) => container.appendChild(createRowDocument(obj.document_url, obj.name)));
     };
     //
+    const drawTableAffiliation = (maintenance) => {
+        const bodyTable = document.querySelector('.table-affiliation').querySelector('.tbody');
+        bodyTable.innerText = '';
+        maintenance.forEach((elem) => {
+            const list = [
+                elem.date.slice(0,10),
+                elem.type_maintenance,
+                elem.service,
+                elem.content_work,
+                elem.result,
+                elem.login,
+            ];
+            bodyTable.appendChild(createRowMaintenanceIdentifiedFaults(list));
+        });
+    };
+    //
+    const drawDataOnWindowAffiliation = (types) => {
+        const modalWindow = document.querySelector('.modal-content');
+        const date = modalWindow.querySelector('.check-datetime');
+        const select = modalWindow.querySelector('.form-select');
+
+        const nowDate = new Date().toISOString().split('T')[0];
+        date.value = nowDate;
+        types.forEach((elem) => select.appendChild(createOption(elem.name)));
+    };
+    //
+    const drawTableIdentifiedFaults = (identifiedFaults) => {
+        const bodyTable = document.querySelector('.table-identified-faults').querySelector('.tbody');
+        bodyTable.innerText = '';
+        identifiedFaults.forEach((elem) => {
+            const list = [
+                elem.date_detection,
+                elem.id_user_detection,
+                elem.possible_cause,
+                elem.date_troubleshooting ? elem.date_troubleshooting : '-',
+                elem.complete_activities ? elem.complete_activities : '-',
+                elem.id_user_troubleshooting ? elem.id_user_troubleshooting : '-',
+                elem.note ? elem.note : '-',
+            ];
+            bodyTable.appendChild(createRowMaintenanceIdentifiedFaults(list));
+        });
+    };
+    //
     const createRowMalfunction = (title, name, list, attr) => {
         const row = document.createElement('div');
         const parameter = document.createElement('p');
@@ -266,6 +432,27 @@ document.addEventListener('DOMContentLoaded', async () => {
        return row;
     };
     //
+    const createRowMaintenanceIdentifiedFaults = (list) => {
+        const row = document.createElement('div');
+
+        row.className = 't-row d-flex flex-row justify-content-center';
+        for (let i = 0; i < list.length; i++) {
+            const content = document.createElement('p');
+            content.className = 'column th text-center';
+            content.innerText = list[i];
+            row.appendChild(content);
+        };
+
+        return row;
+    };
+    //
+    const createOption = (name) => {
+       const option = document.createElement('option');
+       option.setAttribute('value', name);
+       option.innerText = name;
+       return option;
+    };
+    //
     const createSelect = (title, name, list) => {
         const select = document.createElement('select');
         const option = document.createElement('option');
@@ -274,7 +461,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const option = document.createElement('option');
                 option.innerText = elem.description;
                 option.value = elem.id;
-                name == elem.name && (option.selected = true);
+                name == elem.description && (option.selected = true);
                 select.appendChild(option);
             });
         } else {
@@ -306,16 +493,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         return row;
     };
     //
-    const collectContent = () => {
+    const collectContentChangeMalfunction = () => {
         const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
+        const identifiedFaultsContainer = document.querySelector('.content__identified-faults');
 
-        const result = {};
+        const resultTable = {};
         const allRow = bodyTable.querySelectorAll('.t-row');
         allRow.forEach((row) => {
             const key = row.getAttribute('key');
             const isTextarea = row.lastChild.tagName === 'TEXTAREA';
             if (row.lastChild.value >= 0 && !isTextarea) {
-                result[key] = craneData[`list_${key}`]
+                resultTable[key] = craneData[`list_${key}`]
                     .find((el) => +el.id === +row.lastChild.value)
                     .name;
                 if (key === 'result') {
@@ -323,23 +511,78 @@ document.addEventListener('DOMContentLoaded', async () => {
                         .querySelector(' .tbody')
                         .querySelectorAll('.t-row')[1]
                         .querySelectorAll('p')[1]
-                        .innerText = craneData.list_result.find((elem) => +elem.name === +result[key])
+                        .innerText = craneData.list_result.find((elem) => +elem.name === +resultTable[key])
                         .description;
                 };
             } else if (isTextarea && row.lastChild.value){
-                result[key] = row.lastChild.value;
+                resultTable[key] = row.lastChild.value;
             };
         });
+        // -----
+        const possibleCause = identifiedFaultsContainer.querySelector('.possible-cause').value.trim();
+        let obj = {};
+        if (possibleCause) {
+            const dateDetection = identifiedFaultsContainer.querySelector('.identified-faults-date-from').value;
+            if (!dateDetection) throw new Error('Введите дату обнаружения неисправности!');
+            obj = {
+                dateDetection: dateDetection,
+                possibleCause: possibleCause,
+                userDetectionId: SESSION['id'],
+            };
+            const completeActivities = identifiedFaultsContainer.querySelector('.complete-activities').value.trim();
+            if (completeActivities) {
+                const dateTroubleshooting =  identifiedFaultsContainer.querySelector('.identified-faults-date-to').value;
+                const note =  identifiedFaultsContainer.querySelector('.note').value.trim();
+                if (!dateTroubleshooting) throw new Error('Введите дату устранения неисправности!');
+                obj.completeActivities = completeActivities;
+                obj.dateTroubleshooting = dateTroubleshooting;
+                if (note) obj.note = note;
+            };
+        };
 
-        return result;
+        return [resultTable, obj];
+    };
+    //
+    const collectContentPostMaintenance = () => {
+        const modalBody = document.querySelector('.modal-body');
+        const date = modalBody.querySelector('.check-datetime').value;
+        const typeWork = modalBody.querySelector('.form-select').value;
+        const contentWork = modalBody.querySelector('.content-work').value;
+        const result = modalBody.querySelector('.result-work').value;
+        const userId = SESSION.id;
+
+        if (!date) throw new Error('Введите дату!');
+        if (typeWork == -1) throw new Error('Введите вид работы!');
+        if (!contentWork) throw new Error('Введите содержание работы!');
+        if (!result) throw new Error('Введите заключение работы!');
+
+        const obj = {
+            date,
+            typeWork,
+            contentWork,
+            result,
+            userId,
+        };
+
+        return obj;
+    };
+    //
+    const clearDataModalWindow = () => {
+        const modalBody = document.querySelector('.modal-body');
+        modalBody.querySelector('.form-select').value = -1;
+        modalBody.querySelector('.content-work').value = '';
+        modalBody.querySelector('.result-work').value = '';
+    };
+    //
+    const clearDataIdentifiedFaults = () => {
+        const container = document.querySelector('.content__identified-faults');
+        container.querySelectorAll('textarea').forEach((elem) => elem.value = '');
+        container.querySelectorAll('input').forEach((elem) => elem.value = '');
     };
     //
     const addEventBtnMalfunctionClick = () => {
         const btn = document.querySelector('.btn-save-malfunction');
-        btn.addEventListener('click', async () => {
-            const data = collectContent();
-            await putCrane(data);
-        });
+        btn.addEventListener('click', async () => await putCrane());
     };
     //
     const addEventSelectOtherCheck = () => {
@@ -433,6 +676,45 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
         });
     };
+    //
+    const addEventBtnSaveNewMaintenance = () => {
+        const btn = document.querySelector('.btn-save-new-maintenance');
+        btn.addEventListener('click', () => postNewMaintenance());
+    };
+    //
+    const addEventInputPossibleCauseChange = () => {
+       const textarea = document.querySelector('.possible-cause');
+       const container = document.querySelector('.content__identified-faults');
+       textarea.addEventListener('input', () => {
+           if (textarea.value.trim().length > 0){
+               container.querySelector('.identified-faults-date-to').disabled = false;
+               container.querySelector('.complete-activities').disabled = false;
+           } else {
+               const dateTo = container.querySelector('.identified-faults-date-to');
+               const complete = container.querySelector('.complete-activities');
+               const note = container.querySelector('.note');
+               [dateTo, complete, note].forEach((elem) =>{
+                   elem.disabled = true;
+                   elem.value = '';
+               });
+           };
+       });
+    };
+    //
+    const addEventInputCompleteActivitiesChange = () => {
+        const textarea = document.querySelector('.complete-activities');
+        const container = document.querySelector('.content__identified-faults');
+        textarea.addEventListener('input', () => {
+            const note = container.querySelector('.note');
+            if (textarea.value.trim().length > 0) {
+                note.disabled = false;
+            } else {
+                note.disabled = true;
+                note.value = '';
+            };
+        });
+    };
+
 
 
     //
@@ -441,10 +723,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     let urlImg = await getImage();
     const documentUrl = await getDocument();
     let craneData = await getOneCrane();
+    let maintenance = await getMaintenance();
+    const typesWork = await getTypesWork();
+    let identifiedFaults = await getIdentifiedFaults();
     drawTableMalfunction(craneData);
     drawTableMainInfo(craneData);
     urlImg.length && drawImage(urlImg[0]);
     documentUrl.length && drawDocument(documentUrl);
+    drawTableAffiliation(maintenance);
+    drawDataOnWindowAffiliation(typesWork);
+    drawTableIdentifiedFaults(identifiedFaults);
     addEventBtnMalfunctionClick();
     addEventSelectOtherCheck();
     addEventInputChang();
@@ -452,4 +740,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     addEventBtnDeletePhoto();
     addEventBtnSlideClick();
     addEventInputLoadDocument();
+    addEventBtnSaveNewMaintenance();
+    addEventInputPossibleCauseChange();
+    addEventInputCompleteActivitiesChange();
 });

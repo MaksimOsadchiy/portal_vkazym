@@ -51,8 +51,8 @@
                     </div>
                 </div>
                 <div class="content__malfunction-container d-flex flex-column align-items-center row-gap-2">
-                    <div class="d-flex flex-row">
-                        <div class="content__malfunction-info">
+                    <div class="d-flex flex-row column-gap-2 col-12">
+                        <div class="content__malfunction-info d-flex flex-column align-items-center row-gap-2">
                             <div class="table table-malfunction d-flex flex-column align-items-center mb-0">
                                 <div class="thead d-flex flex-column">
                                     <div class="t-row d-flex flex-row justify-content-center">
@@ -62,43 +62,24 @@
                                 </div>
                                 <div class="tbody d-flex flex-column"></div>
                             </div>
+                            <button class="btn btn-secondary btn-save-malfunction">Сохранить</button>
                         </div>
                         <!---->
-                        <div class="content__identified-faults d-flex flex-column row-gap-3 align-items-center">
-                            <p class="fs-3 text-center">Сообщить о неисправности</p>
-                            <div class="d-flex flex-row justify-content-between col-10 column-gap-2">
-                                <div class="date d-flex flex-column row-gap-2">
-                                    <p>Дата выявления неисправности</p>
-                                    <input type="date" class="form-control identified-faults-date-from check-datetime" id="dateFrom">
-                                </div>
-                                <div class="types-work d-flex flex-column row-gap-2">
-                                    <p>Характер и возможная причина</p>
-                                    <textarea class="form-control possible-cause" id="possible-cause"></textarea>
-                                </div>
-                            </div>
-                            <p class="fs-4 text-center">Если неисправность устранена отметьте следующее:</p>
-                            <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
-                                <div class="d-flex flex-column row-gap-2">
-                                    <p>Дата устранения неисправности</p>
-                                    <input type="date" class="form-control identified-faults-date-to check-datetime" id="dateTo" disabled>
-                                </div>
-                                <div class="d-flex flex-column row-gap-2">
-                                    <p>Выполненные мероприятия</p>
-                                    <textarea class="form-control complete-activities" id="complete-activities" disabled></textarea>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column col-10 row-gap-2">
-                                <p>Примечания</p>
-                                <textarea class="form-control note" id="note" disabled></textarea>
+                        <div class="temp-container d-flex flex-column align-self-start px-2 pb-2">
+                            <div class="switch d-flex flex-row justify-content-center column-gap-2 col-12">
+                                <button class="btn btn-secondary take-group selected-group" disabled>ТОиР</button>
+                                <button class="btn btn-secondary take-group">Выявленные неисправности</button>
                             </div>
                         </div>
                         <!---->
                     </div>
-                    <div class="d-flex flex-row align-items-center column-gap-3">
-                        <button class="btn btn-secondary btn-save-malfunction">Сохранить</button>
-                        <a href="#affiliation" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">ТОиР</a>
-                        <a href="#identified-faults" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Выявленные неисправности</a>
-                    </div>
+                    <!---->
+<!--                    <div class="d-flex flex-row align-items-center column-gap-3">-->
+<!--                        <button class="btn btn-secondary btn-save-malfunction">Сохранить</button>-->
+<!--                        <a href="#affiliation" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">ТОиР</a>-->
+<!--                        <a href="#identified-faults" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Выявленные неисправности</a>-->
+<!--                    </div>-->
+                    <!---->
                 </div>
             </div>
             <div class="content__body d-flex flex-column align-items-center py-3">
@@ -116,47 +97,7 @@
                     <p class="fs-5 mb-2">Файлы</p>
                     <input type='file' class="input_document btn btn-secondary" />
                 </div>
-                <p class="fs-5 mb-2" id="affiliation">Информация по техническому обслуживанию ТПА</p>
-                <button type="button" class="btn btn-secondary btn-new-maintenance  mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal2">Новое ТОиР</button>
-                <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">ТОиР</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body d-flex flex-column align-items-center row-gap-3">
-                                <p>Выберите значения</p>
-                                <div class="d-flex flex-row justify-content-between col-10">
-                                    <div class="date d-flex flex-column row-gap-2">
-                                        <p>Дата</p>
-                                        <input type="date" class="form-control date-from check-datetime" id="dateFrom">
-                                    </div>
-                                    <div class="types-work d-flex flex-column row-gap-2">
-                                        <p>Вид работ</p>
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option value="-1" selected></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-content-between col-10">
-                                    <div class="d-flex flex-column row-gap-2">
-                                        <p>Содержание работ</p>
-                                        <textarea type="date" class="form-control content-work" id="content-work"></textarea>
-                                    </div>
-                                    <div class="d-flex flex-column row-gap-2">
-                                        <p>Результат</p>
-                                        <textarea type="date" class="form-control result-work" id="result-work"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                 <button type="button" class="btn btn-primary btn-save-new-maintenance">Сохранить изменения</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p class="fs-5 mb-2" id="affiliation">Информация по техническому обслуживанию и ремонту</p>
                 <div class="table table-affiliation d-flex flex-column align-items-center">
                     <div class="thead d-flex flex-column">
                         <div class="t-row d-flex flex-row justify-content-center">

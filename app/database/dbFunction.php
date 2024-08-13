@@ -273,7 +273,8 @@ function selectOneCranes($id){
                     m.leakage AS `leakage`,
                     m.act_leakage AS `act_leakage`,
                     m.drainage AS `drainage`,
-                    m.packing_pipelines AS `pipelines`
+                    m.packing_pipelines AS `pipelines`,
+                    f.id_malfunction AS `id_malfunction`
             FROM 
                 fittings f
             LEFT JOIN 

@@ -95,9 +95,28 @@
 .content__malfunction-container {
     width: 64%;
 }
+.take-group {
+    height: 1.5rem;
+    border-radius: 0;
+    border: 0;
+    border-bottom-left-radius: 0.7rem;
+    border-bottom-right-radius: 0.7rem;
+    padding: 0.25rem;
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
+    background-color: rgba(219, 219, 219, 1);
+    font-size: 12px;
+}
+.take-group.selected-group {
+    background-color: rgba(92, 99, 106, 1);
+}
 .content__malfunction-info,
-.content__identified-faults{
+.temp-container{
     width: 50%;
+}
+.temp-container {
+    border-radius: 0.5rem;
+    border: 1px solid grey;
 }
 .content__malfunction-info a {
     text-decoration: underline;

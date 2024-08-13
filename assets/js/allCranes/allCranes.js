@@ -27,10 +27,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (cranes[section].length) {
 				tbody.appendChild(createSection(section));
 				cranes[section].forEach((crane) => tbody.appendChild(createRow(crane)));
-			}
-		}
+			};
+		};
 		const allRow = tbody.querySelectorAll('.t-row');
-		allRow.forEach((row, index) => (row.querySelector('.column').innerText = index + 1));
+		allRow.forEach((row, index) => (row.querySelector('.column').innerText = (index + 1)+(numberPage*maxValue)));
+	};
+	//
+	const drawNumbersPages = (count) => {
+		const container = document.querySelector('.table-pages');
+		container.innerText = '';
+		for (let i = 0; i < count; i++) {
+			const btn = document.createElement('button');
+			const style = numberPage === i ? 'currentPage' : '';
+			btn.className = `${style} btn btn-outline-secondary`;
+
+			btn.innerText = i+1;
+
+			container.appendChild(btn);
+			addEventBtnNumberPagesClick(btn);
+		};
 	};
 	//
 	const createOption = (name) => {
@@ -93,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 			row.appendChild(elem);
 		});
 
-		// id.innerText = crane.id;
 		lpumg.innerText = crane.lpumg;
 		highways.innerText = crane.highways;
 		craneClass.innerText = crane.crane_class;
@@ -152,14 +166,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 				filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.startsWith(inputNumber.value)); // Так мы проверяем является ли введённая строка началом главной строки
 			};
 		};
-		drawTable(filterCranes);
+
+		let temp = 0;
+		const list = [];
+		let obj = {};
+		for (const key in filterCranes){
+			// console.log(key);
+			filterCranes[key].forEach((elem) => {
+				if (maxValue - temp === 0) {
+					list.push(obj);
+					// console.log(obj);
+					obj = {};
+					temp = 0;
+				};
+				if (!obj[key]) obj[key] = [];
+				obj[key].push(elem);
+				temp +=1;
+			});
+		};
+		list.push(obj);
+		// console.log(list);
+		drawNumbersPages(list.length);
+		numberPage = list.length - numberPage >= 0 ? numberPage : 0;
+		drawTable(list[numberPage]);
+	};
+	//
+	const addEventBtnNumberPagesClick = (btn) => {
+		btn.addEventListener('click', () => {
+			numberPage = +btn.textContent - 1;
+			filterFunc();
+		});
 	};
 
 	//
+	const maxValue = 15;
+	let numberPage = 0;
 	const cranes = await getAllCreanes();
-	console.log(cranes);
+	// console.log(cranes);
 	drawSelectAffiliation();
-	drawTable(cranes);
+	filterFunc();
 	addEventSelectChoiceChange();
 	addEventSelectAffiliationChange();
 	addEventInputNumberChang();

@@ -18,11 +18,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const putCrane = async () => {
 		try {
-			const url = new URL(window.location.href);
-			const id = new URLSearchParams(url.search).get('id');
-			const qparametr = `?id=${id}`;
-			const [data, obj] = collectContentChangeMalfunction();
-			if (Object.keys(obj).length) await postIdentifiedFaults(obj);
+			const qparametr = `?id=${craneData['id_malfunction']}`;
+			const data = collectContentChangeMalfunction();
 			const response = await fetch(`${SERVER_URL}cranes/malfunction.php${qparametr}`, {
 				method: 'PUT',
 				headers: {
@@ -154,12 +151,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			jsonResponse.reverse();
+			jsonResponse.sort((a, b) => {
+				return new Date(b.date) - new Date(a.date);
+			});
 			return jsonResponse;
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
-		}
+		};
 	};
 	//
 	const getTypesWork = async () => {
@@ -184,7 +183,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			jsonResponse.reverse();
+			jsonResponse.sort((a, b) => {
+				return new Date(b.date_detection) - new Date(a.date_detection);
+			});
 			return jsonResponse;
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
@@ -209,14 +210,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'ТОиР добавлен!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(new CustomEvent('updateError', { detail: 'ТОиР добавлен!' }));
 			clearDataModalWindow();
 			const newObj = {
 				id: +jsonResponse,
-				login: SESSION['login'],
+				login: `${SESSION['login']}, ФИО скоро...`,
 				date: data.date,
 				type_maintenance: data.typeWork,
-				service: SESSION['service'],
+				service: SESSION['service_name'].service,
 				content_work: data.contentWork,
 				result: data.result,
 			};
@@ -229,8 +230,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
-	const postIdentifiedFaults = async (data) => {
+	const postIdentifiedFaults = async () => {
 		try {
+			const data = collectContentIdentifiedFaults();
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}`;
@@ -345,10 +347,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	};
 	//
-	const drawDataOnWindowAffiliation = (types) => {
-		const modalWindow = document.querySelector('.modal-content');
-		const date = modalWindow.querySelector('.check-datetime');
-		const select = modalWindow.querySelector('.form-select');
+	const drawDateOnAffiliationContainer = (types) => {
+		const container = document.querySelector('.content__maintenance');
+		const date = container.querySelector('.check-datetime');
+		const select = container.querySelector('.form-select');
 
 		const nowDate = new Date().toISOString().split('T')[0];
 		date.value = nowDate;
@@ -370,6 +372,82 @@ document.addEventListener('DOMContentLoaded', async () => {
 			];
 			bodyTable.appendChild(createRowMaintenanceIdentifiedFaults(list));
 		});
+	};
+	//
+	const drawIdentifiedFaultsContainer = () => {
+		const place = document.querySelector('.temp-container');
+		place.removeChild(place.lastChild);
+		const container = `
+							<div class="content__identified-faults d-flex flex-column row-gap-3 align-items-center col-12">
+                                <p class="fs-4 text-center">Сообщить о неисправности</p>
+                                <div class="d-flex flex-row justify-content-between col-10 column-gap-2">
+                                    <div class="date d-flex flex-column row-gap-2">
+                                        <p>Дата выявления неисправности</p>
+                                        <input type="date" class="form-control identified-faults-date-from check-datetime" id="dateFrom">
+                                    </div>
+                                    <div class="types-work d-flex flex-column row-gap-2">
+                                        <p>Характер и возможная причина</p>
+                                        <textarea class="form-control possible-cause" id="possible-cause"></textarea>
+                                    </div>
+                                </div>
+                                <p class="fs-4 text-center">Если неисправность устранена отметьте следующее:</p>
+                                <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
+                                    <div class="d-flex flex-column row-gap-2">
+                                        <p>Дата устранения неисправности</p>
+                                        <input type="date" class="form-control identified-faults-date-to check-datetime" id="dateTo" disabled>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-2">
+                                        <p>Выполненные мероприятия</p>
+                                        <textarea class="form-control complete-activities" id="complete-activities" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column col-10 row-gap-2">
+                                    <p>Примечания</p>
+                                    <textarea class="form-control note" id="note" disabled></textarea>
+                                </div>
+                                <button class="btn btn-secondary btn-save-identified-faults" disabled>Сохранить</button>
+                            </div>`;
+
+		place.insertAdjacentHTML('beforeend', container);
+		addEventInputPossibleCauseChange();
+		addEventInputCompleteActivitiesChange();
+		addEventBtnIdentifiedFaultsClick();
+	};
+	//
+	const drawMaintenanceContainer = () => {
+		const place = document.querySelector('.temp-container');
+		place.removeChild(place.lastChild);
+		const container = `
+							<div class="content__maintenance d-flex flex-column row-gap-3 align-items-center col-12">
+                                <p class="fs-4 text-center">ТОиР</p>
+                                <div class="d-flex flex-row justify-content-between col-10 column-gap-2">
+                                    <div class="date d-flex flex-column row-gap-2">
+                                        <p>Дата проведения</p>
+                                        <input type="date" class="form-control date-from check-datetime" id="dateFrom">
+                                    </div>
+                                    <div class="types-work d-flex flex-column row-gap-2">
+                                        <p>Вид работ</p>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option value="-1" selected></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
+                                    <div class="d-flex flex-column row-gap-2">
+                                        <p>Содержание работ</p>
+                                        <textarea type="date" class="form-control content-work" id="content-work"></textarea>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-2">
+                                        <p>Результат</p>
+                                        <textarea type="date" class="form-control result-work" id="result-work"></textarea>
+                                    </div>
+                                </div>
+                                <button class="btn btn-secondary btn-save-new-maintenance">Сохранить</button>
+                            </div>`;
+
+		place.insertAdjacentHTML('beforeend', container);
+		addEventBtnSaveNewMaintenance();
+		drawDateOnAffiliationContainer(typesWork);
 	};
 	//
 	const createRowMalfunction = (title, name, list, attr) => {
@@ -489,7 +567,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const collectContentChangeMalfunction = () => {
 		const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
-		const identifiedFaultsContainer = document.querySelector('.content__identified-faults');
 
 		const resultTable = {};
 		const allRow = bodyTable.querySelectorAll('.t-row');
@@ -506,7 +583,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 				resultTable[key] = row.lastChild.value;
 			}
 		});
-		// -----
+
+		return resultTable;
+	};
+	const collectContentIdentifiedFaults = () => {
+		const identifiedFaultsContainer = document.querySelector('.content__identified-faults');
+
 		const possibleCause = identifiedFaultsContainer.querySelector('.possible-cause').value.trim();
 		let obj = {};
 		if (possibleCause) {
@@ -525,18 +607,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 				obj.completeActivities = completeActivities;
 				obj.dateTroubleshooting = dateTroubleshooting;
 				if (note) obj.note = note;
-			}
-		}
-
-		return [resultTable, obj];
+			};
+		};
+		return obj;
 	};
 	//
 	const collectContentPostMaintenance = () => {
-		const modalBody = document.querySelector('.modal-body');
-		const date = modalBody.querySelector('.check-datetime').value;
-		const typeWork = modalBody.querySelector('.form-select').value;
-		const contentWork = modalBody.querySelector('.content-work').value;
-		const result = modalBody.querySelector('.result-work').value;
+		const maintenanceContainer = document.querySelector('.content__maintenance');
+		const date = maintenanceContainer.querySelector('.check-datetime').value;
+		const typeWork = maintenanceContainer.querySelector('.form-select').value;
+		const contentWork = maintenanceContainer.querySelector('.content-work').value;
+		const result = maintenanceContainer.querySelector('.result-work').value;
 		const userId = SESSION.id;
 
 		if (!date) throw new Error('Введите дату!');
@@ -556,7 +637,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const clearDataModalWindow = () => {
-		const modalBody = document.querySelector('.modal-body');
+		const modalBody = document.querySelector('.content__maintenance');
 		modalBody.querySelector('.form-select').value = -1;
 		modalBody.querySelector('.content-work').value = '';
 		modalBody.querySelector('.result-work').value = '';
@@ -564,6 +645,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const clearDataIdentifiedFaults = () => {
 		const container = document.querySelector('.content__identified-faults');
+		container.querySelector('.btn-save-identified-faults').disabled = true;
 		container.querySelectorAll('textarea').forEach((elem, index) => {
 			elem.value = '';
 			if (index > 0) elem.disabled = true;
@@ -577,6 +659,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventBtnMalfunctionClick = () => {
 		const btn = document.querySelector('.btn-save-malfunction');
 		btn.addEventListener('click', async () => await putCrane());
+	};
+	//
+	const addEventBtnIdentifiedFaultsClick = () => {
+		const btn = document.querySelector('.btn-save-identified-faults');
+		btn.addEventListener('click', async () => await postIdentifiedFaults());
 	};
 	//
 	const addEventSelectOtherCheck = () => {
@@ -673,7 +760,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const addEventBtnSaveNewMaintenance = () => {
 		const btn = document.querySelector('.btn-save-new-maintenance');
-		btn.addEventListener('click', () => postNewMaintenance());
+		btn.addEventListener('click', async () => await postNewMaintenance());
 	};
 	//
 	const addEventInputPossibleCauseChange = () => {
@@ -683,10 +770,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (textarea.value.trim().length > 0) {
 				container.querySelector('.identified-faults-date-to').disabled = false;
 				container.querySelector('.complete-activities').disabled = false;
+				container.querySelector('.btn-save-identified-faults').disabled = false;
 			} else {
 				const dateTo = container.querySelector('.identified-faults-date-to');
 				const complete = container.querySelector('.complete-activities');
 				const note = container.querySelector('.note');
+				container.querySelector('.btn-save-identified-faults').disabled = true;
 				[dateTo, complete, note].forEach((elem) => {
 					elem.disabled = true;
 					elem.value = '';
@@ -708,6 +797,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 			}
 		});
 	};
+	//
+	const addEventBtnSwitchClick = () => {
+		const switchBtn = document.querySelector('.switch').querySelectorAll('button');
+		switchBtn.forEach((elem, index) => {
+			elem.addEventListener('click', () => {
+				elem.classList.add('selected-group');
+				elem.disabled = true;
+				switchBtn[switchBtn.length - 1 - index].classList.remove('selected-group');
+				switchBtn[switchBtn.length - 1 - index].disabled = false;
+				index ? drawIdentifiedFaultsContainer() : drawMaintenanceContainer();
+			});
+		});
+	};
+
 
 	//
 	let photoCrane;
@@ -723,8 +826,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 	urlImg.length && drawImage(urlImg[0]);
 	documentUrl.length && drawDocument(documentUrl);
 	drawTableAffiliation(maintenance);
-	drawDataOnWindowAffiliation(typesWork);
 	drawTableIdentifiedFaults(identifiedFaults);
+	drawMaintenanceContainer();
 	addEventBtnMalfunctionClick();
 	addEventSelectOtherCheck();
 	addEventInputChang();
@@ -732,7 +835,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 	addEventBtnDeletePhoto();
 	addEventBtnSlideClick();
 	addEventInputLoadDocument();
-	addEventBtnSaveNewMaintenance();
-	addEventInputPossibleCauseChange();
-	addEventInputCompleteActivitiesChange();
+	addEventBtnSwitchClick();
 });

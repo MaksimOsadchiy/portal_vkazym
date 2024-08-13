@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $result = [
         'id' => $response['id'],
+        'id_malfunction' => $response['id_malfunction'],
         'mainInfo' => $mainInfo,
         'secondary' => $secInfo,
         'list_general_description' => $general_descriptions,

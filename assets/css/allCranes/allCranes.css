@@ -49,7 +49,7 @@
     overflow-y: auto;
 }
 .column:nth-child(1) {
-    width: 3.5%;
+    width: 3.25%;
 }
 .column:nth-child(2),
 .column:nth-child(3),
@@ -60,7 +60,7 @@
     width: 8%;
 }
 .column:nth-child(5) {
-    width: 2.5%;
+    width: 2.75%;
 }
 .column:nth-child(6){
     width: 5%;
@@ -91,4 +91,10 @@
 }
 .tbody p{
     background-color: transparent;
+}
+.currentPage {
+    background-color: rgba(193, 193, 193, 1);
+}
+.table-pages button {
+    padding: 0.25rem 0.55rem;
 }

@@ -41,7 +41,7 @@
                 </select>
                 <div class="d-flex flex-row column-gap-5">
                     <div class="d-flex flex-column row-gap-3">
-                        <p class="fs-5">Принадлежность</p>
+                        <p class="fs-5">Крановый  узел</p>
                         <select class="form-select affiliation" aria-label="Default select example">
                             <option value="-1" selected></option>
                         </select>
@@ -75,6 +75,7 @@
                 </div>
                 <div class="tbody d-flex flex-column"></div>
             </div>
+            <div class="table-pages d-flex flex-row justify-content-center column-gap-3"></div>
         </div>
         <?php require("components/modalWindowNotif.php"); ?>
     </section>

@@ -122,6 +122,7 @@
                             <p class="column th">Выполненные мероприятия</p>
                             <p class="column th">ФИО устранившего</p>
                             <p class="column th">Примечание</p>
+                            <p class="column th">Статус</p>
                         </div>
                     </div>
                     <div class="tbody d-flex flex-column"></div>

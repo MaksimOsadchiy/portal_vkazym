@@ -18,8 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'possible_cause' => $data['possibleCause'],
         'id_user_detection' => $data['userDetectionId'],
         'date_detection' => $data['dateDetection'],
+        'status' => $data['status'],
     ];
-    if (isset($data['completeActivities'])) {
+    if ($data['status'] === 1) {
         $params['complete_activities'] = $data['completeActivities'];
         $params['date_troubleshooting'] = $data['dateTroubleshooting'];
         $params['id_user_troubleshooting'] = $data['userDetectionId'];

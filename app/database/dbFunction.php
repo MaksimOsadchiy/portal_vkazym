@@ -352,6 +352,7 @@ function getAllIdentifiedFaults($id) {
                     i.possible_cause,
                     i.complete_activities,
                     i.note,
+                    i.status,
                     CONCAT(us_d.login, ', ФИО скоро...') AS `login_detected`,
                     CONCAT(us_t.login, ', ФИО скоро...') AS `login_troubleshooting`
             FROM 

@@ -260,6 +260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				note: data.note ? data.note : '',
 				date_detection: data.dateDetection,
 				date_troubleshooting: data.dateTroubleshooting ? data.dateTroubleshooting : '',
+				status: data.status,
 			};
 			identifiedFaults = [newObj, ...identifiedFaults];
 			drawTableIdentifiedFaults(identifiedFaults);
@@ -369,6 +370,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				elem.complete_activities ? elem.complete_activities : '-',
 				elem.login_troubleshooting ? elem.login_troubleshooting : '-',
 				elem.note ? elem.note : '-',
+				+elem.status ? 'Устранена' : 'Не устранена',
 			];
 			bodyTable.appendChild(createRowMaintenanceIdentifiedFaults(list));
 		});
@@ -390,7 +392,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                                         <textarea class="form-control possible-cause" id="possible-cause"></textarea>
                                     </div>
                                 </div>
-                                <p class="fs-4 text-center">Если неисправность устранена отметьте следующее:</p>
+                                <div class="status d-flex flex-row justify-content-between col-10 column-gap-2">
+                                	<p class="fs-6 text-center">Неисправность устранена?</p>
+									<select class="form-select" aria-label="Default select example" disabled>
+										<option value="0" selected>Нет</option>
+										<option value="1">Да</option>
+									</select>
+								</div>
                                 <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
                                     <div class="d-flex flex-column row-gap-2">
                                         <p>Дата устранения неисправности</p>
@@ -410,6 +418,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		place.insertAdjacentHTML('beforeend', container);
 		addEventInputPossibleCauseChange();
+		addEventSelectStatusChange();
 		addEventInputCompleteActivitiesChange();
 		addEventBtnIdentifiedFaultsClick();
 	};
@@ -510,7 +519,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		row.className = 't-row d-flex flex-row justify-content-center';
 		for (let i = 0; i < list.length; i++) {
 			const content = document.createElement('p');
-			content.className = 'column th text-center';
+			const style = i === 7 ? (list[i] === 'Устранена' ? 'green' : 'red') : '';
+			content.className = `${style} column th text-center`;
 			content.innerText = list[i];
 			row.appendChild(content);
 		}
@@ -590,25 +600,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const identifiedFaultsContainer = document.querySelector('.content__identified-faults');
 
 		const possibleCause = identifiedFaultsContainer.querySelector('.possible-cause').value.trim();
+		const dateDetection = identifiedFaultsContainer.querySelector('.identified-faults-date-from').value;
+		const status = +identifiedFaultsContainer.querySelector('.form-select').value;
+		const completeActivities = identifiedFaultsContainer.querySelector('.complete-activities').value.trim();
+		const dateTroubleshooting = identifiedFaultsContainer.querySelector('.identified-faults-date-to').value;
+		const note = identifiedFaultsContainer.querySelector('.note').value.trim();
+
 		let obj = {};
-		if (possibleCause) {
-			const dateDetection = identifiedFaultsContainer.querySelector('.identified-faults-date-from').value;
-			if (!dateDetection) throw new Error('Введите дату обнаружения неисправности!');
-			obj = {
-				dateDetection: dateDetection,
-				possibleCause: possibleCause,
-				userDetectionId: SESSION['id'],
-			};
-			const completeActivities = identifiedFaultsContainer.querySelector('.complete-activities').value.trim();
-			if (completeActivities) {
-				const dateTroubleshooting = identifiedFaultsContainer.querySelector('.identified-faults-date-to').value;
-				const note = identifiedFaultsContainer.querySelector('.note').value.trim();
-				if (!dateTroubleshooting) throw new Error('Введите дату устранения неисправности!');
-				obj.completeActivities = completeActivities;
-				obj.dateTroubleshooting = dateTroubleshooting;
-				if (note) obj.note = note;
-			};
+		if (!possibleCause) throw new Error('Введите возможную причину!');
+		if (!dateDetection) throw new Error('Введите дату обнаружения неисправности!');
+
+		obj = {
+			dateDetection: dateDetection,
+			possibleCause: possibleCause,
+			userDetectionId: SESSION['id'],
+			status: status,
 		};
+		if (status) {
+			if (!completeActivities) throw new Error('Введите выполненые мероприятия!');
+			if (!dateTroubleshooting) throw new Error('Введите дату устранения неисправности!');
+			obj.completeActivities = completeActivities;
+			obj.dateTroubleshooting = dateTroubleshooting;
+			if (note) obj.note = note;
+		};
+
 		return obj;
 	};
 	//
@@ -646,6 +661,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const clearDataIdentifiedFaults = () => {
 		const container = document.querySelector('.content__identified-faults');
 		container.querySelector('.btn-save-identified-faults').disabled = true;
+		const select = container.querySelector('.form-select');
+		select.disabled = true;
+		select.value = 0;
 		container.querySelectorAll('textarea').forEach((elem, index) => {
 			elem.value = '';
 			if (index > 0) elem.disabled = true;
@@ -768,19 +786,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const container = document.querySelector('.content__identified-faults');
 		textarea.addEventListener('input', () => {
 			if (textarea.value.trim().length > 0) {
-				container.querySelector('.identified-faults-date-to').disabled = false;
-				container.querySelector('.complete-activities').disabled = false;
+				container.querySelector('.form-select').disabled = false;
 				container.querySelector('.btn-save-identified-faults').disabled = false;
 			} else {
+				const selectStatus = document.querySelector('.form-select');
 				const dateTo = container.querySelector('.identified-faults-date-to');
 				const complete = container.querySelector('.complete-activities');
 				const note = container.querySelector('.note');
 				container.querySelector('.btn-save-identified-faults').disabled = true;
+				[selectStatus, dateTo, complete, note].forEach((elem) => {
+					elem.disabled = true;
+					elem.value = '';
+				});
+				selectStatus.value = 0;
+			};
+		});
+	};
+	//
+	const addEventSelectStatusChange = () => {
+		const selectStatus = document.querySelector('.form-select');
+		const container = document.querySelector('.content__identified-faults');
+		selectStatus.addEventListener('change', () => {
+			if (+selectStatus.value) {
+				container.querySelector('.identified-faults-date-to').disabled = false;
+				container.querySelector('.complete-activities').disabled = false;
+			} else {
+				const dateTo = container.querySelector('.identified-faults-date-to');
+				const complete = container.querySelector('.complete-activities');
+				const note = container.querySelector('.note');
 				[dateTo, complete, note].forEach((elem) => {
 					elem.disabled = true;
 					elem.value = '';
 				});
-			}
+			};
 		});
 	};
 	//

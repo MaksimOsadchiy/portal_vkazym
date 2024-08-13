@@ -124,7 +124,7 @@
 .content__body .table,
 .document-container,
 .affiliation-container{
-    width: 70%;
+    width: 75%;
 }
 
 .table {
@@ -214,4 +214,12 @@ textarea.column{
 .form-control.result-work {
     min-height: 3.5rem;
     max-height: 13rem;
+}
+.red {
+    font-weight: 600;
+    color: red !important;
+}
+.green {
+    font-weight: 600;
+    color: green !important;
 }

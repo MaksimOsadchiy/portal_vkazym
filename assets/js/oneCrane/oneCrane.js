@@ -142,6 +142,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
+	const deleteDocument = async (id) => {
+		try {
+			const qparametr = `?id=${id}`;
+			const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`,{
+				method: 'DELETE',
+			});
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Документ удален!' }));
+			documentUrl = documentUrl.filter((elem) => +elem.id !== +jsonResponse);
+			drawDocument(documentUrl);
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
+	//
 	const getMaintenance = async () => {
 		try {
 			const url = new URL(window.location.href);
@@ -252,7 +271,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			clearDataIdentifiedFaults();
 			const newObj = {
 				id: +jsonResponse,
-				id_fitting: 6,
+				id_fitting: id,
 				possible_cause: data.possibleCause,
 				login_detected: SESSION.login,
 				login_troubleshooting: data.completeActivities ? SESSION.login : '',
@@ -263,6 +282,48 @@ document.addEventListener('DOMContentLoaded', async () => {
 				status: data.status,
 			};
 			identifiedFaults = [newObj, ...identifiedFaults];
+			drawTableIdentifiedFaults(identifiedFaults);
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return false;
+		};
+	};
+	//
+	const putIdentifiedFaults = async () => {
+		try {
+			const data = collectContentPutIdentifiedFaults();
+			const putData = {
+				id: data.id,
+				status: data.status,
+			};
+			const url = new URL(window.location.href);
+			const id = new URLSearchParams(url.search).get('id');
+			const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(putData),
+			});
+
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Неисправность изменена!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			const rewriteObj = {
+				id: data.id,
+				id_fitting: id,
+				possible_cause: data.possible_cause,
+				login_detected: data.login_detected,
+				login_troubleshooting: data.login_troubleshooting,
+				complete_activities: data.complete_activities,
+				note: data.note ? data.note : '',
+				date_detection: data.date_detection,
+				date_troubleshooting: data.date_troubleshooting,
+				status: data.status,
+			};
+			identifiedFaults = identifiedFaults.map((elem) => +elem.id === +rewriteObj.id ? rewriteObj : elem);
 			drawTableIdentifiedFaults(identifiedFaults);
 			return jsonResponse;
 		} catch (error) {
@@ -282,6 +343,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const drawTableMainInfo = (crane) => {
+		const body = document.querySelector('.content__body');
+		const managmentBtn = body.querySelector('.switch');
+		body.innerText = '';
+		body.appendChild(managmentBtn);
+		const mainContent = `
+			<p class="mb-2 fs-5">Характеристики ТПА</p>
+			<div class="table table-main-info d-flex flex-column align-items-center">
+				<div class="thead d-flex flex-column">
+					<div class="t-row d-flex flex-row justify-content-center">
+						<p class="column th">Характеристика</p>
+						<p class="column th">Значение</p>
+					</div>
+				</div>
+				<div class="tbody d-flex flex-column"></div>
+			</div>`;
+		body.insertAdjacentHTML('beforeend', mainContent);
+
 		const bodyTable = document.querySelector('.table-main-info').querySelector('.tbody');
 		for (const key in crane.mainInfo) {
 			bodyTable.appendChild(createSection(key));
@@ -335,16 +413,50 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const drawDocument = (data) => {
+		const body = document.querySelector('.content__body');
+		const managmentBtn = body.querySelector('.switch');
+		body.innerText = '';
+		body.appendChild(managmentBtn);
+		const mainContent = `
+			<div class="document-container d-flex flex-column align-items-center px-3 py-2 mb-3">
+				<p class="fs-5 mb-2">Файлы</p>
+				<input type='file' class="input_document btn btn-secondary" />
+			</div>`;
+		body.insertAdjacentHTML('beforeend', mainContent);
+
 		const container = document.querySelector('.document-container');
-		data.forEach((obj) => container.appendChild(createRowDocument(obj.document_url, obj.name)));
+		data.forEach((obj) => container.appendChild(createRowDocument(obj.id, obj.document_url, obj.name)));
+		addEventInputLoadDocument();
+		addEventImgDeleteDocumentClick();
 	};
 	//
 	const drawTableAffiliation = (maintenance) => {
+		const body = document.querySelector('.content__body');
+		const managmentBtn = body.querySelector('.switch');
+		body.innerText = '';
+		body.appendChild(managmentBtn);
+		const mainContent = `
+			<p class="fs-5 mb-2" id="affiliation">Информация по техническому обслуживанию и ремонту</p>
+			<div class="table table-affiliation d-flex flex-column align-items-center">
+				<div class="thead d-flex flex-column">
+					<div class="t-row d-flex flex-row justify-content-center">
+						<p class="column th">Дата</p>
+						<p class="column th">Вид ТОиР</p>
+						<p class="column th">Служба</p>
+						<p class="column th">Содержание работ</p>
+						<p class="column th">Итог</p>
+						<p class="column th">ФИО</p>
+					</div>
+				</div>
+				<div class="tbody d-flex flex-column"></div>
+			</div>`;
+		body.insertAdjacentHTML('beforeend', mainContent);
+
 		const bodyTable = document.querySelector('.table-affiliation').querySelector('.tbody');
 		bodyTable.innerText = '';
 		maintenance.forEach((elem) => {
 			const list = [elem.date.slice(0, 10), elem.type_maintenance, elem.service, elem.content_work, elem.result, elem.login];
-			bodyTable.appendChild(createRowMaintenanceIdentifiedFaults(list));
+			bodyTable.appendChild(createRowMaintenance(list, elem.id));
 		});
 	};
 	//
@@ -359,20 +471,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const drawTableIdentifiedFaults = (identifiedFaults) => {
+		const body = document.querySelector('.content__body');
+		const managmentBtn = body.querySelector('.switch');
+		body.innerText = '';
+		body.appendChild(managmentBtn);
+		const mainContent = `
+			<p class="fs-5 mb-2" id="identified-faults">Выявленные неисправности</p>
+			<div class="table table-identified-faults d-flex flex-column align-items-center">
+				<div class="thead d-flex flex-column">
+					<div class="t-row d-flex flex-row justify-content-center">
+						<p class="column th">Дата выявления неисправности</p>
+						<p class="column th">Фио обнаружевшего</p>
+						<p class="column th">Характер и возможная причина</p>
+						<p class="column th">Дата устранения неисправности</p>
+						<p class="column th">Выполненные мероприятия</p>
+						<p class="column th">ФИО устранившего</p>
+						<p class="column th">Примечание</p>
+						<p class="column th">Статус</p>
+					</div>
+				</div>
+				<div class="tbody d-flex flex-column"></div>
+			</div>`;
+		body.insertAdjacentHTML('beforeend', mainContent);
+
 		const bodyTable = document.querySelector('.table-identified-faults').querySelector('.tbody');
 		bodyTable.innerText = '';
 		identifiedFaults.forEach((elem) => {
 			const list = [
 				elem.date_detection,
 				elem.login_detected,
-				elem.possible_cause,
+				formContent(elem.possible_cause,70),
 				elem.date_troubleshooting ? elem.date_troubleshooting : '-',
-				elem.complete_activities ? elem.complete_activities : '-',
+				elem.complete_activities ? formContent(elem.complete_activities, 70) : '-',
 				elem.login_troubleshooting ? elem.login_troubleshooting : '-',
-				elem.note ? elem.note : '-',
+				elem.note ? formContent(elem.note, 40) : '-',
 				+elem.status ? 'Устранена' : 'Не устранена',
 			];
-			bodyTable.appendChild(createRowMaintenanceIdentifiedFaults(list));
+			bodyTable.appendChild(createRowIdentifiedFaults(list, elem.id));
 		});
 	};
 	//
@@ -430,11 +565,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 							<div class="content__maintenance d-flex flex-column row-gap-3 align-items-center col-12">
                                 <p class="fs-4 text-center">ТОиР</p>
                                 <div class="d-flex flex-row justify-content-between col-10 column-gap-2">
-                                    <div class="date d-flex flex-column row-gap-2">
+                                    <div class="date d-flex flex-column col-10">
                                         <p>Дата проведения</p>
                                         <input type="date" class="form-control date-from check-datetime" id="dateFrom">
                                     </div>
-                                    <div class="types-work d-flex flex-column row-gap-2">
+                                </div>
+                                <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
+                                    <div class="types-work d-flex flex-column row-gap-2 col-10">
                                         <p>Вид работ</p>
                                         <select class="form-select" aria-label="Default select example">
                                             <option value="-1" selected></option>
@@ -442,11 +579,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     </div>
                                 </div>
                                 <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
-                                    <div class="d-flex flex-column row-gap-2">
+                                    <div class="d-flex flex-column row-gap-2 col-12">
                                         <p>Содержание работ</p>
                                         <textarea type="date" class="form-control content-work" id="content-work"></textarea>
                                     </div>
-                                    <div class="d-flex flex-column row-gap-2">
+                                </div>
+                                <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
+                                    <div class="d-flex flex-column row-gap-2 col-12">
                                         <p>Результат</p>
                                         <textarea type="date" class="form-control result-work" id="result-work"></textarea>
                                     </div>
@@ -457,6 +596,61 @@ document.addEventListener('DOMContentLoaded', async () => {
 		place.insertAdjacentHTML('beforeend', container);
 		addEventBtnSaveNewMaintenance();
 		drawDateOnAffiliationContainer(typesWork);
+	};
+	//
+	const writeModalWindow = (data) => {
+		const modalBody = document.querySelector('.modal-content').querySelector('.modal-body');
+		const modalFooter= document.querySelector('.modal-content').querySelector('.modal-footer');
+		modalBody.setAttribute('id', data.id);
+		modalBody.innerText = '';
+		const title = document.createElement('h2');
+		title.innerText = data.title;
+		modalBody.appendChild(title);
+		data.value.forEach((elem, index) => {
+			const section = document.createElement('p');
+			const content = document.createElement('p');
+
+			section.className = 'fs-4';
+			content.className = '';
+
+			section.innerText = data.names[index];
+			content.innerText = elem;
+			modalBody.appendChild(section);
+			modalBody.appendChild(content);
+		});
+		modalFooter.removeChild(modalFooter.querySelector('button'))
+		const btn = document.createElement('button');
+		btn.className = 'btn btn-secondary footer-btn-close';
+		btn.setAttribute('type', 'button');
+		btn.setAttribute('data-bs-dismiss', 'modal');
+		btn.innerText = 'Закрыть';
+		modalFooter.appendChild(btn);
+		if (data.title === 'Неисправность') {
+			const select = document.createElement('select');
+			select.setAttribute('onfocus', 'this.size=2;');
+			select.setAttribute('onblur', 'this.size=0;');
+			select.setAttribute('onchange', 'this.size=1; this.blur()');
+			const options = ['Не устранена', 'Устранена'];
+			options.forEach((elem, index) => {
+				const option = document.createElement('option');
+				option.innerText = elem;
+				option.className = index ? 'green' : 'red';
+				option.setAttribute('value', index);
+				if (options[+data.status] === elem) {
+					option.selected = true;
+					// select.className = +data.status ? 'green' : 'red';
+				};
+				select.appendChild(option);
+			});
+			modalBody.appendChild(select);
+			modalFooter.removeChild(modalFooter.querySelector('button'))
+			const btn = document.createElement('button');
+			btn.className = 'btn btn-secondary btn-save';
+			btn.setAttribute('type', 'button');
+			btn.innerText = 'Сохранить';
+			modalFooter.appendChild(btn);
+			addEventBtnSaveChanges(btn);
+		};
 	};
 	//
 	const createRowMalfunction = (title, name, list, attr) => {
@@ -497,34 +691,75 @@ document.addEventListener('DOMContentLoaded', async () => {
 		return row;
 	};
 	//
-	const createRowDocument = (ref, name) => {
+	const createRowDocument = (id, ref, name) => {
 		const row = document.createElement('div');
 		const link = document.createElement('a');
+		const deleteDocument =  document.createElement('img');
 
-		row.className = 'document-row my-1 py-1 fs-5';
+		row.className = 'document-row d-flex flex-row column-gap-4 my-1 py-1 fs-5';
 		link.className = 'document-link';
+		deleteDocument.className = 'delete-document';
 
+		row.setAttribute('id', id);
 		link.setAttribute('href', ref);
 		link.setAttribute('download', name);
-
+		deleteDocument.setAttribute('src', `${BASE_URL}assets/image/garbage.png`)
 		link.innerText = name;
 
 		row.appendChild(link);
+		row.appendChild(deleteDocument);
 		return row;
 	};
 	//
-	const createRowMaintenanceIdentifiedFaults = (list) => {
+	const createRowMaintenance = (list, id) => {
 		const row = document.createElement('div');
 
-		row.className = 't-row d-flex flex-row justify-content-center';
+		row.className = 't-row open-win d-flex flex-row justify-content-center';
+		row.setAttribute('data-bs-toggle', "modal");
+		row.setAttribute('data-bs-target', "#exampleModal");
+		row.setAttribute('id', id);
 		for (let i = 0; i < list.length; i++) {
 			const content = document.createElement('p');
-			const style = i === 7 ? (list[i] === 'Устранена' ? 'green' : 'red') : '';
+			content.className = `column th text-center`;
+			content.innerText = list[i];
+			row.appendChild(content);
+		};
+
+		addEventRowClick(row, maintenance);
+		return row;
+	};
+	//
+	const createRowIdentifiedFaults = (list, id) => {
+		const row = document.createElement('div');
+
+		row.className = 't-row open-win d-flex flex-row justify-content-center';
+		row.setAttribute('data-bs-toggle', "modal");
+		row.setAttribute('data-bs-target', "#exampleModal");
+		row.setAttribute('id', id);
+		const names = {'Устранена': 'green', 'Не устранена': 'red'};
+
+		for (let i = 0; i < list.length; i++) {
+			const content = document.createElement('p');
+			let style = '';
+			if (i === 7){
+				style = names[list[i]];
+			};
 			content.className = `${style} column th text-center`;
 			content.innerText = list[i];
 			row.appendChild(content);
-		}
+		};
 
+		// const content = document.createElement('select');
+		// names.forEach((elem) => {
+		// 	const option = document.createElement('option');
+		// 	option.innerText = elem[0];
+		// 	option.className = elem[1];
+		// 	elem[0] === list[7] && (option.selected = true) && (content.className = `${elem[1]} column th text-center`);
+		// 	content.appendChild(option);
+		// });
+		// row.appendChild(content);
+
+		addEventRowClick(row, identifiedFaults);
 		return row;
 	};
 	//
@@ -651,6 +886,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 		return obj;
 	};
 	//
+	const collectContentPutIdentifiedFaults = () => {
+		const body = document.querySelector('.modal-body');
+		const id = +body.getAttribute('id');
+		const status = +body.querySelector('select').value;
+		const data = identifiedFaults.find((elem) => +elem.id === id);
+		const result = {
+			id,
+			status,
+			id_fitting: id,
+			possible_cause: data.possible_cause,
+			login_detected: data.login_detected,
+			login_troubleshooting: data.login_troubleshooting,
+			complete_activities: data.complete_activities,
+			note: data.note ? data.note : '',
+			date_detection: data.date_detection,
+			date_troubleshooting: data.date_troubleshooting,
+		};
+
+		return result;
+	};
+	//
 	const clearDataModalWindow = () => {
 		const modalBody = document.querySelector('.content__maintenance');
 		modalBody.querySelector('.form-select').value = -1;
@@ -672,6 +928,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 			elem.value = '';
 			if (index > 0) elem.disabled = true;
 		});
+	};
+	//
+	const formContent = (text, limit) => {
+		return text.length > limit ? text.substring(0, limit) + '...' : text; // (Тоже тернарный оператор)
 	};
 	//
 	const addEventBtnMalfunctionClick = () => {
@@ -776,6 +1036,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	};
 	//
+	const addEventImgDeleteDocumentClick = () => {
+		const allRow = document.querySelectorAll('.document-row');
+		allRow.forEach((elem) => {
+			const img = elem.querySelector('.delete-document');
+			img.addEventListener('click', async () => await deleteDocument(elem.getAttribute('id')));
+		});
+	};
+	//
 	const addEventBtnSaveNewMaintenance = () => {
 		const btn = document.querySelector('.btn-save-new-maintenance');
 		btn.addEventListener('click', async () => await postNewMaintenance());
@@ -836,8 +1104,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	};
 	//
-	const addEventBtnSwitchClick = () => {
-		const switchBtn = document.querySelector('.switch').querySelectorAll('button');
+	const addEventBtnHeaderSwitchClick = () => {
+		const switchBtn = document.querySelector('.temp-container').querySelector('.switch').querySelectorAll('button');
 		switchBtn.forEach((elem, index) => {
 			elem.addEventListener('click', () => {
 				elem.classList.add('selected-group');
@@ -848,13 +1116,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 			});
 		});
 	};
+	//
+	const addEventRowClick = (row, allData) => {
+		row.addEventListener('click', () => {
+			const data = allData.find((elem) => elem.id  === +row.id);
+			const obj = {
+				id: data.id,
+				title: Object.keys(data).length > 7 ? 'Неисправность' : 'ТОиР',
+				names: Object.keys(data).length > 7 ? ['Характер и возможная причина', 'Выполненные мероприятия', 'Примечание'] : ['Содержание работ', 'Итог'],
+				value: Object.keys(data).length > 7 ? [data.possible_cause, data.complete_activities ? data.complete_activities : '-', data.note ? data.note : '-'] : [data.content_work, data.result],
+			};
+			if (Object.keys(data).length > 7) obj.status = data.status;
+			writeModalWindow(obj);
+		});
+	};
+	//
+	const addEventBtnBodySwitchClick = () => {
+		const switchBtn = document.querySelector('.content__body').querySelector('.switch').querySelectorAll('button');
+		const list = [
+			() => drawTableMainInfo(craneData),
+			() => drawTableIdentifiedFaults(identifiedFaults),
+			() => drawTableAffiliation(maintenance),
+			() => drawDocument(documentUrl),
+		];
+		switchBtn.forEach((elem, index) => {
+			elem.addEventListener('click', () => {
+				elem.classList.add('selected-group');
+				elem.disabled = true;
 
+				switchBtn.forEach((btn) => {
+					if (btn === elem) return;
+					btn.classList.remove('selected-group');
+					btn.disabled = false;
+				});
+				const func = list[index];
+				func();
+			});
+		});
+	};
+	//
+	const addEventBtnSaveChanges = (btn) => {
+		btn.addEventListener('click', async () => await putIdentifiedFaults());
+	};
 
 	//
 	let photoCrane;
 	let indexListUrl = 0;
 	let urlImg = await getImage();
-	const documentUrl = await getDocument();
+	let documentUrl = await getDocument();
 	let craneData = await getOneCrane();
 	let maintenance = await getMaintenance();
 	const typesWork = await getTypesWork();
@@ -862,9 +1171,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	drawTableMalfunction(craneData);
 	drawTableMainInfo(craneData);
 	urlImg.length && drawImage(urlImg[0]);
-	documentUrl.length && drawDocument(documentUrl);
-	drawTableAffiliation(maintenance);
-	drawTableIdentifiedFaults(identifiedFaults);
+	// documentUrl.length && drawDocument(documentUrl);
 	drawMaintenanceContainer();
 	addEventBtnMalfunctionClick();
 	addEventSelectOtherCheck();
@@ -872,6 +1179,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	addEventBtnSavePhoto();
 	addEventBtnDeletePhoto();
 	addEventBtnSlideClick();
-	addEventInputLoadDocument();
-	addEventBtnSwitchClick();
+	addEventBtnHeaderSwitchClick();
+	addEventBtnBodySwitchClick();
 });

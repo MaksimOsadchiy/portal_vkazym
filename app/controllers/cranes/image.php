@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $response = deletePhotoRes($table, $params);
     echo json_encode($response);
     return;
+
 } else {
     http_response_code(405);
     echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);

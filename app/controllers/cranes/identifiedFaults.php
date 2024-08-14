@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode($response);
     return;
 
-} else if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
     $id = $_GET['id'];
@@ -32,6 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode($response);
     return;
 
+} else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    $requestBody = file_get_contents('php://input');
+    $data = json_decode($requestBody, true);
+    $table = 'identified_faults';
+    $id = $data['id'];
+    $params = ['status' => $data['status']];
+
+    $response = updateRes($table, $id, $params);
+    echo json_encode($response);
+    return;
 } else {
     http_response_code(405);
     echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);

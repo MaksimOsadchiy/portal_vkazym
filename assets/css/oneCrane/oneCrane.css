@@ -101,11 +101,19 @@
     border: 0;
     border-bottom-left-radius: 0.7rem;
     border-bottom-right-radius: 0.7rem;
-    padding: 0.25rem;
-    padding-top: 0.125rem;
-    padding-bottom: 0.125rem;
+    padding: 0.125rem 0.25rem;
     background-color: rgba(219, 219, 219, 1);
     font-size: 12px;
+}
+.content__body .take-group {
+    height: 2rem;
+    border-radius: 0;
+    border: 0;
+    border-bottom-left-radius: 0.7rem;
+    border-bottom-right-radius: 0.7rem;
+    padding: 0.20rem 0.35rem;
+    background-color: rgba(219, 219, 219, 1);
+    font-size: 16px;
 }
 .take-group.selected-group {
     background-color: rgba(92, 99, 106, 1);
@@ -195,25 +203,37 @@ textarea.column{
     max-height: 8rem;
 }
 .document-container{
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     border: 1px solid grey;
 }
 .document-row {
     width: 100%;
 }
+.delete-document{
+    width: 2rem;
+    cursor: pointer;
+}
 
 .modal-dialog {
-    width: 40rem;
-    max-width: 55rem;
-}
-.date,
-.types-work {
-    width: 233px;
+    width: 80rem;
+    max-width: 80rem;
 }
 .form-control.content-work,
 .form-control.result-work {
     min-height: 3.5rem;
     max-height: 13rem;
+}
+.open-win {
+    cursor: pointer;
+}
+.t-row select {
+    pointer-events: auto;
+}
+.t-row {
+    pointer-events: none;
+}
+.t-row *:not(select) {
+    pointer-events: auto;
 }
 .red {
     font-weight: 600;
@@ -222,4 +242,24 @@ textarea.column{
 .green {
     font-weight: 600;
     color: green !important;
+}
+
+select.green,
+select.red {
+    outline: none;
+}
+select.green:nth-child(1):active,
+select.red:nth-child(2):active {
+    background-color: rgba(192, 192, 192, 0.39);
+}
+select.green:nth-child(1):focus,
+select.red:nth-child(2):focus {
+    background-color: rgba(192, 192, 192, 0.39);
+}
+option:checked {
+    color: red; /* Этот оттенок никак не упустить! */
+}
+option:nth-child(1):hover,
+option:nth-child(2):hover{
+    background: #83d7b0;
 }

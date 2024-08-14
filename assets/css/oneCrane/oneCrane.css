@@ -97,22 +97,15 @@
 }
 .take-group {
     height: 1.5rem;
-    border-radius: 0;
+    border-radius: 0 0 .7rem .7rem;
     border: 0;
-    border-bottom-left-radius: 0.7rem;
-    border-bottom-right-radius: 0.7rem;
     padding: 0.125rem 0.25rem;
     background-color: rgba(219, 219, 219, 1);
     font-size: 12px;
 }
 .content__body .take-group {
     height: 2rem;
-    border-radius: 0;
-    border: 0;
-    border-bottom-left-radius: 0.7rem;
-    border-bottom-right-radius: 0.7rem;
     padding: 0.20rem 0.35rem;
-    background-color: rgba(219, 219, 219, 1);
     font-size: 16px;
 }
 .take-group.selected-group {

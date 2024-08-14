@@ -1171,7 +1171,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	drawTableMalfunction(craneData);
 	drawTableMainInfo(craneData);
 	urlImg.length && drawImage(urlImg[0]);
-	// documentUrl.length && drawDocument(documentUrl);
 	drawMaintenanceContainer();
 	addEventBtnMalfunctionClick();
 	addEventSelectOtherCheck();

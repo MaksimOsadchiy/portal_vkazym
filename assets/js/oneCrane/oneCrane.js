@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				result: data.result,
 			};
 			maintenance = [newObj, ...maintenance];
-			drawTableAffiliation(maintenance);
+			if (indexListBodyInfo === 2) drawTableAffiliation(maintenance);
 			return jsonResponse;
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				status: data.status,
 			};
 			identifiedFaults = [newObj, ...identifiedFaults];
-			drawTableIdentifiedFaults(identifiedFaults);
+			if (indexListBodyInfo === 1) drawTableIdentifiedFaults(identifiedFaults);
 			return jsonResponse;
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
@@ -311,24 +311,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Неисправность изменена!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
-			const rewriteObj = {
-				id: data.id,
-				id_fitting: id,
-				possible_cause: data.possible_cause,
-				login_detected: data.login_detected,
-				login_troubleshooting: data.login_troubleshooting,
-				complete_activities: data.complete_activities,
-				note: data.note ? data.note : '',
-				date_detection: data.date_detection,
-				date_troubleshooting: data.date_troubleshooting,
-				status: data.status,
+
+			for (let i = 0; i < identifiedFaults.length; i++) {
+				let elem = identifiedFaults[i];
+				if (+elem.id === +data.id) {
+					const rewriteObj = {
+						id: data.id,
+						id_fitting: id,
+						possible_cause: data.possible_cause ? data.possible_cause : elem.possible_cause,
+						login_detected: data.login_detected ? data.login_detected : elem.login_detected,
+						login_troubleshooting: data.login_troubleshooting ? data.login_troubleshooting : (elem.login_troubleshooting ? elem.login_troubleshooting : ''),
+						complete_activities: data.complete_activities ? data.complete_activities : (elem.complete_activities ? elem.complete_activities : ''),
+						note: data.note ? data.note :  (elem.note ? elem.note : ''),
+						date_detection: data.date_detection ? data.date_detection : elem.date_detection,
+						date_troubleshooting: data.date_troubleshooting ? data.date_troubleshooting : (elem.date_troubleshooting ? elem.date_troubleshooting : ''),
+						status: data.status,
+					};
+					identifiedFaults[i] = rewriteObj;
+				};
 			};
-			identifiedFaults = identifiedFaults.map((elem) => +elem.id === +rewriteObj.id ? rewriteObj : elem);
+
 			drawTableIdentifiedFaults(identifiedFaults);
 			return jsonResponse;
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
+		};
+	};
+	//
+	const getForChangeInfo = async () => {
+		try {
+			// ЗАПРОС на ИУС, Наименование ЛПУМГ, Наименование газопровода(класс и название), ТИП, Фирма, завод изготовитель, Исполнение, Привод-ТИП, Привод-Гидравлическая жидкость
+			// уже есть Исправность
+			const response = await fetch(`${SERVER_URL}cranes/globalData.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return response;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return {};
 		}
 	};
 	//
@@ -349,6 +371,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		body.appendChild(managmentBtn);
 		const mainContent = `
 			<p class="mb-2 fs-5">Характеристики ТПА</p>
+			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${+SESSION.privilege !== 7 ? 'disabled' : ''}>Изменить</button>
 			<div class="table table-main-info d-flex flex-column align-items-center">
 				<div class="thead d-flex flex-column">
 					<div class="t-row d-flex flex-row justify-content-center">
@@ -361,12 +384,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 		body.insertAdjacentHTML('beforeend', mainContent);
 
 		const bodyTable = document.querySelector('.table-main-info').querySelector('.tbody');
+		addEventBtnChangeMainInfo(document.querySelector('.btn-change-main-info'));
 		for (const key in crane.mainInfo) {
 			bodyTable.appendChild(createSection(key));
 			for (const keyTwo in crane.mainInfo[key]) {
 				const title = crane.mainInfo[key][keyTwo].title;
 				const value = key === 'Исправность' ? crane.mainInfo[key][keyTwo].description : crane.mainInfo[key][keyTwo].value;
-				bodyTable.appendChild(createRowMainInfo(title, value));
+				bodyTable.appendChild(createRowMainInfo(title, value, keyTwo));
 			}
 		}
 	};
@@ -598,59 +622,260 @@ document.addEventListener('DOMContentLoaded', async () => {
 		drawDateOnAffiliationContainer(typesWork);
 	};
 	//
-	const writeModalWindow = (data) => {
-		const modalBody = document.querySelector('.modal-content').querySelector('.modal-body');
-		const modalFooter= document.querySelector('.modal-content').querySelector('.modal-footer');
-		modalBody.setAttribute('id', data.id);
+	const drawModalWindowIdentifiedFault = (data) => {
+		const window = document.querySelector('.modal-content');
+
+		const modalHeader = window.querySelector('.modal-header');
+		const modalTitle = modalHeader.querySelector('.modal-title');
+		modalTitle.innerText = 'Информация о неисправности';
+
+		const modalBody = window.querySelector('.modal-body');
+		const managmentBtn = document.createElement('div');
+		const mainBtn = document.createElement('button');
+		const secondaryBtn = document.createElement('button');
+		managmentBtn.className = 'switch d-flex flex-row column-gap-2 col-12';
+		mainBtn.className = 'btn btn-secondary take-group selected-group';
+		secondaryBtn.className = 'btn btn-secondary take-group';
+		mainBtn.innerText = 'Информация о неисправности';
+		secondaryBtn.innerText = 'Информация о испрвление';
+		managmentBtn.appendChild(mainBtn);
+		managmentBtn.appendChild(secondaryBtn);
 		modalBody.innerText = '';
-		const title = document.createElement('h2');
-		title.innerText = data.title;
-		modalBody.appendChild(title);
-		data.value.forEach((elem, index) => {
-			const section = document.createElement('p');
-			const content = document.createElement('p');
+		modalBody.appendChild(managmentBtn);
+		addEventWindowBtnSwitchClick(data);
 
-			section.className = 'fs-4';
-			content.className = '';
+		const statusContainer = document.createElement('div');
+		const titleStatus = document.createElement('p');
+		const status = document.createElement('select');
+		const goodOption = document.createElement('option');
+		const badOption = document.createElement('option');
+		statusContainer.className = 'modal-status d-flex flex-row column-gap-4 pt-2 align-items-start';
+		titleStatus.className = 'col-2 text-end';
+		goodOption.className = 'green';
+		badOption.className = 'red';
+		goodOption.setAttribute('value', 1);
+		badOption.setAttribute('value', 0);
+		data.status ? goodOption.selected = true : badOption.selected = true;
+		titleStatus.innerText = 'Статус неисправности';
+		goodOption.innerText = 'Устранена';
+		badOption.innerText = 'Не устранена';
+		status.appendChild(goodOption);
+		status.appendChild(badOption);
+		statusContainer.appendChild(titleStatus);
+		statusContainer.appendChild(status);
+		modalBody.appendChild(statusContainer);
 
-			section.innerText = data.names[index];
-			content.innerText = elem;
-			modalBody.appendChild(section);
-			modalBody.appendChild(content);
-		});
-		modalFooter.removeChild(modalFooter.querySelector('button'))
-		const btn = document.createElement('button');
-		btn.className = 'btn btn-secondary footer-btn-close';
-		btn.setAttribute('type', 'button');
-		btn.setAttribute('data-bs-dismiss', 'modal');
-		btn.innerText = 'Закрыть';
-		modalFooter.appendChild(btn);
-		if (data.title === 'Неисправность') {
-			const select = document.createElement('select');
-			select.setAttribute('onfocus', 'this.size=2;');
-			select.setAttribute('onblur', 'this.size=0;');
-			select.setAttribute('onchange', 'this.size=1; this.blur()');
-			const options = ['Не устранена', 'Устранена'];
-			options.forEach((elem, index) => {
-				const option = document.createElement('option');
-				option.innerText = elem;
-				option.className = index ? 'green' : 'red';
-				option.setAttribute('value', index);
-				if (options[+data.status] === elem) {
-					option.selected = true;
-					// select.className = +data.status ? 'green' : 'red';
-				};
-				select.appendChild(option);
-			});
-			modalBody.appendChild(select);
-			modalFooter.removeChild(modalFooter.querySelector('button'))
-			const btn = document.createElement('button');
-			btn.className = 'btn btn-secondary btn-save';
-			btn.setAttribute('type', 'button');
-			btn.innerText = 'Сохранить';
-			modalFooter.appendChild(btn);
-			addEventBtnSaveChanges(btn);
-		};
+		drawContentWindowIdentifiedFaultFirst(data);
+
+		const modalFooter= window.querySelector('.modal-footer');
+		const button = document.createElement('button');
+		button.className = 'btn btn-secondary footer-btn-close';
+		button.setAttribute('type', 'button');
+		button.innerText = 'Сохранить';
+		modalFooter.innerText = '';
+		modalFooter.appendChild(button);
+		addEventBtnSaveChanges(button);
+	};
+	//
+	const drawContentWindowIdentifiedFaultFirst = (data) => {
+		const window = document.querySelector('.modal-content');
+		const modalBody = window.querySelector('.modal-body');
+		const temp = document.createElement('div');
+		temp.className = 'temp d-flex flex-column row-gap-4';
+		const firstContainer = document.createElement('div');
+		const titleDateDetection = document.createElement('p');
+		const inputDateDetection = document.createElement('p');
+		const titleNameDetection = document.createElement('p');
+		const nameDetection = document.createElement('p');
+		firstContainer.className = 'd-flex flex-row align-items-center column-gap-4';
+		titleDateDetection.className = 'col-2 text-end';
+		inputDateDetection.className = 'window-row-data';
+		nameDetection.className = 'window-row-data';
+		titleDateDetection.innerText = 'Дата:';
+		inputDateDetection.innerText = data.date_detection;
+		titleNameDetection.innerText = 'ФИО:';
+		nameDetection.innerText = data.login_detected;
+		firstContainer.appendChild(titleDateDetection);
+		firstContainer.appendChild(inputDateDetection);
+		firstContainer.appendChild(titleNameDetection);
+		firstContainer.appendChild(nameDetection);
+
+		const secondContainer = document.createElement('div');
+		const titlePossibleCause = document.createElement('p');
+		const possibleCause = document.createElement('p');
+		secondContainer.className = 'd-flex flex-row align-items-center column-gap-4';
+		titlePossibleCause.className = 'col-2 text-end'
+		possibleCause.className = 'window-row-data col-8'
+		titlePossibleCause.innerText = 'Описание неисправности:';
+		possibleCause.innerText = data.possible_cause ? data.possible_cause : '-';
+		secondContainer.appendChild(titlePossibleCause);
+		secondContainer.appendChild(possibleCause);
+
+		modalBody.setAttribute('id', data.id);
+
+		const lastChild = modalBody.lastChild;
+		if (modalBody.querySelector('.temp')) modalBody.removeChild(lastChild.previousElementSibling);
+		temp.appendChild(firstContainer);
+		temp.appendChild(secondContainer);
+		modalBody.insertBefore(temp, lastChild);
+	};
+	//
+	const drawContentWindowIdentifiedFaultSecond = (data) => {
+		const window = document.querySelector('.modal-content');
+		const modalBody = window.querySelector('.modal-body');
+		const temp = document.createElement('div');
+		temp.className = 'temp d-flex flex-column row-gap-4';
+		const firstContainer = document.createElement('div');
+		const titleDateTroubleshooting = document.createElement('p');
+		const inputDateTroubleshooting = document.createElement('input');
+		const titleNameTroubleshooting = document.createElement('p');
+		const nameTroubleshooting = document.createElement('input');
+		firstContainer.className = 'd-flex flex-row align-items-center column-gap-4';
+		inputDateTroubleshooting.className = 'input-date-trouble form-control date-from col-3';
+		titleDateTroubleshooting.className = 'col-2 text-end';
+		nameTroubleshooting.className = 'input-name-trouble form-control';
+		inputDateTroubleshooting.setAttribute('type', 'date');
+		nameTroubleshooting.setAttribute('type', 'text');
+		titleDateTroubleshooting.innerText = 'Дата:';
+		inputDateTroubleshooting.value = data.date_troubleshooting ? data.date_troubleshooting : '';
+		titleNameTroubleshooting.innerText = 'ФИО:';
+		nameTroubleshooting.value = data.login_troubleshooting ? data.login_troubleshooting : '';
+		firstContainer.appendChild(titleDateTroubleshooting);
+		firstContainer.appendChild(inputDateTroubleshooting);
+		firstContainer.appendChild(titleNameTroubleshooting);
+		firstContainer.appendChild(nameTroubleshooting);
+
+		const secondContainer = document.createElement('div');
+		const titleCompleteActivities = document.createElement('p');
+		const completeActivities = document.createElement('textarea');
+		secondContainer.className = 'd-flex flex-row column-gap-4';
+		titleCompleteActivities.className = 'col-2 text-end';
+		completeActivities.className = 'col-8';
+		titleCompleteActivities.innerText = 'Содержание работы:';
+		completeActivities.value = data.complete_activities ? data.complete_activities : '';
+		secondContainer.appendChild(titleCompleteActivities);
+		secondContainer.appendChild(completeActivities);
+
+		const thirdContainer = document.createElement('div');
+		const titleNote = document.createElement('p');
+		const note = document.createElement('textarea');
+		thirdContainer.className = 'd-flex flex-row column-gap-4';
+		titleNote.className = 'col-2 text-end';
+		note.className = 'col-8';
+		titleNote.innerText = 'Примечание:';
+		note.innerText = data.note ? data.note : '';
+		thirdContainer.appendChild(titleNote);
+		thirdContainer.appendChild(note);
+
+		modalBody.setAttribute('id', data.id);
+
+		const lastChild = modalBody.lastChild;
+		modalBody.removeChild(lastChild.previousElementSibling);
+		temp.appendChild(firstContainer);
+		temp.appendChild(secondContainer);
+		temp.appendChild(thirdContainer);
+		modalBody.insertBefore(temp, lastChild);
+	};
+	//
+	const drawModalWindowMaintenance = (data) => {
+		const window = document.querySelector('.modal-content');
+
+		const modalHeader = window.querySelector('.modal-header');
+		const modalTitle = modalHeader.querySelector('.modal-title');
+		modalTitle.innerText = 'Информация о ТОиР';
+
+		drawContentWindowMaintenance(data);
+
+		const modalFooter= window.querySelector('.modal-footer');
+		const button = document.createElement('button');
+		button.className = 'btn btn-secondary footer-btn-close';
+		button.setAttribute('type', 'button');
+		button.setAttribute('data-bs-dismiss', 'modal');
+		button.innerText = 'Закрыть';
+		modalFooter.innerText = '';
+		modalFooter.appendChild(button);
+	};
+	//
+	const drawContentWindowMaintenance = (data) => {
+		const window = document.querySelector('.modal-content');
+		const modalBody = window.querySelector('.modal-body');
+
+		const firstContainer = document.createElement('div');
+		const titleDate = document.createElement('p');
+		const date = document.createElement('p');
+		const titleName = document.createElement('p');
+		const name = document.createElement('p');
+		const titleService = document.createElement('p');
+		const service = document.createElement('p');
+		firstContainer.className = 'd-flex flex-row align-items-center column-gap-4 mt-3';
+		titleDate.className = 'col-2 text-end';
+		date.className = 'window-row-data';
+		name.className = 'window-row-data';
+		service.className = 'window-row-data';
+		titleDate.innerText = 'Дата:';
+		date.innerText = data.date.slice(0, 10);
+		titleName.innerText = 'ФИО:';
+		name.innerText = data.login;
+		titleService.innerText = 'Служба:';
+		service.innerText = data.service;
+		firstContainer.appendChild(titleDate);
+		firstContainer.appendChild(date);
+		firstContainer.appendChild(titleName);
+		firstContainer.appendChild(name);
+		firstContainer.appendChild(titleService);
+		firstContainer.appendChild(service);
+
+		const secondContainer = document.createElement('div');
+		const titleTypeWork = document.createElement('p');
+		const typeWork = document.createElement('p');
+		secondContainer.className = 'd-flex flex-row column-gap-4';
+		titleTypeWork.className = 'col-2 text-end';
+		typeWork.className = 'window-row-data col-8';
+		titleTypeWork.innerText = 'Вид ТОиР:';
+		typeWork.innerText = data.type_maintenance ? data.type_maintenance: '-';
+		secondContainer.appendChild(titleTypeWork);
+		secondContainer.appendChild(typeWork);
+
+		const thirdContainer = document.createElement('div');
+		const titleContentWork = document.createElement('p');
+		const contentWork = document.createElement('p');
+		thirdContainer.className = 'd-flex flex-row column-gap-4';
+		titleContentWork.className = 'col-2 text-end';
+		contentWork.className = 'window-row-data col-8';
+		titleContentWork.innerText = 'Содержание работы:';
+		contentWork.innerText = data.content_work ? data.content_work: '-';
+		thirdContainer.appendChild(titleContentWork);
+		thirdContainer.appendChild(contentWork);
+
+		const fourthContainer = document.createElement('div');
+		const titleResultWork = document.createElement('p');
+		const resultWork = document.createElement('p');
+		fourthContainer.className = 'd-flex flex-row column-gap-4';
+		titleResultWork.className = 'col-2 text-end';
+		resultWork.className = 'window-row-data col-8';
+		titleResultWork.innerText = 'Заключение:';
+		resultWork.innerText = data.result ? data.result: '-';
+		fourthContainer.appendChild(titleResultWork);
+		fourthContainer.appendChild(resultWork);
+
+		modalBody.innerText = '';
+		modalBody.appendChild(firstContainer);
+		modalBody.appendChild(secondContainer);
+		modalBody.appendChild(thirdContainer);
+		modalBody.appendChild(fourthContainer);
+	};
+	//
+	const drawBtnForMainInfo = (obj) => {
+		const btn = document.querySelector('.btn-main-info');
+		const newBtn = document.createElement('button');
+
+		newBtn.className = `${obj.style} btn-main-info btn btn-secondary mb-2`;
+		newBtn.innerText = obj.value;
+
+		btn.parentNode.replaceChild(newBtn, btn);
+
+		const func = obj.func;
+		func(newBtn);
 	};
 	//
 	const createRowMalfunction = (title, name, list, attr) => {
@@ -672,7 +897,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		return row;
 	};
 	//
-	const createRowMainInfo = (title, name) => {
+	const createRowMainInfo = (title, name, key) => {
 		const row = document.createElement('div');
 		const parameter = document.createElement('p');
 		const status = document.createElement('p');
@@ -681,6 +906,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		parameter.className = 'column th text-center';
 		status.className = 'column th text-center';
+
+		row.setAttribute('key', key);
 
 		parameter.innerText = title;
 		status.innerText = name;
@@ -725,7 +952,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			row.appendChild(content);
 		};
 
-		addEventRowClick(row, maintenance);
+		addEventRowMaintenanceClick(row, maintenance);
 		return row;
 	};
 	//
@@ -749,17 +976,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			row.appendChild(content);
 		};
 
-		// const content = document.createElement('select');
-		// names.forEach((elem) => {
-		// 	const option = document.createElement('option');
-		// 	option.innerText = elem[0];
-		// 	option.className = elem[1];
-		// 	elem[0] === list[7] && (option.selected = true) && (content.className = `${elem[1]} column th text-center`);
-		// 	content.appendChild(option);
-		// });
-		// row.appendChild(content);
-
-		addEventRowClick(row, identifiedFaults);
+		addEventRowIdentifiedFaultsClick(row);
 		return row;
 	};
 	//
@@ -888,21 +1105,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const collectContentPutIdentifiedFaults = () => {
 		const body = document.querySelector('.modal-body');
+		const position = body.querySelector('.temp').querySelectorAll('div').length === 3;
 		const id = +body.getAttribute('id');
 		const status = +body.querySelector('select').value;
-		const data = identifiedFaults.find((elem) => +elem.id === id);
-		const result = {
+		let result = {
 			id,
 			status,
-			id_fitting: id,
-			possible_cause: data.possible_cause,
-			login_detected: data.login_detected,
-			login_troubleshooting: data.login_troubleshooting,
-			complete_activities: data.complete_activities,
-			note: data.note ? data.note : '',
-			date_detection: data.date_detection,
-			date_troubleshooting: data.date_troubleshooting,
 		};
+		if (!position) return result;
+		const dateTrouble = body.querySelector('.input-date-trouble').value.trim();
+		const loginTrouble = body.querySelector('.input-name-trouble').value.trim();
+		const allTextarea = body.querySelectorAll('textarea');
+		const contentWork = allTextarea[0].value.trim();
+		const note = allTextarea[1].value.trim();
+
+		if (!dateTrouble) throw new Error('Введите дату устранения неисправности');
+		if (!loginTrouble) throw new Error('Введите ФИО устранившего');
+		if (!contentWork) throw new Error('Введите выполненные мероприятия');
+		result = {
+			id,
+			status,
+			login_troubleshooting: loginTrouble,
+			complete_activities: contentWork,
+			date_troubleshooting: dateTrouble,
+		};
+		if (note) result.note = note;
 
 		return result;
 	};
@@ -1117,17 +1344,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	};
 	//
-	const addEventRowClick = (row, allData) => {
+	const addEventRowIdentifiedFaultsClick = (row) => {
 		row.addEventListener('click', () => {
-			const data = allData.find((elem) => elem.id  === +row.id);
-			const obj = {
-				id: data.id,
-				title: Object.keys(data).length > 7 ? 'Неисправность' : 'ТОиР',
-				names: Object.keys(data).length > 7 ? ['Характер и возможная причина', 'Выполненные мероприятия', 'Примечание'] : ['Содержание работ', 'Итог'],
-				value: Object.keys(data).length > 7 ? [data.possible_cause, data.complete_activities ? data.complete_activities : '-', data.note ? data.note : '-'] : [data.content_work, data.result],
-			};
-			if (Object.keys(data).length > 7) obj.status = data.status;
-			writeModalWindow(obj);
+			const data = identifiedFaults.find((elem) => elem.id  === +row.id);
+			drawModalWindowIdentifiedFault(data);
+		});
+	};
+	//
+	const addEventRowMaintenanceClick = (row) => {
+		row.addEventListener('click', () => {
+			const data = maintenance.find((elem) => elem.id  === +row.id);
+			drawModalWindowMaintenance(data);
 		});
 	};
 	//
@@ -1150,6 +1377,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					btn.disabled = false;
 				});
 				const func = list[index];
+				indexListBodyInfo = index;
 				func();
 			});
 		});
@@ -1158,10 +1386,79 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventBtnSaveChanges = (btn) => {
 		btn.addEventListener('click', async () => await putIdentifiedFaults());
 	};
+	//
+	const addEventWindowBtnSwitchClick = (data) => {
+		const switchBtn = document.querySelector('.modal-body').querySelector('.switch').querySelectorAll('button');
+		switchBtn.forEach((elem, index) => {
+			elem.addEventListener('click', () => {
+				elem.classList.add('selected-group');
+				elem.disabled = true;
+				switchBtn[switchBtn.length - 1 - index].classList.remove('selected-group');
+				switchBtn[switchBtn.length - 1 - index].disabled = false;
+				index ? drawContentWindowIdentifiedFaultSecond(data) : drawContentWindowIdentifiedFaultFirst(data);
+			});
+		});
+	};
+	//
+	const addEventBtnChangeMainInfo = (btn) => {
+		btn.addEventListener('click', async () => {
+			const data = allData ? allData : await getForChangeInfo();
+			const obj = {
+				style: 'btn-save-main-info',
+				value: 'Сохранить',
+				func: (el) => addEventBtnSaveMainInfo(el),
+			};
+			drawBtnForMainInfo(obj);
+			const allRow = document.querySelector('.table-main-info').querySelector('.tbody').querySelectorAll('.t-row');
+			allRow.forEach((row) => {
+				const key = row.getAttribute('key');
+				const select = document.createElement('select');
+				const lastChild = row.lastChild;
+
+				const option = document.createElement('option');
+				option.innerText = lastChild.textContent;
+				option.value = -1;
+				option.selected = true;
+				select.appendChild(option);
+				data[key] && data[key].forEach((elem) => {
+					const option = document.createElement('option');
+					option.innerText = elem.name;
+					option.value = elem.key;
+					lastChild.textContent == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+					select.appendChild(option);
+				});
+
+				select.className = 'window-row-data column th';
+				row.replaceChild(select, lastChild);
+			});
+		});
+	};
+	//
+	const addEventBtnSaveMainInfo = (btn) => {
+		btn.addEventListener('click', async () => {
+			// const data = await getForChangeInfo();
+			const obj = {
+				style: 'btn-change-main-info',
+				value: 'Изменить',
+				func: (el) => addEventBtnChangeMainInfo(el),
+			};
+			drawBtnForMainInfo(obj);
+			const allRow = document.querySelector('.table-main-info').querySelector('.tbody').querySelectorAll('.t-row');
+			allRow.forEach((row) => {
+				const paragraph = document.createElement('p');
+				const lastChild = row.lastChild;
+				paragraph.className = 'column th text-center';
+				paragraph.innerText = lastChild.value;
+				row.replaceChild(paragraph, lastChild);
+			});
+		});
+	};
 
 	//
+	let allData;
 	let photoCrane;
 	let indexListUrl = 0;
+	let indexListBodyInfo = 0;
 	let urlImg = await getImage();
 	let documentUrl = await getDocument();
 	let craneData = await getOneCrane();

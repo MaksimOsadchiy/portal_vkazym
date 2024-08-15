@@ -45,17 +45,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     return;
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE'){
-    $id = $_GET['id'];
-    $table = 'document_cranes';
-    $params = ['id' => $id];
-    $response = selectOneRes($table, $params);
-    $str = explode('crane_data/', $response['document_url'])[1];
-    $filePath = '../../assets/crane_data/' . $str;
-    if (file_exists($filePath)) {
-        unlink($filePath);
+    if ($_SESSION['privilege'] === 7) {
+        $id = $_GET['id'];
+        $table = 'document_cranes';
+        $params = ['id' => $id];
+        $response = selectOneRes($table, $params);
+        $str = explode('crane_data/', $response['document_url'])[1];
+        $filePath = '../../assets/crane_data/' . $str;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        };
+        $response = deleteRes($table, $id);
+        echo json_encode($response);
+    } else {
+        http_response_code(403);
+        echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
     };
-    $response = deleteRes($table, $id);
-    echo json_encode($response);
     return;
 
 } else {

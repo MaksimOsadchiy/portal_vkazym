@@ -92,40 +92,6 @@
                     </div>
                     <div class="tbody d-flex flex-column"></div>
                 </div>
-<!--                <div class="document-container d-flex flex-column align-items-center px-3 py-2 mb-3">-->
-<!--                    <p class="fs-5 mb-2">Файлы</p>-->
-<!--                    <input type='file' class="input_document btn btn-secondary" />-->
-<!--                </div>-->
-<!--                <p class="fs-5 mb-2" id="affiliation">Информация по техническому обслуживанию и ремонту</p>-->
-<!--                <div class="table table-affiliation d-flex flex-column align-items-center">-->
-<!--                    <div class="thead d-flex flex-column">-->
-<!--                        <div class="t-row d-flex flex-row justify-content-center">-->
-<!--                            <p class="column th">Дата</p>-->
-<!--                            <p class="column th">Вид ТОиР</p>-->
-<!--                            <p class="column th">Служба</p>-->
-<!--                            <p class="column th">Содержание работ</p>-->
-<!--                            <p class="column th">Итог</p>-->
-<!--                            <p class="column th">ФИО</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="tbody d-flex flex-column"></div>-->
-<!--                </div>-->
-<!--                <p class="fs-5 mb-2" id="identified-faults">Выявленные неисправности</p>-->
-<!--                <div class="table table-identified-faults d-flex flex-column align-items-center">-->
-<!--                    <div class="thead d-flex flex-column">-->
-<!--                        <div class="t-row d-flex flex-row justify-content-center">-->
-<!--                            <p class="column th">Дата выявления неисправности</p>-->
-<!--                            <p class="column th">Фио обнаружевшего</p>-->
-<!--                            <p class="column th">Характер и возможная причина</p>-->
-<!--                            <p class="column th">Дата устранения неисправности</p>-->
-<!--                            <p class="column th">Выполненные мероприятия</p>-->
-<!--                            <p class="column th">ФИО устранившего</p>-->
-<!--                            <p class="column th">Примечание</p>-->
-<!--                            <p class="column th">Статус</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="tbody d-flex flex-column"></div>-->
-<!--                </div>-->
             </div>
         </div>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -133,22 +99,11 @@
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Подробная информация</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex flex-column">
-<!--                        <h2></h2>-->
-<!--                        <p class="title fs-4">Характер и возможная причина</p>-->
-<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae nesciunt placeat qui! Cumque deserunt dolorem inventore natus omnis optio voluptatibus! Ab architecto aspernatur assumenda atque consectetur consequatur consequuntur cumque cupiditate deleniti dolores eius eligendi exercitationem expedita, explicabo facere harum illum iusto laborum laudantium nam neque nisi numquam odio odit optio provident quae qui quis quisquam quos reiciendis sapiente sint soluta suscipit tempora veritatis, voluptatum? Animi dignissimos error fuga minus non, rerum sint ut. Culpa error excepturi harum, maxime minus necessitatibus provident! Amet placeat, rem! Cumque earum fugit, harum illum inventore molestias quo reiciendis ut vero. Amet iste praesentium veritatis voluptatem!</p>-->
-<!---->
-<!--                        <p class="fs-4">Выполненные мероприятия</p>-->
-<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae nesciunt placeat qui! Cumque deserunt dolorem inventore natus omnis optio voluptatibus! Ab architecto aspernatur assumenda atque consectetur consequatur consequuntur cumque cupiditate deleniti dolores eius eligendi exercitationem expedita, explicabo facere harum illum iusto laborum laudantium nam neque nisi numquam odio odit optio provident quae qui quis quisquam quos reiciendis sapiente sint soluta suscipit tempora veritatis, voluptatum? Animi dignissimos error fuga minus non, rerum sint ut. Culpa error excepturi harum, maxime minus necessitatibus provident! Amet placeat, rem! Cumque earum fugit, harum illum inventore molestias quo reiciendis ut vero. Amet iste praesentium veritatis voluptatem!</p>-->
-<!--                        <p class="fs-4">Примечание</p>-->
-<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim eveniet ipsam, laudantium minus obcaecati possimus quidem sunt! Aliquid consectetur explicabo incidunt iusto magnam numquam officiis omnis perspiciatis praesentium temporibus. Accusamus aperiam at blanditiis dignissimos, distinctio, eveniet excepturi inventore iste libero maiores maxime modi nihil officia porro provident rem sunt ut.</p>-->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary footer-btn-close" data-bs-dismiss="modal">Закрыть</button>
-                    </div>
+                    <div class="modal-body d-flex flex-column row-gap-4 pb-4"></div>
+                    <div class="modal-footer"></div>
                 </div>
             </div>
         </div>

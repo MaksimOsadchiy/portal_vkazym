@@ -369,4 +369,5 @@ function getAllIdentifiedFaults($id) {
     dbCheckErrorRes($query);
     return $query->fetchAll();
 }
+
 ?>

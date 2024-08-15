@@ -206,10 +206,9 @@ textarea.column{
     width: 2rem;
     cursor: pointer;
 }
-
 .modal-dialog {
-    width: 80rem;
-    max-width: 80rem;
+    width: 60rem;
+    max-width: 60rem;
 }
 .form-control.content-work,
 .form-control.result-work {
@@ -241,18 +240,50 @@ select.green,
 select.red {
     outline: none;
 }
-select.green:nth-child(1):active,
-select.red:nth-child(2):active {
-    background-color: rgba(192, 192, 192, 0.39);
+.modal-body {
+    padding-top: 0;
 }
-select.green:nth-child(1):focus,
-select.red:nth-child(2):focus {
-    background-color: rgba(192, 192, 192, 0.39);
+.input-date-trouble{
+    width: 25%;
 }
-option:checked {
-    color: red; /* Этот оттенок никак не упустить! */
+.input-name-trouble {
+    width: 30%;
 }
-option:nth-child(1):hover,
-option:nth-child(2):hover{
-    background: #83d7b0;
+.temp {
+    padding-top: 0.25rem;
+    overflow-y: auto;
 }
+.modal-body textarea {
+    min-height: 4rem;
+    max-height: 20rem;
+    padding: 0.25rem 0.25rem;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgba(235, 235, 235, 0.5);
+}
+.temp textarea {
+    min-height: 4rem;
+    max-height: 20rem;
+}
+.window-row-data {
+    padding: 0.5rem ;
+    border-radius: 0.75rem;
+    background-color: rgba(235, 235, 235, 0.5);
+    overflow-x: auto;
+}
+/*select.green:nth-child(1):active,*/
+/*select.red:nth-child(2):active {*/
+/*    background-color: rgba(192, 192, 192, 0.39);*/
+/*}*/
+/*select.green:nth-child(1):focus,*/
+/*select.red:nth-child(2):focus {*/
+/*    background-color: rgba(192, 192, 192, 0.39);*/
+/*}*/
+/*option:checked {*/
+/*    background-color: transparent;*/
+/*}*/
+/*option:nth-child(1):hover,*/
+/*option:nth-child(2):hover{*/
+/*    background: #83d7b0;*/
+/*}*/

@@ -5,50 +5,48 @@ include_once("../../database/dbFunction.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $table = 'ius';
-    $ius = selectAllRes($table);
+    $ius = (selectAllRes($table));
 
     $table = 'highways';
-    $name_highways = selectAllRes($table);
+    $name_highways = (selectAllRes($table));
 
     $table = 'crane_classes';
-    $crane_classes = selectAllRes($table);
-
-    echo json_encode($ius);
+    $crane_classes = (selectAllRes($table));
 
     $table = 'name_cranes';
-    $name_cranes = selectAllRes($table);
+    $name_cranes = (selectAllRes($table));
 
     $table = 'types_reinforcement';
-    $types_reinforcement = selectAllRes($table);
+    $types_reinforcement = (selectAllRes($table));
 
     $table = 'companies';
-    $companies = selectAllRes($table);
+    $companies = (selectAllRes($table));
 
     $table = 'executions';
-    $executions = selectAllRes($table);
+    $executions = (selectAllRes($table));
 
     $table = 'types_drives';
-    $types_drives = selectAllRes($table);
+    $types_drives = (selectAllRes($table));
 
     $table = 'liquids';
-    $liquids = selectAllRes($table);
+    $liquids = (selectAllRes($table));
 
     $response = [   // ДОДЕЛАТЬ ....
         'ius' => [
-            'key' => array_map(fn($object) => $object->name, $ius),
-            'name' => array_map(fn($object) => $object->name, $ius)
+            'key' => array_map(fn($object) => $object['name'], $ius),
+            'name' => array_map(fn($object) => $object['name'], $ius)
         ],
         'name_highways' => [
-            'key' => array_map(fn($object) => $object->name, $name_highways),
-            'name' => array_map(fn($object) => $object->name, $name_highways)
+            'key' => array_map(fn($object) => $object['name'], $name_highways),
+            'name' => array_map(fn($object) => $object['name'], $name_highways)
         ],
         'crane_class' => [
-            'key' => array_map(fn($object) => $object->name, $crane_classes),
-            'name' => array_map(fn($object) => $object->name, $crane_classes)
+            'key' => array_map(fn($object) => $object['name'], $crane_classes),
+            'name' => array_map(fn($object) => $object['name'], $crane_classes)
         ],
         'type_reinforcement' => [
-            'key' => array_map(fn($object) => $object->name, $types_reinforcement),
-            'name' => array_map(fn($object) => $object->name, $types_reinforcement)
+            'key' => array_map(fn($object) => $object['name'], $types_reinforcement),
+            'name' => array_map(fn($object) => $object['name'], $types_reinforcement)
         ],
     ];
 

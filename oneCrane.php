@@ -33,7 +33,7 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <?php include("app/include/header.php"); ?>
     <div class="main-container d-flex flex-column align-items-center pt-3">
-        <div class="content d-flex flex-column align-items-center p-3">
+        <div class="content d-flex flex-column align-items-center p-3 pb-5">
             <div class="content__header d-flex flex-row justify-content-between pb-2">
                 <div class="content__img-managment d-flex flex-column align-items-center row-gap-3">
                     <div class="content__img-container d-flex flex-row justify-content-center">
@@ -46,7 +46,7 @@
                         <button class="arrow-slider arrow-right d-flex flex-row justify-content-center align-items-center" disabled>></button>
                     </div>
                     <div class="content__btn-managment d-flex flex-row column-gap-2">
-                        <button class="btn btn-secondary btn-save-img" disabled>Сохраить фото</button>
+                        <button class="btn btn-success btn-save-img" disabled>Сохраить фото</button>
                         <button class="btn btn-danger btn-delete-img" disabled>Удалить фото</button>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="tbody d-flex flex-column"></div>
                             </div>
-                            <button class="btn btn-secondary btn-save-malfunction">Сохранить</button>
+                            <button class="btn btn-success btn-save-malfunction">Сохранить</button>
                         </div>
                         <!---->
                         <div class="temp-container d-flex flex-column align-self-start px-2 pb-2">

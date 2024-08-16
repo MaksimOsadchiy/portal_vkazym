@@ -37,10 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $requestBody = file_get_contents('php://input');
         $data = json_decode($requestBody, true);
         $table = 'identified_faults';
-        $id = $data['id'];
-        $params = ['status' => $data['status']];
+        $id = $_GET['id'];
 
-        $response = updateRes($table, $id, $params);
+        $response = updateRes($table, $id, $data);
         echo json_encode($response);
     } else {
         http_response_code(403);

@@ -31,23 +31,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $table = 'liquids';
     $liquids = (selectAllRes($table));
 
-    $response = [   // ДОДЕЛАТЬ ....
-        'ius' => [
-            'key' => array_map(fn($object) => $object['name'], $ius),
-            'name' => array_map(fn($object) => $object['name'], $ius)
-        ],
-        'name_highways' => [
-            'key' => array_map(fn($object) => $object['name'], $name_highways),
-            'name' => array_map(fn($object) => $object['name'], $name_highways)
-        ],
-        'crane_class' => [
-            'key' => array_map(fn($object) => $object['name'], $crane_classes),
-            'name' => array_map(fn($object) => $object['name'], $crane_classes)
-        ],
-        'type_reinforcement' => [
-            'key' => array_map(fn($object) => $object['name'], $types_reinforcement),
-            'name' => array_map(fn($object) => $object['name'], $types_reinforcement)
-        ],
+    $keyWord = [['name' => 'Ввести свое значение']];
+
+    $response = [
+        'ius' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $ius),
+        'name_highways' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $name_highways),
+        'crane_class' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $crane_classes),
+        'name_cranes' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $name_cranes),
+        'type_reinforcement' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $types_reinforcement),
+        'company' => array_map(fn($object) => ['key' => $object['firm'], 'name' => "{$object['firm']}, {$object['location']}"], $companies),
+        'execution' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $executions),
+        'type_drive' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $types_drives),
+        'drive_company' => array_map(fn($object) => ['key' => $object['firm'], 'name' => "{$object['firm']}, {$object['location']}"], $companies),
+        'location_crane' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'technical_number' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'factory_number' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'dn' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'pressure' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'f_manufacture' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'f_commission' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'drive_factory_number' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
+        'liquid' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $liquids),
+        'drive_year_commission' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
     ];
 
 

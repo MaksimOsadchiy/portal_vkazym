@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Кран изменён!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return jsonResponse;
 		} catch (error) {
+			console.log(error);
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
@@ -233,7 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			clearDataModalWindow();
 			const newObj = {
 				id: +jsonResponse,
-				login: `${SESSION['login']}, ФИО скоро...`,
+				login: SESSION['login'],
 				date: data.date,
 				type_maintenance: data.typeWork,
 				service: SESSION['service_name'].service,
@@ -293,18 +294,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const putIdentifiedFaults = async () => {
 		try {
 			const data = collectContentPutIdentifiedFaults();
-			const putData = {
-				id: data.id,
-				status: data.status,
+			let requestData = {};
+			for (const key in data) {
+				if (key === 'id') continue;
+				else if (key === 'login_troubleshooting') requestData['id_user_troubleshooting'] = data[key];
+				else requestData[key] = data[key];
 			};
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
-			const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php`, {
+			const qparametr = `?id=${data.id}`;
+			const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(putData),
+				body: JSON.stringify(requestData),
 			});
 
 			const jsonResponse = await response.json(); // Получаем тело ответа
@@ -320,7 +324,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 						id_fitting: id,
 						possible_cause: data.possible_cause ? data.possible_cause : elem.possible_cause,
 						login_detected: data.login_detected ? data.login_detected : elem.login_detected,
-						login_troubleshooting: data.login_troubleshooting ? data.login_troubleshooting : (elem.login_troubleshooting ? elem.login_troubleshooting : ''),
+						login_troubleshooting: data.login_troubleshooting ? userData.find((elem) => +data.login_troubleshooting === +elem.id).name : (elem.login_troubleshooting ? elem.login_troubleshooting : ''),
 						complete_activities: data.complete_activities ? data.complete_activities : (elem.complete_activities ? elem.complete_activities : ''),
 						note: data.note ? data.note :  (elem.note ? elem.note : ''),
 						date_detection: data.date_detection ? data.date_detection : elem.date_detection,
@@ -334,6 +338,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			drawTableIdentifiedFaults(identifiedFaults);
 			return jsonResponse;
 		} catch (error) {
+			console.log(error);
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
 		};
@@ -341,18 +346,81 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const getForChangeInfo = async () => {
 		try {
-			// ЗАПРОС на ИУС, Наименование ЛПУМГ, Наименование газопровода(класс и название), ТИП, Фирма, завод изготовитель, Исполнение, Привод-ТИП, Привод-Гидравлическая жидкость
-			// уже есть Исправность
 			const response = await fetch(`${SERVER_URL}cranes/globalData.php`);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			return response;
+            jsonResponse.result = craneData.list_result.map((elem) => ({
+				key: elem.name,
+				name: elem.description
+			}));
+			return jsonResponse;
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return {};
 		}
 	};
+	//
+	const putForChangeInfo = async	(dataFitting, dataDrive) => {
+		try {
+			const idDrive = craneData.id_drive;
+			const driveQparametr = `?id=${idDrive}`;
+			const drivrResponse = await fetch(`${SERVER_URL}cranes/drive.php${driveQparametr}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(dataDrive),
+			});
+			const driveJsonResponse = await drivrResponse.json(); // Получаем тело ответа
+			if (!drivrResponse.ok) throw new Error(driveJsonResponse.status); // Проверяем HTTP статус ответа
+			for (const key in dataDrive) {
+				dataDrive[key] && (craneData.mainInfo['Привод'][key].value = dataDrive[key]);
+			};
+
+			const url = new URL(window.location.href);
+			const idFitting = new URLSearchParams(url.search).get('id');
+			const fittingQparametr = `?id=${idFitting}`;
+			const fittingResponse = await fetch(`${SERVER_URL}cranes/crane.php${fittingQparametr}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(dataFitting),
+			});
+
+			const fittingJsonResponse = await fittingResponse.json(); // Получаем тело ответа
+			if (!fittingResponse.ok) throw new Error(fittingJsonResponse.status); // Проверяем HTTP статус ответа
+			for (const key in dataFitting) {
+				if (key === 'crane_class') dataFitting[key] && (craneData.mainInfo['Основное'][key].value = `${dataFitting[key]}, ${dataFitting['name_cranes']}`);
+				else if (key != 'name_cranes') dataFitting[key] && (craneData.mainInfo['Основное'][key].value = dataFitting[key]);
+			};
+
+			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Кран изменен!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [fittingResponse, driveJsonResponse];
+		} catch (error) {
+			console.log(error);
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return false;
+		};
+	};
+	//
+	const getAllUser = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}users.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			const result = jsonResponse.map((elem) => ({
+				id: elem.id,
+				name: elem.login
+			}));
+			return result;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return {};
+		}
+	}
 	//
 	const drawTableMalfunction = (crane) => {
 		const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
@@ -362,6 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const list = crane[`list_${key}`];
 			bodyTable.appendChild(createRowMalfunction(title, value, list, key));
 		}
+		addEventSelectOtherCheck(bodyTable.querySelectorAll('select'));
 	};
 	//
 	const drawTableMainInfo = (crane) => {
@@ -380,19 +449,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 					</div>
 				</div>
 				<div class="tbody d-flex flex-column"></div>
-			</div>`;
+			</div>
+			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${+SESSION.privilege !== 7 ? 'disabled' : ''}>Изменить</button>`;
 		body.insertAdjacentHTML('beforeend', mainContent);
 
 		const bodyTable = document.querySelector('.table-main-info').querySelector('.tbody');
-		addEventBtnChangeMainInfo(document.querySelector('.btn-change-main-info'));
+
+		document.querySelectorAll('.btn-change-main-info').forEach((btn) => addEventBtnChangeMainInfo(btn));
+
 		for (const key in crane.mainInfo) {
 			bodyTable.appendChild(createSection(key));
 			for (const keyTwo in crane.mainInfo[key]) {
 				const title = crane.mainInfo[key][keyTwo].title;
 				const value = key === 'Исправность' ? crane.mainInfo[key][keyTwo].description : crane.mainInfo[key][keyTwo].value;
 				bodyTable.appendChild(createRowMainInfo(title, value, keyTwo));
-			}
-		}
+			};
+		};
 	};
 	//
 	const drawImage = (obj) => {
@@ -572,7 +644,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     <p>Примечания</p>
                                     <textarea class="form-control note" id="note" disabled></textarea>
                                 </div>
-                                <button class="btn btn-secondary btn-save-identified-faults" disabled>Сохранить</button>
+                                <button class="btn btn-success btn-save-identified-faults" disabled>Сохранить</button>
                             </div>`;
 
 		place.insertAdjacentHTML('beforeend', container);
@@ -614,7 +686,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                         <textarea type="date" class="form-control result-work" id="result-work"></textarea>
                                     </div>
                                 </div>
-                                <button class="btn btn-secondary btn-save-new-maintenance">Сохранить</button>
+                                <button class="btn btn-success btn-save-new-maintenance">Сохранить</button>
                             </div>`;
 
 		place.insertAdjacentHTML('beforeend', container);
@@ -637,7 +709,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		mainBtn.className = 'btn btn-secondary take-group selected-group';
 		secondaryBtn.className = 'btn btn-secondary take-group';
 		mainBtn.innerText = 'Информация о неисправности';
-		secondaryBtn.innerText = 'Информация о испрвление';
+		secondaryBtn.innerText = 'Информация об исправлении';
 		managmentBtn.appendChild(mainBtn);
 		managmentBtn.appendChild(secondaryBtn);
 		modalBody.innerText = '';
@@ -651,6 +723,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const badOption = document.createElement('option');
 		statusContainer.className = 'modal-status d-flex flex-row column-gap-4 pt-2 align-items-start';
 		titleStatus.className = 'col-2 text-end';
+		status.className = 'window-row-data';
 		goodOption.className = 'green';
 		badOption.className = 'red';
 		goodOption.setAttribute('value', 1);
@@ -669,7 +742,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		const modalFooter= window.querySelector('.modal-footer');
 		const button = document.createElement('button');
-		button.className = 'btn btn-secondary footer-btn-close';
+		button.className = 'btn btn-success footer-btn-close';
 		button.setAttribute('type', 'button');
 		button.innerText = 'Сохранить';
 		modalFooter.innerText = '';
@@ -729,21 +802,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const titleDateTroubleshooting = document.createElement('p');
 		const inputDateTroubleshooting = document.createElement('input');
 		const titleNameTroubleshooting = document.createElement('p');
-		const nameTroubleshooting = document.createElement('input');
+		// const nameTroubleshooting = document.createElement('input');
+		const select = createSelect('', data.login_troubleshooting ? data.login_troubleshooting : '', userData);
 		firstContainer.className = 'd-flex flex-row align-items-center column-gap-4';
 		inputDateTroubleshooting.className = 'input-date-trouble form-control date-from col-3';
 		titleDateTroubleshooting.className = 'col-2 text-end';
-		nameTroubleshooting.className = 'input-name-trouble form-control';
+		select.classList.add('window-row-data');
+		select.classList.add('input-name-trouble');
+		// nameTroubleshooting.className = 'input-name-trouble form-control';
 		inputDateTroubleshooting.setAttribute('type', 'date');
-		nameTroubleshooting.setAttribute('type', 'text');
+		// nameTroubleshooting.setAttribute('type', 'text');
 		titleDateTroubleshooting.innerText = 'Дата:';
 		inputDateTroubleshooting.value = data.date_troubleshooting ? data.date_troubleshooting : '';
 		titleNameTroubleshooting.innerText = 'ФИО:';
-		nameTroubleshooting.value = data.login_troubleshooting ? data.login_troubleshooting : '';
+		// nameTroubleshooting.value = data.login_troubleshooting ? data.login_troubleshooting : '';
 		firstContainer.appendChild(titleDateTroubleshooting);
 		firstContainer.appendChild(inputDateTroubleshooting);
 		firstContainer.appendChild(titleNameTroubleshooting);
-		firstContainer.appendChild(nameTroubleshooting);
+		firstContainer.appendChild(select);
+		// firstContainer.appendChild(nameTroubleshooting);
 
 		const secondContainer = document.createElement('div');
 		const titleCompleteActivities = document.createElement('p');
@@ -866,16 +943,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const drawBtnForMainInfo = (obj) => {
-		const btn = document.querySelector('.btn-main-info');
-		const newBtn = document.createElement('button');
+		const btnAll = document.querySelectorAll('.btn-main-info');
+		btnAll.forEach((btn) => {
+			const newBtn = document.createElement('button');
 
-		newBtn.className = `${obj.style} btn-main-info btn btn-secondary mb-2`;
-		newBtn.innerText = obj.value;
+			newBtn.className = `${obj.style} btn-main-info btn btn-secondary mb-2`;
+			newBtn.innerText = obj.value;
 
-		btn.parentNode.replaceChild(newBtn, btn);
+			btn.parentNode.replaceChild(newBtn, btn);
 
-		const func = obj.func;
-		func(newBtn);
+			const func = obj.func;
+			func(newBtn);
+		});
 	};
 	//
 	const createRowMalfunction = (title, name, list, attr) => {
@@ -1013,9 +1092,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 		return select;
 	};
-	const createTextarea = () => {
+	const createTextarea = (text) => {
 		const textarea = document.createElement('textarea');
 		textarea.className = 'column th';
+		textarea.value = text;
 		return textarea;
 	};
 	//
@@ -1040,10 +1120,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 				if (key === 'result') {
 					document.querySelector('.table-main-info').querySelector(' .tbody').querySelectorAll('.t-row')[1].querySelectorAll('p')[1].innerText =
 						craneData.list_result.find((elem) => +elem.name === +resultTable[key]).description;
-				}
+				};
 			} else if (isTextarea && row.lastChild.value) {
 				resultTable[key] = row.lastChild.value;
-			}
+			};
 		});
 
 		return resultTable;
@@ -1107,7 +1187,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const body = document.querySelector('.modal-body');
 		const position = body.querySelector('.temp').querySelectorAll('div').length === 3;
 		const id = +body.getAttribute('id');
-		const status = +body.querySelector('select').value;
+		const status = +body.querySelector('.modal-status').querySelector('select').value;
 		let result = {
 			id,
 			status,
@@ -1120,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const note = allTextarea[1].value.trim();
 
 		if (!dateTrouble) throw new Error('Введите дату устранения неисправности');
-		if (!loginTrouble) throw new Error('Введите ФИО устранившего');
+		if (loginTrouble == -1) throw new Error('Введите ФИО устранившего');
 		if (!contentWork) throw new Error('Введите выполненные мероприятия');
 		result = {
 			id,
@@ -1130,7 +1210,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 			date_troubleshooting: dateTrouble,
 		};
 		if (note) result.note = note;
-
 		return result;
 	};
 	//
@@ -1171,17 +1250,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 		btn.addEventListener('click', async () => await postIdentifiedFaults());
 	};
 	//
-	const addEventSelectOtherCheck = () => {
-		const allSelect = document.querySelector('.table-malfunction').querySelectorAll('select');
-		const list = [allSelect[1], allSelect[4]];
+	const addEventSelectOtherCheck = (list) => {
+		// const list = document.querySelectorAll('select');
 		list.forEach((elem) => {
-			elem.addEventListener('change', () => {
+			elem.dataset.previousValue = elem.querySelector(`[value="${elem.value}"]`).textContent;
+			elem.addEventListener('change', (e) => {
 				const str = elem.querySelector(`[value="${elem.value}"]`).textContent;
 				if (str === 'Ввести свое значение') {
+					const previousValue = e.target.dataset.previousValue;
 					const parent = elem.parentNode;
 					parent.removeChild(elem);
-					parent.appendChild(createTextarea());
-				}
+					parent.appendChild(createTextarea(previousValue));
+				};
 			});
 		});
 	};
@@ -1200,7 +1280,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 				});
 				reader.readAsDataURL(choosedFile);
 				photoCrane = choosedFile;
-			}
+			};
+			e.target.value = '';
 		});
 	};
 	//
@@ -1257,7 +1338,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (choosedFile) {
 				const documentCrane = choosedFile;
 				const newDocument = await postDocument(documentCrane);
-				newDocument && drawDocument([newDocument]);
+				newDocument && drawDocument([newDocument, ...documentUrl]);
+				documentUrl.push(newDocument);
 				e.target.value = '';
 			}
 		});
@@ -1402,6 +1484,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const addEventBtnChangeMainInfo = (btn) => {
 		btn.addEventListener('click', async () => {
+			const malfuncion = document.querySelector('.btn-save-malfunction');
+			malfuncion.disabled = true;
 			const data = allData ? allData : await getForChangeInfo();
 			const obj = {
 				style: 'btn-save-main-info',
@@ -1416,7 +1500,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 				const lastChild = row.lastChild;
 
 				const option = document.createElement('option');
-				option.innerText = lastChild.textContent;
+				const text = key === 'crane_class' ? lastChild.textContent.split(', ') : lastChild.textContent;
+				const curText = key === 'crane_class' ? text[0] : text;
+				option.innerText = curText;
 				option.value = -1;
 				option.selected = true;
 				select.appendChild(option);
@@ -1424,19 +1510,50 @@ document.addEventListener('DOMContentLoaded', async () => {
 					const option = document.createElement('option');
 					option.innerText = elem.name;
 					option.value = elem.key;
-					lastChild.textContent == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+					curText == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
 					select.appendChild(option);
 				});
 
 				select.className = 'window-row-data column th';
 				row.replaceChild(select, lastChild);
+
+				if (key === 'crane_class'){
+					const newRow = document.createElement('div');
+					const firstColumn = document.createElement('p');
+					const select = document.createElement('select');
+					newRow.className = 't-row d-flex flex-row justify-content-center';
+					newRow.setAttribute('key', 'name_cranes');
+					firstColumn.className = 'column th text-center';
+					firstColumn.innerText = 'Тип крана';
+					select.className = 'window-row-data column th';
+
+					const option = document.createElement('option');
+					option.innerText =text[1];
+					option.value = -1;
+					option.selected = true;
+					select.appendChild(option);
+					data['name_cranes'] && data['name_cranes'].forEach((elem) => {
+						const option = document.createElement('option');
+						option.innerText = elem.name;
+						option.value = elem.key;
+						text[1] == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+						select.appendChild(option);
+					});
+					newRow.appendChild(firstColumn);
+					newRow.appendChild(select);
+					row.insertAdjacentElement('afterend', newRow);
+				};
 			});
+			const selectAll = [];
+			allRow.forEach((elem) => selectAll.push(elem.querySelector('select')));
+			addEventSelectOtherCheck(selectAll);
 		});
 	};
 	//
 	const addEventBtnSaveMainInfo = (btn) => {
 		btn.addEventListener('click', async () => {
-			// const data = await getForChangeInfo();
+			const malfuncion = document.querySelector('.btn-save-malfunction');
+			malfuncion.disabled = false;
 			const obj = {
 				style: 'btn-change-main-info',
 				value: 'Изменить',
@@ -1444,18 +1561,67 @@ document.addEventListener('DOMContentLoaded', async () => {
 			};
 			drawBtnForMainInfo(obj);
 			const allRow = document.querySelector('.table-main-info').querySelector('.tbody').querySelectorAll('.t-row');
+			const collectData = {};
+
 			allRow.forEach((row) => {
-				const paragraph = document.createElement('p');
-				const lastChild = row.lastChild;
-				paragraph.className = 'column th text-center';
-				paragraph.innerText = lastChild.value;
-				row.replaceChild(paragraph, lastChild);
+				const key = row.getAttribute('key');
+				if (key === 'crane_class') {
+					const paragraph = document.createElement('p');
+					paragraph.className = 'column th text-center';
+					const nextRow = row.nextElementSibling;
+					const lastChild = row.lastChild;
+					const text = lastChild.options[lastChild.selectedIndex].text;
+					const nextText = nextRow.querySelector('select').options[nextRow.querySelector('select').selectedIndex].text;
+					paragraph.innerText = `${text}, ${nextText}`;
+					row.replaceChild(paragraph, lastChild);
+					if (lastChild.value != -1) collectData[key] = lastChild.value;
+
+				} else if (key === 'name_cranes') {
+					const lastChild = row.lastChild;
+					if (lastChild.value != -1) collectData[key] = lastChild.value;
+					row.remove();
+
+				} else {
+					const paragraph = document.createElement('p');
+					const lastChild = row.lastChild;
+					paragraph.className = 'column th text-center';
+					const text = lastChild.tagName.toLowerCase() === 'select' ? lastChild.options[lastChild.selectedIndex].text : lastChild.value;
+					paragraph.innerText = text;
+					row.replaceChild(paragraph, lastChild);
+					if (lastChild.value != -1) collectData[key] = lastChild.value;
+				};
 			});
+
+			const fittingData = {
+				name_highways: collectData.name_highways,
+				crane_class: collectData.crane_class,
+				name_cranes: collectData.name_cranes,
+				location_crane: collectData.location_crane,
+				technical_number: collectData.technical_number,
+				company: collectData.company,
+				f_manufacture: collectData.f_manufacture,
+				factory_number: collectData.factory_number,
+				dn: collectData.dn,
+				ius: collectData.ius,
+				type_reinforcement: collectData.type_reinforcement,
+				pressure: collectData.pressure,
+				execution: collectData.execution,
+				f_commission: collectData.f_commission,
+			};
+			const driveData = {
+				type_drive: collectData.type_drive,
+				drive_company: collectData.drive_company,
+				liquid: collectData.liquid,
+				drive_factory_number: collectData.drive_factory_number,
+				drive_year_commission: collectData.drive_year_commission,
+			};
+			await putForChangeInfo(fittingData, driveData);
 		});
 	};
 
 	//
 	let allData;
+	const userData = await getAllUser();
 	let photoCrane;
 	let indexListUrl = 0;
 	let indexListBodyInfo = 0;
@@ -1470,7 +1636,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	urlImg.length && drawImage(urlImg[0]);
 	drawMaintenanceContainer();
 	addEventBtnMalfunctionClick();
-	addEventSelectOtherCheck();
 	addEventInputChang();
 	addEventBtnSavePhoto();
 	addEventBtnDeletePhoto();

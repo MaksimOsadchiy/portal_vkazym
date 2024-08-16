@@ -248,6 +248,7 @@ function selectOneCranes($id){
     global $pdo;
     $sql = "SELECT 
                     f.id,
+                    f.id_drive,
                     f.IUS AS `ius`, 
                     res.description AS `result`,
                     hw.lpumg AS `lpumg`, 
@@ -256,7 +257,7 @@ function selectOneCranes($id){
                     f.location_crane AS `location`,
                     f.technical_number AS `technical_number`, 
                     f.type_reinforcement AS `type_reinforcement`,
-                    CONCAT(f.company, ', ' , c.location) AS `company`, 
+                    CONCAT(f.company, ', ' , fc.location) AS `company`, 
                     f.factory_number AS `factory_number`, 
                     f.Dn AS `dn`, 
                     f.pressure AS `pressure`, 
@@ -264,7 +265,7 @@ function selectOneCranes($id){
                     f.year_manufacture AS `f_manufacture`,
                     f.year_commission AS `f_commission`,
                     d.type_drive AS `type_drive`,
-                    CONCAT(f.company, ', ', c.location) AS `drive_company`, 
+                    CONCAT(d.company, ', ', dc.location) AS `drive_company`, 
                     d.factory_number AS `drive_factory_number`,
                     d.liquid AS `liquid`,
                     d.year_commission AS `drive_year_commission`,
@@ -282,7 +283,9 @@ function selectOneCranes($id){
             LEFT JOIN 
                 drives d ON f.id_drive = d.id
             LEFT JOIN 
-                companies c ON f.company = c.firm
+                companies fc ON f.company = fc.firm
+            LEFT JOIN 
+                companies dc ON d.company = dc.firm
             LEFT JOIN 
                 malfunctions m ON f.id_malfunction = m.id
             LEFT JOIN 
@@ -327,7 +330,7 @@ function getAllMaintenance($id) {
                     s.service,
                     m.content_work, 
                     m.result, 
-                    CONCAT(us.login, ', ФИО скоро...') AS `login`
+                    CONCAT(us.login) AS `login`
             FROM 
                 maintenance m
             LEFT JOIN 
@@ -353,8 +356,8 @@ function getAllIdentifiedFaults($id) {
                     i.complete_activities,
                     i.note,
                     i.status,
-                    CONCAT(us_d.login, ', ФИО скоро...') AS `login_detected`,
-                    CONCAT(us_t.login, ', ФИО скоро...') AS `login_troubleshooting`
+                    CONCAT(us_d.login) AS `login_detected`,
+                    CONCAT(us_t.login) AS `login_troubleshooting`
             FROM 
                 identified_faults i
             LEFT JOIN 

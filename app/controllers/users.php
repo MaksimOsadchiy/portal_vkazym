@@ -1,6 +1,6 @@
 <?php
 
-include("app/database/dbFunction.php");
+include_once("../database/dbFunction.php");
 
 function userAuph($user){
 	$_SESSION['id'] = $user['id'];
@@ -85,3 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button_log'])) {
 		};
 	};
 };
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') { // ИЗМЕНИТЬ (В отдельный файл)
+    $table = 'users';
+    $response = selectAllRes($table);
+    echo json_encode($response);
+}
+
+?>

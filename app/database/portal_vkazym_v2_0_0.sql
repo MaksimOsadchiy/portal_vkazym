@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Авг 13 2024 г., 12:25
+-- Время создания: Авг 16 2024 г., 11:17
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -137,7 +137,7 @@ CREATE TABLE `crane_classes` (
 
 INSERT INTO `crane_classes` (`id`, `name`) VALUES
                                                (6, 'Линейный'),
-                                               (4, 'Перемчка'),
+                                               (4, 'Перемычка'),
                                                (8, 'Северная перемычка(СП)'),
                                                (3, 'Южная перемычка(ЮП)');
 
@@ -159,13 +159,16 @@ CREATE TABLE `document_cranes` (
 --
 
 INSERT INTO `document_cranes` (`id`, `id_fitting`, `document_url`, `name`) VALUES
-                                                                               (8, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/documents/PDF.pdf', 'PDF.pdf'),
                                                                                (9, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/documents/car.png', 'car.png'),
                                                                                (10, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/documents/PDF.pdf', 'PDF.pdf'),
                                                                                (11, 8, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.3/documents/PDF.pdf', 'PDF.pdf'),
                                                                                (12, 7, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.2/documents/downArrow.png', 'downArrow.png'),
                                                                                (13, 538, 'http://localhost/portal_vkazym/app/assets/crane_data/Ямбург-Поволжье/Линейный_Свечной_683.6_683-9.3/documents/PDF.pdf', 'PDF.pdf'),
-                                                                               (14, 579, 'http://localhost/portal_vkazym/app/assets/crane_data/Ямбург-Тула 1/Линейный_Свечной_690.7_690-7.3/documents/PDF.pdf', 'PDF.pdf');
+                                                                               (14, 579, 'http://localhost/portal_vkazym/app/assets/crane_data/Ямбург-Тула 1/Линейный_Свечной_690.7_690-7.3/documents/PDF.pdf', 'PDF.pdf'),
+                                                                               (31, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/downArrow.png', 'downArrow.png'),
+                                                                               (32, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/car.png', 'car.png'),
+                                                                               (33, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/кран.png', 'кран.png'),
+                                                                               (34, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/save.png', 'save.png');
 
 -- --------------------------------------------------------
 
@@ -187,7 +190,7 @@ CREATE TABLE `drives` (
 --
 
 INSERT INTO `drives` (`id`, `type_drive`, `company`, `factory_number`, `liquid`, `year_commission`) VALUES
-                                                                                                        (1, 'Пневмогидравлический', 'АЗТПА', NULL, NULL, '1984'),
+                                                                                                        (1, 'Пневмогидравлический с ААЗК', 'Волгограднефтемаш', '', NULL, '1986'),
                                                                                                         (3, 'Пневмогидравлический', 'Волгограднефтемаш', '587', 'ПМС-20 Югра', '2005'),
                                                                                                         (4, 'Пневмогидравлический', 'Волгограднефтемаш', NULL, 'ПМС-20 Югра', '2005'),
                                                                                                         (5, 'Пневмогидравлический', 'Уралхиммаш', '7679', 'ПМС-20 Югра', '1986'),
@@ -196,7 +199,7 @@ INSERT INTO `drives` (`id`, `type_drive`, `company`, `factory_number`, `liquid`,
                                                                                                         (8, 'Пневмогидравлический', 'Грове', NULL, 'ПМС-20 Югра', '1984'),
                                                                                                         (9, 'Пневмогидравлический', 'Грове', NULL, 'ПМС-20 Югра', '1984'),
                                                                                                         (10, 'Пневмогидравлический', 'Дзержинскхиммаш', '9520', 'ПМС-20 Югра', '1986'),
-                                                                                                        (11, 'Ручной', 'АЗТПА', NULL, NULL, '1983'),
+                                                                                                        (11, 'Ручной', 'Уралхиммаш', NULL, NULL, '1988'),
                                                                                                         (12, 'Ручной', 'АЗТПА', NULL, NULL, '1983'),
                                                                                                         (13, 'Пневмогидравлический', 'Минхиммаш', NULL, NULL, '1983'),
                                                                                                         (14, 'Ручной', 'АЗТПА', NULL, NULL, '1983'),
@@ -525,11 +528,11 @@ CREATE TABLE `fittings` (
 --
 
 INSERT INTO `fittings` (`id`, `name_highways`, `crane_class`, `name_crane`, `location_crane`, `technical_number`, `company`, `year_manufacture`, `factory_number`, `Dn`, `id_malfunction`, `plan_replacement`, `IUS`, `unification_crane`, `type_reinforcement`, `pressure`, `execution`, `year_commission`, `id_drive`, `classification_installation`) VALUES
-                                                                                                                                                                                                                                                                                                                                                            (6, 'между Ямбург-Елец 2 и Ямбург-Зап.граница', 'Перемчка', 'Стояк отбора газа', 853.3, '853-1', 'АЗТПА', '1984', '2545', 300, 6, NULL, '409', 'КЦ', 'Шаровой', 80, 'Подземное', '1985', 1, NULL),
+                                                                                                                                                                                                                                                                                                                                                            (6, 'Уренгой-Центр 2', 'Перемычка', 'Стояк отбора газа', 853.9, '853-1', 'АЗТПА', '1984', '2545', 300, 6, NULL, '409', 'КЦ', 'Шаровой', 80, 'Подземное', '1985', 1, NULL),
                                                                                                                                                                                                                                                                                                                                                             (7, 'Уренгой-Центр 2', 'Линейный', 'на ЛК', 539, '539-3.2', 'Волгограднефтемаш', '2003', '852', 300, 7, NULL, '409', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 4, NULL),
                                                                                                                                                                                                                                                                                                                                                             (8, 'Уренгой-Центр 2', 'Линейный', 'на ЛК', 539, '539-3.3', 'Волгограднефтемаш', '2003', '857', 300, 8, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '2005', 3, NULL),
                                                                                                                                                                                                                                                                                                                                                             (9, 'Уренгой-Ужгород', 'Линейный', 'на ЛК', 538, '538-1.3', 'Грове', '1983', NULL, 300, 9, NULL, '411', '537 КрУ', 'Шаровой', 80, 'Подземное', '1984', 7, NULL),
-                                                                                                                                                                                                                                                                                                                                                            (311, 'СРТО-Урал', 'Линейный', 'Свечной', 683.3, '683-10.3', 'АЗТПА', '1992', NULL, 50, 315, NULL, '409', 'КЦ', 'Шаровой', 75, 'Подземное', '1992', 11, 'СРТО-Урал, 683,3 км, Камера приема'),
+                                                                                                                                                                                                                                                                                                                                                            (311, 'СРТО-Урал', 'Линейный', 'Свечной', 683.3, '683-10.3', 'АЗТПА', '1992', NULL, 50, 315, NULL, '411', 'КЦ', 'Шаровой', 75, 'Подземное', '1993', 11, 'СРТО-Урал, 683,3 км, Камера приема'),
                                                                                                                                                                                                                                                                                                                                                             (312, 'СРТО-Урал', 'Линейный', 'Свечной', 683.3, '683-10.3', 'АЗТПА', '1992', NULL, 50, 316, NULL, '411', 'КЦ', 'Шаровой', 75, 'Подземное', '1992', 12, 'СРТО-Урал, 683,3 км, Камера приема'),
                                                                                                                                                                                                                                                                                                                                                             (313, 'СРТО-Урал', 'Линейный', 'Свечной', 683.3, '683-10.3', 'Минхиммаш', '1992', NULL, 150, 317, NULL, '412', 'КЦ', 'Шаровой', 75, 'Подземное', '1992', 13, 'СРТО-Урал, 683,3 км, Камера приема'),
                                                                                                                                                                                                                                                                                                                                                             (314, 'СРТО-Урал', 'Линейный', 'Свечной', 683.3, '683-10.3', 'АЗТПА', '1992', NULL, 50, 318, NULL, '409', 'КЦ', 'Шаровой', 75, 'Подземное', '1992', 14, 'СРТО-Урал, 683,3 км, Камера приема'),
@@ -867,11 +870,11 @@ INSERT INTO `highways` (`id`, `name`, `lpumg`) VALUES
 CREATE TABLE `identified_faults` (
                                      `id` int NOT NULL,
                                      `id_fitting` int NOT NULL,
-                                     `possible_cause` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                                     `possible_cause` varchar(511) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                                      `id_user_detection` int NOT NULL,
                                      `id_user_troubleshooting` int DEFAULT NULL,
-                                     `complete_activities` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                                     `note` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                                     `complete_activities` varchar(511) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+                                     `note` varchar(511) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
                                      `date_detection` date NOT NULL,
                                      `date_troubleshooting` date DEFAULT NULL,
                                      `status` int NOT NULL DEFAULT '0'
@@ -886,7 +889,7 @@ INSERT INTO `identified_faults` (`id`, `id_fitting`, `possible_cause`, `id_user_
                                                                                                                                                                                                               (2, 6, 'ТЕТЕ', 29, 29, 'СМСМСМСМ', NULL, '2024-08-13', '2024-08-07', 0),
                                                                                                                                                                                                               (3, 6, 'ТЕТЕ', 29, 29, 'СМСМСМСМ', 'аааааа', '2024-08-13', '2024-08-07', 0),
                                                                                                                                                                                                               (4, 6, 'ТЕТЕ', 29, 29, 'СМСМСМСМ', 'аааааа', '2024-08-13', '2024-08-07', 0),
-                                                                                                                                                                                                              (5, 6, 'sdf', 29, NULL, NULL, NULL, '2024-08-21', NULL, 0),
+                                                                                                                                                                                                              (5, 6, 'sdf', 29, 24, '5858', '999+', '2024-08-21', '2024-08-16', 1),
                                                                                                                                                                                                               (6, 6, 'ММММВМ', 29, NULL, NULL, NULL, '2024-08-13', NULL, 0),
                                                                                                                                                                                                               (7, 6, 'df', 29, 29, 'vv', 'vvvvv', '2024-08-14', '2024-08-07', 0),
                                                                                                                                                                                                               (8, 6, 'bbbbbbbbbb', 29, NULL, NULL, NULL, '2024-07-30', NULL, 0),
@@ -901,7 +904,19 @@ INSERT INTO `identified_faults` (`id`, `id_fitting`, `possible_cause`, `id_user_
                                                                                                                                                                                                               (17, 6, 'hh', 29, NULL, NULL, NULL, '2024-08-07', NULL, 0),
                                                                                                                                                                                                               (18, 6, 'Тестстст', 29, 29, 'ТТТЕТЕТсстт', 'ТУттест', '2024-08-15', '2024-08-16', 1),
                                                                                                                                                                                                               (19, 6, 'sf', 29, 29, 'fghf', NULL, '2024-08-13', '2024-08-08', 1),
-                                                                                                                                                                                                              (20, 6, '123', 29, 29, '5555', NULL, '2024-08-15', '2024-08-16', 1);
+                                                                                                                                                                                                              (20, 6, '123', 29, 29, '5555', NULL, '2024-08-15', '2024-08-16', 1),
+                                                                                                                                                                                                              (21, 6, 'Lorem exercitationem expeentore molestias quo reiciendis ut vero. Amet iste praesentium veritatis voluptatem! Lorem exercitationem expeentore molestias quo reiciendis ut vero. Amet iste praesentium veritatis voluptatem!', 29, 1, 'Loptigendi exвiente sint soluta suscipit tempora veritatis, voluptatum? Animi dignissimos error fuga minus non, rerum sint ut. Culpa error excepturi harum, maxime minus necessitatibus voluptatem! lpa error excepturi harum, maxime minus necessitatibus voluptatem!', 'maxime minus necessitatibus provident! Amet placeat, rem! Cumque earum fugit, harum illum inventore molestias quo reiciendis ut vero. Amet iste praesentium veritatis voluptatem t iste praesentium veritatis voluptatem t iste praesentium veritatis voluptatem', '2024-08-13', '2024-08-14', 1),
+                                                                                                                                                                                                              (22, 6, 'sd', 31, NULL, NULL, NULL, '2024-08-09', NULL, 0),
+                                                                                                                                                                                                              (23, 6, 'fb', 31, NULL, NULL, NULL, '2024-08-08', NULL, 0),
+                                                                                                                                                                                                              (24, 6, 'sdfvvvv', 31, NULL, NULL, NULL, '2024-08-15', NULL, 0),
+                                                                                                                                                                                                              (25, 6, 'sdf', 31, NULL, NULL, NULL, '2024-08-16', NULL, 1),
+                                                                                                                                                                                                              (26, 6, '------', 31, 13, '9090--', '\\]', '2024-08-22', '2024-08-29', 1),
+                                                                                                                                                                                                              (27, 6, '0p0p0p0p0p', 31, 15, 'fff', NULL, '2024-08-22', '2024-08-10', 0),
+                                                                                                                                                                                                              (28, 6, 'вам', 31, NULL, NULL, NULL, '2024-08-15', NULL, 0),
+                                                                                                                                                                                                              (29, 311, '***', 31, NULL, NULL, NULL, '2024-08-17', NULL, 1),
+                                                                                                                                                                                                              (30, 6, 'ыва', 31, 31, 'ммммм', 'м', '2024-08-13', '2024-08-06', 1),
+                                                                                                                                                                                                              (31, 6, 'dvd', 31, 31, '*99*9*999*', 'vvvvvv', '2024-08-21', '2024-08-24', 31),
+                                                                                                                                                                                                              (32, 6, '***', 31, NULL, NULL, NULL, '2024-08-23', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1162,7 +1177,13 @@ INSERT INTO `maintenance` (`id`, `id_fitting`, `type_maintenance`, `content_work
                                                                                                                     (25, 6, 'Вывод ЗРА в ремонт', 'sfsf', 'sfvvvvbrrr', 29, '2024-08-13 10:08:48'),
                                                                                                                     (26, 311, 'Вывод ЗРА в ремонт', 'Устранение протечки', 'Протечка устранена', 29, '2024-08-13 13:54:45'),
                                                                                                                     (27, 313, 'Вывод ЗРА в ремонт', 'произведена работа', 'Протечка устранена', 29, '2024-08-13 15:58:50'),
-                                                                                                                    (28, 579, 'Вывод ЗРА в ремонт', 'работа', 'работа', 29, '2024-08-13 16:03:39');
+                                                                                                                    (28, 579, 'Вывод ЗРА в ремонт', 'работа', 'работа', 29, '2024-08-13 16:03:39'),
+                                                                                                                    (29, 6, 'Вывод ЗРА в ремонт', '999999999', '999999999', 31, '2024-08-15 13:44:25'),
+                                                                                                                    (30, 6, 'Вывод ЗРА в ремонт', 'gnbbbbbb', 'bbbbbbbbbbbbbbbbbbbbbbb b b  bbbbbb bbb', 31, '2024-08-15 13:46:23'),
+                                                                                                                    (31, 6, 'Вывод ЗРА в ремонт', '----', '----', 31, '2024-08-15 13:54:59'),
+                                                                                                                    (32, 6, 'Вывод ЗРА в ремонт', '--;p;;;', ';;;;', 31, '2024-08-15 13:55:22'),
+                                                                                                                    (33, 311, 'Вывод ЗРА в ремонт', '959', '00+', 31, '2024-08-16 14:21:57'),
+                                                                                                                    (34, 6, 'Вывод ЗРА в ремонт', '45646', '--', 31, '2024-08-16 16:13:45');
 
 -- --------------------------------------------------------
 
@@ -1186,11 +1207,11 @@ CREATE TABLE `malfunctions` (
 --
 
 INSERT INTO `malfunctions` (`id`, `general_description`, `tightness`, `leakage`, `act_leakage`, `drainage`, `packing_pipelines`, `result`) VALUES
-                                                                                                                                               (6, 'Требует замену', 'Негерметичен', 4, 'АКТ', 'В наличии', 'В наличии', 2),
+                                                                                                                                               (6, 'Требует замену', 'Негерметичен', 4, 'нет', 'В наличии', 'В наличии', 2),
                                                                                                                                                (7, 'Слома, сломан, сломан', 'Негерметичен', 3, 'нет', 'В наличии', 'В наличии', 0),
                                                                                                                                                (8, NULL, NULL, NULL, NULL, NULL, NULL, 0),
                                                                                                                                                (9, 'Требует замену', 'Негерметичен', 5, 'нет', 'Нет в наличии', 'Нет в наличии', 0),
-                                                                                                                                               (315, NULL, 'Герметичен', 0, 'нет', NULL, NULL, 1),
+                                                                                                                                               (315, NULL, 'Негерметичен', 3, 'есть', NULL, NULL, 2),
                                                                                                                                                (316, NULL, NULL, NULL, NULL, NULL, NULL, 1),
                                                                                                                                                (317, 'Неполадок не обнаружено ', 'Герметичен', 0, 'нет', NULL, NULL, 1),
                                                                                                                                                (318, NULL, NULL, NULL, NULL, NULL, NULL, 1),
@@ -1557,12 +1578,13 @@ CREATE TABLE `photo_cranes` (
 --
 
 INSERT INTO `photo_cranes` (`id`, `id_fitting`, `photo_url`, `name`) VALUES
-                                                                         (96, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/img/crane_img_6_2024-08-09T065335.png', 'downArrow.png'),
-                                                                         (97, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/между Ямбург-Елец 2 и Ямбург-Зап.граница/Линейный_Стояк отбора газа_853_853-1/img/crane_img_6_2024-08-09T065337.png', 'car.png'),
                                                                          (98, 7, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.2/img/crane_img_7_2024-08-09T065420.png', 'кран.png'),
                                                                          (99, 7, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Линейный_на ЛК_539_539-3.2/img/crane_img_7_2024-08-09T065424.png', 'save.png'),
                                                                          (101, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/img/crane_img_9_2024-08-09T065436.png', 'downArrow.png'),
-                                                                         (104, 538, 'http://localhost/portal_vkazym/app/assets/crane_data/Ямбург-Поволжье/Линейный_Свечной_683.6_683-9.3/img/crane_img_538_2024-08-13T084926.png', 'кран.png');
+                                                                         (104, 538, 'http://localhost/portal_vkazym/app/assets/crane_data/Ямбург-Поволжье/Линейный_Свечной_683.6_683-9.3/img/crane_img_538_2024-08-13T084926.png', 'кран.png'),
+                                                                         (108, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/img/crane_img_311_2024-08-16T091358.png', 'tempImg.png'),
+                                                                         (109, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/img/crane_img_311_2024-08-16T091402.png', 'кран.png'),
+                                                                         (112, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Перемычка_Стояк отбора газа_853.9_853-1/img/crane_img_6_2024-08-16T111214.png', 'save.png');
 
 -- --------------------------------------------------------
 
@@ -1587,7 +1609,8 @@ INSERT INTO `privileges` (`id`, `work_position`, `transcript`) VALUES
                                                                    (4, 3, 'Старший техник(заказ/подтверждение техники)'),
                                                                    (5, 4, 'Сотрудник техподдержки(просмотр/ответ на заявки)'),
                                                                    (6, 5, 'Мл. техник и сотрудник техподдержки(заказ техники и просмотр/ответ на заявки)'),
-                                                                   (7, 6, 'Ст. техник и сотрудник техподдержки(заказ/подтверждение техники и просмотр/ответ на заявки)');
+                                                                   (7, 6, 'Ст. техник и сотрудник техподдержки(заказ/подтверждение техники и просмотр/ответ на заявки)'),
+                                                                   (8, 7, 'ДС');
 
 -- --------------------------------------------------------
 
@@ -2071,7 +2094,7 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
                                                                    (27, 'ee.litva5', 5, 8),
                                                                    (29, 'ee.litva6', 6, 8),
                                                                    (30, 'ee.litva0', 0, 8),
-                                                                   (31, 'ee.litva7', 0, 8),
+                                                                   (31, 'ee.litva7', 7, 8),
                                                                    (32, 'ee.litva16', 6, 4);
 
 --
@@ -2401,7 +2424,7 @@ ALTER TABLE `crane_classes`
 -- AUTO_INCREMENT для таблицы `document_cranes`
 --
 ALTER TABLE `document_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT для таблицы `drives`
@@ -2431,7 +2454,7 @@ ALTER TABLE `highways`
 -- AUTO_INCREMENT для таблицы `identified_faults`
 --
 ALTER TABLE `identified_faults`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT для таблицы `ius`
@@ -2503,7 +2526,7 @@ ALTER TABLE `lpumgs`
 -- AUTO_INCREMENT для таблицы `maintenance`
 --
 ALTER TABLE `maintenance`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT для таблицы `malfunctions`
@@ -2527,13 +2550,13 @@ ALTER TABLE `passwords`
 -- AUTO_INCREMENT для таблицы `photo_cranes`
 --
 ALTER TABLE `photo_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT для таблицы `privileges`
 --
 ALTER TABLE `privileges`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `responses`
@@ -2643,7 +2666,7 @@ ALTER TABLE `drives`
 --
 ALTER TABLE `fittings`
     ADD CONSTRAINT `fittings_ibfk_1` FOREIGN KEY (`name_highways`) REFERENCES `highways` (`name`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `fittings_ibfk_10` FOREIGN KEY (`crane_class`) REFERENCES `crane_classes` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fittings_ibfk_10` FOREIGN KEY (`crane_class`) REFERENCES `crane_classes` (`name`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fittings_ibfk_11` FOREIGN KEY (`name_crane`) REFERENCES `name_cranes` (`name`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fittings_ibfk_2` FOREIGN KEY (`company`) REFERENCES `companies` (`firm`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fittings_ibfk_3` FOREIGN KEY (`id_malfunction`) REFERENCES `malfunctions` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -2672,8 +2695,7 @@ ALTER TABLE `identified_faults`
 --
 ALTER TABLE `maintenance`
     ADD CONSTRAINT `maintenance_ibfk_1` FOREIGN KEY (`id_fitting`) REFERENCES `fittings` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `maintenance_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `maintenance_ibfk_3` FOREIGN KEY (`type_maintenance`) REFERENCES `types_maintenance` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `maintenance_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `passwords`

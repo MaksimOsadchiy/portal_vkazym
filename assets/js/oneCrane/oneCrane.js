@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const deleteDocument = async (id) => {
 		try {
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`,{
+			const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`, {
 				method: 'DELETE',
 			});
 			const jsonResponse = await response.json(); // Получаем тело ответа
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
-		};
+		}
 	};
 	//
 	const getTypesWork = async () => {
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
-		};
+		}
 	};
 	//
 	const putIdentifiedFaults = async () => {
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				if (key === 'id') continue;
 				else if (key === 'login_troubleshooting') requestData['id_user_troubleshooting'] = data[key];
 				else requestData[key] = data[key];
-			};
+			}
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${data.id}`;
@@ -324,16 +324,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 						id_fitting: id,
 						possible_cause: data.possible_cause ? data.possible_cause : elem.possible_cause,
 						login_detected: data.login_detected ? data.login_detected : elem.login_detected,
-						login_troubleshooting: data.login_troubleshooting ? userData.find((elem) => +data.login_troubleshooting === +elem.id).name : (elem.login_troubleshooting ? elem.login_troubleshooting : ''),
-						complete_activities: data.complete_activities ? data.complete_activities : (elem.complete_activities ? elem.complete_activities : ''),
-						note: data.note ? data.note :  (elem.note ? elem.note : ''),
+						login_troubleshooting: data.login_troubleshooting
+							? userData.find((elem) => +data.login_troubleshooting === +elem.id).name
+							: elem.login_troubleshooting
+							? elem.login_troubleshooting
+							: '',
+						complete_activities: data.complete_activities ? data.complete_activities : elem.complete_activities ? elem.complete_activities : '',
+						note: data.note ? data.note : elem.note ? elem.note : '',
 						date_detection: data.date_detection ? data.date_detection : elem.date_detection,
-						date_troubleshooting: data.date_troubleshooting ? data.date_troubleshooting : (elem.date_troubleshooting ? elem.date_troubleshooting : ''),
+						date_troubleshooting: data.date_troubleshooting ? data.date_troubleshooting : elem.date_troubleshooting ? elem.date_troubleshooting : '',
 						status: data.status,
 					};
 					identifiedFaults[i] = rewriteObj;
-				};
-			};
+				}
+			}
 
 			drawTableIdentifiedFaults(identifiedFaults);
 			return jsonResponse;
@@ -341,7 +345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			console.log(error);
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
-		};
+		}
 	};
 	//
 	const getForChangeInfo = async () => {
@@ -350,9 +354,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-            jsonResponse.result = craneData.list_result.map((elem) => ({
+			jsonResponse.result = craneData.list_result.map((elem) => ({
 				key: elem.name,
-				name: elem.description
+				name: elem.description,
 			}));
 			return jsonResponse;
 		} catch (error) {
@@ -361,7 +365,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
-	const putForChangeInfo = async	(dataFitting, dataDrive) => {
+	const putForChangeInfo = async (dataFitting, dataDrive) => {
 		try {
 			const idDrive = craneData.id_drive;
 			const driveQparametr = `?id=${idDrive}`;
@@ -376,7 +380,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (!drivrResponse.ok) throw new Error(driveJsonResponse.status); // Проверяем HTTP статус ответа
 			for (const key in dataDrive) {
 				dataDrive[key] && (craneData.mainInfo['Привод'][key].value = dataDrive[key]);
-			};
+			}
 
 			const url = new URL(window.location.href);
 			const idFitting = new URLSearchParams(url.search).get('id');
@@ -394,7 +398,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			for (const key in dataFitting) {
 				if (key === 'crane_class') dataFitting[key] && (craneData.mainInfo['Основное'][key].value = `${dataFitting[key]}, ${dataFitting['name_cranes']}`);
 				else if (key != 'name_cranes') dataFitting[key] && (craneData.mainInfo['Основное'][key].value = dataFitting[key]);
-			};
+			}
 
 			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Кран изменен!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [fittingResponse, driveJsonResponse];
@@ -402,25 +406,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 			console.log(error);
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
-		};
+		}
 	};
 	//
 	const getAllUser = async () => {
 		try {
-			const response = await fetch(`${SERVER_URL}users.php`);
+			const response = await fetch(`${SERVER_URL}myUsers.php`);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			const result = jsonResponse.map((elem) => ({
 				id: elem.id,
-				name: elem.login
+				name: elem.login,
 			}));
 			return result;
 		} catch (error) {
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return {};
 		}
-	}
+	};
 	//
 	const drawTableMalfunction = (crane) => {
 		const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
@@ -463,8 +467,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 				const title = crane.mainInfo[key][keyTwo].title;
 				const value = key === 'Исправность' ? crane.mainInfo[key][keyTwo].description : crane.mainInfo[key][keyTwo].value;
 				bodyTable.appendChild(createRowMainInfo(title, value, keyTwo));
-			};
-		};
+			}
+		}
 	};
 	//
 	const drawImage = (obj) => {
@@ -596,7 +600,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const list = [
 				elem.date_detection,
 				elem.login_detected,
-				formContent(elem.possible_cause,70),
+				formContent(elem.possible_cause, 70),
 				elem.date_troubleshooting ? elem.date_troubleshooting : '-',
 				elem.complete_activities ? formContent(elem.complete_activities, 70) : '-',
 				elem.login_troubleshooting ? elem.login_troubleshooting : '-',
@@ -728,7 +732,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		badOption.className = 'red';
 		goodOption.setAttribute('value', 1);
 		badOption.setAttribute('value', 0);
-		data.status ? goodOption.selected = true : badOption.selected = true;
+		data.status ? (goodOption.selected = true) : (badOption.selected = true);
 		titleStatus.innerText = 'Статус неисправности';
 		goodOption.innerText = 'Устранена';
 		badOption.innerText = 'Не устранена';
@@ -740,7 +744,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		drawContentWindowIdentifiedFaultFirst(data);
 
-		const modalFooter= window.querySelector('.modal-footer');
+		const modalFooter = window.querySelector('.modal-footer');
 		const button = document.createElement('button');
 		button.className = 'btn btn-success footer-btn-close';
 		button.setAttribute('type', 'button');
@@ -777,8 +781,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const titlePossibleCause = document.createElement('p');
 		const possibleCause = document.createElement('p');
 		secondContainer.className = 'd-flex flex-row align-items-center column-gap-4';
-		titlePossibleCause.className = 'col-2 text-end'
-		possibleCause.className = 'window-row-data col-8'
+		titlePossibleCause.className = 'col-2 text-end';
+		possibleCause.className = 'window-row-data col-8';
 		titlePossibleCause.innerText = 'Описание неисправности:';
 		possibleCause.innerText = data.possible_cause ? data.possible_cause : '-';
 		secondContainer.appendChild(titlePossibleCause);
@@ -863,7 +867,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		drawContentWindowMaintenance(data);
 
-		const modalFooter= window.querySelector('.modal-footer');
+		const modalFooter = window.querySelector('.modal-footer');
 		const button = document.createElement('button');
 		button.className = 'btn btn-secondary footer-btn-close';
 		button.setAttribute('type', 'button');
@@ -909,7 +913,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		titleTypeWork.className = 'col-2 text-end';
 		typeWork.className = 'window-row-data col-8';
 		titleTypeWork.innerText = 'Вид ТОиР:';
-		typeWork.innerText = data.type_maintenance ? data.type_maintenance: '-';
+		typeWork.innerText = data.type_maintenance ? data.type_maintenance : '-';
 		secondContainer.appendChild(titleTypeWork);
 		secondContainer.appendChild(typeWork);
 
@@ -920,7 +924,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		titleContentWork.className = 'col-2 text-end';
 		contentWork.className = 'window-row-data col-8';
 		titleContentWork.innerText = 'Содержание работы:';
-		contentWork.innerText = data.content_work ? data.content_work: '-';
+		contentWork.innerText = data.content_work ? data.content_work : '-';
 		thirdContainer.appendChild(titleContentWork);
 		thirdContainer.appendChild(contentWork);
 
@@ -931,7 +935,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		titleResultWork.className = 'col-2 text-end';
 		resultWork.className = 'window-row-data col-8';
 		titleResultWork.innerText = 'Заключение:';
-		resultWork.innerText = data.result ? data.result: '-';
+		resultWork.innerText = data.result ? data.result : '-';
 		fourthContainer.appendChild(titleResultWork);
 		fourthContainer.appendChild(resultWork);
 
@@ -1000,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const createRowDocument = (id, ref, name) => {
 		const row = document.createElement('div');
 		const link = document.createElement('a');
-		const deleteDocument =  document.createElement('img');
+		const deleteDocument = document.createElement('img');
 
 		row.className = 'document-row d-flex flex-row column-gap-4 my-1 py-1 fs-5';
 		link.className = 'document-link';
@@ -1009,7 +1013,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		row.setAttribute('id', id);
 		link.setAttribute('href', ref);
 		link.setAttribute('download', name);
-		deleteDocument.setAttribute('src', `${BASE_URL}assets/image/garbage.png`)
+		deleteDocument.setAttribute('src', `${BASE_URL}assets/image/garbage.png`);
 		link.innerText = name;
 
 		row.appendChild(link);
@@ -1021,15 +1025,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const row = document.createElement('div');
 
 		row.className = 't-row open-win d-flex flex-row justify-content-center';
-		row.setAttribute('data-bs-toggle', "modal");
-		row.setAttribute('data-bs-target', "#exampleModal");
+		row.setAttribute('data-bs-toggle', 'modal');
+		row.setAttribute('data-bs-target', '#exampleModal');
 		row.setAttribute('id', id);
 		for (let i = 0; i < list.length; i++) {
 			const content = document.createElement('p');
 			content.className = `column th text-center`;
 			content.innerText = list[i];
 			row.appendChild(content);
-		};
+		}
 
 		addEventRowMaintenanceClick(row, maintenance);
 		return row;
@@ -1039,21 +1043,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const row = document.createElement('div');
 
 		row.className = 't-row open-win d-flex flex-row justify-content-center';
-		row.setAttribute('data-bs-toggle', "modal");
-		row.setAttribute('data-bs-target', "#exampleModal");
+		row.setAttribute('data-bs-toggle', 'modal');
+		row.setAttribute('data-bs-target', '#exampleModal');
 		row.setAttribute('id', id);
-		const names = {'Устранена': 'green', 'Не устранена': 'red'};
+		const names = { Устранена: 'green', 'Не устранена': 'red' };
 
 		for (let i = 0; i < list.length; i++) {
 			const content = document.createElement('p');
 			let style = '';
-			if (i === 7){
+			if (i === 7) {
 				style = names[list[i]];
-			};
+			}
 			content.className = `${style} column th text-center`;
 			content.innerText = list[i];
 			row.appendChild(content);
-		};
+		}
 
 		addEventRowIdentifiedFaultsClick(row);
 		return row;
@@ -1120,14 +1124,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 				if (key === 'result') {
 					document.querySelector('.table-main-info').querySelector(' .tbody').querySelectorAll('.t-row')[1].querySelectorAll('p')[1].innerText =
 						craneData.list_result.find((elem) => +elem.name === +resultTable[key]).description;
-				};
+				}
 			} else if (isTextarea && row.lastChild.value) {
 				resultTable[key] = row.lastChild.value;
-			};
+			}
 		});
 
 		return resultTable;
 	};
+	//
 	const collectContentIdentifiedFaults = () => {
 		const identifiedFaultsContainer = document.querySelector('.content__identified-faults');
 
@@ -1154,7 +1159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			obj.completeActivities = completeActivities;
 			obj.dateTroubleshooting = dateTroubleshooting;
 			if (note) obj.note = note;
-		};
+		}
 
 		return obj;
 	};
@@ -1261,7 +1266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					const parent = elem.parentNode;
 					parent.removeChild(elem);
 					parent.appendChild(createTextarea(previousValue));
-				};
+				}
 			});
 		});
 	};
@@ -1279,8 +1284,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 					drawImage(imgData);
 				});
 				reader.readAsDataURL(choosedFile);
-				photoCrane = choosedFile;
-			};
+				// photoCrane = choosedFile;
+			}
 			e.target.value = '';
 		});
 	};
@@ -1376,7 +1381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					elem.value = '';
 				});
 				selectStatus.value = 0;
-			};
+			}
 		});
 	};
 	//
@@ -1395,7 +1400,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					elem.disabled = true;
 					elem.value = '';
 				});
-			};
+			}
 		});
 	};
 	//
@@ -1428,14 +1433,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const addEventRowIdentifiedFaultsClick = (row) => {
 		row.addEventListener('click', () => {
-			const data = identifiedFaults.find((elem) => elem.id  === +row.id);
+			const data = identifiedFaults.find((elem) => elem.id === +row.id);
 			drawModalWindowIdentifiedFault(data);
 		});
 	};
 	//
 	const addEventRowMaintenanceClick = (row) => {
 		row.addEventListener('click', () => {
-			const data = maintenance.find((elem) => elem.id  === +row.id);
+			const data = maintenance.find((elem) => elem.id === +row.id);
 			drawModalWindowMaintenance(data);
 		});
 	};
@@ -1506,18 +1511,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 				option.value = -1;
 				option.selected = true;
 				select.appendChild(option);
-				data[key] && data[key].forEach((elem) => {
-					const option = document.createElement('option');
-					option.innerText = elem.name;
-					option.value = elem.key;
-					curText == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
-					select.appendChild(option);
-				});
+				data[key] &&
+					data[key].forEach((elem) => {
+						const option = document.createElement('option');
+						option.innerText = elem.name;
+						option.value = elem.key;
+						curText == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+						select.appendChild(option);
+					});
 
 				select.className = 'window-row-data column th';
 				row.replaceChild(select, lastChild);
 
-				if (key === 'crane_class'){
+				if (key === 'crane_class') {
 					const newRow = document.createElement('div');
 					const firstColumn = document.createElement('p');
 					const select = document.createElement('select');
@@ -1528,21 +1534,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 					select.className = 'window-row-data column th';
 
 					const option = document.createElement('option');
-					option.innerText =text[1];
+					option.innerText = text[1];
 					option.value = -1;
 					option.selected = true;
 					select.appendChild(option);
-					data['name_cranes'] && data['name_cranes'].forEach((elem) => {
-						const option = document.createElement('option');
-						option.innerText = elem.name;
-						option.value = elem.key;
-						text[1] == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
-						select.appendChild(option);
-					});
+					data['name_cranes'] &&
+						data['name_cranes'].forEach((elem) => {
+							const option = document.createElement('option');
+							option.innerText = elem.name;
+							option.value = elem.key;
+							text[1] == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+							select.appendChild(option);
+						});
 					newRow.appendChild(firstColumn);
 					newRow.appendChild(select);
 					row.insertAdjacentElement('afterend', newRow);
-				};
+				}
 			});
 			const selectAll = [];
 			allRow.forEach((elem) => selectAll.push(elem.querySelector('select')));
@@ -1575,12 +1582,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 					paragraph.innerText = `${text}, ${nextText}`;
 					row.replaceChild(paragraph, lastChild);
 					if (lastChild.value != -1) collectData[key] = lastChild.value;
-
 				} else if (key === 'name_cranes') {
 					const lastChild = row.lastChild;
 					if (lastChild.value != -1) collectData[key] = lastChild.value;
 					row.remove();
-
 				} else {
 					const paragraph = document.createElement('p');
 					const lastChild = row.lastChild;
@@ -1589,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					paragraph.innerText = text;
 					row.replaceChild(paragraph, lastChild);
 					if (lastChild.value != -1) collectData[key] = lastChild.value;
-				};
+				}
 			});
 
 			const fittingData = {

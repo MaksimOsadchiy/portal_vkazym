@@ -15,7 +15,7 @@
 				$params = [
 					'status' => $requestData->parameters['status'],
 				];
-				if (isset($requestData->parameters->id)) $params['user_id'] = $requestData->parameters->id;
+				if (isset($requestData->parameters['id'])) $params['user_id'] = $requestData->parameters['id'];
 				$orders = selectAll($table, $params);
 
 				$response = [];
@@ -60,6 +60,13 @@
 					];
 				};
 
+				echo json_encode($response);
+				break;
+			case 'PUT':
+				$table = 'technique_order';
+				$id = $requestData->parameters['id'];
+				$params = ['status' => intval($requestData->body->status)];
+				$response = update($table, $id, $params);
 				echo json_encode($response);
 				break;
 			case 'DELETE':

@@ -10,12 +10,11 @@
         header("Location:" . BASE_URL);
         exit();
     };
-
     $pageTitle = "Администрирование";
-
     $all_links = selectAllRes('links');
     $all_modules = selectAllRes('portal_modules');
     $all_micro_modules = selectAllRes('microservices');
+    $all_users = selectAllRes('users');
 ?>
 
 
@@ -39,10 +38,12 @@
         const SESSION = <?=json_encode($_SESSION);?>;
         const SERVER_URL = <?=json_encode(SERVER_URL);?>;
         const BASE_URL = <?=json_encode(BASE_URL);?>;
+		const all_users = <?=json_encode($all_users);?>;
     </script>
     <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/admin/links.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/admin/password.js"></script>
     <title>Портал В.Казым</title>
 </head>
 <body>
@@ -72,7 +73,22 @@
             </table>
             <button class="btn btn-outline-secondary btn-create">Создать</button>
         </div>
+
+        <h2>Смена пароля учетных записей</h2>
+<div class="row">
+    <div class="col">
+        <select class="form-select select-user" ></select>
     </div>
+    <div class="col">
+        <input class="form-control bg-light bg-gradient" type="text" >
+    </div>
+    <div class="col">
+        <button class="btn-pass btn btn-outline-secondary">Сменить пароль</button>
+        <button class="btn-reset-password btn btn-outline-secondary">Сбросить пароль</button>
+    </div>
+</div>
+</div>
+
     <?php require("components/modalWindowNotif.php"); ?>
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>

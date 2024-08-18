@@ -9,7 +9,6 @@ function customPrint($value){
 //Проверка выполнения запроса к БД
 function dbCheckError($query){
     $errInfo = $query->errorInfo();
-	echo "123123\r\n123\r\n";
     if ($errInfo[0] !== PDO::ERR_NONE) {
 		setHttpStatus(500, $errInfo[2]);
         echo $errInfo[2];
@@ -81,8 +80,7 @@ function selectAllJoin($table, $params = [], $joins = []){
     };
 
     $query = $pdo->prepare($sql);
-    $query->execute();
-    dbCheckError($query);
+    executeRequest($query);
     return $query->fetchAll(PDO::FETCH_ASSOC);
 };
 
@@ -155,8 +153,7 @@ function update($table, $id, $params){
 	$sql = "UPDATE $table SET $str WHERE id = $id";
 
 	$query = $pdo->prepare($sql);
-	$query->execute();
-	dbCheckError($query);
+	executeRequest($query);
     return $id;
 };
 
@@ -167,6 +164,46 @@ function delete($table, $id){
 	$sql = "DELETE FROM $table WHERE id = $id";
 	$query = $pdo->prepare($sql);
 	executeRequest($query);
+	return $id;
+};
+
+function selectOrderByDate($table, $params){
+    global $pdo;
+
+    $sql = "SELECT technique_id FROM $table WHERE
+                        (
+                            (datetime_from <= :date_to AND datetime_to >= :date_from)
+                            OR
+                            (datetime_from >= :date_from AND datetime_to <= :date_to)
+                        )
+                        AND
+                        status = '1'
+                ";
+
+    // Подготовка выражения
+    $query = $pdo->prepare($sql);
+
+    // Привязка параметров
+    $query->bindParam(':date_from', $params['date_from']);
+    $query->bindParam(':date_to', $params['date_to']);
+
+    // Выполнение запроса
+	executeRequest($query);
+    return $query->fetchALL();
+};
+
+function selectTechniqueException($table, $params){
+    global $pdo;
+    $str = implode(', ', $params);
+
+    $sql = "SELECT * FROM $table INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id WHERE faulty = 0 AND id_technique NOT IN ($str)";
+
+    // Подготовка выражения
+    $query = $pdo->prepare($sql);
+
+    // Выполнение запроса
+    executeRequest($query);
+    return $query->fetchALL();
 };
 
 ?>

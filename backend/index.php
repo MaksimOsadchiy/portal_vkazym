@@ -55,7 +55,6 @@
 		$method = getMethod();
 		$nextUrlList = array_slice($urlList, 1);
 		if (in_array($method, ['GET', 'POST', 'PUT', 'DELETE'])){
-			// echo "3\n";
 			$requestData = getData($method);
 			route($method, $nextUrlList, $requestData);
 		} else {

@@ -71,7 +71,7 @@
 FORMS
  */
 .main-form {
-    background: rgba(174, 174, 174, 0.3);
+   /* background: rgba(174, 174, 174, 0.3); */
     border-radius: 10px;
 }
 .reg_form h2 {
@@ -124,12 +124,132 @@ form div.err {
 /*
 Teqnique
  */
-.container-teqnique h2 {
+.container-technique h2 {
     text-align: center;
     margin: 30px 0;
 }
 
-.container-technique h2 {
-    text-align: center;
-    margin: 30px 0;
+/*
+Главная
+ */
+.btn{
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.4s ease 0s;
+}
+.btn:before{
+    content: "";
+    width: 210%;
+    height: 210%;
+    position: absolute;
+    top: -120px;
+    left: 30px;
+    transform: skew(67deg);
+    z-index: -1;
+    transition: all 0.4s ease 0s;
+}
+.btn:hover:before{
+    top: -20px;
+    left: -52px;
+}
+.btn.red{
+    border-radius: 15px;
+    border: 1px solid #ff3939;
+    color: #ff3939;
+    box-shadow: 0 5px 10px 0 rgb(253, 57, 57);
+    transition: 0.5s;
+}
+.btn.red:hover:before{
+    background: #ff3939;
+}
+.btn.blue{
+    border-radius: 15px;
+    border: 1px solid #3fb7c8;
+    color: #3fb7c8;
+    box-shadow: 0 5px 10px 0 rgb(63, 182, 199);
+    transition: 0.5s;
+}
+.btn.blue:hover:before{
+    background: #3fb7c8;
+}
+.btn.orange{
+    border-radius: 15px;
+    border: 1px solid #f88030;
+    color: #f88030;
+    box-shadow: 0 5px 10px 0 rgb(247, 127, 48);
+    transition: 0.5s;
+}
+.btn.orange:hover:before{
+    background: #f88030;
+}
+.btn.green{
+    border-radius: 15px;
+    border: 1px solid #35c568;
+    color: #35c568;
+    box-shadow: 0 5px 10px 0 rgb(53, 196, 104);
+    transition: 0.5s;
+}
+.btn.green:hover:before{
+    background: #35c568;
+}
+.btn.link{
+    border: 1px solid #5895a5;
+    color: #5894a4;
+    transition: 0.5s;
+    width: 100%; /* Кнопка занимает всю ширину родительского контейнера */
+    height: 70px; /* Устанавливаем одинаковую высоту для всех кнопок */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    text-align: center; /* Центрируем текст */
+}
+.btn.link:hover:before{
+    background: #5894a4;
+}
+.btn.red:hover,
+.btn.blue:hover,
+.btn.orange:hover,
+.btn.yellow:hover,
+.btn.green:hover,
+.btn.link:hover{
+    color: #fff;
+}
+.btn.yellow{
+    border-radius: 15px;
+    border: 1px solid rgba(255, 174, 63, 0.71);
+    color: rgba(255, 174, 63, 0.71);
+    box-shadow: 0 5px 10px 0 rgba(255, 174, 63, 0.71);
+    transition: 0.5s;
+}
+.btn.yellow:hover:before{
+    background: rgba(255, 174, 63, 0.71);
+}
+.btn.disabled{
+    border: 1px solid rgba(65, 60, 53, 0.71);
+    color: rgba(65, 60, 53, 0.71);
+}
+.btn-custom {
+    text-transform: uppercase;
+    width: 100%; /* Кнопка занимает всю ширину родительского контейнера */
+    height: 70px; /* Устанавливаем одинаковую высоту для всех кнопок */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    text-align: center; /* Центрируем текст */
+}
+.apps h2, .links h2 {
+    margin-bottom: 24px;
+}
+.apps .col-3, .links .col-3 {
+    margin-bottom: 15px;
+}
+.apps div.row {
+    margin-bottom: 24px;
+    margin-left: auto;
+    margin-right: auto;
 }

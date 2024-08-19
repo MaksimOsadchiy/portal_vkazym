@@ -1,180 +1,189 @@
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Light.woff2') format('woff2'),
-    url('../fonts/Roboto-Light.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto-Light.woff2') format('woff2'), url('../fonts/Roboto-Light.woff') format('woff');
+	font-weight: 300;
+	font-style: normal;
 }
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Regular.woff2') format('woff2'),
-    url('../fonts/Roboto-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto-Regular.woff2') format('woff2'), url('../fonts/Roboto-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
 }
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Medium.woff2') format('woff2'),
-    url('../fonts/Roboto-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto-Medium.woff2') format('woff2'), url('../fonts/Roboto-Medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
 }
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Bold.woff2') format('woff2'),
-    url('../fonts/Roboto-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto-Bold.woff2') format('woff2'), url('../fonts/Roboto-Bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
 }
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Black.woff2') format('woff2'),
-    url('../fonts/Roboto-Black.woff') format('woff');
-    font-weight: 800;
-    font-style: normal;
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto-Black.woff2') format('woff2'), url('../fonts/Roboto-Black.woff') format('woff');
+	font-weight: 800;
+	font-style: normal;
 }
 
+:root {
+	--color-main: rgba(52, 64, 84, 1);
+	--color-secondary: rgba(0, 31, 61, 1);
+	--color-description: rgba(104, 119, 141, 1);
+	--color-table-border: rgba(220, 220, 220, 1);
+	--color-ghost: rgba(203, 203, 203, 1);
+	--color-white: rgba(255, 255, 255, 1);
+	--color-table-title: rgba(249, 250, 251, 1);
+	--color-table-row-border: rgba(209, 209, 209, 1);
+	--color-blue: rgba(0, 117, 219, 1);
+
+	font-size: 1em;
+}
 
 body {
-    width: 1600px;
-    margin: 0 auto;
-    font-family: 'Roboto', sans-serif !important;
-    font-weight: 400;
-    color: rgba(52, 64, 84, 1);
-    background-color: rgba(233, 233, 233, 1);;
+	width: 1600px;
+	margin: 0 auto;
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 400;
+	color: var(--color-main);
+	background-color: rgba(233, 233, 233, 1);
 }
-.my-container{
-    max-width: 1600px;
-    margin: 0 auto;
+.my-container {
+	max-width: 1600px;
+	margin: 0 auto;
 }
 .multi-line-link {
-    display: inline-block; /* или block в зависимости от нужного контекста */
-    width: 150px; /* установите ширину по необходимости */
-    white-space: normal; /* позволяет переносить текст */
-    text-align: left; /* выравнивание текста по левому краю, если нужно */
+	display: inline-block; /* или block в зависимости от нужного контекста */
+	width: 150px; /* установите ширину по необходимости */
+	white-space: normal; /* позволяет переносить текст */
+	text-align: left; /* выравнивание текста по левому краю, если нужно */
 }
 
 .second-line {
-    color: rgba(255, 208, 100, 0.78); /* цвет второй строки */
-    font-size: 25px;
+	color: rgba(255, 208, 100, 0.78); /* цвет второй строки */
+	font-size: 25px;
 }
 
 .second-line:hover {
-    text-decoration: none;
-    color: rgba(255, 174, 63, 0.71)
+	text-decoration: none;
+	color: rgba(255, 174, 63, 0.71);
 }
 
 .first-line {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    color: #a0ada5;
-    text-decoration: none;
-    background-color: transparent;
-    transition: color 0.3s ease;
-
+	display: inline-block;
+	padding: 0.5rem 1rem;
+	color: #a0ada5;
+	text-decoration: none;
+	background-color: transparent;
+	transition: color 0.3s ease;
 }
 
 .nav-link {
-    font-size: 20px;
-
+	font-size: 20px;
 }
 
 .flex-container {
-    display: flex;
-    align-items: center; /* Вертикальное выравнивание */
+	display: flex;
+	align-items: center; /* Вертикальное выравнивание */
 }
 
 .flex-container img {
-    margin-right: 10px; /* Расстояние между изображением и текстом */
+	margin-right: 10px; /* Расстояние между изображением и текстом */
 }
 
 /* Стили для выравнивания ссылок по левому краю с отступом */
 .navbar-nav {
-    margin-left: 80px; /* Отступ слева */
+	margin-left: 80px; /* Отступ слева */
 }
 
 .navbar-nav2 {
-    margin-block-end: 0px;
-    padding-left: 0px;
+	margin-block-end: 0px;
+	padding-left: 0px;
 }
 
-.navbar, .navbar-expand-lg, .navbar-dark, .bg-dark {
-    padding-bottom: 0px;
-    padding-top: 0px;
+.navbar,
+.navbar-expand-lg,
+.navbar-dark,
+.bg-dark {
+	padding-bottom: 0px;
+	padding-top: 0px;
 }
 
-.container-xxl, .flex-container {
-    background: rgba(51, 55, 59, 0.71);
-    border-radius: 10px;
+.container-xxl,
+.flex-container {
+	background: rgba(51, 55, 59, 0.71);
+	border-radius: 10px;
 }
 
 .navbar-brand {
-    margin-right: 0px;
+	margin-right: 0px;
 }
 
 /*
 FORMS
  */
 .main-form {
-    background: rgba(174, 174, 174, 0.3);
-    border-radius: 10px;
+	background: rgba(174, 174, 174, 0.3);
+	border-radius: 10px;
 }
 .reg_form h2 {
-    text-align: center;
-    margin: 30px 0;
+	text-align: center;
+	margin: 30px 0;
 }
 
 .reg_form a {
-    font-size: 1.2rem;
-    transition: all .3s;
-    color: #5c5b5b;
-    text-decoration: none;
-    margin-left: 60px;
+	font-size: 1.2rem;
+	transition: all 0.3s;
+	color: #5c5b5b;
+	text-decoration: none;
+	margin-left: 60px;
 }
 
 .reg_form a:hover {
-    margin-left: 55px;
-    transition: all .3s;
+	margin-left: 55px;
+	transition: all 0.3s;
 }
 
 .log_form h2 {
-    text-align: center;
-    margin: 30px 0;
+	text-align: center;
+	margin: 30px 0;
 }
 
 .log_form a {
-    font-size: 1.2rem;
-    transition: all .3s;
-    color: #5c5b5b;
-    text-decoration: none;
-    margin-left: 40px;
+	font-size: 1.2rem;
+	transition: all 0.3s;
+	color: #5c5b5b;
+	text-decoration: none;
+	margin-left: 40px;
 }
 
 .log_form a:hover {
-    margin-left: 55px;
-    transition: all .3s;
+	margin-left: 55px;
+	transition: all 0.3s;
 }
 
 .dropdown-menu {
-
 }
 
 /*
 FORMS
  */
 form div.err {
-    color: rgba(195, 37, 37, 0.71);
+	color: rgba(195, 37, 37, 0.71);
 }
 
 /*
 Teqnique
  */
 .container-teqnique h2 {
-    text-align: center;
-    margin: 30px 0;
+	text-align: center;
+	margin: 30px 0;
 }
 
 .container-technique h2 {
-    text-align: center;
-    margin: 30px 0;
+	text-align: center;
+	margin: 30px 0;
 }

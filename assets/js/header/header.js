@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
         SESSION.length != 0 ? header.appendChild(drawDataAcc()) : header.appendChild(drawLink(href, text));
     };
     //
-    const drawLink = (href, text) => {
+    const drawLink = (href, text, style = 'header-link') => {
         const link = document.createElement('a');
-        link.className = "header-link";
+        link.className = style;
         link.setAttribute('href', href);
         link.innerText = text;
         return link;
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const href = `${BASE_URL}logout.php`;
         container.appendChild(nickName);
-        container.appendChild(drawLink(href, 'Выход'));
+        container.appendChild(drawLink(href, 'Выход', 'header-link link-danger'));
         return container;
     };
 

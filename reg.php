@@ -24,7 +24,7 @@
         const SESSION = <?php echo json_encode($_SESSION); ?>;
         const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
     </script>
-    <script src="<?=BASE_URL?>assets/js/header/header.js" />
+    <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
     <title>Портал В.Казым</title>
 </head>
 <body>

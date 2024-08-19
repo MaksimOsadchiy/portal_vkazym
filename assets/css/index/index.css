@@ -1,0 +1,45 @@
+.main-container {
+    height: 100vh;
+    background-color: #fff;
+}
+.main-container__content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+.main-container__breadcrumb {
+    padding: 0.75rem;
+    border: 1.5px solid rgba(0, 117, 219, 1);
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 1rem;
+}
+.list__item {
+    position: relative;
+    width: calc(50% - 0.5rem);
+    padding: 0.75rem;
+    border: 1.5px solid rgba(0, 117, 219, 1);
+    cursor: pointer;
+}
+.list__item-last {
+    width: 100%;
+}
+.item__description {
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    color: rgba(104, 119, 141, 1);
+}
+.item__text {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: rgba(0, 31, 61, 1);
+}
+.item__number {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    font-size: 2rem;
+    line-height: 1.5rem;
+    color: rgba(203, 203, 203, 1);
+}

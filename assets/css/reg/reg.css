@@ -1,0 +1,38 @@
+.reg_form {
+    height: 100vh;
+    padding-top: 2rem;
+    background-color: #fff;
+}
+.main-form {
+    width: 540px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(220, 220, 220, 1);
+    background-color: inherit;
+}
+h1 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+}
+.form-label {
+    font-weight: 500;
+    line-height: 1.5rem;
+    letter-spacing: 0.4px;
+}
+.form-control,
+.form-select{
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+.btn-login{
+    width: 160px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+.reg-link {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}

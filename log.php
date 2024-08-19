@@ -16,41 +16,36 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/header/header.css">
+    <link rel="stylesheet" href="assets/css/login/login.css">
+    <script>
+        const SESSION = <?php echo json_encode($_SESSION); ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
+    </script>
+    <script src="<?=BASE_URL?>assets/js/header/header.js" />
     <title>Портал В.Казым</title>
 </head>
-<body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
+<body>
 
-<?php include("app/include/header.php"); ?>
+<?php include("components/header.php"); ?>
 
-<div class="container log_form pt-4">
-	<form class="row justify-content-md-center main-form" method="post" action="log.php">
-		<h2>Вход на портал</h2>
-		<div class="mb-3 col-12 col-md-4 err">
-			<p><?= $errMsg ?></p>
-		</div>
-		<div class="w100"></div>
-		<div class="mb-3 col-12 col-md-4">
-			<label for="formGroupExampleInput" class="form-label">Введите логин</label>
-			<input name="login" type="text" value="<?= $login ?>" class="form-control" id="formGroupExampleInput"
+<div class="log_form d-flex flex-row justify-content-center col-12">
+	<form class="main-form d-flex flex-column align-items-center row-gap-4 align-self-baseline px-3" method="post" action="log.php">
+		<h1>Авторизация</h1>
+		<div class="d-flex flex-column row-gap-2 col-12">
+			<p for="formGroupExampleInput" class="form-label m-0">Введите логин</p>
+			<input name="login" type="text" value="<?= $login ?>" class="form-control px-3" id="formGroupExampleInput"
 				   placeholder="Пример: aa.ivanov">
 		</div>
-		<div class="w100"></div>
-		<div class="mb-3 col-12 col-md-4">
-			<label for="exampleInputPassword1" class="form-label">Введите пароль</label>
-			<input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль">
+		<div class="d-flex flex-column row-gap-2 col-12">
+			<p for="exampleInputPassword1" class="form-label m-0">Введите пароль</p>
+			<input type="password" name="password" class="form-control px-3" id="exampleInputPassword1" placeholder="Пароль">
 		</div>
-		<div class="w100"></div>
-		<div class="mb-3 col-12 col-md-4 form-check">
-			<input type="checkbox" class="form-check-input" id="exampleCheck1">
-			<label class="form-check-label" for="exampleCheck1">Check me out</label>
-		</div>
-		<div class="w100"></div>
-		<div class="mb-3 col-12 col-md-4">
-			<button type="submit" name="button_log" class="btn btn-secondary">Войти</button>
-			<a href="<?php echo BASE_URL . 'reg.php' ?>">Регистрация</a>
-		</div>
-
+		<div class="d-flex flex-row align-items-center column-gap-5">
+			<button type="submit" name="button_log" class="btn-login btn btn-primary rounded-3 py-1 px-3">Войти</button>
+            <a class="reg-link m-0" href="<?php echo BASE_URL . 'reg.php' ?>">Регистрация</a>
+        </div>
 	</form>
 </div>
 

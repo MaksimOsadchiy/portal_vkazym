@@ -16,20 +16,16 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <title>Портал В.Казым</title>
+    <link rel="stylesheet" href="assets/css/header/header.css">
+    <title>Портал В.Казым</title><script>
+        const SESSION = <?php echo json_encode($_SESSION); ?>;
+        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
+    </script>
+    <script src="<?=BASE_URL?>assets/js/header/header.js" />
 </head>
 <body>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-
-<?php include("app/include/header.php"); ?>
-
-<section>
-    <div class="container-xl">
-        <div class="d-grid gap-5 col-2 ">
-
-        </div>
-    </div>
-</section>
-
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <?php include("components/header.php"); ?>
+    <div></div>
 </body>
 </html>

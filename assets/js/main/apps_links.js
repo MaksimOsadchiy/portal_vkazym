@@ -23,7 +23,7 @@ const createApps = (id, color, link, text) => {
 
     // Создаём DOM элементы
     const divCol3 = document.createElement('div');
-    const buttonApp = document.createElement('button');
+    const buttonApp = document.createElement('a');
     // Добавляем классы
     divCol3.className = 'col-3';
 
@@ -39,7 +39,7 @@ else{
 
 
     // Добавляем атрибуты
-    buttonApp.setAttribute('type', 'button');
+    // buttonApp.setAttribute('type', 'button');
     buttonApp.setAttribute('href', link);
 
 
@@ -56,7 +56,7 @@ const createLinks = (id, link, text) => {
 
     // Создаём DOM элементы
     const divCol3 = document.createElement('div');
-    const buttonApp = document.createElement('button');
+    const buttonApp = document.createElement('a');
 
     // Добавляем классы
     divCol3.className = 'col-3';
@@ -64,7 +64,7 @@ const createLinks = (id, link, text) => {
 
 
     // Добавляем атрибуты
-    buttonApp.setAttribute('type', 'button');
+    // buttonApp.setAttribute('type', 'button');
     buttonApp.setAttribute('href', link);
 
 

@@ -18,6 +18,7 @@ $privilege = $_SESSION['privilege'];
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/index/index.css">
     <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
     <script>let privilege = <?php echo json_encode($privilege); ?>;</script>
     <title>Портал В.Казым</title>

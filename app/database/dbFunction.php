@@ -218,10 +218,10 @@ function selectAllCranes(){
                         hw.lpumg AS `lpumg`,
                         f.name_highways AS `highways`,
                         f.unification_crane AS `unification_crane`,
-                        ac.name AS `accessories`,
+                        CONCAT(f.crane_class, ', ', f.name_crane) AS `crane_class`,
                         f.location_crane AS `location`,
                         f.technical_number AS `technical_number`,
-                        CONCAT(f.company , ', ' , c.location) AS `company`,
+                        CONCAT(f.company, ', ', c.location) AS `company`,
                         f.year_manufacture AS `f_manufacture`,
                         f.Dn AS `DN`,
                         m.general_description AS `general_description`,
@@ -229,13 +229,11 @@ function selectAllCranes(){
                         m.drainage AS `drainage`,
                         m.packing_pipelines AS `pipelines`,
                         f.plan_replacement AS `replacement`,
-                        f.presence_act AS `presence_act`
+                        m.act_leakage AS `act_leakage`
                 FROM 
                     fittings f
                 LEFT JOIN 
                     highways hw ON f.name_highways = hw.name
-                LEFT JOIN 
-                    accessories_reinforcement ac ON f.accessories = ac.name
                 LEFT JOIN 
                     companies c ON f.company = c.firm
                 LEFT JOIN 
@@ -250,15 +248,16 @@ function selectOneCranes($id){
     global $pdo;
     $sql = "SELECT 
                     f.id,
+                    f.id_drive,
                     f.IUS AS `ius`, 
-                    m.result AS `result`,
+                    res.description AS `result`,
                     hw.lpumg AS `lpumg`, 
                     f.name_highways AS `highways`, 
-					ac.name AS `accessories`,
+                    CONCAT(f.crane_class, ', ', f.name_crane) AS `crane_class`,
                     f.location_crane AS `location`,
                     f.technical_number AS `technical_number`, 
                     f.type_reinforcement AS `type_reinforcement`,
-                    CONCAT(f.company, ', ' , c.location) AS `company`, 
+                    CONCAT(f.company, ', ' , fc.location) AS `company`, 
                     f.factory_number AS `factory_number`, 
                     f.Dn AS `dn`, 
                     f.pressure AS `pressure`, 
@@ -266,7 +265,7 @@ function selectOneCranes($id){
                     f.year_manufacture AS `f_manufacture`,
                     f.year_commission AS `f_commission`,
                     d.type_drive AS `type_drive`,
-                    CONCAT(f.company, ', ', c.location) AS `drive_company`, 
+                    CONCAT(d.company, ', ', dc.location) AS `drive_company`, 
                     d.factory_number AS `drive_factory_number`,
                     d.liquid AS `liquid`,
                     d.year_commission AS `drive_year_commission`,
@@ -275,19 +274,22 @@ function selectOneCranes($id){
                     m.leakage AS `leakage`,
                     m.act_leakage AS `act_leakage`,
                     m.drainage AS `drainage`,
-                    m.packing_pipelines AS `pipelines`
+                    m.packing_pipelines AS `pipelines`,
+                    f.id_malfunction AS `id_malfunction`
             FROM 
                 fittings f
             LEFT JOIN 
                 highways hw ON f.name_highways = hw.name
             LEFT JOIN 
-                accessories_reinforcement ac ON f.accessories = ac.name
-            LEFT JOIN 
                 drives d ON f.id_drive = d.id
             LEFT JOIN 
-                companies c ON f.company = c.firm
+                companies fc ON f.company = fc.firm
+            LEFT JOIN 
+                companies dc ON d.company = dc.firm
             LEFT JOIN 
                 malfunctions m ON f.id_malfunction = m.id
+            LEFT JOIN 
+                list_results res ON m.result = res.name
             WHERE
                 f.id = $id;";
 
@@ -296,4 +298,79 @@ function selectOneCranes($id){
     dbCheckErrorRes($query);
     return $query->fetch();
 };
+function deletePhotoRes($table, $params = []){
+    global $pdo;
+    $sql = "DELETE FROM $table";
+    if (!empty($params)) {
+        $i = 0;
+        foreach ($params as $key => $value) {
+            if (!is_numeric($value)) {
+                $value = "'" . $value . "'";
+            };
+            if ($i === 0) {
+                $sql = $sql . " WHERE $key=$value";
+            } else {
+                $sql = $sql . " AND $key=$value";
+            }
+            $i++;
+        };
+    };
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $params['id_fitting'];
+};
+
+function getAllMaintenance($id) {
+    global $pdo;
+    $sql = "SELECT 
+                    m.id,
+                    m.date,
+                    m.type_maintenance,
+                    s.service,
+                    m.content_work, 
+                    m.result, 
+                    CONCAT(us.login) AS `login`
+            FROM 
+                maintenance m
+            LEFT JOIN 
+                users us ON us.id = m.id_user
+            LEFT JOIN 
+                services s ON s.id = us.service_id
+            WHERE
+                m.id_fitting = $id;";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $query->fetchAll();
+};
+
+function getAllIdentifiedFaults($id) {
+    global $pdo;
+    $sql = "SELECT 
+                    i.id,
+                    i.date_detection,
+                    i.date_troubleshooting,
+                    i.possible_cause,
+                    i.complete_activities,
+                    i.note,
+                    i.status,
+                    CONCAT(us_d.login) AS `login_detected`,
+                    CONCAT(us_t.login) AS `login_troubleshooting`
+            FROM 
+                identified_faults i
+            LEFT JOIN 
+                users us_d ON us_d.id = i.id_user_detection
+			LEFT JOIN 
+				users us_t ON us_t.id = i.id_user_troubleshooting
+            WHERE
+                i.id_fitting = $id;";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $query->fetchAll();
+}
+
 ?>

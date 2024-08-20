@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'result' => ['title' => 'Исправность', 'value' => $response['result']],
             'lpumg' => ['title' => 'Наименование ЛПУМГ', 'value' => $response['lpumg']],
             'name_highways' => ['title' => 'Наименование газопровода', 'value' => $response['highways']],
-            'accessories' => ['title' => 'Класс крана', 'value' => $response['accessories']],
+            'crane_class' => ['title' => 'Класс крана', 'value' => $response['crane_class']],
             'location_crane' => ['title' => 'Местонахождения крана', 'value' => $response['location']],
             'technical_number' => ['title' => 'Технологический номер крана', 'value' => $response['technical_number']],
             'type_reinforcement' => ['title' => 'ТИП', 'value' => $response['type_reinforcement']],
@@ -62,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $result = [
         'id' => $response['id'],
+        'id_drive' => $response['id_drive'],
+        'id_malfunction' => $response['id_malfunction'],
         'mainInfo' => $mainInfo,
         'secondary' => $secInfo,
         'list_general_description' => $general_descriptions,
@@ -73,6 +75,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'list_packing_pipelines' => $list_strapping,
     ];
     echo json_encode($result);
+    return;
+
+} else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    if ($_SESSION['privilege'] === 7) {
+        $requestBody = file_get_contents('php://input');
+        $data = json_decode($requestBody, true);
+        $table = 'fittings';
+        $id = $_GET['id'];
+        $params = [];
+        if (isset($data['name_highways'])) {
+            $params['name_highways'] = $data['name_highways'];
+        };
+        if (isset($data['crane_class'])) {
+            $params['crane_class'] = $data['crane_class'];
+        }
+        if (isset($data['name_cranes'])) {
+            $params['name_crane'] = $data['name_cranes'];
+        }
+        if (isset($data['location_crane'])) {
+            $params['location_crane'] = $data['location_crane'];
+        }
+        if (isset($data['technical_number'])) {
+            $params['technical_number'] = $data['technical_number'];
+        }
+        if (isset($data['company'])) {
+            $params['company'] = $data['company'];
+        }
+        if (isset($data['f_manufacture'])) {
+            $params['year_manufacture'] = $data['f_manufacture'];
+        }
+        if (isset($data['factory_number'])) {
+            $params['factory_number'] = $data['factory_number'];
+        }
+        if (isset($data['dn'])) {
+            $params['Dn'] = $data['dn'];
+        }
+        if (isset($data['ius'])) {
+            $params['IUS'] = $data['ius'];
+        }
+        if (isset($data['type_reinforcement'])) {
+            $params['type_reinforcement'] = $data['type_reinforcement'];
+        }
+        if (isset($data['pressure'])) {
+            $params['pressure'] = $data['pressure'];
+        }
+        if (isset($data['execution'])) {
+            $params['execution'] = $data['execution'];
+        }
+        if (isset($data['f_commission'])) {
+            $params['year_commission'] = $data['f_commission'];
+        }
+
+        $response = updateRes($table, $id, $params);
+        echo json_encode($response);
+    } else {
+        http_response_code(403);
+        echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
+    };
     return;
 
 } else {

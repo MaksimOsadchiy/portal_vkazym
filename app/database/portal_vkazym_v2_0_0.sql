@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Авг 20 2024 г., 10:36
+-- Время создания: Авг 20 2024 г., 12:12
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -63,7 +63,8 @@ INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`, `date
                                                                                        (25, 29, 'fdfdf', 'vvvvvvcccc', 0, '2024-08-20 09:06:22'),
                                                                                        (26, 29, '', 'dfgdfvfdvdv', 0, '2024-08-20 09:08:47'),
                                                                                        (27, 29, 'dfvv', 'vbvbvbvbvbbv', 0, '2024-08-20 09:09:49'),
-                                                                                       (28, 29, '', 'fvfvffffffff', 0, '2024-08-20 09:10:10');
+                                                                                       (28, 29, '', 'fvfvffffffff', 0, '2024-08-20 09:10:10'),
+                                                                                       (29, 27, '', 'sdsdcscdsc', 0, '2024-08-20 16:37:15');
 
 -- --------------------------------------------------------
 
@@ -963,7 +964,7 @@ CREATE TABLE `links` (
 INSERT INTO `links` (`id`, `link`, `description`, `color`) VALUES
                                                                (3, '#', 'Redmine', 'link'),
                                                                (4, '#', 'Portal portal.ttg.gazprom.ru', 'link'),
-                                                               (8, '#', 'Ссылка 3', 'link'),
+                                                               (8, 'http://localhost/aimo%201.2.6/project', 'Портал отказов', 'link'),
                                                                (9, '#', 'Ссылка 4', 'link'),
                                                                (10, '#', 'Ссылка 5', 'link'),
                                                                (11, '#', 'Ссылка 6', 'link'),
@@ -1788,8 +1789,17 @@ INSERT INTO `roles_modules` (`id`, `id_role`, `id_module`, `privilege`) VALUES
                                                                             (5, 2, 3, 3),
                                                                             (6, 2, 2, 3),
                                                                             (7, 3, 1, 3),
-                                                                            (8, 3, 3, 2),
-                                                                            (9, 3, 2, 0);
+                                                                            (8, 3, 3, 3),
+                                                                            (9, 3, 2, 0),
+                                                                            (10, 4, 1, 2),
+                                                                            (11, 4, 2, 2),
+                                                                            (12, 4, 3, 0),
+                                                                            (13, 5, 1, 2),
+                                                                            (14, 5, 2, 3),
+                                                                            (15, 5, 3, 0),
+                                                                            (16, 6, 1, 3),
+                                                                            (17, 6, 2, 0),
+                                                                            (18, 6, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -2241,8 +2251,10 @@ CREATE TABLE `user_roles` (
 INSERT INTO `user_roles` (`id`, `role`) VALUES
                                             (2, 'admin'),
                                             (1, 'basicUser'),
-                                            (3, 'Роль А'),
-                                            (4, 'Роль Б');
+                                            (3, 'dispatcher employee'),
+                                            (4, 'junior technician'),
+                                            (5, 'senior technician'),
+                                            (6, 'support employee');
 
 --
 -- Индексы сохранённых таблиц
@@ -2584,7 +2596,7 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT для таблицы `applications`
 --
 ALTER TABLE `applications`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT для таблицы `application_status`
@@ -2770,7 +2782,7 @@ ALTER TABLE `responsible_person`
 -- AUTO_INCREMENT для таблицы `roles_modules`
 --
 ALTER TABLE `roles_modules`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `route`
@@ -2842,7 +2854,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `user_roles`
 --
 ALTER TABLE `user_roles`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

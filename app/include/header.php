@@ -32,6 +32,7 @@
                                     <li><a class="dropdown-item" href="#">Администрирование</a></li>
                                 <?php endif; ?>
                                 <li><a class="dropdown-item" href="<?php echo BASE_URL . 'index.php' ?>">Главная</a></li>
+                                <li><a class="dropdown-item" href="<?php echo BASE_URL . 'allCranes.php' ?>">Краны</a></li>
                                 <?php if($_SESSION['privilege'] !== 0 and $_SESSION['privilege'] !== 4): ?>
                                     <li><a class="dropdown-item" href="<?php echo BASE_URL . 'technique.php' ?>">Заказ техники</a></li>
                                 <?php endif; ?>

@@ -1,12 +1,13 @@
 <?php
 
-include("app/database/dbFunction.php");
+include_once(__DIR__ . "/../database/dbFunction.php");
 
 function userAuph($user){
 	$_SESSION['id'] = $user['id'];
 	$_SESSION['login'] = $user['login'];
 	$_SESSION['privilege'] = $user['privilege'];
-	$_SESSION['service'] = $user['service_id'];
+    $_SESSION['service'] = $user['service_id'];
+    $_SESSION['service_name'] = $user['service_name'];
 	if ($user['privilege'] === 1) {
 		header('location: ' . BASE_URL . 'admin/admin.php');
 	} else {
@@ -51,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
 			];
 			insertRes('passwords', $post);
 			$user = selectOneRes(table: 'users', params: ['id' => $id]);
+            $user['service_name'] = selectOneRes('services', ['id' => $service]);
 
 			userAuph($user);
 			//$errMsg = "Пользователь " . "<strong>" . $login . "</strong>" . " создан";
@@ -71,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button_log'])) {
 		$existence = selectOneRes(table: 'users', params: ['login' => $login]);
 		if ($existence){
 			$correctPassword = selectOneRes(table: 'passwords', params: ['user_id' => $existence['id']]);
+            $existence['service_name'] = selectOneRes('services', ['id' => $existence['service_id']]);
 			if (password_verify($password, $correctPassword['password'])){
 				userAuph($existence);
 			} else {
@@ -82,3 +85,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button_log'])) {
 		};
 	};
 };
+
+?>

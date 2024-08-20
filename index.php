@@ -5,7 +5,7 @@ include ('app/database/dbFunction.php');
 $pageTitle = "Главная";
 $menuItems = [];
 $all_links = selectAllRes('links');
-$privilege = $_SESSION['privilege'];
+$all_modules = selectAllRes('portal_modules');
 ?>
 
 <!doctype html>
@@ -20,7 +20,8 @@ $privilege = $_SESSION['privilege'];
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/index/index.css">
     <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
-    <script>let privilege = <?php echo json_encode($privilege); ?>;</script>
+    <script>let all_modules = <?php echo json_encode($all_modules); ?>;</script>
+    <script>const SESSION = <?php echo json_encode($_SESSION); ?>;</script>
     <title>Портал В.Казым</title>
 </head>
 <body>

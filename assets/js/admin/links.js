@@ -37,18 +37,16 @@ const createDefaultRowApps = (id, color, link, text) => {
 const drowTableLinks = () => {
     const bodyTable = document.querySelector('.table-apps').querySelector('tbody');
     bodyTable.innerText = '';
-    const filteredDataApps = allLinks.filter((type) => type.type === 1);
-    filteredDataApps.forEach((value) => {
-        const row = createDefaultRowApps(value.id, value['color'], value['link'], value['text']);
+    all_modules.forEach((value) => {
+        const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
         bodyTable.appendChild(row);
         addEventEditApps(row);
     });
-    const bodyTable1 = document.querySelector('.table-links').querySelector('tbody');
-    bodyTable1.innerText = '';
-    const filteredDataLinks = allLinks.filter((type) => type.type === 2);
-    filteredDataLinks.forEach((value) => {
-        const row = createDefaultRowApps(value.id, value['color'], value['link'], value['text']);
-        bodyTable1.appendChild(row);
+    const bodyTablel = document.querySelector('.table-links').querySelector('tbody');
+    bodyTablel.innerText = '';
+    allLinks.forEach((value) => {
+        const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
+        bodyTablel.appendChild(row);
     });
 };
 

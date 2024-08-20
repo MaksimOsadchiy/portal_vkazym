@@ -373,4 +373,23 @@ function getAllIdentifiedFaults($id) {
     return $query->fetchAll();
 }
 
+function temp($id_role) {
+    global $pdo;
+    $sql = "SELECT 
+                    r_m.id_role,
+                    p_m.name,
+                    r_m.privilege
+            FROM 
+                roles_modules r_m
+            LEFT JOIN 
+                portal_modules p_m ON p_m.id = r_m.id_module
+            WHERE
+                r_m.id_role = $id_role;";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    dbCheckErrorRes($query);
+    return $query->fetchAll();
+};
+
 ?>

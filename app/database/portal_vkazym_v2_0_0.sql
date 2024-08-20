@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Авг 16 2024 г., 11:17
+-- Время создания: Авг 20 2024 г., 10:36
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -59,7 +59,11 @@ INSERT INTO `applications` (`id`, `user_id`, `title`, `content`, `status`, `date
                                                                                        (18, 27, 'sdd', 'cccccccccccccccccccccccccccccccccccccccccxxxxx', 2, '2024-07-25 14:49:20'),
                                                                                        (19, 25, 'njfkl', 'vvvvvvvvvvvvvvvvvv', 2, '2024-07-24 19:54:52'),
                                                                                        (20, 25, 'ffffffff', 'ffffff', 3, '2024-07-25 14:49:20'),
-                                                                                       (24, 27, 'Тема', 'Содержание', 1, '2024-07-29 11:38:54');
+                                                                                       (24, 27, 'Тема', 'Содержание', 1, '2024-07-29 11:38:54'),
+                                                                                       (25, 29, 'fdfdf', 'vvvvvvcccc', 0, '2024-08-20 09:06:22'),
+                                                                                       (26, 29, '', 'dfgdfvfdvdv', 0, '2024-08-20 09:08:47'),
+                                                                                       (27, 29, 'dfvv', 'vbvbvbvbvbbv', 0, '2024-08-20 09:09:49'),
+                                                                                       (28, 29, '', 'fvfvffffffff', 0, '2024-08-20 09:10:10');
 
 -- --------------------------------------------------------
 
@@ -168,7 +172,8 @@ INSERT INTO `document_cranes` (`id`, `id_fitting`, `document_url`, `name`) VALUE
                                                                                (31, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/downArrow.png', 'downArrow.png'),
                                                                                (32, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/car.png', 'car.png'),
                                                                                (33, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/кран.png', 'кран.png'),
-                                                                               (34, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/save.png', 'save.png');
+                                                                               (34, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/documents/save.png', 'save.png'),
+                                                                               (36, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Перемычка_Стояк отбора газа_853.9_853-1/documents/PDF.pdf', 'PDF.pdf');
 
 -- --------------------------------------------------------
 
@@ -916,7 +921,7 @@ INSERT INTO `identified_faults` (`id`, `id_fitting`, `possible_cause`, `id_user_
                                                                                                                                                                                                               (29, 311, '***', 31, NULL, NULL, NULL, '2024-08-17', NULL, 1),
                                                                                                                                                                                                               (30, 6, 'ыва', 31, 31, 'ммммм', 'м', '2024-08-13', '2024-08-06', 1),
                                                                                                                                                                                                               (31, 6, 'dvd', 31, 31, '*99*9*999*', 'vvvvvv', '2024-08-21', '2024-08-24', 31),
-                                                                                                                                                                                                              (32, 6, '***', 31, NULL, NULL, NULL, '2024-08-23', NULL, 1);
+                                                                                                                                                                                                              (32, 6, '***', 31, 7, 'drgdb', NULL, '2024-08-23', '2024-08-06', 1);
 
 -- --------------------------------------------------------
 
@@ -937,6 +942,32 @@ INSERT INTO `ius` (`id`, `name`) VALUES
                                      (2, '409'),
                                      (3, '411'),
                                      (1, '412');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `links`
+--
+
+CREATE TABLE `links` (
+                         `id` int NOT NULL,
+                         `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#',
+                         `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+                         `color` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'link'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `links`
+--
+
+INSERT INTO `links` (`id`, `link`, `description`, `color`) VALUES
+                                                               (3, '#', 'Redmine', 'link'),
+                                                               (4, '#', 'Portal portal.ttg.gazprom.ru', 'link'),
+                                                               (8, '#', 'Ссылка 3', 'link'),
+                                                               (9, '#', 'Ссылка 4', 'link'),
+                                                               (10, '#', 'Ссылка 5', 'link'),
+                                                               (11, '#', 'Ссылка 6', 'link'),
+                                                               (12, '#', 'Ссылка 7', 'link');
 
 -- --------------------------------------------------------
 
@@ -1183,7 +1214,8 @@ INSERT INTO `maintenance` (`id`, `id_fitting`, `type_maintenance`, `content_work
                                                                                                                     (31, 6, 'Вывод ЗРА в ремонт', '----', '----', 31, '2024-08-15 13:54:59'),
                                                                                                                     (32, 6, 'Вывод ЗРА в ремонт', '--;p;;;', ';;;;', 31, '2024-08-15 13:55:22'),
                                                                                                                     (33, 311, 'Вывод ЗРА в ремонт', '959', '00+', 31, '2024-08-16 14:21:57'),
-                                                                                                                    (34, 6, 'Вывод ЗРА в ремонт', '45646', '--', 31, '2024-08-16 16:13:45');
+                                                                                                                    (34, 6, 'Вывод ЗРА в ремонт', '45646', '--', 31, '2024-08-16 16:13:45'),
+                                                                                                                    (35, 6, 'Вывод ЗРА в ремонт', 'klkl', 'kl', 31, '2024-08-19 08:00:56');
 
 -- --------------------------------------------------------
 
@@ -1558,7 +1590,10 @@ INSERT INTO `passwords` (`id`, `user_id`, `password`) VALUES
                                                           (28, 26, '$2y$10$wJHaaQYC/3m7QKUAqsCG2e0mtO5Q4Pt2MFgW3NLFjyRXIS7f1dXUi'),
                                                           (29, 27, '$2y$10$IzfnTtrtFnqEDYdpDcZu1.HHg5VaZFQm.vpXvELu.qcdp8L53B2dK'),
                                                           (30, 31, '$2y$10$sg1cngrBCveuMRIXIDor7e8956khQWLv2xdwQUqv2h2cFTySDrohO'),
-                                                          (31, 32, '$2y$10$8xSYPFNFb7loLPKEWOdUzOXQykxq7S.Wo35Od8k5am4JB9t3328t.');
+                                                          (31, 32, '$2y$10$8xSYPFNFb7loLPKEWOdUzOXQykxq7S.Wo35Od8k5am4JB9t3328t.'),
+                                                          (32, 33, '$2y$10$b1Rzne3cKvNwkFrQbmQovu4dfXxhAR.ukgoNvFQnbq96ShD85nmnG'),
+                                                          (33, 34, '$2y$10$2keC6LIqOjw1j0pGyw2/3.j6jv/dXcqNw/nK0QMmnus6opHmiHpSi'),
+                                                          (34, 35, '$2y$10$yOtaNmlW0N3ctqMqcEw4/ub/c.OsK/L2UwGf3kBD4xN7hCmku9FmW');
 
 -- --------------------------------------------------------
 
@@ -1584,7 +1619,32 @@ INSERT INTO `photo_cranes` (`id`, `id_fitting`, `photo_url`, `name`) VALUES
                                                                          (104, 538, 'http://localhost/portal_vkazym/app/assets/crane_data/Ямбург-Поволжье/Линейный_Свечной_683.6_683-9.3/img/crane_img_538_2024-08-13T084926.png', 'кран.png'),
                                                                          (108, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/img/crane_img_311_2024-08-16T091358.png', 'tempImg.png'),
                                                                          (109, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/img/crane_img_311_2024-08-16T091402.png', 'кран.png'),
-                                                                         (112, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Перемычка_Стояк отбора газа_853.9_853-1/img/crane_img_6_2024-08-16T111214.png', 'save.png');
+                                                                         (114, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Перемычка_Стояк отбора газа_853.9_853-1/img/crane_img_6_2024-08-19T030155.png', 'car.png');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `portal_modules`
+--
+
+CREATE TABLE `portal_modules` (
+                                  `id` int NOT NULL,
+                                  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                                  `link` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '#',
+                                  `description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                                  `color` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `portal_modules`
+--
+
+INSERT INTO `portal_modules` (`id`, `name`, `link`, `description`, `color`) VALUES
+                                                                                (1, 'applications', 'appsForm.php', 'Заявки', 'blue'),
+                                                                                (2, 'technique', 'technique.php', 'Заказ техники', 'yellow'),
+                                                                                (3, 'cranes', 'allCranes.php', 'Краны', 'green'),
+                                                                                (4, 'ЛКРИ', '#', 'ЛКРИ', 'red'),
+                                                                                (5, 'Приложуха', '#', 'Приложение +1', 'blue');
 
 -- --------------------------------------------------------
 
@@ -1700,7 +1760,36 @@ INSERT INTO `responsible_person` (`id`, `lastname`, `firstname`, `patronymic`, `
                                                                                                                  (4, 'С', 'Юрий', 'Владимирович', 8, '89220000000'),
                                                                                                                  (6, 'П2', 'Иван', 'Иванович2', 8, '89876543210'),
                                                                                                                  (7, 'Т3', 'Василий', 'Васильевич', 8, '89876543210'),
-                                                                                                                 (8, 'ПП', 'ИВАН', 'Иванович', 8, '89876543210');
+                                                                                                                 (8, 'ПП', 'ИВАН', 'Иванович', 8, '89876543210'),
+                                                                                                                 (9, 'GG', 'hfdd', 'rttr', 8, '8987654321');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `roles_modules`
+--
+
+CREATE TABLE `roles_modules` (
+                                 `id` int NOT NULL,
+                                 `id_role` int NOT NULL,
+                                 `id_module` int NOT NULL,
+                                 `privilege` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `roles_modules`
+--
+
+INSERT INTO `roles_modules` (`id`, `id_role`, `id_module`, `privilege`) VALUES
+                                                                            (1, 1, 1, 2),
+                                                                            (2, 1, 3, 0),
+                                                                            (3, 1, 2, 0),
+                                                                            (4, 2, 1, 3),
+                                                                            (5, 2, 3, 3),
+                                                                            (6, 2, 2, 3),
+                                                                            (7, 3, 1, 3),
+                                                                            (8, 3, 3, 2),
+                                                                            (9, 3, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -1731,7 +1820,8 @@ INSERT INTO `route` (`id`, `route_to`, `service_id`) VALUES
                                                          (11, 'ДЛО-26', 8),
                                                          (12, 'СКГ-7', 4),
                                                          (13, 'СКГ-5', 4),
-                                                         (14, 'ы', 4);
+                                                         (14, 'ы', 4),
+                                                         (15, 'ДЛО-144', 8);
 
 -- --------------------------------------------------------
 
@@ -1928,6 +2018,28 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `temp_privilege`
+--
+
+CREATE TABLE `temp_privilege` (
+                                  `id` int NOT NULL,
+                                  `value` int NOT NULL,
+                                  `description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `temp_privilege`
+--
+
+INSERT INTO `temp_privilege` (`id`, `value`, `description`) VALUES
+                                                                (1, 0, 'Доступ закрыть'),
+                                                                (2, 1, 'Доступ открыт только на просмотр'),
+                                                                (3, 2, 'Доступ открыт, частичное редактирование'),
+                                                                (4, 3, 'Доступ открыт, полное редактирование');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `types_drives`
 --
 
@@ -2057,45 +2169,80 @@ CREATE TABLE `users` (
                          `id` int NOT NULL,
                          `login` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
                          `privilege` int NOT NULL,
-                         `service_id` int DEFAULT NULL
+                         `service_id` int DEFAULT NULL,
+                         `id_role` int NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`) VALUES
-                                                                   (1, 'ii.ivanov', 0, NULL),
-                                                                   (2, 'ii.ivanov2', 0, NULL),
-                                                                   (3, 'ii.ivanov3', 0, NULL),
-                                                                   (4, 'ii.ivanov4', 0, NULL),
-                                                                   (5, 'ii.ivanov5', 0, NULL),
-                                                                   (6, 'ii.ivano66', 0, NULL),
-                                                                   (7, 'wqdqd', 0, NULL),
-                                                                   (8, 'ii.ivanov7', 0, NULL),
-                                                                   (9, 'ii.ivanov10', 0, NULL),
-                                                                   (10, 'ii.ivanov11', 0, NULL),
-                                                                   (11, 'ii.ivanov12', 0, NULL),
-                                                                   (12, 'ii.ivanov13', 0, NULL),
-                                                                   (13, 'ii.ivanov14', 0, NULL),
-                                                                   (14, 'ii.ivanov15', 0, NULL),
-                                                                   (15, 'ii.ivanov16', 0, NULL),
-                                                                   (16, 'ii.ivanov17', 0, NULL),
-                                                                   (17, 'ii.ivanov18', 0, NULL),
-                                                                   (18, 'ii.ivanov19', 1, NULL),
-                                                                   (19, 'ii.ivanov22', 0, NULL),
-                                                                   (20, 'ii.ivanov25', 0, NULL),
-                                                                   (21, 'ii.ivanov26', 0, NULL),
-                                                                   (22, 'ii.ivanov001', 0, 8),
-                                                                   (23, 'ee.litva3', 3, 8),
-                                                                   (24, 'ee.litva1', 1, 8),
-                                                                   (25, 'ee.litva2', 2, 8),
-                                                                   (26, 'ee.litva4', 4, 8),
-                                                                   (27, 'ee.litva5', 5, 8),
-                                                                   (29, 'ee.litva6', 6, 8),
-                                                                   (30, 'ee.litva0', 0, 8),
-                                                                   (31, 'ee.litva7', 7, 8),
-                                                                   (32, 'ee.litva16', 6, 4);
+INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`, `id_role`) VALUES
+                                                                              (1, 'ii.ivanov', 0, NULL, 1),
+                                                                              (2, 'ii.ivanov2', 0, NULL, 1),
+                                                                              (3, 'ii.ivanov3', 0, NULL, 1),
+                                                                              (4, 'ii.ivanov4', 0, NULL, 1),
+                                                                              (5, 'ii.ivanov5', 0, NULL, 1),
+                                                                              (6, 'ii.ivano66', 0, NULL, 1),
+                                                                              (7, 'wqdqd', 0, NULL, 1),
+                                                                              (8, 'ii.ivanov7', 0, NULL, 1),
+                                                                              (9, 'ii.ivanov10', 0, NULL, 1),
+                                                                              (10, 'ii.ivanov11', 0, NULL, 1),
+                                                                              (11, 'ii.ivanov12', 0, NULL, 1),
+                                                                              (12, 'ii.ivanov13', 0, NULL, 1),
+                                                                              (13, 'ii.ivanov14', 0, NULL, 1),
+                                                                              (14, 'ii.ivanov15', 0, NULL, 1),
+                                                                              (15, 'ii.ivanov16', 0, NULL, 1),
+                                                                              (16, 'ii.ivanov17', 0, NULL, 1),
+                                                                              (17, 'ii.ivanov18', 0, NULL, 1),
+                                                                              (18, 'ii.ivanov19', 1, NULL, 1),
+                                                                              (19, 'ii.ivanov22', 0, NULL, 1),
+                                                                              (20, 'ii.ivanov25', 0, NULL, 1),
+                                                                              (21, 'ii.ivanov26', 0, NULL, 1),
+                                                                              (22, 'ii.ivanov001', 0, 8, 1),
+                                                                              (23, 'ee.litva3', 3, 8, 1),
+                                                                              (24, 'ee.litva1', 1, 8, 2),
+                                                                              (25, 'ee.litva2', 2, 8, 1),
+                                                                              (26, 'ee.litva4', 4, 8, 1),
+                                                                              (27, 'ee.litva5', 5, 8, 1),
+                                                                              (29, 'ee.litva6', 6, 8, 3),
+                                                                              (30, 'ee.litva0', 0, 8, 1),
+                                                                              (31, 'ee.litva7', 7, 8, 1),
+                                                                              (32, 'ee.litva16', 6, 4, 1),
+                                                                              (33, 'ee.litva11', 0, 8, 1),
+                                                                              (34, 'ee.litva78', 0, 8, 1),
+                                                                              (35, 'ee.litva79', 0, 8, 1);
+
+--
+-- Триггеры `users`
+--
+DELIMITER $$
+CREATE TRIGGER `create_temp_entry` AFTER INSERT ON `users` FOR EACH ROW BEGIN
+    INSERT INTO temp (id_user) VALUES (NEW.id);
+END
+    $$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user_roles`
+--
+
+CREATE TABLE `user_roles` (
+                              `id` int NOT NULL,
+                              `role` varchar(127) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `user_roles`
+--
+
+INSERT INTO `user_roles` (`id`, `role`) VALUES
+                                            (2, 'admin'),
+                                            (1, 'basicUser'),
+                                            (3, 'Роль А'),
+                                            (4, 'Роль Б');
 
 --
 -- Индексы сохранённых таблиц
@@ -2193,6 +2340,12 @@ ALTER TABLE `identified_faults`
 ALTER TABLE `ius`
     ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Индексы таблицы `links`
+--
+ALTER TABLE `links`
+    ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `liquids`
@@ -2296,6 +2449,13 @@ ALTER TABLE `photo_cranes`
   ADD KEY `id_fitting` (`id_fitting`);
 
 --
+-- Индексы таблицы `portal_modules`
+--
+ALTER TABLE `portal_modules`
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
 -- Индексы таблицы `privileges`
 --
 ALTER TABLE `privileges`
@@ -2317,6 +2477,15 @@ ALTER TABLE `responses`
 ALTER TABLE `responsible_person`
     ADD PRIMARY KEY (`id`),
   ADD KEY `service_id` (`service_id`);
+
+--
+-- Индексы таблицы `roles_modules`
+--
+ALTER TABLE `roles_modules`
+    ADD PRIMARY KEY (`id`),
+  ADD KEY `id_role` (`id_role`),
+  ADD KEY `id_module` (`id_module`),
+  ADD KEY `privilege` (`privilege`);
 
 --
 -- Индексы таблицы `route`
@@ -2348,6 +2517,13 @@ ALTER TABLE `technique_order`
   ADD KEY `technique_order_ibfk_2` (`route_id`),
   ADD KEY `technique_order_ibfk_1` (`responsible_person_id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Индексы таблицы `temp_privilege`
+--
+ALTER TABLE `temp_privilege`
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `value` (`value`);
 
 --
 -- Индексы таблицы `types_drives`
@@ -2390,7 +2566,15 @@ ALTER TABLE `users`
     ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `login` (`login`),
   ADD KEY `service_id` (`service_id`),
-  ADD KEY `privilege` (`privilege`);
+  ADD KEY `privilege` (`privilege`),
+  ADD KEY `id_role` (`id_role`);
+
+--
+-- Индексы таблицы `user_roles`
+--
+ALTER TABLE `user_roles`
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `role` (`role`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -2400,7 +2584,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `applications`
 --
 ALTER TABLE `applications`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT для таблицы `application_status`
@@ -2424,7 +2608,7 @@ ALTER TABLE `crane_classes`
 -- AUTO_INCREMENT для таблицы `document_cranes`
 --
 ALTER TABLE `document_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT для таблицы `drives`
@@ -2461,6 +2645,12 @@ ALTER TABLE `identified_faults`
 --
 ALTER TABLE `ius`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `links`
+--
+ALTER TABLE `links`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `liquids`
@@ -2526,7 +2716,7 @@ ALTER TABLE `lpumgs`
 -- AUTO_INCREMENT для таблицы `maintenance`
 --
 ALTER TABLE `maintenance`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT для таблицы `malfunctions`
@@ -2544,13 +2734,19 @@ ALTER TABLE `name_cranes`
 -- AUTO_INCREMENT для таблицы `passwords`
 --
 ALTER TABLE `passwords`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT для таблицы `photo_cranes`
 --
 ALTER TABLE `photo_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+
+--
+-- AUTO_INCREMENT для таблицы `portal_modules`
+--
+ALTER TABLE `portal_modules`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `privileges`
@@ -2568,13 +2764,19 @@ ALTER TABLE `responses`
 -- AUTO_INCREMENT для таблицы `responsible_person`
 --
 ALTER TABLE `responsible_person`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT для таблицы `roles_modules`
+--
+ALTER TABLE `roles_modules`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `route`
 --
 ALTER TABLE `route`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `services`
@@ -2593,6 +2795,12 @@ ALTER TABLE `technique`
 --
 ALTER TABLE `technique_order`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+
+--
+-- AUTO_INCREMENT для таблицы `temp_privilege`
+--
+ALTER TABLE `temp_privilege`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `types_drives`
@@ -2628,7 +2836,13 @@ ALTER TABLE `unification_cranes`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT для таблицы `user_roles`
+--
+ALTER TABLE `user_roles`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -2722,6 +2936,20 @@ ALTER TABLE `responses`
 --
 ALTER TABLE `responsible_person`
     ADD CONSTRAINT `responsible_person_ibfk_1` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `roles_modules`
+--
+ALTER TABLE `roles_modules`
+    ADD CONSTRAINT `roles_modules_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `user_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `roles_modules_ibfk_2` FOREIGN KEY (`id_module`) REFERENCES `portal_modules` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `roles_modules_ibfk_3` FOREIGN KEY (`privilege`) REFERENCES `temp_privilege` (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ограничения внешнего ключа таблицы `users`
+--
+ALTER TABLE `users`
+    ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `user_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

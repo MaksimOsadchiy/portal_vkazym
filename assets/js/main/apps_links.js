@@ -27,16 +27,7 @@ const createApps = (id, color, link, text) => {
     // Добавляем классы
     divCol3.className = 'col-3';
 
-    if(privilege === 2 & link ==='appsForm.php' || privilege === 2 & link ==='technique.php'){
-        buttonApp.className = 'btn btn-custom disabled';
-    }
-else{
         buttonApp.className = 'btn btn-custom ' + color;
-    }
-
-
-
-
 
     // Добавляем атрибуты
     // buttonApp.setAttribute('type', 'button');
@@ -79,19 +70,18 @@ const createLinks = (id, link, text) => {
 const drawApps = () => {
     const bodyTable = document.querySelector('.row-apps');
     bodyTable.innerText = '';
-    const filteredDataApps = allLinks.filter((type) => type.type === 1);
-    filteredDataApps.forEach((value) => {
-        const row = createApps(value.id, value['color'], value['link'], value['text']);
+    all_modules.forEach((value) => {
+        if (SESSION.accessibility.some((elem) => elem.name === value.name && elem.privilege < 1)) return;
+        const row = createApps(value.id, value.color, value.link, value.description);
         bodyTable.appendChild(row);
     });
 };
 const drawLinks = () => {
-    const bodyTable1 = document.querySelector('.row-links');
-    bodyTable1.innerText = '';
-    const filteredDataApps = allLinks.filter((type) => type.type === 2);
-    filteredDataApps.forEach((value) => {
-        const row = createLinks(value.id, value['link'], value['text']);
-        bodyTable1.appendChild(row);
+    const bodyTablel = document.querySelector('.row-links');
+    bodyTablel.innerText = '';
+    allLinks.forEach((value) => {
+        const row = createLinks(value.id, value.link, value.description);
+        bodyTablel.appendChild(row);
     });
 };
 

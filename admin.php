@@ -5,9 +5,11 @@ $pageTitle = "Администрирование";
 $menuItems = [];
 
 $all_links = selectAllRes('links');
+$all_modules = selectAllRes('portal_modules');
 
 ?>
 <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
+<script>let all_modules = <?php echo json_encode($all_modules); ?>;</script>
 <!doctype html>
 <html lang="ru">
 

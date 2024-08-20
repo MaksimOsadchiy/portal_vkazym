@@ -1,12 +1,11 @@
 :root {
 	font-size: 1em;
 	--baseColor: #398b93;
-	--borderRadius: 0.625rem;
 	--padding: 0.625rem;
 }
 
 .main-container {
-	height: 1000px;
+	min-height: 1000px;
 	background-color: var(--color-white);
 }
 .main-container__breadcrumb {
@@ -43,13 +42,45 @@
 	border-bottom: 1.5px solid var(--color-table-row-border);
 	color: var(--color-description);
 }
-.t-row:nth-child(2n-1) {
+.appForm:nth-child(2n-1) .t-row{
 	color: var(--color-secondary);
 }
 .t-column {
 	align-self: stretch;
 	padding: 1rem 1.5rem;
 	font-weight: 500;
+}
+.pagination .btn {
+	padding: 0.5rem 0.875rem;
+	border: 1px solid var(--color-table-row-border);
+	background-repeat: no-repeat;
+	font-weight: 500;
+	color: var(--color-main);
+	transition: background-color 0.2s ease-in-out;
+}
+.pagination .btn:hover {
+	border-color: var(--color-ghost);
+	background-color: var(--color-table-border);
+}
+.pagination__btn-left.btn {
+	padding-left: 2.625rem;
+	background-image: url("../../image/leftArrow.png");
+	background-position: 0.875rem center;
+}
+.pagination__btn-right.btn {
+	padding-right: 2.625rem;
+	background-image: url("../../image/rightArrow.png");
+	background-position: 4.875rem center;
+}
+.page-number {
+	padding: 0.75rem 1rem;
+	background-color: var(--color-table-title);
+	font-weight: 500;
+	line-height: 1rem;
+	color: var(--color-link);
+}
+.take-page {
+	border: 1px solid var(--color-link-border);
 }
 
 /* main-info */
@@ -74,7 +105,7 @@
 	text-align: center;
 	text-transform: uppercase;
 }
-.table {
+.table-applications {
 	width: 100%;
 	table-layout: fixed;
 }
@@ -88,7 +119,7 @@
 .tb-title p {
 	font-weight: 300;
 }
-.tbody p {
+.t-body p {
 	background-color: transparent !important;
 	text-align: center;
 	vertical-align: middle;
@@ -100,18 +131,18 @@
 .appForm:nth-child(2n + 1) {
 	background-color: rgba(237, 247, 248, 1) !important;
 }
-.title-container {
+.t-row {
 	cursor: pointer;
 	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
-.title-container:hover {
+.t-row:hover {
 	box-shadow: 1px 1px 20px -10px;
 }
 .appForm .title-container {
 	background-color: transparent;
 }
 .status {
-	font-weight: 600;
+	font-weight: 700;
 }
 .status.green {
 	color: green !important;

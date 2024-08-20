@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				date: formatDate(),
 			};
 			apps = [obj, ...apps];
-			const bodyTable = document.querySelector('.tbody');
+			const bodyTable = document.querySelector('.table-applications').querySelector('.t-body');
 			const row = createRow(obj);
 			bodyTable.insertBefore(row, bodyTable.firstChild); // Добавляем строчку в начало тела таблицы
 			addEventAccordion(row); // Также добавляем слушатель на новую стрку, чтобы можно было раскрыть содержимое
@@ -147,6 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			);
 		} catch (error) {
 			// Если была ошибка, то обновляем переменную
+			console.log(error);
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
 		}
 	};
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 *
 	 */
 	const addEventAccordion = (row) => {
-		row.querySelector('.title-container').addEventListener('click', () => {
+		row.querySelector('.t-row').addEventListener('click', () => {
 			// Находим элемент с содержимым аккордеона в той же строке
 			const content = row.querySelector('.content-container');
 			// Проверяем, существует ли элемент содержимого
@@ -192,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 * 4. Добавляет обработчик аккордеона к каждой строке таблицы.
 	 */
 	const drowTable = () => {
-		const tableBody = document.querySelector('.table-appsForm').querySelector('.tbody');
+		const tableBody = document.querySelector('.table-applications').querySelector('.t-body');
 		apps.forEach((app) => {
 			const row = createRow(app);
 			tableBody.appendChild(row);
@@ -234,11 +235,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		// Добавляем классы
 		row.className = 'appForm d-flex flex-column';
-		container.className = 'title-container d-flex flex-row';
-		tdTime.className = 'col-2 text-center';
-		tdTitle.className = 'col-2 text-center';
-		tdContent.className = 'col-6 text-center';
-		tdStatus.className = `col-2 text-center status ${statusObj[app.status].style}`;
+		container.className = 't-row d-flex flex-row align-items-center col-12';
+		tdTime.className = 't-column text-center col-2';
+		tdTitle.className = 't-column text-center col-2';
+		tdContent.className = 't-column text-center col-6';
+		tdStatus.className = `t-column text-center col-2 status ${statusObj[app.status].style}`;
 
 		// Добавляем атрибуты
 		row.setAttribute('value', app.id);

@@ -39,6 +39,8 @@
 	--color-table-title: rgba(249, 250, 251, 1);
 	--color-table-row-border: rgba(209, 209, 209, 1);
 	--color-blue: rgba(0, 117, 219, 1);
+	--color-link: rgba(127, 86, 217, 1);
+	--color-link-border: rgba(125, 125, 125, 1);
 
 	font-size: 1em;
 }

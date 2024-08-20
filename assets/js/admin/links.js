@@ -2,6 +2,56 @@ document.addEventListener('DOMContentLoaded', () => {
     drowTableLinks();
 });
 
+const saveService = async (elem, query, bodyTable, oldRow) => {
+    // Получаем введёные значения
+    const nameColor = elem.querySelector('.name-color').value.trim();
+    const nameLink = elem.querySelector('.name-link').value.trim();
+    const nameText = elem.querySelector('.name-text').value.trim();
+    //const idService =  SESSION['service'];		// Получаем id введённого сервиса, потом переделать на fetch ???
+    if (nameColor && nameLink && nameText){		// Проверка введёных данных
+        console.log(nameColor);
+        const request = {		// Формируем тело запроса
+            'color': nameColor,
+            'link': nameLink,
+            'text' : nameText,
+        };
+        query === 'PUT' && (request.id = +elem.getAttribute('value'));		// Если метод 'PUT', то добавляем в тело id изменяемого элемента
+        console.log(request);
+        try {
+            const response = await fetch(`${SERVER_URL}mainApps.php`, {
+                method: query,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request),
+            });
+            const jsonResponse = await response.json();		// Получаем тело ответа
+            if (!response.ok) {
+                throw new Error(jsonResponse.status);
+            }
+          //  const resRow = createDefaultRow(+jsonResponse.id, nameDir, nameService);		// Создаём обычную строку в таблицу
+         //   const newElem = {
+         //       'id': +jsonResponse.id,
+          //      'route_to': nameDir,
+          //      'service_id': idService,
+          //  };
+
+          //  routes = routes.some((obj) => obj.id === jsonResponse.id)
+            //    ? routes.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
+              //  : [...routes, newElem];
+           // updateData();
+
+           // addEventEditService(resRow);		// Вешаем на кнопку в новой строке слушатель
+          //  bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
+          //  query === 'POST' && (document.querySelector('.add-entry').innerText = 'Добавить запись');
+        } catch(error) {
+            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+        }
+    } else {
+        document.dispatchEvent(new CustomEvent('updateError', { detail: "Поля должны быть заполнены!" }));
+    }
+};
+
 const createDefaultRowApps = (id, color, link, text) => {
 
     // Создаём DOM элементы
@@ -55,7 +105,13 @@ const addEventEditApps = (row) => {
         const tdList = row.querySelectorAll('td');
         const newRow = createInputRow(row.getAttribute('value'), tdList[0].textContent, tdList[1].textContent, tdList[2].textContent);
         const bodyTable = document.querySelector('.table-apps').querySelector('tbody');
-        bodyTable.replaceChild(newRow, row);
+
+        if (!bodyTable.querySelector('.new-app')) {
+            newRow.querySelector('.save-apps-btn').addEventListener('click', async () => await saveService(newRow, 'PUT', bodyTable, newRow));
+            bodyTable.replaceChild(newRow, row);
+        }
+
+
 
     });
 };

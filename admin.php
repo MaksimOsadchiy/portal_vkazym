@@ -15,11 +15,12 @@
     $menuItems = [];
 
     $all_links = selectAllRes('links');
-$all_modules = selectAllRes('portal_modules');
-
+    $all_modules = selectAllRes('portal_modules');
+    $SESSION = $_SESSION['service'];
 ?>
 <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
 <script>let all_modules = <?php echo json_encode($all_modules); ?>;</script>
+<script>let SESSION = <?php echo json_encode($SESSION); ?>;</script>
 <!doctype html>
 <html lang="ru">
 

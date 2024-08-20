@@ -1,6 +1,21 @@
 <?php
     session_start();
     include('path.php');
+
+    if (!isset($_SESSION['id'])) {
+        header("Location:" . BASE_URL . "log.php");
+        exit();
+    };
+
+    $filtered = array_filter($_SESSION['accessibility'], function($item) {
+        return $item['name'] === "technique";
+    });
+
+    if (reset($filtered)['privilege'] < 2) {
+        header("Location:" . BASE_URL);
+        exit();
+    };
+
     $pageTitle = "Мои заказы";
     $menuItems = [
         ['url' => BASE_URL . 'technique.php', 'label' => 'Техника'],

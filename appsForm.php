@@ -2,6 +2,21 @@
 
     include('path.php');
     include 'app/database/dbFunction.php';
+
+    if (!isset($_SESSION['id'])) {
+        header("Location:" . BASE_URL . "log.php");
+        exit();
+    };
+
+    $filtered = array_filter($_SESSION['accessibility'], function($item) {
+        return $item['name'] === "applications";
+    });
+
+    if (reset($filtered)['privilege'] < 1) {
+        header("Location:" . BASE_URL);
+        exit();
+    };
+
     $pageTitle = "Заявки";
 	$menuItems = [
         ['url' => BASE_URL, 'label' => 'Главная'],

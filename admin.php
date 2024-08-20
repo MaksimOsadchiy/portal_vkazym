@@ -1,10 +1,20 @@
 <?php
-include ('path.php');
-include ('app/database/dbFunction.php');
-$pageTitle = "Администрирование";
-$menuItems = [];
+    include ('path.php');
+    include ('app/database/dbFunction.php');
 
-$all_links = selectAllRes('links');
+    if (!isset($_SESSION['id'])) {
+        header("Location:" . BASE_URL . "log.php");
+        exit();
+    };
+    if (reset($_SESSION['accessibility'])['id_role'] != 2) {
+        header("Location:" . BASE_URL);
+        exit();
+    };
+
+    $pageTitle = "Администрирование";
+    $menuItems = [];
+
+    $all_links = selectAllRes('links');
 $all_modules = selectAllRes('portal_modules');
 
 ?>

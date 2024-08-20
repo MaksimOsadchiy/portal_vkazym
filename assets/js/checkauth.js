@@ -1,7 +1,7 @@
 const chech = () => {
-    if (!SESSION?.id) {
-        window.location.href = BASE_URL;
-    };
+    // if (!SESSION?.id) {
+    //     window.location.href = BASE_URL;
+    // };
 };
 
 

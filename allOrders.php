@@ -2,6 +2,20 @@
     session_start();
     include('path.php');
 
+    if (!isset($_SESSION['id'])) {
+        header("Location:" . BASE_URL . "log.php");
+        exit();
+    };
+
+    $filtered = array_filter($_SESSION['accessibility'], function($item) {
+        return $item['name'] === "technique";
+    });
+
+    if (reset($filtered)['privilege'] < 3) {
+        header("Location:" . BASE_URL);
+        exit();
+    };
+
     $pageTitle = "Заказаная техника";
     $menuItems = [
         ['url' => BASE_URL . 'orderTechnique.php', 'label' => 'Мои заказы'],

@@ -2,6 +2,11 @@
 include('path.php');
 include ('app/database/dbFunction.php');
 
+    if (!isset($_SESSION['id'])) {
+        header("Location:" . BASE_URL . "log.php");
+        exit();
+    };
+
 $pageTitle = "Главная";
 $menuItems = [];
 $all_links = selectAllRes('links');

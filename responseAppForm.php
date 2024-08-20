@@ -2,6 +2,21 @@
 
     include('path.php');
     session_start();
+
+    if (!isset($_SESSION['id'])) {
+        header("Location:" . BASE_URL . "log.php");
+        exit();
+    };
+
+    $filtered = array_filter($_SESSION['accessibility'], function($item) {
+        return $item['name'] === "applications";
+    });
+
+    if (reset($filtered)['privilege'] < 3) {
+        header("Location:" . BASE_URL);
+        exit();
+    };
+
     $pageTitle = "ОТВЕТЫ";
     $menuItems = [
         ['url' => BASE_URL, 'label' => 'Главная'],

@@ -14,13 +14,7 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
-                    <?php foreach ($menuItems as $item): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo $item['url']; ?>"><?php echo $item['label']; ?></a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+                <ul class="navbar-nav"></ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown list-references"></li>
                 </ul>

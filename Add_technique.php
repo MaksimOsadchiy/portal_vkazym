@@ -10,14 +10,13 @@
     $filtered = array_filter($_SESSION['accessibility'], function($item) {
         return $item['name'] === "technique";
     });
-
     if (reset($filtered)['privilege'] < 2) {
         header("Location:" . BASE_URL);
         exit();
     };
 
     $pageTitle = "Заказ техники";
-    $menuItems = [];
+    // $menuItems = [];
     $params = ['service_id' => $_SESSION['service']];
     $responsible_persons = selectALLRes('responsible_person', $params);
     $current_service = $_SESSION['service'];
@@ -29,39 +28,37 @@
 <html lang="ru">
 
 <head>
-    <title>Заказ техники</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/normalize.css">
-    <link rel="stylesheet" href="assets/css/mainStyles.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/modules/modules.css">
-    <link rel="stylesheet" href="assets/css/addTechnique/addTechnique.css">
-    <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/normalize.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/mainStyles.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/style.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modalWindowNotif/modalWindowNotif.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/header/header.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modules/modules.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/addTechnique/addTechnique.css">
     <script>
-        let routes = <?php echo json_encode($routes); ?>;
-        let responsiblePersons = <?php echo json_encode($responsible_persons); ?>;
-        const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
-        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
-        const SESSION = <?php echo json_encode($_SESSION); ?>;
-        const serviceFullName = <?php echo json_encode($serviceFullName); ?>
+        let routes = <?=json_encode($routes)?>;
+        let responsiblePersons = <?=json_encode($responsible_persons)?>;
+        const SERVER_URL = <?=json_encode(SERVER_URL)?>;
+        const BASE_URL = <?=json_encode(BASE_URL)?>;
+        const SESSION = <?=json_encode($_SESSION)?>;
+        const serviceFullName = <?=json_encode($serviceFullName)?>
     </script>
-    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
-    <script defer src="assets/js/addTechnique/modalWindowRoutes.js"></script>
-    <script defer src="assets/js/addTechnique/modalWindowResponsiblePersons.js"></script>
-    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
-    <script defer src="assets/js/addTechnique/placeOrder.js"></script>
-    <script defer src="assets/js/addTechnique/getTechnique.js"></script>
-    <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modules/modules.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/addTechnique/getTechnique.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/addTechnique/modalWindowRoutes.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/addTechnique/modalWindowResponsiblePersons.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/addTechnique/placeOrder.js"></script>
+    <title>Портал В.Казым</title>
 </head>
 <body>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <?php include("app/include/header.php"); ?>
-
+	<?php include("components/header.php")?>
     <div class="container-xl container-teqnique">
         <?php include("components/modules.php");?>
-
         <h2>Форма заказа автотранспорта</h2>
         <div>
             <div class="form-row mb-3">
@@ -144,7 +141,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btnСlose" data-bs-dismiss="modal">Закрыть</button>
-                                <!-- <button type="button" class="btn btn-primary">Сохранить изменения</button> -->
                             </div>
                         </div>
                     </div>
@@ -179,7 +175,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btnСlose" data-bs-dismiss="modal">Закрыть</button>
-                                <!-- <button type="button" class="btn btn-primary">Сохранить изменения</button> -->
                             </div>
                         </div>
                     </div>
@@ -198,16 +193,11 @@
                 <?php for ($i = 0; $i < 5; $i++): ?>
                     <tr>
                         <td>
-                            <select class="form-select technique-select">
-
-<!--                                --><?php //foreach ($techniques as $technique): ?>
-<!--                                    <option value="--><?php //= htmlspecialchars($technique['id_technique']); ?><!--">-->
-<!--                                        --><?php //= htmlspecialchars($technique['name_technique']); ?>
-<!--                                    </option>-->
-<!--                                --><?php //endforeach; ?>
-                            </select>
+                            <select class="form-select technique-select"></select>
                         </td>
-                        <td><input type="text" class="form-control work-activity"></td>
+                        <td>
+							<input type="text" class="form-control work-activity">
+						</td>
                         <td>
                             <select class="form-select person-select"></select>
                         </td>
@@ -220,5 +210,6 @@
         </div>
     </div>
     <?php include("components/modalWindowNotif.php"); ?>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

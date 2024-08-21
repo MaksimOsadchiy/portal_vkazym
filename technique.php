@@ -11,46 +11,42 @@
     $filtered = array_filter($_SESSION['accessibility'], function($item) {
        return $item['name'] === "technique";
     });
-
     if (reset($filtered)['privilege'] < 1) {
         header("Location:" . BASE_URL);
         exit();
     };
 
     $pageTitle = "Свободная техника";
-    $menuItems = [];
-
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 
 <head>
-    <title>Заказ техники</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/normalize.css">
-    <link rel="stylesheet" href="assets/css/mainStyles.css">
-    <link rel="stylesheet" href="assets/css/modules/modules.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/modalWindowNotif/modalWindowNotif.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/normalize.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/mainStyles.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/style.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modalWindowNotif/modalWindowNotif.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/header/header.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modules/modules.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/appsForm/appsForm.css">
     <script>
-        const SESSION = <?php echo json_encode($_SESSION); ?>;
-        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
-		const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
+        const SESSION = <?=json_encode($_SESSION)?>;
+        const BASE_URL = <?=json_encode(BASE_URL)?>;
+		const SERVER_URL = <?=json_encode(SERVER_URL)?>;
     </script>
-    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
-    <script defer src="<?php echo BASE_URL ?>assets/js/technique/technique.js"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/appsForm/appsForm.css">
-    <script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
-    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modules/modules.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/technique/technique.js"></script>
+    <title>Портал В.Казым</title>
 </head>
 <body>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-
-    <?php include("app/include/header.php");?>
-    <?php include("components/modules.php");?>
+	<?php include("components/header.php")?>
+    <?php include("components/modules.php")?>
     <div class="container-xl container-technique">
         <h2>Свободная техника</h2>
         <div class="d-flex flex-column row-gap-2 form-row mb-3">
@@ -90,7 +86,8 @@
             </thead>
             <tbody></tbody>
         </table>
-        <?php require("components/modalWindowNotif.php"); ?>
     </div>
+	<?php require("components/modalWindowNotif.php")?>
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

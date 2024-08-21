@@ -10,14 +10,12 @@
     $filtered = array_filter($_SESSION['accessibility'], function($item) {
         return $item['name'] === "cranes";
     });
-
     if (reset($filtered)['privilege'] < 1) {
         header("Location:" . BASE_URL);
         exit();
     };
 
     $pageTitle = "Краны";
-    $menuItems = [];
 ?>
 
 
@@ -26,26 +24,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/normalize.css">
-    <link rel="stylesheet" href="assets/css/mainStyles.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/modules/modules.css">
-    <link rel="stylesheet" href="assets/css/oneCrane/oneCrane.css">
-    <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/normalize.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/mainStyles.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/style.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modalWindowNotif/modalWindowNotif.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/header/header.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modules/modules.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/oneCrane/oneCrane.css">
     <script>
-        const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
-        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
-        const SESSION = <?php echo json_encode($_SESSION); ?>;
+        const SERVER_URL = <?=json_encode(SERVER_URL)?>;
+        const BASE_URL = <?=json_encode(BASE_URL)?>;
+        const SESSION = <?=json_encode($_SESSION)?>;
     </script>
-    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
-    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
-    <script defer src="assets/js/oneCrane/oneCrane.js"></script>
-    <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modules/modules.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/oneCrane/oneCrane.js"></script>
+    <title>Портал В.Казым</title>
 </head>
 <body>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <?php include("app/include/header.php"); ?>
+	<?php include("components/header.php")?>
     <div class="main-container d-flex flex-column align-items-center pt-3">
         <?php include("components/modules.php");?>
         <div class="content d-flex flex-column align-items-center p-3 pb-5">
@@ -122,7 +121,8 @@
                 </div>
             </div>
         </div>
-        <?php require("components/modalWindowNotif.php"); ?>
     </div>
+	<?php require("components/modalWindowNotif.php"); ?>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

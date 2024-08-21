@@ -10,14 +10,12 @@
     $filtered = array_filter($_SESSION['accessibility'], function($item) {
         return $item['name'] === "technique";
     });
-
     if (reset($filtered)['privilege'] < 3) {
         header("Location:" . BASE_URL);
         exit();
     };
 
     $pageTitle = "Заказаная техника";
-    $menuItems = [];
 ?>
 
 
@@ -25,31 +23,31 @@
 <html lang='ru'>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/normalize.css">
-    <link rel="stylesheet" href="assets/css/mainStyles.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/modules/modules.css">
-    <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
-    <link rel="stylesheet" href="assets/css/orderTechnique/orderTechnique.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/normalize.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/mainStyles.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/style.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modalWindowNotif/modalWindowNotif.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/header/header.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/modules/modules.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/orderTechnique/orderTechnique.css">
     <script>
-        const SESSION = <?php echo json_encode($_SESSION); ?>;
-        const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
-        const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
+        const SESSION = <?=json_encode($_SESSION)?>;
+        const BASE_URL = <?=json_encode(BASE_URL)?>;
+        const SERVER_URL = <?=json_encode(SERVER_URL)?>;
     </script>
-    <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
-    <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
-    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
-    <script defer src="<?php echo BASE_URL ?>assets/js/allOrders/allOrders.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/modules/modules.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/allOrders/allOrders.js"></script>
+    <title>Портал В.Казым</title>
 </head>
 <body>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <?php include("app/include/header.php"); ?>
+	<?php include("components/header.php")?>
     <section>
-        <?php include("components/modules.php");?>
+        <?php include("components/modules.php")?>
         <div class="table-container d-flex flex-column align-items-center pt-3">
             <div class="management-container d-flex flex-row justify-content-between column-gap-2">
                 <div class="date-container d-flex flex-row align-items-center column-gap-2">
@@ -81,7 +79,8 @@
                 <tbody></tbody>
             </table>
         </div>
-        <?php require("components/modalWindowNotif.php"); ?>
     </section>
+	<?php require("components/modalWindowNotif.php")?>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

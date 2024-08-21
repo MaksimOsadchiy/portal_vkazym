@@ -12,7 +12,6 @@
     };
 
     $pageTitle = "Администрирование";
-    $menuItems = [];
 
     $all_links = selectAllRes('links');
     $all_modules = selectAllRes('portal_modules');
@@ -31,16 +30,15 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 <!--    <link rel="stylesheet" href="assets/css/admin/appsLinks.css">-->
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/header/header.css">
     <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
     <script defer src="<?php echo BASE_URL ?>assets/js/admin/links.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
-    <title>Администрирование</title>
+    <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
+    <title>Портал В.Казым</title>
 </head>
 <body>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-
-<?php include ("app/include/header.php"); ?>
-
+	<?php include("components/header.php")?>
     <div class="container-xl">
         <h2>Главная Приложения</h2>
         <div class="table-apps mb-3">
@@ -72,5 +70,6 @@
         </div>
     </div>
     <?php require("components/modalWindowNotif.php"); ?>
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

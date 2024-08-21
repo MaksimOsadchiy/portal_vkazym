@@ -1,0 +1,59 @@
+.second-line {
+    color: rgba(255, 208, 100, 0.78); /* цвет второй строки */
+    font-size: 25px;
+}
+
+.second-line:hover {
+    text-decoration: none;
+    color: rgba(255, 174, 63, 0.71);
+}
+
+.first-line {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    color: #a0ada5;
+    text-decoration: none;
+    background-color: transparent;
+    transition: color 0.3s ease;
+}
+
+.nav-link {
+    font-size: 20px;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание */
+}
+
+.flex-container img {
+    margin-right: 10px; /* Расстояние между изображением и текстом */
+}
+
+/* Стили для выравнивания ссылок по левому краю с отступом */
+.navbar-nav {
+    margin-left: 80px; /* Отступ слева */
+}
+
+.navbar-nav2 {
+    margin-block-end: 0px;
+    padding-left: 0px;
+}
+
+.navbar,
+.navbar-expand-lg,
+.navbar-dark,
+.bg-dark {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.container-xxl,
+.flex-container {
+    background: rgba(51, 55, 59, 0.71);
+    border-radius: 10px;
+}
+
+.navbar-brand {
+    margin-right: 0px;
+}

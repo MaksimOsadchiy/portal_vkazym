@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 	//
 	const drowSelect = (allTechnique) => {
 		const allSelect = document.querySelectorAll(".technique-select");
-		console.log(allTechnique);
 		allSelect.forEach((select) => {
 			select.innerHTML = `<option value="-1" class="default-option" selected disabled></option>`;
 			allTechnique.forEach((technique) => select.appendChild(createSelectRow(technique)));

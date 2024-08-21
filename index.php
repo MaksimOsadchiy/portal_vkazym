@@ -24,15 +24,19 @@ $all_modules = selectAllRes('portal_modules');
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/index/index.css">
+    <link rel="stylesheet" href="assets/css/header/header.css">
     <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
     <script>let all_modules = <?php echo json_encode($all_modules); ?>;</script>
     <script>const SESSION = <?php echo json_encode($_SESSION); ?>;</script>
+    <script>const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;</script>
+    <script>const BASE_URL = <?php echo json_encode(BASE_URL); ?>;</script>
+    <script defer src="assets/js/header/header.js"></script>
     <title>Портал В.Казым</title>
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/main/apps_links.js"></script>
-<?php include("app/include/header.php"); ?>
+<?php include("components/header.php"); ?>
 
 </body>
 </html>

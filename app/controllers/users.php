@@ -5,7 +5,6 @@ include_once(__DIR__ . "/../database/dbFunction.php");
 function userAuph($user){
 	$_SESSION['id'] = $user['id'];
 	$_SESSION['login'] = $user['login'];
-	$_SESSION['privilege'] = $user['privilege'];
     $_SESSION['service'] = $user['service_id'];
 	$_SESSION['service_name'] = $user['service_name'];
 	$_SESSION['accessibility'] = $user['accessibility'];

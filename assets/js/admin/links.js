@@ -1,24 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     drowTableLinks();
 });
-
-const saveService = async (elem, query, bodyTable, oldRow) => {
+//
+const saveService = async (row, query, nameTo) => {
     // Получаем введёные значения
-    const nameColor = elem.querySelector('.name-color').value.trim();
-    const nameLink = elem.querySelector('.name-link').value.trim();
-    const nameText = elem.querySelector('.name-text').value.trim();
-    //const idService =  SESSION['service'];		// Получаем id введённого сервиса, потом переделать на fetch ???
+    const nameColor = row.querySelector('.name-color').value.trim();
+    const nameLink = row.querySelector('.name-link').value.trim();
+    const nameText = row.querySelector('.name-text').value.trim();
     if (nameColor && nameLink && nameText){		// Проверка введёных данных
-        console.log(nameColor);
         const request = {		// Формируем тело запроса
             'color': nameColor,
             'link': nameLink,
-            'text' : nameText,
+            'description' : nameText,
         };
-        query === 'PUT' && (request.id = +elem.getAttribute('value'));		// Если метод 'PUT', то добавляем в тело id изменяемого элемента
-        console.log(request);
+        query === 'PUT' && (request.id = +row.getAttribute('value'));		// Если метод 'PUT', то добавляем в тело id изменяемого элемента
         try {
-            const response = await fetch(`${SERVER_URL}mainApps.php`, {
+            const response = await fetch(`${SERVER_URL}${nameTo}.php`, {
                 method: query,
                 headers: {
                     'Content-Type': 'application/json',
@@ -29,31 +26,33 @@ const saveService = async (elem, query, bodyTable, oldRow) => {
             if (!response.ok) {
                 throw new Error(jsonResponse.status);
             }
-          //  const resRow = createDefaultRow(+jsonResponse.id, nameDir, nameService);		// Создаём обычную строку в таблицу
-         //   const newElem = {
-         //       'id': +jsonResponse.id,
-          //      'route_to': nameDir,
-          //      'service_id': idService,
-          //  };
-
-          //  routes = routes.some((obj) => obj.id === jsonResponse.id)
-            //    ? routes.map((obj) => obj.id === jsonResponse.id ? newElem : obj)
-              //  : [...routes, newElem];
-           // updateData();
-
-           // addEventEditService(resRow);		// Вешаем на кнопку в новой строке слушатель
-          //  bodyTable.replaceChild(resRow, oldRow);		// Заменяем строку с инпутами новой обычной строкой
-          //  query === 'POST' && (document.querySelector('.add-entry').innerText = 'Добавить запись');
         } catch(error) {
+            console.log(error);
             document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
         }
     } else {
         document.dispatchEvent(new CustomEvent('updateError', { detail: "Поля должны быть заполнены!" }));
     }
 };
-
+//
+const drowTableLinks = () => {
+    const bodyTable = document.querySelector('.table-apps').querySelector('tbody');
+    bodyTable.innerText = '';
+    all_modules.forEach((value) => {
+        const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
+        bodyTable.appendChild(row);
+        addEventEditBtn(row, bodyTable, 'portalModules');
+    });
+    const bodyTableTo = document.querySelector('.table-links').querySelector('tbody');
+    bodyTableTo.innerText = '';
+    allLinks.forEach((value) => {
+        const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
+        bodyTableTo.appendChild(row);
+        addEventEditBtn(row, bodyTableTo, 'links');
+    });
+};
+//
 const createDefaultRowApps = (id, color, link, text) => {
-
     // Создаём DOM элементы
     const row = document.createElement('tr');
     const tdColor = document.createElement('td');
@@ -74,7 +73,6 @@ const createDefaultRowApps = (id, color, link, text) => {
 
     button.innerText = "Редактировать";
 
-
     // Собираем части в единую строку
     tdBtnContainer.appendChild(button);
     row.appendChild(tdColor);
@@ -83,41 +81,33 @@ const createDefaultRowApps = (id, color, link, text) => {
     row.appendChild(tdBtnContainer);
 
     return row;
-}
-const drowTableLinks = () => {
-    const bodyTable = document.querySelector('.table-apps').querySelector('tbody');
-    bodyTable.innerText = '';
-    all_modules.forEach((value) => {
-        const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
-        bodyTable.appendChild(row);
-        addEventEditApps(row);
-    });
-    const bodyTablel = document.querySelector('.table-links').querySelector('tbody');
-    bodyTablel.innerText = '';
-    allLinks.forEach((value) => {
-        const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
-        bodyTablel.appendChild(row);
-    });
 };
-
-const addEventEditApps = (row) => {
+//
+const addEventEditBtn = (row, body, nameTo) => {
     row.querySelector('.edit-apps-btn').addEventListener('click', () => {
         const tdList = row.querySelectorAll('td');
         const newRow = createInputRow(row.getAttribute('value'), tdList[0].textContent, tdList[1].textContent, tdList[2].textContent);
-        const bodyTable = document.querySelector('.table-apps').querySelector('tbody');
 
-        if (!bodyTable.querySelector('.new-app')) {
-            newRow.querySelector('.save-apps-btn').addEventListener('click', async () => await saveService(newRow, 'PUT', bodyTable, newRow));
-            bodyTable.replaceChild(newRow, row);
-        }
-
-
-
+        if (!body.querySelector('.new-app')) {
+            body.replaceChild(newRow, row);
+            addEventSaveBtn(newRow, body, nameTo);
+        };
     });
 };
+//
+const addEventSaveBtn = (row, body, nameTo) => {
+    row.querySelector('.save-apps-btn').addEventListener('click', async () => {
+        await saveService(row, 'PUT', nameTo);
 
+        const inputList = row.querySelectorAll('input');
+        const newRow = createDefaultRowApps(row.getAttribute('value'), inputList[0].value, inputList[1].value, inputList[2].value);
+
+        body.replaceChild(newRow, row);
+        addEventEditBtn(newRow, body, nameTo);
+    });
+};
+//
 const createInputRow = (id, color, link, text) => {
-
     // Создаём DOM элементы
     const row = document.createElement('tr');
     const tdColorContainer = document.createElement('td');
@@ -131,9 +121,9 @@ const createInputRow = (id, color, link, text) => {
     // Добавляем классы
     row.className = 'linkTable new-app';
     button.className = 'btn btn-secondary save-apps-btn';
-    tdColorInput.className = 'name-color';
-    tdLinkInput.className = 'name-link';
-    tdTextInput.className = 'name-text';
+    tdColorInput.className = 'form-control bg-light bg-gradient name-color';
+    tdLinkInput.className = 'form-control bg-light bg-gradient name-link';
+    tdTextInput.className = 'form-control bg-light bg-gradient name-text';
 
     // Добавляем атрибуты
     row.setAttribute('value', id);
@@ -147,7 +137,6 @@ const createInputRow = (id, color, link, text) => {
     tdTextInput.value = text;
     button.innerText = "Сохранить";
 
-
     // Собираем части в единую строку
     tdColorContainer.appendChild(tdColorInput);
     tdLinkConteiner.appendChild(tdLinkInput);
@@ -159,4 +148,4 @@ const createInputRow = (id, color, link, text) => {
     row.appendChild(tdBtnContainer);
 
     return row;
-}
+};

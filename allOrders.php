@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
     <link rel="stylesheet" href="assets/css/orderTechnique/orderTechnique.css">
     <script>
         const SESSION = <?php echo json_encode($_SESSION); ?>;
@@ -44,6 +45,7 @@
         const SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;
     </script>
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
+    <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
     <script defer src="<?php echo BASE_URL ?>assets/js/allOrders/allOrders.js"></script>
 </head>
 <body>
@@ -82,5 +84,6 @@
             </table>
         </div>
     </section>
+    <?php require("components/modalWindowNotif.php"); ?>
 </body>
 </html>

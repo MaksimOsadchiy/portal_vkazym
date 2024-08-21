@@ -21,6 +21,7 @@
 <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
 <script>let all_modules = <?php echo json_encode($all_modules); ?>;</script>
 <script>let SESSION = <?php echo json_encode($SESSION); ?>;</script>
+<script>let SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;</script>
 <!doctype html>
 <html lang="ru">
 
@@ -29,8 +30,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/admin/appsLinks.css">
+<!--    <link rel="stylesheet" href="assets/css/admin/appsLinks.css">-->
+    <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
     <script defer src="<?php echo BASE_URL ?>assets/js/admin/links.js"></script>
+    <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
     <title>Администрирование</title>
 </head>
 <body>
@@ -53,12 +56,12 @@
                 <tbody></tbody>
             </table>
         </div>
-
         <h2>Главная Ссылки</h2>
         <div class="table-links mb-3">
             <table class="table table-bordered mt-4">
                 <thead>
                 <tr>
+                    <th>класс цвета</th>
                     <th>адрес</th>
                     <th>Название</th>
                     <th>Редактировать</th>
@@ -68,7 +71,6 @@
             </table>
         </div>
     </div>
-
-
+    <?php require("components/modalWindowNotif.php"); ?>
 </body>
 </html>

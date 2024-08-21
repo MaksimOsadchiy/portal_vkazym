@@ -15,12 +15,12 @@
 
     $all_links = selectAllRes('links');
     $all_modules = selectAllRes('portal_modules');
-    $SESSION = $_SESSION['service'];
 ?>
 <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
 <script>let all_modules = <?php echo json_encode($all_modules); ?>;</script>
-<script>let SESSION = <?php echo json_encode($SESSION); ?>;</script>
+<script>let SESSION = <?php echo json_encode($_SESSION); ?>;</script>
 <script>let SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;</script>
+<script>let BASE_URL = <?php echo json_encode(BASE_URL); ?>;</script>
 <!doctype html>
 <html lang="ru">
 
@@ -32,9 +32,9 @@
 <!--    <link rel="stylesheet" href="assets/css/admin/appsLinks.css">-->
     <link rel="stylesheet" href="<?=BASE_URL?>assets/css/header/header.css">
     <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
-    <script defer src="<?php echo BASE_URL ?>assets/js/admin/links.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/admin/links.js"></script>
     <title>Портал В.Казым</title>
 </head>
 <body>

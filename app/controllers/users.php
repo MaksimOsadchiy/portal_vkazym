@@ -9,7 +9,7 @@ function userAuph($user){
 	$_SESSION['service_name'] = $user['service_name'];
 	$_SESSION['accessibility'] = $user['accessibility'];
 	if ($user['privilege'] === 1) {
-		header('location: ' . BASE_URL . 'admin/admin.php');
+		header('location: ' . BASE_URL . 'admin.php');
 	} else {
 		header('location: ' . BASE_URL);
 	};

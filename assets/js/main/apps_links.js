@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function createFrame() {
     let container = document.createElement('div');
     container.innerHTML = `
-    <div class="container-xl pt-4 overflow-hidden text-center apps">
+    <div class="container-xl pt-4 overflow-hidden text-center modules">
                 <h2>Приложения для вас</h2>
-                <div class="row row-apps gy-2"></div>
+                <div class="row row-modules gy-2"></div>
     </div>
     <div class="container-xl pt-4 overflow-hidden text-center links">
                 <h2>Полезные ссылки</h2>
@@ -51,7 +51,7 @@ const createLinks = (id, link, text) => {
 
     // Добавляем классы
     divCol3.className = 'col-3';
-    buttonApp.className = 'btn link';
+    buttonApp.className = 'btn link btn-custom';
 
 
     // Добавляем атрибуты
@@ -68,9 +68,10 @@ const createLinks = (id, link, text) => {
     return divCol3;
 }
 const drawApps = () => {
-    const bodyTable = document.querySelector('.row-apps');
+    const bodyTable = document.querySelector('.row-modules');
     bodyTable.innerText = '';
     all_modules.forEach((value) => {
+        if (!SESSION.accessibility.some((elem) => elem.name === value.name)) return;
         if (SESSION.accessibility.some((elem) => elem.name === value.name && elem.privilege < 1)) return;
         const row = createApps(value.id, value.color, value.link, value.description);
         bodyTable.appendChild(row);

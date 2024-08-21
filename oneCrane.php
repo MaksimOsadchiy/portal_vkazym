@@ -17,9 +17,7 @@
     };
 
     $pageTitle = "Краны";
-    $menuItems = [
-        ['url' => BASE_URL . 'allCranes.php', 'label' => 'Краны'],
-    ];
+    $menuItems = [];
 ?>
 
 
@@ -32,6 +30,7 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
     <link rel="stylesheet" href="assets/css/oneCrane/oneCrane.css">
     <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
     <script>
@@ -40,6 +39,7 @@
         const SESSION = <?php echo json_encode($_SESSION); ?>;
     </script>
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
     <script defer src="assets/js/oneCrane/oneCrane.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 </head>
@@ -47,6 +47,7 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <?php include("app/include/header.php"); ?>
     <div class="main-container d-flex flex-column align-items-center pt-3">
+        <?php include("components/modules.php");?>
         <div class="content d-flex flex-column align-items-center p-3 pb-5">
             <div class="content__header d-flex flex-row justify-content-between pb-2">
                 <div class="content__img-managment d-flex flex-column align-items-center row-gap-3">

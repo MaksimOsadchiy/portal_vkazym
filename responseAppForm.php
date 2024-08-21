@@ -18,11 +18,7 @@
     };
 
     $pageTitle = "ОТВЕТЫ";
-    $menuItems = [
-        ['url' => BASE_URL, 'label' => 'Главная'],
-        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-    ];
+    $menuItems = [];
 ?>
 
 <!doctype html>
@@ -37,6 +33,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/mainStyles.css">
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/responseAppForm/responseAppForm.css">
 
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/responseAppForm/adminAppForm.css">
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/responseAppForm/adminTable.css">
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/modalWindowNotif/modalWindowNotif.css">
@@ -49,6 +46,7 @@
         const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
     </script>
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
     <script defer src="<?php echo BASE_URL ?>assets/js/responseAppForm/responseAppForm.js"></script>
     <script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 
@@ -60,6 +58,7 @@
     <?php include("app/include/header.php"); ?>
 
     <section>
+        <?php include("components/modules.php");?>
         <div class="container-xl">
             <div class="d-flex gap-5 col-12 justify-content-center">
                 <div class="col-12 d-flex flex-column align-items-center mt-3 mb-3">

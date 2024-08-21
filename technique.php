@@ -17,19 +17,8 @@
         exit();
     };
 
-    $pageTitle = "Заказ техники";
-    $menuItems = [
-        ['url' => BASE_URL . 'orderTechnique.php', 'label' => 'Мои заказы'],
-        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-    ];
-    if (+$_SESSION['privilege'] !== 5 and +$_SESSION['privilege'] !== 2) {
-        array_unshift($menuItems, ['url' => BASE_URL . 'allOrders.php', 'label' => 'Заказанная техника']);
-    };
-//    $join = [
-//        'INNER JOIN type_of_technique ON technique.id_type_of_techniques = type_of_technique.id',
-//    ];
-//    $free_technique = selectAllJoinRes('technique', [], $join);
+    $pageTitle = "Свободная техника";
+    $menuItems = [];
 
 ?>
 
@@ -43,6 +32,7 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/modalWindowNotif/modalWindowNotif.css">
     <script>
@@ -54,20 +44,13 @@
     <script defer src="<?php echo BASE_URL ?>assets/js/technique/technique.js"></script>
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/appsForm/appsForm.css">
     <script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
 </head>
 <body>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 
-    <?php include("app/include/header.php"); ?>
-
-    <section>
-        <div class="container-xl">
-            <div class="d-grid gap-5 col-2 ">
-                <a href="<?php echo BASE_URL . 'Add_technique.php'; ?>" class="btn btn-outline-success mt-4" role="button">Заказать
-                    технику</a>
-            </div>
-        </div>
-    </section>
+    <?php include("app/include/header.php");?>
+    <?php include("components/modules.php");?>
     <div class="container-xl container-technique">
         <h2>Свободная техника</h2>
         <div class="d-flex flex-column row-gap-2 form-row mb-3">

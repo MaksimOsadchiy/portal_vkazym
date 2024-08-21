@@ -17,12 +17,7 @@
     };
 
     $pageTitle = "Заказаная техника";
-    $menuItems = [
-        ['url' => BASE_URL . 'orderTechnique.php', 'label' => 'Мои заказы'],
-        ['url' => BASE_URL . 'technique.php', 'label' => 'Техника'],
-        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-    ];
+    $menuItems = [];
 ?>
 
 
@@ -37,6 +32,7 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
     <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
     <link rel="stylesheet" href="assets/css/orderTechnique/orderTechnique.css">
     <script>
@@ -46,12 +42,14 @@
     </script>
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
     <script defer src="<?php echo BASE_URL ?>assets/js/allOrders/allOrders.js"></script>
 </head>
 <body>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <?php include("app/include/header.php"); ?>
     <section>
+        <?php include("components/modules.php");?>
         <div class="table-container d-flex flex-column align-items-center pt-3">
             <div class="management-container d-flex flex-row justify-content-between column-gap-2">
                 <div class="date-container d-flex flex-row align-items-center column-gap-2">
@@ -83,7 +81,7 @@
                 <tbody></tbody>
             </table>
         </div>
+        <?php require("components/modalWindowNotif.php"); ?>
     </section>
-    <?php require("components/modalWindowNotif.php"); ?>
 </body>
 </html>

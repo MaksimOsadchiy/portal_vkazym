@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
     <link rel="stylesheet" href="assets/css/allCranes/allCranes.css">
     <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
     <script>
@@ -38,6 +39,7 @@
         const SESSION = <?php echo json_encode($_SESSION); ?>;
     </script>
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
     <script defer src="assets/js/allCranes/allCranes.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 </head>
@@ -45,6 +47,7 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <?php include("app/include/header.php"); ?>
     <section class="d-flex flex-column align-items-center">
+        <?php include("components/modules.php");?>
         <div class="table-container d-flex flex-column align-items-center pt-3">
             <div class="managment d-flex flex-column align-items-center row-gap-4 col-6 p-3">
                 <select class="form-select choice" aria-label="Default select example">

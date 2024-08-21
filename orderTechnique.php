@@ -17,14 +17,7 @@
     };
 
     $pageTitle = "Мои заказы";
-    $menuItems = [
-        ['url' => BASE_URL . 'technique.php', 'label' => 'Техника'],
-        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-    ];
-    if (+$_SESSION['privilege'] !== 5 and +$_SESSION['privilege'] !== 2) {
-        array_unshift($menuItems, ['url' => BASE_URL . 'allOrders.php', 'label' => 'Заказанная техника']);
-    };
+    $menuItems = [];
 
 ?>
 
@@ -39,6 +32,7 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
     <link rel="stylesheet" href="assets/css/orderTechnique/orderTechnique.css">
     <script>
         const SESSION = <?php echo json_encode($_SESSION); ?>;
@@ -47,11 +41,13 @@
     </script>
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
     <script defer src="<?php echo BASE_URL ?>assets/js/orderTechnique/orderTechnique.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
 </head>
 <body>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <?php include("app/include/header.php"); ?>
     <section>
+        <?php include("components/modules.php");?>
         <div class="table-container d-flex flex-column align-items-center pt-3">
             <select class="form-select choice" aria-label="Default select example">
                 <option value="0" selected>Заявки на рассмотрении</option>

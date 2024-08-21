@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 			bodyTable.appendChild(row);
 		});
 	};
+	//
 	const drowSelect = () => {
 		const select = document.querySelector('.form-select');
 		select.innerHTML = `<option value="-1" selected>Выберите тип техники</option>`;

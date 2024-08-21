@@ -18,11 +18,7 @@
     };
 
     $pageTitle = "Заявки";
-	$menuItems = [
-        ['url' => BASE_URL, 'label' => 'Главная'],
-        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-    ];
+	$menuItems = [];
 
 ?>
 
@@ -36,6 +32,7 @@
  	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/mainStyles.css">
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/appsForm/appsForm.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL ?>assets/css/modalWindowNotif/modalWindowNotif.css">
 	<script>
@@ -44,6 +41,7 @@
         const BASE_URL = <?php echo json_encode(BASE_URL); ?>;
 	</script>
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/appsForm/appsForm.js"></script>
 	<script defer src="<?php echo BASE_URL ?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
 	<title>Заявки</title>
@@ -51,11 +49,12 @@
 <body>
     <?php include("app/include/header.php"); ?>
 
-	<div class="main-info container d-flex flex-row justify-content-center align-items-center">
-		<p>Основная информация....</p>
-	</div>
+<!--	<div class="main-info container d-flex flex-row justify-content-center align-items-center">-->
+<!--		<p>Основная информация....</p>-->
+<!--	</div>-->
 
 	<div class="main-block container d-flex flex-column justify-content-center align-items-center">
+        <?php include("components/modules.php");?>
 		<button type="button" class="btn btn-primary btn-open-modal-window-appForm mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Написать заявку
 		</button>

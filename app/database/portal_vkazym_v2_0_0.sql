@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Авг 20 2024 г., 12:12
+-- Время создания: Авг 21 2024 г., 11:11
 -- Версия сервера: 8.0.36
 -- Версия PHP: 8.2.19
 
@@ -1524,6 +1524,34 @@ INSERT INTO `malfunctions` (`id`, `general_description`, `tightness`, `leakage`,
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `microservices`
+--
+
+CREATE TABLE `microservices` (
+                                 `id` int NOT NULL,
+                                 `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                                 `link` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                                 `description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                                 `privilege` int NOT NULL,
+                                 `color` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `microservices`
+--
+
+INSERT INTO `microservices` (`id`, `name`, `link`, `description`, `privilege`, `color`) VALUES
+                                                                                            (1, 'technique', 'technique.php', 'Свободная техника', 1, 'yellow'),
+                                                                                            (2, 'technique', 'Add_technique.php', 'Заказать технику', 2, 'green'),
+                                                                                            (3, 'technique', 'orderTechnique.php', 'Мои заказы', 2, 'red'),
+                                                                                            (4, 'technique', 'allOrders.php', 'Все заказы', 3, 'blue'),
+                                                                                            (5, 'applications', 'appsForm.php', 'Заявки', 2, 'yellow'),
+                                                                                            (6, 'applications', 'responseAppForm.php', 'ОТВЕТЫ', 3, 'yellow'),
+                                                                                            (7, 'cranes', 'allCranes.php', 'Все краны', 1, 'yellow');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `name_cranes`
 --
 
@@ -1619,8 +1647,7 @@ INSERT INTO `photo_cranes` (`id`, `id_fitting`, `photo_url`, `name`) VALUES
                                                                          (101, 9, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Ужгород/Линейный_на ЛК_538_538-1.3/img/crane_img_9_2024-08-09T065436.png', 'downArrow.png'),
                                                                          (104, 538, 'http://localhost/portal_vkazym/app/assets/crane_data/Ямбург-Поволжье/Линейный_Свечной_683.6_683-9.3/img/crane_img_538_2024-08-13T084926.png', 'кран.png'),
                                                                          (108, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/img/crane_img_311_2024-08-16T091358.png', 'tempImg.png'),
-                                                                         (109, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/img/crane_img_311_2024-08-16T091402.png', 'кран.png'),
-                                                                         (114, 6, 'http://localhost/portal_vkazym/app/assets/crane_data/Уренгой-Центр 2/Перемычка_Стояк отбора газа_853.9_853-1/img/crane_img_6_2024-08-19T030155.png', 'car.png');
+                                                                         (109, 311, 'http://localhost/portal_vkazym/app/assets/crane_data/СРТО-Урал/Линейный_Свечной_683.3_683-10.3/img/crane_img_311_2024-08-16T091402.png', 'кран.png');
 
 -- --------------------------------------------------------
 
@@ -1645,7 +1672,7 @@ INSERT INTO `portal_modules` (`id`, `name`, `link`, `description`, `color`) VALU
                                                                                 (2, 'technique', 'technique.php', 'Заказ техники', 'yellow'),
                                                                                 (3, 'cranes', 'allCranes.php', 'Краны', 'green'),
                                                                                 (4, 'ЛКРИ', '#', 'ЛКРИ', 'red'),
-                                                                                (5, 'Приложуха', '#', 'Приложение +1', 'blue');
+                                                                                (5, 'Приложуха', '#', 'Приложение -2', 'blue');
 
 -- --------------------------------------------------------
 
@@ -2214,7 +2241,7 @@ INSERT INTO `users` (`id`, `login`, `privilege`, `service_id`, `id_role`) VALUES
                                                                               (24, 'ee.litva1', 1, 8, 2),
                                                                               (25, 'ee.litva2', 2, 8, 1),
                                                                               (26, 'ee.litva4', 4, 8, 1),
-                                                                              (27, 'ee.litva5', 5, 8, 1),
+                                                                              (27, 'ee.litva5', 5, 8, 4),
                                                                               (29, 'ee.litva6', 6, 8, 3),
                                                                               (30, 'ee.litva0', 0, 8, 1),
                                                                               (31, 'ee.litva7', 7, 8, 1),
@@ -2438,6 +2465,15 @@ ALTER TABLE `maintenance`
 --
 ALTER TABLE `malfunctions`
     ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `microservices`
+--
+ALTER TABLE `microservices`
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `link` (`link`),
+  ADD KEY `name` (`name`),
+  ADD KEY `privilege` (`privilege`);
 
 --
 -- Индексы таблицы `name_cranes`
@@ -2737,6 +2773,12 @@ ALTER TABLE `malfunctions`
     MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=591;
 
 --
+-- AUTO_INCREMENT для таблицы `microservices`
+--
+ALTER TABLE `microservices`
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT для таблицы `name_cranes`
 --
 ALTER TABLE `name_cranes`
@@ -2752,7 +2794,7 @@ ALTER TABLE `passwords`
 -- AUTO_INCREMENT для таблицы `photo_cranes`
 --
 ALTER TABLE `photo_cranes`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- AUTO_INCREMENT для таблицы `portal_modules`
@@ -2922,6 +2964,13 @@ ALTER TABLE `identified_faults`
 ALTER TABLE `maintenance`
     ADD CONSTRAINT `maintenance_ibfk_1` FOREIGN KEY (`id_fitting`) REFERENCES `fittings` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `maintenance_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ограничения внешнего ключа таблицы `microservices`
+--
+ALTER TABLE `microservices`
+    ADD CONSTRAINT `microservices_ibfk_1` FOREIGN KEY (`name`) REFERENCES `portal_modules` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `microservices_ibfk_2` FOREIGN KEY (`privilege`) REFERENCES `temp_privilege` (`value`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Ограничения внешнего ключа таблицы `passwords`

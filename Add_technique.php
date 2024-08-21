@@ -17,22 +17,12 @@
     };
 
     $pageTitle = "Заказ техники";
-    $menuItems = [
-        ['url' => BASE_URL . 'orderTechnique.php', 'label' => 'Мои заказы'],
-        ['url' => BASE_URL . 'about.php', 'label' => 'Справочники'],
-        ['url' => BASE_URL . 'lkri.php', 'label' => 'График'],
-    ];
-    if (+$_SESSION['privilege'] !== 5 and +$_SESSION['privilege'] !== 2) {
-        array_unshift($menuItems, ['url' => BASE_URL . 'allOrders.php', 'label' => 'Заказанная техника']);
-    };
-
-//    $techniques = selectALLRes('technique');
+    $menuItems = [];
     $params = ['service_id' => $_SESSION['service']];
     $responsible_persons = selectALLRes('responsible_person', $params);
     $current_service = $_SESSION['service'];
     $serviceFullName = selectOneRes('services', ['id' => $current_service]);
     $routes = selectALLRes('route', ['service_id' => $current_service]);
-
 ?>
 
 <!doctype html>
@@ -46,6 +36,7 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/mainStyles.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modules/modules.css">
     <link rel="stylesheet" href="assets/css/addTechnique/addTechnique.css">
     <link rel="stylesheet" href="assets/css/modalWindowNotif/modalWindowNotif.css">
     <script>
@@ -59,6 +50,7 @@
     <script src="<?php echo BASE_URL ?>assets/js/checkauth.js"></script>
     <script defer src="assets/js/addTechnique/modalWindowRoutes.js"></script>
     <script defer src="assets/js/addTechnique/modalWindowResponsiblePersons.js"></script>
+    <script defer src="<?php echo BASE_URL ?>assets/js/modules/modules.js"></script>
     <script defer src="assets/js/addTechnique/placeOrder.js"></script>
     <script defer src="assets/js/addTechnique/getTechnique.js"></script>
     <script defer src="assets/js/modalWindowNotif/modalWindowNotif.js"></script>
@@ -68,6 +60,8 @@
     <?php include("app/include/header.php"); ?>
 
     <div class="container-xl container-teqnique">
+        <?php include("components/modules.php");?>
+
         <h2>Форма заказа автотранспорта</h2>
         <div>
             <div class="form-row mb-3">

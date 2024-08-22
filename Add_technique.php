@@ -7,16 +7,17 @@
         exit();
     };
 
-    $filtered = array_filter($_SESSION['accessibility'], function($item) {
-        return $item['name'] === "technique";
-    });
-    if (reset($filtered)['privilege'] < 2) {
-        header("Location:" . BASE_URL);
-        exit();
+    if ($_SESSION['accessibility'][0]['role_id'] !== 2){
+        $filtered = array_filter($_SESSION['accessibility'], function($item) {
+            return $item['name'] === "technique";
+        });
+        if (reset($filtered)['privilege'] < 2) {
+            header("Location:" . BASE_URL);
+            exit();
+        };
     };
 
     $pageTitle = "Заказ техники";
-    // $menuItems = [];
     $params = ['service_id' => $_SESSION['service']];
     $responsible_persons = selectALLRes('responsible_person', $params);
     $current_service = $_SESSION['service'];

@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     return;
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE'){
-    if (array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
+    if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
         $id = $_GET['id'];
         $table = 'document_cranes';
         $params = ['id' => $id];

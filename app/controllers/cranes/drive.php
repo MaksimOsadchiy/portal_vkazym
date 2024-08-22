@@ -4,7 +4,7 @@
 include_once("../../database/dbFunction.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    if (array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
+    if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
         $requestBody = file_get_contents('php://input');
         $data = json_decode($requestBody, true);
         $table = 'drives';

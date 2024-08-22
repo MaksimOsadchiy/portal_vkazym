@@ -7,12 +7,14 @@
         exit();
     };
 
-    $filtered = array_filter($_SESSION['accessibility'], function($item) {
-        return $item['name'] === "cranes";
-    });
-    if (reset($filtered)['privilege'] < 1) {
-        header("Location:" . BASE_URL);
-        exit();
+    if ($_SESSION['accessibility'][0]['id_role'] !== 2) {
+        $filtered = array_filter($_SESSION['accessibility'], function($item) {
+            return $item['name'] === "cranes";
+        });
+        if (reset($filtered)['privilege'] < 1) {
+            header("Location:" . BASE_URL);
+            exit();
+        };
     };
 
     $pageTitle = "Все краны";

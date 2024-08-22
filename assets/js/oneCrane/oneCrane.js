@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		body.appendChild(managmentBtn);
 		const mainContent = `
 			<p class="mb-2 fs-5">Характеристики ТПА</p>
-			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${+SESSION.accessibility.find((obj) => obj.name === 'cranes').privilege !== 3 ? 'disabled' : ''}>Изменить</button>
+			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${SESSION.accessibility[0].id_role === 2 || +SESSION.accessibility.find((obj) => obj.name === 'cranes').privilege === 3 ? '' : 'disabled'}>Изменить</button>
 			<div class="table table-main-info d-flex flex-column align-items-center">
 				<div class="thead d-flex flex-column">
 					<div class="t-row d-flex flex-row justify-content-center">
@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				</div>
 				<div class="tbody d-flex flex-column"></div>
 			</div>
-			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${+SESSION.accessibility.find((obj) => obj.name === 'cranes').privilege !== 3 ? 'disabled' : ''}>Изменить</button>`;
+			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${SESSION.accessibility[0].id_role === 2 || +SESSION.accessibility.find((obj) => obj.name === 'cranes').privilege === 3 ? '' : 'disabled'}>Изменить</button>`;
 		body.insertAdjacentHTML('beforeend', mainContent);
 		const bodyTable = document.querySelector('.table-main-info').querySelector('.tbody');
 

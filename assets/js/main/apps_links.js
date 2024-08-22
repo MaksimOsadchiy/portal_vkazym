@@ -70,12 +70,19 @@ const createLinks = (id, link, text) => {
 const drawApps = () => {
     const bodyTable = document.querySelector('.row-modules');
     bodyTable.innerText = '';
-    all_modules.forEach((value) => {
-        if (!SESSION.accessibility.some((elem) => elem.name === value.name)) return;
-        if (SESSION.accessibility.some((elem) => elem.name === value.name && elem.privilege < 1)) return;
-        const row = createApps(value.id, value.color, value.link, value.description);
-        bodyTable.appendChild(row);
-    });
+    if (SESSION.accessibility[0].id_role === 2) {
+        all_modules.forEach((value) => {
+            const row = createApps(value.id, value.color, value.link, value.description);
+            bodyTable.appendChild(row);
+        });
+    } else {
+        all_modules.forEach((value) => {
+            if (!SESSION.accessibility.some((elem) => elem.name === value.name)) return;
+            if (SESSION.accessibility.some((elem) => elem.name === value.name && elem.privilege < 1)) return;
+            const row = createApps(value.id, value.color, value.link, value.description);
+            bodyTable.appendChild(row);
+        });
+    }
 };
 const drawLinks = () => {
     const bodyTablel = document.querySelector('.row-links');

@@ -38,13 +38,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 			listContainer.setAttribute('aria-labelledby', 'navbarDropdown');
 
 			loginBlock.innerText = SESSION.login;
-			let listLiElemetns = allModules
-				.map((obj) => {
-					if (!SESSION.accessibility.some((elem) => elem.name === obj.name)) return;
-					if (SESSION.accessibility.some((elem) => elem.name === obj.name && elem.privilege < 1)) return;
-					return createRow(obj);
-				})
-				.filter((elem) => elem !== undefined);
+			let listLiElemetns = [];
+
+			if (SESSION.accessibility[0].id_role === 2) {
+				listLiElemetns = allModules.map((obj) => createRow(obj))
+			} else {
+				listLiElemetns = allModules
+					.map((obj) => {
+						if (!SESSION.accessibility.some((elem) => elem.name === obj.name)) return;
+						if (SESSION.accessibility.some((elem) => elem.name === obj.name && elem.privilege < 1)) return;
+						return createRow(obj);
+					})
+					.filter((elem) => elem !== undefined);
+			};
+
 
 			listLiElemetns = [...listLiElemetns, createRow({ style: 'change-user', link: 'log.php', description: 'Сменить пользователя' })];
 			listLiElemetns = [...listLiElemetns, createRow({ style: 'btn-exit', link: '#', description: 'Выйти' })];

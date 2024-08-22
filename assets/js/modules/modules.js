@@ -22,13 +22,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const userPrivilegeThisModule = SESSION.accessibility.find((obj) => obj.name === moduleName)?.privilege;
 		bodyTable.innerText = '';
 		bodyTable.appendChild(createApps('blue', 'index.php', 'Главная'));
-		modules.forEach((value) => {
-			if (namePage === value.link) return;
-			if (moduleName !== value.name) return;
-			if (userPrivilegeThisModule < value.privilege) return;
-			const row = createApps(value.color, value.link, value.description);
-			bodyTable.appendChild(row);
-		});
+		if (SESSION.accessibility[0].id_role === 2) {
+			modules.forEach((value) => {
+				if (namePage === value.link) return;
+				if (moduleName !== value.name) return;
+				const row = createApps(value.color, value.link, value.description);
+				bodyTable.appendChild(row);
+			});
+		} else {
+			modules.forEach((value) => {
+				if (namePage === value.link) return;
+				if (moduleName !== value.name) return;
+				if (userPrivilegeThisModule < value.privilege || userPrivilegeThisModule === undefined) return;
+				const row = createApps(value.color, value.link, value.description);
+				bodyTable.appendChild(row);
+			});
+		};
 	};
 	//
 	const createApps = (color, link, text) => {

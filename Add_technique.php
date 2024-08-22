@@ -5,9 +5,8 @@
     if (!isset($_SESSION['id'])) {
         header("Location:" . BASE_URL . "log.php");
         exit();
-    };
-
-    if ($_SESSION['accessibility'][0]['role_id'] !== 2){
+    }
+    if ($_SESSION['accessibility'][0]['id_role'] !== 2){
         $filtered = array_filter($_SESSION['accessibility'], function($item) {
             return $item['name'] === "technique";
         });

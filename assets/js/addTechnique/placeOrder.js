@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		timeTo = timeTo ? timeTo : shift.slice(6, 11);
 
 		// Объединяем данные по технике и ответственным лицам в массив
-		const combinedArray = [];
+		let combinedArray = [];
 		technique.forEach((item, index) => {
 			if (item && responsiblePerson[index]) {
 				combinedArray.push([item, responsiblePerson[index], workActivity[index], remark[index]]);
 			}
 		});
 		// Фильтрация массива, исключающая пустые значения техники и активности
-		combinedArray.filter((elem) => elem[0] !== '' && elem[2] !== '');
+		combinedArray = combinedArray.filter((elem) => elem[0] !== '' && +elem[0] !== -1 && elem[1] !== '');
 
 		// Создание результирующего массива объектов
 		const result = [];

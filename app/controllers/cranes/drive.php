@@ -3,41 +3,49 @@
 
 include_once("../../database/dbFunction.php");
 
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
-        $requestBody = file_get_contents('php://input');
-        $data = json_decode($requestBody, true);
-        $table = 'drives';
-        $id = $_GET['id'];
-        $params = [];
-        if (isset($data['type_drive'])) {
-            $params['type_drive'] = $data['type_drive'];
+if (isset($_SESSION['id'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+        if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
+            $requestBody = file_get_contents('php://input');
+            $data = json_decode($requestBody, true);
+            $table = 'drives';
+            $id = $_GET['id'];
+            $params = [];
+            if (isset($data['type_drive'])) {
+                $params['type_drive'] = $data['type_drive'];
+            };
+            if (isset($data['drive_company'])) {
+                $params['company'] = $data['drive_company'];
+            }
+            if (isset($data['liquid'])) {
+                $params['liquid'] = $data['liquid'];
+            }
+            if (isset($data['drive_factory_number'])) {
+                $params['factory_number'] = $data['drive_factory_number'];
+            }
+            if (isset($data['drive_year_commission'])) {
+                $params['year_commission'] = $data['drive_year_commission'];
+            }
+
+            $response = updateRes($table, $id, $params);
+            echo json_encode($response);
+        } else {
+            http_response_code(403);
+            echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
         };
-        if (isset($data['drive_company'])) {
-            $params['company'] = $data['drive_company'];
-        }
-        if (isset($data['liquid'])) {
-            $params['liquid'] = $data['liquid'];
-        }
-        if (isset($data['drive_factory_number'])) {
-            $params['factory_number'] = $data['drive_factory_number'];
-        }
-        if (isset($data['drive_year_commission'])) {
-            $params['year_commission'] = $data['drive_year_commission'];
-        }
+        return;
 
-        $response = updateRes($table, $id, $params);
-        echo json_encode($response);
     } else {
-        http_response_code(403);
-        echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
-    };
-    return;
+        http_response_code(405);
+        echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);
+        return;
 
+    };
 } else {
-    http_response_code(405);
-    echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);
+    http_response_code(401);
+    echo json_encode(['status' => 'Вы неавторизованы!']);
     return;
 
 };
 
+?>

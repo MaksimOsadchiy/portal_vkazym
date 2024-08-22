@@ -2,37 +2,44 @@
 
 include_once("../database/dbFunction.php");
 
+if (isset($_SESSION['id'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $requestBody = file_get_contents('php://input');
+        $data = json_decode($requestBody, true);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$requestBody = file_get_contents('php://input');
-	$data = json_decode($requestBody, true);
+        $table = 'responses';
+        $params = [
+            'user_id' => $data['user_id'],
+            'application_id' => $data['application_id'],
+            'status' => $data['status'],
+            'response' => $data['response'],
+        ];
 
-	$table = 'responses';
-	$params = [
-		'user_id' => $data['user_id'],
-		'application_id' => $data['application_id'],
-		'status' => $data['status'],
-		'response' => $data['response'],
-	];
-	
-	$response = insertRes($table, $params);
-	echo json_encode(['response' => $response]);
-	return;
+        $response = insertRes($table, $params);
+        echo json_encode(['response' => $response]);
+        return;
 
-} else if ($_SERVER['REQUEST_METHOD'] === 'GET'){
-	$table = 'responses';
-	$params = [
-		'application_id' => $_GET['id'],
-	];
+    } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $table = 'responses';
+        $params = [
+            'application_id' => $_GET['id'],
+        ];
 
-	$response = selectAllRes($table, $params);
-	echo json_encode(['response' => $response]);
-	return;
+        $response = selectAllRes($table, $params);
+        echo json_encode(['response' => $response]);
+        return;
+
+    } else {
+        http_response_code(405);
+        echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);
+        return;
+
+    };
 
 } else {
-	http_response_code(405);
-	echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);
-	return;
-};
+    http_response_code(401);
+    echo json_encode(['status' => 'Вы неавторизованы!']);
+    return;
 
+}
 ?>

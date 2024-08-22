@@ -51,15 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
 				'password' => $password,
 			];
 			insertRes('passwords', $post);
-			$user = selectOneRes(table: 'users', params: ['id' => $id]);
+			$user = selectOneRes('users', ['id' => $id]);
             $user['service_name'] = selectOneRes('services', ['id' => $service]);
+			$user['accessibility'] = temp($user['id_role']);
 
 			userAuph($user);
-			//$errMsg = "Пользователь " . "<strong>" . $login . "</strong>" . " создан";
 		};
 	};
 } else {
-	//echo 'GET';
 	$login = '';
 };
 

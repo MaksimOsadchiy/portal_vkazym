@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Портал В.Казым</title>
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        const todayLine = {
+           id: 'todayLine',
+           afterDatasetsDraw(chart, args, pluginOptions) {
+              const { ctx, data, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+
+              ctx.save();
+              ctx.beginPath();
+              ctx.lineWidth = 3;
+              ctx.strokeStyle = 'rgba(255, 26, 104, 0.9)';
+              ctx.setLineDash([6, 6]);
+              ctx.moveTo(x.getPixelForValue(new Date()), top);
+              ctx.lineTo(x.getPixelForValue(new Date()), bottom);
+              ctx.stroke();
+
+              ctx.setLineDash([]);
+           },
+        };
+
+        const yAxisLabels = ['Техника 1', 'Техника 2', 'Техника 3', 'Техника 4', 'Техника 5', 'Техника 6', 'Техника 7', 'Техника 8'];
+
+        const defaultLegendClickHandler = Chart.defaults.plugins.legend.onClick;
+        const pieDoughnutLegendClickHandler = Chart.controllers.doughnut.overrides.plugins.legend.onClick;
+        const newLegendClickHandler = function (e, legendItem, legend) {
+            console.log(e);
+            console.log(legendItem);
+            console.log(legend);
+            const index = legendItem.datasetIndex;
+            const type = legend.chart.config.type;
+
+            if (index > 1) {
+                // Do the original logic
+                if (type === 'pie' || type === 'doughnut') {
+                    pieDoughnutLegendClickHandler(e, legendItem, legend)
+                } else {
+                    defaultLegendClickHandler(e, legendItem, legend);
+                }
+
+            } else {
+                let ci = legend.chart;
+                // console.log(ci.getDatasetMeta(0)); //ТУТ есть
+                // console.log(ci.getDatasetMeta(1)); //ТУТ нет
+                // console.log(ci.getDatasetMeta(0).data[0].$context); //ТУТ
+                // console.log(ci.getDatasetMeta(0).data.filter((elem) => elem.$context.raw.service === legendItem.text)); //ТУТ
+
+                ci.getDatasetMeta(0).data.filter((elem) => elem.$context.raw.service === legendItem.text).forEach(function(elem) {
+                    console.log(elem);
+                    // console.log(elem.inflateAmount);
+                    elem.hidden = elem.hidden === undefined || elem.hidden === null ? !ci.data.datasets[index].hidden : null;
+                });
+                // [
+                //     ci.getDatasetMeta(0),
+                //     ci.getDatasetMeta(1)
+                // ].forEach(function(meta) {
+                //     console.log(meta.hidden);
+                //     meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+                // });
+                ci.update();
+            }
+        };
+
+        const serviceColors = {
+            'АиМО': '#FF5733', // Цвет для службы АиМО
+            'ХАЛ': '#33FF57', // Цвет для службы ХАЛ
+            'ГКС': '#3357FF', // Цвет для службы ГКС
+            'СЗК': '#FF33A8', // Цвет для службы СЗК
+        };
+
+        // {x: ['2024-08-21T20:50:00', '2024-08-22T02:10:00'], y: 'Техника 2', service: 'ХАЛ'},
+        // {x: ['2024-08-25T12:45:00', '2024-08-25T15:58:00'], y: 'Техника 3', service: 'ГКС'},
+        // {x: ['2024-08-29T18:00:00', '2024-08-29T19:30:00'], y: 'Техника 4', service: 'АиМО'},
+        // {x: ['2024-08-23T22:00:00', '2024-08-24T05:30:00'], y: 'Техника 5', service: 'СЗК'},
+        // {x: ['2024-08-23T22:00:00', '2024-08-24T05:30:00'], y: 'Техника 4', service: 'СЗК'},
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                datasets: [
+                    {
+                        label: 'orders',
+                        data: [
+                            {x: ['2024-08-28T12:00:00', '2024-08-28T15:00:00'], y: 'Техника 1', service: 'АиМО'},
+                            {x: ['2024-08-21T20:50:00', '2024-08-22T02:10:00'], y: 'Техника 2', service: 'ХАЛ'},
+                            {x: ['2024-08-25T12:45:00', '2024-08-25T15:58:00'], y: 'Техника 3', service: 'ГКС'},
+                            {x: ['2024-08-29T18:00:00', '2024-08-29T19:30:00'], y: 'Техника 4', service: 'АиМО'},
+                            {x: ['2024-08-23T22:00:00', '2024-08-24T05:30:00'], y: 'Техника 5', service: 'СЗК'},
+                            {x: ['2024-08-23T22:00:00', '2024-08-24T05:30:00'], y: 'Техника 4', service: 'СЗК'},
+                        ],
+                        backgroundColor: function(context) {
+                            const service = context.raw.service;
+                            return serviceColors[service] || '#000000';
+                        },
+                        borderWidth: 1,
+                        borderSkipped: false,
+                        borderRadius: 10,
+                    },
+                ],
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        position: 'top',
+                        type: 'time',
+                        time: {
+                            unit: 'hour',
+                            displayFormats: {
+                                hour: 'MMM d, ha'
+                            }
+                        },
+                        ticks: {
+                            source: 'auto',
+                            autoSkip: false,
+                            stepSize: 12,
+                        },
+                        min: new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime() - 2 * 24 * 60 * 60 * 1000),
+                        // max: '2024-09-01',
+                        max: new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime() + 10 * 24 * 60 * 60 * 1000),
+                    },
+                    y: {
+                        type: 'category',
+                        labels: yAxisLabels, // Используем массив строк для меток на оси Y
+                        beginAtZero: true,
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        onClick: newLegendClickHandler,
+                        labels: {
+                            generateLabels: function(chart) {
+                                // Создание меток легенды для каждой службы
+                                const labels = Object.keys(serviceColors).map((service, index) => ({
+                                    text: service,
+                                    fillStyle: serviceColors[service],
+                                    strokeStyle: serviceColors[service],
+                                    lineWidth: 2,
+                                    datasetIndex: index,
+                                    hidden: false,
+                                }));
+                                return labels;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                // Отображение названия службы при наведении на объект
+                                const service = context.raw.service;
+                                return `Service: ${service}`;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [todayLine]
+        });
+    </script>
+</body>
+</html>

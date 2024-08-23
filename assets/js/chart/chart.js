@@ -72,6 +72,40 @@ document.addEventListener('DOMContentLoaded', async () => {
         return listContainer;
     };
     //
+    const serviceTextPlugin = {
+        id: 'serviceText',
+        afterDatasetsDraw(chart, args, options) {
+            const {ctx} = chart;
+            chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                meta.data.forEach((bar, index) => {
+                    const service = dataset.data[index].service;
+                    const position = bar.tooltipPosition();
+
+                    // Задаем параметры текста
+                    ctx.save();
+                    ctx.font = '12px Arial';
+                    ctx.fillStyle = 'white'; // Цвет текста
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+
+                    // Координаты и размеры объекта
+                    const {x, y, width, height} = bar;
+
+                    // Обрезаем текст, если он выходит за границы объекта
+                    ctx.beginPath();
+                    ctx.rect(x-width+3, y-height/2, width-6, height);
+                    ctx.clip();
+
+                    // Рисуем текст в середине объекта
+                    ctx.fillText(service, x-width/2, y);
+
+                    ctx.restore();
+                });
+            });
+        }
+    };
+    //
     const htmlLegendPlugin = {
         id: 'htmlLegend',
         afterUpdate(chart, args, options) {
@@ -230,6 +264,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         },
-        plugins: [todayLine, htmlLegendPlugin]
+        plugins: [todayLine, htmlLegendPlugin, serviceTextPlugin]
     });
 });

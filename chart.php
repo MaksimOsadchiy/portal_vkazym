@@ -47,7 +47,7 @@
 <body>
     <?php include("components/header.php")?>
     <?php include("components/modules.php")?>
-    <div id="legend-container" class="d-flex flex-row my-3 col-5 mx-auto"></div>
+    <div id="legend-container" class="d-flex flex-row justify-content-center my-3 col-12"></div>
     <div class="my-container"><canvas id="myChart"></canvas></div>
     <?php require("components/modalWindowNotif.php")?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -52,7 +52,7 @@ if (isset($_SESSION['id'])) {
         $responsiblePerson = [];
         $technique = [];
         $route = [];
-        $services = [];
+            $services = [];
         foreach ($orders as $order) {
             if (!isset($responsiblePerson[$order['responsible_person_id']])) {
                 $table = 'responsible_person';

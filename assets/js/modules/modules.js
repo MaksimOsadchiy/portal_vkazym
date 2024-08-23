@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const bodyTable = document.querySelector('.row-modules');
 		const pathList = new URL(window.location.href).pathname.split("/");
 		const namePage = pathList[pathList.length - 1];
-		const moduleName = modules.find((obj) => obj.link === namePage || obj.link === 'allCranes.php')?.name;
+		let moduleName = modules.find((obj) => obj.link === namePage)?.name;
+		if (moduleName === undefined && namePage === 'oneCrane.php') moduleName = modules.find((obj) => obj.link === 'allCranes.php').name;
 		const userPrivilegeThisModule = SESSION.accessibility.find((obj) => obj.name === moduleName)?.privilege;
 		bodyTable.innerText = '';
 		bodyTable.appendChild(createApps('blue', 'index.php', 'Главная'));

@@ -209,17 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const btnCreateOrder = document.querySelector('.create-order');
 		btnCreateOrder.addEventListener('click', async () => await createOrder());
 	};
-	// Доделать потом...
-	// const tempFunc = () => {
-	// 	const dateFrom = document.querySelector('#dateFrom');
-	// 	const
-	// 	dateFrom.addEventListener('change', () => {
-	// 		console.log(new Date(dateFrom.value));
-	// 	});
-	// };
-
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
-	addEventCreateOrder();
-	// tempFunc();
+	addEventCreateOrder()
 });

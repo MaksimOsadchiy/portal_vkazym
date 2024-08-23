@@ -1,0 +1,15 @@
+#legend-container ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+}
+#legend-container ul li {
+    margin: 0 !important;
+}
+.my-container {
+    position: relative;
+    margin: auto;
+    height: 80rem;
+}

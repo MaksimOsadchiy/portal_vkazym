@@ -1,16 +1,30 @@
 #legend-container ul {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
-    width: 40%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1rem;
+	width: 40%;
 }
 #legend-container ul li {
-    min-width: calc(10% - (9 * 1rem)/5);
-    margin: 0 !important;
+	min-width: calc(10% - (9 * 1rem) / 5);
+	margin: 0 !important;
 }
 .my-container {
-    position: relative;
-    margin: auto;
-    height: 80rem;
+	position: relative;
+	margin: auto;
+	height: 80rem;
+}
+.window-hidden {
+	display: none !important;
+}
+.my-window {
+	position: fixed;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.25);
+	height: 100vh;
+	padding-bottom: 10rem;
+	z-index: 10;
+}
+.my-window__container {
+	background-color: rgba(236, 236, 236, 1);
 }

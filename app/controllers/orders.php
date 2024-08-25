@@ -77,6 +77,7 @@ if (isset($_SESSION['id'])) {
             $response[$order['id']] = [
                 'id' => $order['id'],
                 'service' => $services[$order['service_id']]['service'],
+                'service_id' => $services[$order['service_id']]['id'],
                 'date' => rightDate($order['date_from']) . '<br>-<br>' . rightDate($order['date_to']),
                 'time' => $order['time_from'] . '<br>-<br>' . $order['time_to'],
                 'technique' => $technique[$order['technique_id']]['name_technique'],

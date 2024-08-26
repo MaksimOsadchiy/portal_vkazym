@@ -43,12 +43,19 @@ const drowTableLinks = () => {
         bodyTable.appendChild(row);
         addEventEditBtn(row, bodyTable, 'portalModules');
     });
-    const bodyTableTo = document.querySelector('.table-links').querySelector('tbody');
-    bodyTableTo.innerText = '';
+    const bodyTableSec = document.querySelector('.table-microApps').querySelector('tbody');
+    bodyTableSec.innerText = '';
+    all_micro_modules.forEach((value) => {
+        const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
+        bodyTableSec.appendChild(row);
+        addEventEditBtn(row, bodyTableSec, 'microservices');
+    });
+    const bodyTableThird = document.querySelector('.table-links').querySelector('tbody');
+    bodyTableThird.innerText = '';
     allLinks.forEach((value) => {
         const row = createDefaultRowApps(value.id, value.color, value.link, value.description);
-        bodyTableTo.appendChild(row);
-        addEventEditBtn(row, bodyTableTo, 'links');
+        bodyTableThird.appendChild(row);
+        addEventEditBtn(row, bodyTableThird, 'links');
     });
 };
 //

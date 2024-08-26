@@ -15,9 +15,11 @@
 
     $all_links = selectAllRes('links');
     $all_modules = selectAllRes('portal_modules');
+    $all_micro_modules = selectAllRes('microservices');
 ?>
 <script>let allLinks = <?php echo json_encode($all_links); ?>;</script>
 <script>let all_modules = <?php echo json_encode($all_modules); ?>;</script>
+<script>let all_micro_modules = <?php echo json_encode($all_micro_modules); ?>;</script>
 <script>let SESSION = <?php echo json_encode($_SESSION); ?>;</script>
 <script>let SERVER_URL = <?php echo json_encode(SERVER_URL); ?>;</script>
 <script>let BASE_URL = <?php echo json_encode(BASE_URL); ?>;</script>
@@ -40,7 +42,7 @@
 <body>
 	<?php include("components/header.php")?>
     <div class="container-xl">
-        <h2>Главная Приложения</h2>
+        <h2>Сервисы на главной</h2>
         <div class="table-apps mb-3">
             <table class="table table-bordered mt-4">
                 <thead>
@@ -54,7 +56,21 @@
                 <tbody></tbody>
             </table>
         </div>
-        <h2>Главная Ссылки</h2>
+        <h2>Микросервисы</h2>
+        <div class="table-microApps mb-3">
+            <table class="table table-bordered mt-4">
+                <thead>
+                <tr>
+                    <th>класс цвета</th>
+                    <th>адрес</th>
+                    <th>Название</th>
+                    <th>Редактировать</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <h2>Полезные ссылки на главной</h2>
         <div class="table-links mb-3">
             <table class="table table-bordered mt-4">
                 <thead>

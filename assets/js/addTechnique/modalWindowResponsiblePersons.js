@@ -295,7 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 
-
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	updateData();
 	addEventEntry();

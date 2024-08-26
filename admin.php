@@ -47,42 +47,45 @@
             <table class="table table-bordered mt-4">
                 <thead>
                 <tr>
-                    <th>класс цвета</th>
-                    <th>адрес</th>
-                    <th>Название</th>
-                    <th>Редактировать</th>
+<!--                    <th>класс цвета</th>-->
+<!--                    <th>адрес</th>-->
+<!--                    <th>Название</th>-->
+<!--                    <th>Редактировать</th>-->
                 </tr>
                 </thead>
                 <tbody></tbody>
             </table>
+            <button class="btn btn-outline-secondary btn-create">Создать</button>
         </div>
         <h2>Микросервисы</h2>
         <div class="table-microApps mb-3">
             <table class="table table-bordered mt-4">
                 <thead>
                 <tr>
-                    <th>класс цвета</th>
-                    <th>адрес</th>
-                    <th>Название</th>
-                    <th>Редактировать</th>
+<!--                    <th>класс цвета</th>-->
+<!--                    <th>адрес</th>-->
+<!--                    <th>Название</th>-->
+<!--                    <th>Редактировать</th>-->
                 </tr>
                 </thead>
                 <tbody></tbody>
             </table>
+            <button class="btn btn-outline-secondary btn-create">Создать</button>
         </div>
         <h2>Полезные ссылки на главной</h2>
         <div class="table-links mb-3">
             <table class="table table-bordered mt-4">
                 <thead>
                 <tr>
-                    <th>класс цвета</th>
-                    <th>адрес</th>
-                    <th>Название</th>
-                    <th>Редактировать</th>
+<!--                    <th>класс цвета</th>-->
+<!--                    <th>адрес</th>-->
+<!--                    <th>Название</th>-->
+<!--                    <th>Редактировать</th>-->
                 </tr>
                 </thead>
                 <tbody></tbody>
             </table>
+            <button class="btn btn-outline-secondary btn-create">Создать</button>
         </div>
     </div>
     <?php require("components/modalWindowNotif.php"); ?>

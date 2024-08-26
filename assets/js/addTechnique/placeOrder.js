@@ -210,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		btnCreateOrder.addEventListener('click', async () => await createOrder());
 	};
 
+
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	addEventCreateOrder()
 });

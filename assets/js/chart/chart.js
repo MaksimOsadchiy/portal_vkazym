@@ -50,6 +50,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
+	const getResponsiblePerson = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}responsiblePersons.php`);
+			const jsonResponse = await response.json(); // Достаём тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			console.log(error);
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+			return [];
+		}
+	};
+	//
 	const putOrder = async () => {
 		try {
 			const window = document.querySelector('.my-window');
@@ -76,6 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					allTechnique.find((elem) => +elem.id_technique === +data.technique_id).state_number
 				})`,
 				serviceId: +data.service_id,
+				responsiblePerson: allResponsiblePerson.find((elem) => +elem.id === +data.responsible_person_id),
 			};
 			elements = elements.map((elem) => (+elem.id === +id ? newElem : elem));
 			filterEl = filterOrder(elements);
@@ -183,17 +198,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const body = document.querySelector('body');
 		const window = document.querySelector('.my-window');
 		const serviceSelect = window.querySelector('.select-service');
+		const responsibleSelect = window.querySelector('.responsible-service');
 		const techniqueSelect = window.querySelector('.select-technique');
 		const dateFrom = window.querySelector('.date-from');
 		const dateTo = window.querySelector('.date-to');
 		const timeFrom = window.querySelector('.time-from');
 		const timeTo = window.querySelector('.time-to');
 
+		serviceSelect.innerText = '';
+		responsibleSelect.innerText = '';
+		techniqueSelect.innerText = '';
+
 		body.style.overflow = 'hidden';
 		window.classList.remove('window-hidden');
 
 		window.setAttribute('id', data.id);
-		allServices.forEach((obj) => serviceSelect.appendChild(createElement(obj.id, obj.service, +data.serviceId === +obj.id, true)));
+		allServices.forEach((obj) => serviceSelect.appendChild(createElement(obj.id, obj.service, +data.serviceId === +obj.id)));
+		allResponsiblePerson.forEach((obj) =>
+			responsibleSelect.appendChild(
+				createElement(
+					obj.id,
+					`${obj.lastname} ${obj.firstname} ${obj.patronymic}`,
+					`${data.responsiblePerson.lastname} ${data.responsiblePerson.firstname} ${data.responsiblePerson.patronymic}` === `${obj.lastname} ${obj.firstname} ${obj.patronymic}`
+				)
+			)
+		);
 		allTechnique.forEach((obj) =>
 			techniqueSelect.appendChild(
 				createElement(obj.id_technique, `${obj.name_technique} (${obj.state_number})`, `${obj.name_technique} (${obj.state_number})` === data.y)
@@ -225,6 +254,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					y: `${obj.technique} (${obj.stateNumber})`,
 					service: obj.service,
 					serviceId: obj.service_id,
+					responsiblePerson: obj.responsiblePerson,
 				};
 				return newObj;
 			})
@@ -254,6 +284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const collectContentChangeOrder = () => {
 		const window = document.querySelector('.my-window');
 		const serviceSelect = window.querySelector('.select-service');
+		const responsibleSelect = window.querySelector('.responsible-service');
 		const techniqueSelect = window.querySelector('.select-technique');
 		const dateFrom = window.querySelector('.date-from');
 		const dateTo = window.querySelector('.date-to');
@@ -267,6 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		const obj = {
 			service_id: serviceSelect.value,
+			responsible_person_id: responsibleSelect.value,
 			technique_id: techniqueSelect.value,
 			date_from: dateFrom.value,
 			date_to: dateTo.value,
@@ -442,6 +474,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	//
 	const allServices = await getAllServices();
+	const allResponsiblePerson = await getResponsiblePerson();
 	addEventBtnSaveChanges();
 	addEventDocumentClick();
 	const minDate = new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime() - 2 * 24 * 60 * 60 * 1000);
@@ -469,7 +502,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		ХАЛ: 'rgba(239, 58, 126, 0.85)',
 		'ХАЛ - пересечение': 'rgba(239, 58, 126, 0.5)',
 		'Диспетчер по транспорту': 'rgba(62, 219, 52, 0.85)',
-		'Диспетчер - пересечение': 'rgba(62, 219, 52, 0.5)',
+		'Диспетчер по транспорту - пересечение': 'rgba(62, 219, 52, 0.5)',
 		РиФИ: 'rgba(87, 72, 73, 0.85)',
 		'РиФИ - пересечение': 'rgba(87, 72, 73, 0.5)',
 		ГЗИ: 'rgba(14, 251, 99, 0.85)',

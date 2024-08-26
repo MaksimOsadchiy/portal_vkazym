@@ -57,9 +57,13 @@
 			</div>
 			<div class="my-window__body d-flex flex-column row-gap-2 py-2">
 				<div class="body-service d-flex flex-row align-items-center column-gap-2">
-					<p class="col-2 text-end">Сервис:</p>
+					<p class="col-2 text-end">Служба:</p>
 					<select name="service" class="form-select select-service"></select>
 				</div>
+                <div class="body-service d-flex flex-row align-items-center column-gap-2">
+                    <p class="col-2 text-end">Ответственный:</p>
+                    <select name="service" class="form-select responsible-service"></select>
+                </div>
 				<div class="body-technique d-flex flex-row align-items-center column-gap-2">
 					<p class="col-2 text-end">Техника:</p>
 					<select name="technique" class="form-select select-technique"></select>

@@ -3,7 +3,13 @@
 include '../database/dbFunction.php';
 
 if (isset($_SESSION['id'])) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $table = 'responsible_person';
+        $response = selectAllRes($table);
+        echo json_encode($response);
+        return;
+
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $requestBody = file_get_contents('php://input');
         $data = json_decode($requestBody, true);
         $table = 'responsible_person';

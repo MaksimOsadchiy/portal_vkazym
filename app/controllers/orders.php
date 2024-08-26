@@ -42,9 +42,9 @@ if (isset($_SESSION['id'])) {
         $params = [
             'status' => $status,
         ];
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $params['user_id'] = $id;
+        if (isset($_GET['service'])) {
+            $serviceId = $_GET['service'];
+            $params['service_id'] = $serviceId ;
         };
         $orders = selectAllRes($table, $params);
 

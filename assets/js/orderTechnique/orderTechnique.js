@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	 */
 	const getOrders = async (status) => {
 		try {
-			const qparametr = `?id=${SESSION.id}&status=${status}`; // Устанавливаем кверипараметры
+			const qparametr = `?service=${SESSION.service}&status=${status}`; // Устанавливаем кверипараметры
 			const response = await fetch(`${SERVER_URL}orders.php${qparametr}`);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа

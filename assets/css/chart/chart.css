@@ -12,6 +12,12 @@
 	min-width: calc(10% - (9 * 1rem) / 5);
 	margin: 0 !important;
 }
+.container-container {
+	height: 40rem;
+	margin-bottom: 6rem;
+	/*background-color: rgba(221, 249, 255, 0.16);*/
+	overflow-y: auto;
+}
 .my-container {
 	position: relative;
 	margin: auto;

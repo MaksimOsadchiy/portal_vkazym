@@ -55,7 +55,9 @@
         </select>
     </div>
     <div id="legend-container" class="d-flex flex-row justify-content-center my-3 col-12"></div>
-    <div class="my-container"><canvas id="myChart"></canvas></div>
+    <div class="container-container mt-2 py-3 col-11">
+        <div class="my-container"><canvas id="myChart"></canvas></div>
+    </div>
     <?php require("components/modalWindowNotif.php")?>
 	<div class="my-window window-hidden d-flex justify-content-center align-items-center col-12">
 		<div class="my-window__container d-flex flex-column row-gap-1 col-5 rounded-2 p-2">

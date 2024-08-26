@@ -45,8 +45,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const divCol3 = document.createElement('div');
 		const buttonApp = document.createElement('a');
 
-		divCol3.className = 'col-3';
-		buttonApp.className = 'btn btn-custom ' + color;
+		divCol3.className = 'col-2';
+		// buttonApp.className = 'btn btn-custom ' + color;
+		buttonApp.className = 'btn btn-custom link';
 
 		buttonApp.setAttribute('href', link);
 

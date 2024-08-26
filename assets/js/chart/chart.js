@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			// 		// Задаем параметры текста
 			// 		ctx.save();
 			// 		ctx.font = '12px Arial';
-			// 		ctx.fillStyle = 'white'; // Цвет текста
+			// 		ctx.fillStyle = 'white';
 			// 		ctx.textAlign = 'center';
 			// 		ctx.textBaseline = 'middle';
 			// 		// Координаты и размеры объекта

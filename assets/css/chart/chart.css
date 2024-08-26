@@ -1,3 +1,6 @@
+.choice {
+	width: 15%;
+}
 #legend-container ul {
 	display: flex;
 	flex-direction: row;

@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
-	const getOrders = async (dateFrom, dateTo) => {
+	const getOrders = async (dateFrom, dateTo, status = 0) => {
 		try {
-			const response = await fetch(`${SERVER_URL}orders.php?status=0`);
+			const response = await fetch(`${SERVER_URL}orders.php?status=${status}`);
 			const jsonResponse = await response.json(); // Достаём тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
@@ -64,6 +64,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
+	const getRoutes = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}routes.php`);
+			const jsonResponse = await response.json(); // Достаём тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			console.log(error);
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+			return [];
+		}
+	};
+	//
 	const putOrder = async () => {
 		try {
 			const window = document.querySelector('.my-window');
@@ -82,17 +96,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Заказ изменён!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 
-			const newElem = {
-				id: +id,
-				service: allServices.find((elem) => +elem.id === +data.service_id).service,
-				x: [data.datetime_from.replace(' ', 'T'), data.datetime_to.replace(' ', 'T')],
-				y: `${allTechnique.find((elem) => +elem.id_technique === +data.technique_id).name_technique} (${
-					allTechnique.find((elem) => +elem.id_technique === +data.technique_id).state_number
-				})`,
-				serviceId: +data.service_id,
-				responsiblePerson: allResponsiblePerson.find((elem) => +elem.id === +data.responsible_person_id),
-			};
-			elements = elements.map((elem) => (+elem.id === +id ? newElem : elem));
+			if (+data.status !== elements.find((elem) => +elem.id === +id).status){
+				elements = elements.filter((elem) => +elem.id !== +id);
+			} else {
+				const newElem = {
+					id: +id,
+					service: allServices.find((elem) => +elem.id === +data.service_id).service,
+					x: [data.datetime_from.replace(' ', 'T'), data.datetime_to.replace(' ', 'T')],
+					y: `${allTechnique.find((elem) => +elem.id_technique === +data.technique_id).name_technique} (${
+						allTechnique.find((elem) => +elem.id_technique === +data.technique_id).state_number
+					})`,
+					serviceId: +data.service_id,
+					responsiblePerson: allResponsiblePerson.find((elem) => +elem.id === +data.responsible_person_id),
+					route: allRoutes.find((elem) => +elem.id === +data.route_id).route_to,
+					routeId: +data.route_id,
+					shift: +data.shift,
+					status: +data.status,
+				};
+				elements = elements.map((elem) => (+elem.id === +id ? newElem : elem));
+			}
 			filterEl = filterOrder(elements);
 			listForLegend = [...new Set(filterEl.map((elem) => elem.service))];
 			chartInstance.destroy();
@@ -184,7 +206,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 							},
 							afterLabel: function (context) {
 								const time = context.raw.x.map((elem) => elem.split('T')[1]);
-								return `Время: ${time[0]}-${time[1]}`;
+								const route = context.raw.route;
+								return `Время: ${time[0]}-${time[1]}\nМаршрут: ${route}`;
 							},
 						},
 					},
@@ -198,21 +221,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const body = document.querySelector('body');
 		const window = document.querySelector('.my-window');
 		const serviceSelect = window.querySelector('.select-service');
-		const responsibleSelect = window.querySelector('.responsible-service');
+		const responsibleSelect = window.querySelector('.select-responsible');
 		const techniqueSelect = window.querySelector('.select-technique');
+		const routeSelect = window.querySelector('.select-route');
 		const dateFrom = window.querySelector('.date-from');
 		const dateTo = window.querySelector('.date-to');
 		const timeFrom = window.querySelector('.time-from');
 		const timeTo = window.querySelector('.time-to');
+		const shift = document.querySelectorAll('.check-datetime');
+		const statusSelect = window.querySelector('.select-status');
 
+		// Array.from(document.querySelectorAll('.form-check-input')).find((elem) => elem.checked)
 		serviceSelect.innerText = '';
 		responsibleSelect.innerText = '';
 		techniqueSelect.innerText = '';
+		routeSelect.innerText = '';
+		statusSelect.innerText = '';
 
 		body.style.overflow = 'hidden';
 		window.classList.remove('window-hidden');
 
 		window.setAttribute('id', data.id);
+
 		allServices.forEach((obj) => serviceSelect.appendChild(createElement(obj.id, obj.service, +data.serviceId === +obj.id)));
 		allResponsiblePerson.forEach((obj) =>
 			responsibleSelect.appendChild(
@@ -228,10 +258,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 				createElement(obj.id_technique, `${obj.name_technique} (${obj.state_number})`, `${obj.name_technique} (${obj.state_number})` === data.y)
 			)
 		);
+		allRoutes.forEach((obj) =>
+			routeSelect.appendChild(
+				createElement(obj.id, obj.route_to, obj.route_to === data.route)
+			)
+		);
 		dateFrom.value = data.x[0].split('T')[0];
 		timeFrom.value = data.x[0].split('T')[1];
 		dateTo.value = data.x[1].split('T')[0];
 		timeTo.value = data.x[1].split('T')[1];
+		shift[+data.shift].checked = true;
+		['На рассмотрении', 'Подтвердить', 'Отклонить'].forEach((elem, index) => statusSelect.appendChild(createElement(index, elem, index === +data.status)));
 	};
 	//
 	const createElement = (id, text, select, status = false) => {
@@ -255,6 +292,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 					service: obj.service,
 					serviceId: obj.service_id,
 					responsiblePerson: obj.responsiblePerson,
+					route: obj.route,
+					routeId: obj.route_id,
+					shift: +obj.shift,
+					status: +obj.status,
 				};
 				return newObj;
 			})
@@ -284,12 +325,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const collectContentChangeOrder = () => {
 		const window = document.querySelector('.my-window');
 		const serviceSelect = window.querySelector('.select-service');
-		const responsibleSelect = window.querySelector('.responsible-service');
+		const responsibleSelect = window.querySelector('.select-responsible');
 		const techniqueSelect = window.querySelector('.select-technique');
+		const routeSelect = window.querySelector('.select-route');
 		const dateFrom = window.querySelector('.date-from');
 		const dateTo = window.querySelector('.date-to');
 		const timeFrom = window.querySelector('.time-from');
 		const timeTo = window.querySelector('.time-to');
+	 	const shift = Array.from(document.querySelectorAll('.form-check-input')).find((elem) => elem.checked).value
+		const statusSelect = window.querySelector('.select-status');
 
 		if (!dateFrom) throw new Error('Введите дату начала');
 		if (!dateTo) throw new Error('Введите дату конца');
@@ -300,14 +344,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 			service_id: serviceSelect.value,
 			responsible_person_id: responsibleSelect.value,
 			technique_id: techniqueSelect.value,
+			route_id: routeSelect.value,
 			date_from: dateFrom.value,
 			date_to: dateTo.value,
-			time_from: timeFrom.value,
-			time_to: timeTo.value,
-			datetime_from: `${dateFrom.value} ${timeFrom.value}`,
-			datetime_to: `${dateTo.value} ${timeTo.value}`,
+			time_from: `${timeFrom.value}${timeFrom.value.length > 6 ? '' : ':00'}`,
+			time_to: `${timeTo.value}${timeTo.value.length > 6 ? '' : ':00'}`,
+			datetime_from: `${dateFrom.value} ${timeFrom.value}${timeFrom.value.length > 6 ? '' : ':00'}`,
+			datetime_to: `${dateTo.value} ${timeTo.value}${timeTo.value.length > 6 ? '' : ':00'}`,
+			shift: +!!+shift[0],
+			status: statusSelect.value,
 		};
 		return obj;
+	};
+	//
+	const addEventSelectChange = () => {
+		const select = document.querySelector('.choice');
+		select.addEventListener('change', async () => {
+			elements = await getOrders(minDate, maxDate, select.value);
+			filterEl = filterOrder(elements);
+			listForLegend = [...new Set(filterEl.map((elem) => elem.service))];
+			chartInstance.destroy();
+			chartInstance = drawChart();
+		});
 	};
 	//
 	const addEventDocumentClick = () => {
@@ -473,13 +531,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//--*******--
 
 	//
-	const allServices = await getAllServices();
-	const allResponsiblePerson = await getResponsiblePerson();
-	addEventBtnSaveChanges();
-	addEventDocumentClick();
 	const minDate = new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime() - 2 * 24 * 60 * 60 * 1000);
 	const maxDate = new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime() + 7 * 24 * 60 * 60 * 1000);
+	const allServices = await getAllServices();
+	const allResponsiblePerson = await getResponsiblePerson();
+	const allRoutes = await getRoutes();
 	const allTechnique = await getTechnique();
+	addEventBtnSaveChanges();
+	addEventDocumentClick();
+	addEventSelectChange();
+
 	const yAxisLabels = allTechnique.map((obj) => `${obj.name_technique} (${obj.state_number})`);
 	let elements = await getOrders(minDate, maxDate);
 	let filterEl = filterOrder(elements);

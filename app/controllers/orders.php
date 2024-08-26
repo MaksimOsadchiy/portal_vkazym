@@ -83,6 +83,8 @@ if (isset($_SESSION['id'])) {
                 'technique' => $technique[$order['technique_id']]['name_technique'],
                 'stateNumber' => $technique[$order['technique_id']]['state_number'],
                 'route' => $route[$order['route_id']]['route_to'],
+                'route_id' => $route[$order['route_id']]['id'],
+                'shift' => $order['shift'],
                 'workActivity' => $order['work_activity'],
                 'remark' => $order['remark'],
                 'responsiblePerson' => $responsiblePerson[$order['responsible_person_id']],

@@ -47,6 +47,13 @@
 <body>
     <?php include("components/header.php")?>
     <?php include("components/modules.php")?>
+    <div class="choice-container d-flex flex-row justify-content-center align-items-center col-12">
+        <select class="form-select choice">
+            <option value="0">Заявки на рассмотрении</option>
+            <option value="1">Подтвержденные заявки</option>
+            <option value="2">Отклоненные заявки</option>
+        </select>
+    </div>
     <div id="legend-container" class="d-flex flex-row justify-content-center my-3 col-12"></div>
     <div class="my-container"><canvas id="myChart"></canvas></div>
     <?php require("components/modalWindowNotif.php")?>
@@ -62,12 +69,16 @@
 				</div>
                 <div class="body-service d-flex flex-row align-items-center column-gap-2">
                     <p class="col-2 text-end">Ответственный:</p>
-                    <select name="service" class="form-select responsible-service"></select>
+                    <select name="responsible" class="form-select select-responsible"></select>
                 </div>
 				<div class="body-technique d-flex flex-row align-items-center column-gap-2">
 					<p class="col-2 text-end">Техника:</p>
 					<select name="technique" class="form-select select-technique"></select>
 				</div>
+                <div class="body-technique d-flex flex-row align-items-center column-gap-2">
+                    <p class="col-2 text-end">Маршрут:</p>
+                    <select name="route" class="form-select select-route"></select>
+                </div>
 				<div class="body-date d-flex flex-row align-items-center column-gap-2">
 					<p class="col-2 text-end">Дата с:</p>
 					<input type="date" class="form-control date-from">
@@ -80,6 +91,21 @@
 					<p class="col-2 text-end">Время по:</p>
 					<input type="time" class="form-control time-to">
 				</div>
+                <div class="body-shift d-flex flex-row align-items-center column-gap-3">
+                    <p class="col-2 text-end">Смена:</p>
+                    <div class="form-check">
+                        <input class="form-check-input check-datetime" type="radio" name="shift" id="shift1" value="08:00-20:00">
+                        <label class="form-check-label" for="shift1">08:00-20:00</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input check-datetime" type="radio" name="shift" id="shift2" value="20:00-08:00">
+                        <label class="form-check-label" for="shift2">20:00-08:00</label>
+                    </div>
+                </div>
+                <div class="body-status d-flex flex-row align-items-center column-gap-2 col-6">
+                    <p class="col-4 text-end">Статус:</p>
+                    <select name="status" class="form-select select-status"></select>
+                </div>
 			</div>
 			<div class="my-window__footer text-end border-top pt-2">
 				<button class="btn-save-changes btn btn-outline-success">Сохранить</button>

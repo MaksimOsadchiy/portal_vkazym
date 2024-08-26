@@ -70,11 +70,11 @@
     color: #5894a4;
     transition: 0.5s;
     width: 100%; /* Кнопка занимает всю ширину родительского контейнера */
-    height: 70px; /* Устанавливаем одинаковую высоту для всех кнопок */
+    height: 50px; /* Устанавливаем одинаковую высоту для всех кнопок */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.3rem;
+    font-size: 1rem;
     text-align: center; /* Центрируем текст */
 }
 .btn-custom.link:hover:before{

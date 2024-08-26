@@ -38,6 +38,9 @@
         const BASE_URL = <?=json_encode(BASE_URL)?>;
         const SERVER_URL = <?=json_encode(SERVER_URL)?>;
     </script>
+    <script defer src="assets/js/bootstrap.bundle.min.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/chart.js"></script>
+    <script defer src="<?=BASE_URL?>assets/js/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/modules/modules.js"></script>
@@ -58,7 +61,6 @@
     <div class="container-container mt-2 py-3 col-11">
         <div class="my-container"><canvas id="myChart"></canvas></div>
     </div>
-    <?php require("components/modalWindowNotif.php")?>
 	<div class="my-window window-hidden d-flex justify-content-center align-items-center col-12">
 		<div class="my-window__container d-flex flex-column row-gap-1 col-5 rounded-2 p-2">
 			<div class="my-window__header text-center border-bottom">
@@ -114,8 +116,6 @@
 			</div>
 		</div>
 	</div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <?php require("components/modalWindowNotif.php")?>
 </body>
 </html>

@@ -66,38 +66,27 @@ document.addEventListener('DOMContentLoaded', () => {
     tables.forEach((obj) => drowTableLinks(obj));
 });
 //
-const saveService = async (row, query, nameTo) => {
-    // Получаем введёные значения
-    const nameColor = row.querySelector('.name-color').value.trim();
-    const nameLink = row.querySelector('.name-link').value.trim();
-    const nameText = row.querySelector('.name-text').value.trim();
-    if (nameColor && nameLink && nameText){		// Проверка введёных данных
-        const request = {		// Формируем тело запроса
-            'color': nameColor,
-            'link': nameLink,
-            'description' : nameText,
-        };
-        query === 'PUT' && (request.id = +row.getAttribute('value'));		// Если метод 'PUT', то добавляем в тело id изменяемого элемента
-        try {
-            const response = await fetch(`${SERVER_URL}${nameTo}.php`, {
-                method: query,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(request),
-            });
-            const jsonResponse = await response.json();		// Получаем тело ответа
-            if (!response.ok) {
-                throw new Error(jsonResponse.status);
-            }
-            document.dispatchEvent(new CustomEvent('updateError', { detail: query === 'PUT' ? 'Изменено успешно!' : 'Создано успешно!' }));
-        } catch(error) {
-            console.log(error);
-            document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
-        }
-    } else {
-        document.dispatchEvent(new CustomEvent('updateError', { detail: "Поля должны быть заполнены!" }));
-    }
+const saveService = async (newObj, query, nameTo) => {
+	try {
+		if (Object.values(newObj).some((elem) => elem.trim() === '')) throw new Error('Поля должны быть заполнены!')		// Проверка введёных данных
+		const response = await fetch(`${SERVER_URL}${nameTo}.php`, {
+			method: query,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(newObj),
+		});
+		const jsonResponse = await response.json();		// Получаем тело ответа
+		if (!response.ok) {
+			throw new Error(jsonResponse.status);
+		}
+		document.dispatchEvent(new CustomEvent('updateError', { detail: query === 'PUT' ? 'Изменено успешно!' : 'Создано успешно!' }));
+		return true;
+	} catch(error) {
+		console.log(error);
+		document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+		return false;
+	}
 };
 //
 const drowTableLinks = (obj) => {
@@ -118,9 +107,9 @@ const drowTableLinks = (obj) => {
     obj.mainArray.forEach((value) => {
         const row = createDefaultRowApps(value.id, value, obj.columsName);
         bodyTable.appendChild(row);
-        addEventEditBtn(row, bodyTable, obj.nameTo);
+        addEventEditBtn(row, bodyTable, obj.columsName, obj.nameTo);
     });
-    addEventCreateBtn(btn, bodyTable, obj.nameTo);
+    addEventCreateBtn(btn, bodyTable, obj.columsName, obj.nameTo);
 };
 //
 const createDefaultRowApps = (id, elem, colums) => {
@@ -142,7 +131,7 @@ const createDefaultRowApps = (id, elem, colums) => {
     // Собираем части в единую строку
     colums.forEach((obj) => {
         const tdElem = document.createElement('td');
-        tdElem.innerText = elem[obj.name];
+        tdElem.innerText = elem[obj.name] ? elem[obj.name] : '';
         row.appendChild(tdElem);
     })
     tdBtnContainer.appendChild(button);
@@ -151,77 +140,72 @@ const createDefaultRowApps = (id, elem, colums) => {
     return row;
 };
 //
-const addEventEditBtn = (row, body, nameTo, query = 'PUT') => {
+const addEventEditBtn = (row, body, array, nameTo, query = 'PUT') => {
     row.querySelector('.edit-apps-btn').addEventListener('click', () => {
         const tdList = row.querySelectorAll('td');
-        const newRow = createInputRow(row.getAttribute('value'), tdList[0].textContent, tdList[1].textContent, tdList[2].textContent);
+        const newRow = createInputRow(row.getAttribute('value'), tdList, array);
 
         if (!body.querySelector('.new-app')) {
             body.replaceChild(newRow, row);
-            addEventSaveBtn(newRow, body, nameTo, query);
+            addEventSaveBtn(newRow, body, array, nameTo, query);
         };
     });
 };
 //
-const addEventSaveBtn = (row, body, nameTo, query) => {
+const addEventSaveBtn = (row, body, array, nameTo, query) => {
     row.querySelector('.save-apps-btn').addEventListener('click', async () => {
-        await saveService(row, query, nameTo);
-
         const inputList = row.querySelectorAll('input');
-        const newRow = createDefaultRowApps(row.getAttribute('value'), inputList[0].value, inputList[1].value, inputList[2].value);
+		let newObj = query === "PUT" ? {id: row.getAttribute('value')} : {};
 
-        body.replaceChild(newRow, row);
-        addEventEditBtn(newRow, body, nameTo);
+		inputList.forEach((elem) => {
+			newObj[elem.getAttribute('key')] = elem.value;
+		});
+
+		if (await saveService(newObj, query, nameTo)){
+			const newRow = createDefaultRowApps(row.getAttribute('value'), newObj, array);
+
+			body.replaceChild(newRow, row);
+			addEventEditBtn(newRow, body, array, nameTo);
+		};
     });
 };
 //
-const addEventCreateBtn = (btn, body, nameTo) => {
+const addEventCreateBtn = (btn, body, array, nameTo) => {
     btn.addEventListener('click', () => {
-        const row = createDefaultRowApps('', '', '', '');
+        const row = createDefaultRowApps('', {}, array);
         body.appendChild(row);
-        addEventEditBtn(row, body, nameTo, 'POST');
+        addEventEditBtn(row, body, array, nameTo, 'POST');
     });
 };
 //
-const createInputRow = (id, color, link, text) => {
+const createInputRow = (id, oldTdList, array) => {
     // Создаём DOM элементы
     const row = document.createElement('tr');
-    const tdColorContainer = document.createElement('td');
-    const tdColorInput = document.createElement('input');
-    const tdLinkConteiner = document.createElement('td');
-    const tdLinkInput = document.createElement('input');
-    const tdTextContainer = document.createElement('td');
-    const tdTextInput = document.createElement('input');
     const tdBtnContainer = document.createElement('td');
     const button = document.createElement('button');
+
     // Добавляем классы
     row.className = 'linkTable new-app';
     button.className = 'btn btn-secondary save-apps-btn';
-    tdColorInput.className = 'form-control bg-light bg-gradient name-color';
-    tdLinkInput.className = 'form-control bg-light bg-gradient name-link';
-    tdTextInput.className = 'form-control bg-light bg-gradient name-text';
 
     // Добавляем атрибуты
     row.setAttribute('value', id);
-    tdColorInput.setAttribute('type', 'text');
-    tdLinkInput.setAttribute('type', 'text');
-    tdTextInput.setAttribute('type', 'text');
     button.setAttribute('type', 'button');
 
-    tdColorInput.value = color;
-    tdLinkInput.value = link;
-    tdTextInput.value = text;
+	// Заполняем теги
     button.innerText = "Сохранить";
 
-    // Собираем части в единую строку
-    tdColorContainer.appendChild(tdColorInput);
-    tdLinkConteiner.appendChild(tdLinkInput);
-    tdTextContainer.appendChild(tdTextInput);
     tdBtnContainer.appendChild(button);
-    row.appendChild(tdColorContainer);
-    row.appendChild(tdLinkConteiner);
-    row.appendChild(tdTextContainer);
+	array.forEach((elem, index) => {
+		const tdContainer = document.createElement('td');
+		const tdInput = document.createElement('input');
+		tdInput.className = `form-control bg-light bg-gradient name-${elem.name}`;
+		tdInput.setAttribute('type', 'text');
+		tdInput.setAttribute('key', elem.name);
+		tdInput.value = oldTdList[index].textContent;
+		tdContainer.appendChild(tdInput);
+		row.appendChild(tdContainer);
+	});
     row.appendChild(tdBtnContainer);
-
     return row;
 };

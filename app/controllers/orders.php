@@ -69,7 +69,7 @@ if (isset($_SESSION['id'])) {
                 $params = ['id' => $order['route_id']];
                 $route[$order['route_id']] = selectOneRes($table, $params);
             };
-            if (!isset($services[$order['route_id']])) {
+            if (!isset($services[$order['service_id']])) {
                 $table = 'services';
                 $params = ['id' => $order['service_id']];
                 $services[$order['service_id']] = selectOneRes($table, $params);

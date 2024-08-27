@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const response = await fetch(`${SERVER_URL}user.php${qparametr}`);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			return jsonResponse;
-		} catch (e) {
+		} catch (error) {
 			// Если была ошибка, то обновляем переменную
 			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
 		}
@@ -365,6 +365,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 	};
+
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	let { apps } = await getApplications();

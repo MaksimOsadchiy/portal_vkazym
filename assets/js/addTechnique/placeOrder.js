@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	 * 6. В случае ошибки во время запроса или обработки ответа, создаёт и диспатчит событие `updateError` с деталями ошибки.
 	 *
 	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с кодом статуса или сообщением об ошибке.
+	 *
+	 * @returns {void}
 	 */
 	const createOrder = async () => {
 		try {
@@ -45,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	 * 2. Проверяет и валидирует полученные данные.
 	 * 3. Объединяет связанные данные в массив объектов, каждый из которых представляет запись с соответствующими полями.
 	 *
-	 * @returns {Array} Массив объектов с собранными данными из формы.
+	 * @returns {Array<Object>} Массив объектов с собранными данными из формы.
 	 */
 	const collectContent = () => {
 		// Извлекаем значение сервиса из сессии
@@ -163,15 +165,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	 * 6. Проверяет наличие времени начала и окончания работ или смены.
 	 *
 	 * @param {string} service - ID сервиса, извлеченный из сессии.
-	 * @param {Array} technique - Массив выбранных техник.
-	 * @param {Array} responsiblePerson - Массив выбранных ответственных лиц.
+	 * @param {Array<string>} technique - Массив идентификаторов выбранных техник.
+	 * @param {Array<string>} responsiblePerson - Массив идентификаторов выбранных ответственных лиц.
 	 * @param {string} dateFrom - Дата начала работ.
 	 * @param {string} dateTo - Дата окончания работ.
 	 * @param {string} route - Выбранный маршрут.
 	 * @param {string} timeFrom - Время начала работ.
 	 * @param {string} timeTo - Время окончания работ.
 	 * @param {string} shift - Смена.
+	 *
 	 * @throws {Error} Если одно из обязательных полей не заполнено, выбрасывается исключение с сообщением об ошибке.
+	 *
 	 * @returns {boolean} Возвращает true, если все поля прошли проверку.
 	 */
 	const validateInputs = (service, technique, responsiblePerson, dateFrom, dateTo, route, timeFrom, timeTo, shift) => {

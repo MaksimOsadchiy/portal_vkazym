@@ -98,3 +98,39 @@
 .table-pages button {
     padding: 0.25rem 0.55rem;
 }
+.pointer {
+    cursor: pointer;
+    user-select: none;
+    background-color: rgba(235, 235, 235, 1) !important;
+}
+p.aToB {
+    position: relative;
+    padding-right: 20px;
+}
+p.aToB::after {
+    content: '';
+    background-image: url("../../image/sortArrow.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 0;
+    top: 40%;
+}
+p.bToA {
+    position: relative;
+    padding-right: 20px;
+}
+p.bToA::after {
+    content: '';
+    background-image: url("../../image/sortArrow.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 0;
+    top: 40%;
+    transform: rotateX(180deg);
+}

@@ -50,14 +50,17 @@
     <section class="d-flex flex-column align-items-center">
         <?php include("components/modules.php");?>
         <div class="table-container d-flex flex-column align-items-center pt-3">
-            <div class="managment d-flex flex-column align-items-center row-gap-4 col-6 p-3">
-                <select class="form-select choice" aria-label="Default select example">
-                    <option value="-1" selected>Все краны</option>
-                    <option value="2">Дефективные краны</option>
-                    <option value="1">Работающие  краны</option>
-                    <option value="0">Неработающие  краны</option>
-                </select>
-                <div class="d-flex flex-row column-gap-5">
+            <div class="managment d-flex flex-column row-gap-4 col-6 p-3">
+                <div class="d-flex flex-row justify-content-between column-gap-4">
+                    <div class="d-flex flex-column row-gap-3">
+                        <p class="fs-5">Состояние крана</p>
+                        <select class="form-select choice" aria-label="Default select example">
+                            <option value="-1" selected>Все краны</option>
+                            <option value="2">Дефективные краны</option>
+                            <option value="1">Работающие  краны</option>
+                            <option value="0">Неработающие  краны</option>
+                        </select>
+                    </div>
                     <div class="d-flex flex-column row-gap-3">
                         <p class="fs-5">Крановый  узел</p>
                         <select class="form-select affiliation" aria-label="Default select example">
@@ -65,9 +68,64 @@
                         </select>
                     </div>
                     <div class="d-flex flex-column row-gap-3">
+                        <p class="fs-5">Магистраль</p>
+                        <select class="form-select highways" aria-label="Default select example">
+                            <option value="-1" selected></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex flex-row justify-content-between column-gap-4">
+                    <div class="d-flex flex-column row-gap-3">
+                        <p class="text-center fs-5">Тип крана</p>
+                        <div class="select-group d-flex flex-row column-gap-2">
+                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
+<!--                                <p>Текст</p>-->
+                                <select class="form-select class-cranes" aria-label="Default select example">
+                                    <option value="-1" selected></option>
+                                </select>
+                            </div>
+                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
+<!--                                <p>Текст</p>-->
+                                <select class="form-select type-cranes" aria-label="Default select example">
+                                    <option value="-1" selected></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column row-gap-3">
                         <p class="fs-5">Номер крана</p>
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control input-number" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            <input type="text" class="form-control input-number">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column row-gap-3">
+                        <p class="text-center fs-5">Диаметр</p>
+                        <div class="d-flex flex-row column-gap-2">
+                            <div class="input-group input-group-sm">
+                                <input type="number" class="form-control input-diameter-min" placeholder="ОТ">
+                            </div>
+                            <div class="input-group input-group-sm">
+                                <input type="number" class="form-control input-diameter-max" placeholder="ДО">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-row justify-content-between column-gap-4">
+                    <div class="d-flex flex-column row-gap-3 col-7">
+                        <p class="text-center fs-5">Производитель</p>
+                        <div class="select-group d-flex flex-row column-gap-2">
+                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
+                                <p>Компания</p>
+                                <select class="form-select company" aria-label="Default select example">
+                                    <option value="-1" selected></option>
+                                </select>
+                            </div>
+                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
+                                <p>Страна производиетль</p>
+                                <select class="form-select location" aria-label="Default select example">
+                                    <option value="-1" selected></option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,13 +135,13 @@
                     <div class="t-row d-flex flex-row justify-content-center">
                         <p class="column th">№п/п</p>
                         <p class="column th">Наименование ЛПУМГ</p>
-                        <p class="column th">Наименование МГ</p>
+                        <p class="column th column-highways">Наименование МГ</p>
                         <p class="column th">Тип крана</p>
-                        <p class="column th">км</p>
+                        <p class="column th column-location">км</p>
                         <p class="column th">Тех.№ ТПА</p>
                         <p class="column th">Производитель ТПА</p>
                         <p class="column th">Год изготовления ТПА</p>
-                        <p class="column th">DN</p>
+                        <p class="column th column-DN">DN</p>
                         <p class="column th">Вид неисправности</p>
                         <p class="column th">Дренаж</p>
                         <p class="column th">Набивочные трубопроводы</p>

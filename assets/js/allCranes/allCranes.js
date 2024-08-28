@@ -31,6 +31,151 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	/**
+	 * Асинхронная функция для получения списка всех магистралей с сервера.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Отправляет HTTP GET запрос на сервер.
+	 * 2. Ожидает ответа от сервера и преобразует его тело в формат JSON.
+	 * 3. Проверяет статус ответа сервера:
+	 *    - Если статус ответа не `ok`, выбрасывает ошибку с кодом статуса, содержащимся в ответе.
+	 * 4. Если запрос успешен, возвращает полученные данные в формате JSON.
+	 * 5. В случае ошибки во время запроса или обработки ответа:
+	 *    - Вызывает событие `updateError`, передавая сообщение об ошибке в качестве детали события.
+	 *    - Возвращает пустой массив, чтобы избежать дальнейших проблем в коде, который ожидает данные.
+	 *
+	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с сообщением об ошибке.
+	 *
+	 * @returns {Array<Record<string, (string|number)>>|[]} Возвращает массив. Или пустой массив в случае ошибки.
+	 */
+	const getAllHighways = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}/cranes/highways.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
+	/**
+	 * Асинхронная функция для получения списка классов кранов с сервера.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Отправляет HTTP GET запрос на сервер.
+	 * 2. Ожидает ответа от сервера и преобразует его тело в формат JSON.
+	 * 3. Проверяет статус ответа сервера:
+	 *    - Если статус ответа не `ok`, выбрасывает ошибку с кодом статуса, содержащимся в ответе.
+	 * 4. Если запрос успешен, возвращает полученные данные.
+	 * 5. В случае ошибки во время запроса или обработки ответа:
+	 *    - Вызывает событие `updateError`, передавая сообщение об ошибке в качестве детали события.
+	 *    - Возвращает пустой массив, чтобы избежать дальнейших проблем в коде, который ожидает данные.
+	 *
+	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с сообщением об ошибке.
+	 *
+	 * @returns {Array<Record<string, (string|number)>>|[]} Возвращает массив. Или пустой массив в случае ошибки.
+	 */
+	const getAllClassCranes = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}/cranes/classCranes.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
+	/**
+	 * Асинхронная функция для получения списка типов кранов с сервера.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Отправляет HTTP GET запрос на сервер.
+	 * 2. Ожидает ответа от сервера и преобразует его тело в формат JSON.
+	 * 3. Проверяет статус ответа сервера:
+	 *    - Если статус ответа не `ok`, выбрасывает ошибку с кодом статуса, содержащимся в ответе.
+	 * 4. Если запрос успешен, возвращает полученные данные.
+	 * 5. В случае ошибки во время запроса или обработки ответа:
+	 *    - Вызывает событие `updateError`, передавая сообщение об ошибке в качестве детали события.
+	 *    - Возвращает пустой массив, чтобы избежать дальнейших проблем в коде, который ожидает данные.
+	 *
+	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с сообщением об ошибке.
+	 *
+	 * @returns {Array<Record<string, (string|number)>>|[]} Возвращает массив. Или пустой массив в случае ошибки.
+	 */
+	const getAllTypeCranes = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}/cranes/typeCranes.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
+	/**
+	 * Асинхронная функция для получения списка всех компаний с сервера.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Отправляет HTTP GET запрос на сервер.
+	 * 2. Ожидает ответа от сервера и преобразует его тело в формат JSON.
+	 * 3. Проверяет статус ответа сервера:
+	 *    - Если статус ответа не `ok`, выбрасывает ошибку с кодом статуса, содержащимся в ответе.
+	 * 4. Если запрос успешен, возвращает полученные данные.
+	 * 5. В случае ошибки во время запроса или обработки ответа:
+	 *    - Вызывает событие `updateError`, передавая сообщение об ошибке в качестве детали события.
+	 *    - Возвращает пустой массив, чтобы избежать дальнейших проблем в коде, который ожидает данные.
+	 *
+	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с сообщением об ошибке.
+	 *
+	 * @returns {Array<Record<string, (string|number)>>|[]} Возвращает массив. Или пустой массив в случае ошибки.
+	 */
+	const getAllCompany = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}/cranes/companies.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
+	/**
+	 * Асинхронная функция для получения списка всех стран производителей с сервера.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Отправляет HTTP GET запрос на сервер.
+	 * 2. Ожидает ответа от сервера и преобразует его тело в формат JSON.
+	 * 3. Проверяет статус ответа сервера:
+	 *    - Если статус ответа не `ok`, выбрасывает ошибку с кодом статуса, содержащимся в ответе.
+	 * 4. Если запрос успешен, возвращает полученные данные.
+	 * 5. В случае ошибки во время запроса или обработки ответа:
+	 *    - Вызывает событие `updateError`, передавая сообщение об ошибке в качестве детали события.
+	 *    - Возвращает пустой массив, чтобы избежать дальнейших проблем в коде, который ожидает данные.
+	 *
+	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с сообщением об ошибке.
+	 *
+	 * @returns {Array<Record<string, (string|number)>>|[]} Возвращает массив. Или пустой массив в случае ошибки.
+	 */
+	const getAllLocations = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}/cranes/firmLocations.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
+	/**
 	 * Функция для заполнения выпадающего списка значениями из объекта `cranes`.
 	 *
 	 * Функция выполняет следующие шаги:
@@ -46,6 +191,91 @@ document.addEventListener('DOMContentLoaded', async () => {
 		for (const key in cranes) {
 			select.appendChild(createOption(key));
 		};
+	};
+	/**
+	 * Функция для заполнения выпадающего списка значениями из массива `highways`.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит HTML элемент выпадающего списка с классом `highways`.
+	 * 2. Проходит по каждому элементу массива `highways` и для каждого элемента:
+	 *    - Создает элемент `<option>` с помощью функции `createOption`.
+	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
+	 *
+	 * @returns {void}
+	 */
+	const drawSelectHigways = () => {
+		const select = document.querySelector('.highways');
+		highways.forEach((elem) => {
+			select.appendChild(createOption(elem.name));
+		});
+	};
+	/**
+	 * Функция для заполнения выпадающего списка значениями из массива `classCranes`.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит HTML элемент выпадающего списка с классом `class-cranes`.
+	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
+	 *    - Создает элемент `<option>` с помощью функции `createOption`.
+	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
+	 *
+	 * @returns {void}
+	 */
+	const drawSelectClassCranes = () => {
+		const select = document.querySelector('.class-cranes');
+		classCranes.forEach((elem) => {
+			select.appendChild(createOption(elem.name));
+		});
+	};
+	/**
+	 * Функция для заполнения выпадающего списка значениями из массива `typeCranes`.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит HTML элемент выпадающего списка с классом `type-cranes`.
+	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
+	 *    - Создает элемент `<option>` с помощью функции `createOption`.
+	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
+	 *
+	 * @returns {void}
+	 */
+	const drawSelectTypeCranes = () => {
+		const select = document.querySelector('.type-cranes');
+		typeCranes.forEach((elem) => {
+			select.appendChild(createOption(elem.name));
+		});
+	};
+	/**
+	 * Функция для заполнения выпадающего списка значениями из массива `companies`.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит HTML элемент выпадающего списка с классом `company`.
+	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
+	 *    - Создает элемент `<option>` с помощью функции `createOption`.
+	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
+	 *
+	 * @returns {void}
+	 */
+	const drawSelectCompanies = () => {
+		const select = document.querySelector('.company');
+		companies.forEach((elem) => {
+			select.appendChild(createOption(elem.firm));
+		});
+	};
+	/**
+	 * Функция для заполнения выпадающего списка значениями из массива `firmLocations`.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит HTML элемент выпадающего списка с классом `location`.
+	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
+	 *    - Создает элемент `<option>` с помощью функции `createOption`.
+	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
+	 *
+	 * @returns {void}
+	 */
+	const drawSelectFirmLocations = () => {
+		const select = document.querySelector('.location');
+		firmLocations.forEach((elem) => {
+			select.appendChild(createOption(elem.name));
+		});
 	};
 	/**
 	 * Функция для отрисовки таблицы с данными из объекта `cranes`.
@@ -264,7 +494,142 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventInputNumberChang = () => {
 		const input = document.querySelector('.input-number');
-		input.addEventListener('input', () => filterFunc())
+		input.addEventListener('input', () => {
+			setTimeout(() => {
+				filterFunc();
+			}, 500)
+		})
+	};
+	/**
+	 * Добавляет обработчик события ввода для элемента `<input>`, чтобы вызывать функцию фильтрации при изменении значения.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит элемент `<input>` с классом `input-diameter`.
+	 * 2. Добавляет обработчик события `input` на этот элемент.
+	 * 3. При каждом изменении значения в поле ввода вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 *
+	 * @returns {void}
+	 */
+	const addEventInputDiameterChang = () => {
+		const inputFirst = document.querySelector('.input-diameter-min');
+		const inputSec = document.querySelector('.input-diameter-max');
+		[inputFirst, inputSec].forEach((elem) => addEventListener('input', () => {
+			setTimeout(() => {
+				filterFunc();
+			}, 700)
+		}));
+	};
+	/**
+	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит элемент `<select>` с классом `highways`.
+	 * 2. Добавляет обработчик события `change` на этот элемент.
+	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 *
+	 * @returns {void}
+	 */
+	const addEventSelectNameHighways = () => {
+		const input = document.querySelector('.highways');
+		input.addEventListener('change', () => filterFunc())
+	};
+	/**
+	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит элемент `<select>` с классом `class-cranes`.
+	 * 2. Добавляет обработчик события `change` на этот элемент.
+	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 *
+	 * @returns {void}
+	 */
+	const addEventSelectClassCranes = () => {
+		const input = document.querySelector('.class-cranes');
+		input.addEventListener('change', () => filterFunc())
+	};
+	/**
+	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит элемент `<select>` с классом `type-cranes`.
+	 * 2. Добавляет обработчик события `change` на этот элемент.
+	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 *
+	 * @returns {void}
+	 */
+	const addEventSelectTypeCranes = () => {
+		const input = document.querySelector('.type-cranes');
+		input.addEventListener('change', () => filterFunc())
+	};
+	/**
+	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит элемент `<select>` с классом `company`.
+	 * 2. Добавляет обработчик события `change` на этот элемент.
+	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 *
+	 * @returns {void}
+	 */
+	const addEventSelectCompanies = () => {
+		const input = document.querySelector('.company');
+		input.addEventListener('change', () => filterFunc())
+	};
+	/**
+	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит элемент `<select>` с классом `location`.
+	 * 2. Добавляет обработчик события `change` на этот элемент.
+	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 *
+	 * @returns {void}
+	 */
+	const addEventSelectFirmLocations = () => {
+		const input = document.querySelector('.location');
+		input.addEventListener('change', () => filterFunc())
+	};
+	/**
+	 * Функция для добавления события клика на заголовок столбца таблицы, что позволяет сортировать данные по этому столбцу.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит HTML элементы заголовка таблицы и столбца по имени `name`.
+	 * 2. Добавляет класс `pointer` к элементу столбца, чтобы указать, что на него можно кликнуть.
+	 * 3. Добавляет обработчик события `click` к элементу столбца, который:
+	 *    - Удаляет классы сортировки (`aToB`, `bToA`) у всех других столбцов.
+	 *    - Переключает классы сортировки на элементе столбца:
+	 *      - Если у элемента уже есть класс `aToB`, он заменяется на `bToA`.
+	 *      - Если у элемента уже есть класс `bToA`, он удаляется.
+	 *      - Если у элемента нет ни одного из этих классов, ему добавляется `aToB`.
+	 * 4. Обновляет глобальную переменную `globalName` на имя текущего столбца для сортировки.
+	 * 5. Вызывает функцию `filterFunc`, которая обновляет данные в таблице в соответствии с выбранным порядком сортировки.
+	 *
+	 * @param {string} name - Имя столбца, по которому нужно добавить возможность сортировки.
+	 *
+	 * @returns {void}
+	 */
+	const addEventColumnClick = (name) => {
+		const headTable = document.querySelector('.thead').querySelector('.t-row');
+		const sortElem = document.querySelector(`.column-${name}`);
+		sortElem.classList.add('pointer');
+		sortElem.addEventListener('click', () => {
+			headTable.querySelectorAll('.column').forEach((elem) => {
+				if (!elem.classList.contains(`column-${name}`)) {
+					elem.classList.remove('aToB');
+					elem.classList.remove('bToA');
+				};
+			});
+			if (sortElem.classList.contains('aToB')){
+				sortElem.classList.remove('aToB')
+				sortElem.classList.add('bToA');
+			} else if (sortElem.classList.contains('bToA')){
+				sortElem.classList.remove('bToA')
+			} else {
+				sortElem.classList.add('aToB');
+			};
+			globalName = name;
+			filterFunc();
+		});
 	};
 	/**
 	 * Добавляет обработчик события клика на строку таблицы, который перенаправляет пользователя на страницу с подробной информацией о кране.
@@ -283,25 +648,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	};
 	/**
-	 * Функция фильтрует и отображает данные кранов в зависимости от выбранных пользователем фильтров и поискового запроса.
+	 * Функция для фильтрации кранов на основе выбранных критериев.
 	 *
 	 * Функция выполняет следующие шаги:
-	 * 1. Получает значения из полей выбора и ввода на странице.
-	 * 2. Создаёт копию исходного набора данных кранов.
-	 * 3. Применяет фильтры к данным:
-	 *    - Фильтрует по значению выбора в поле `.choice`, если оно задано.
-	 *    - Фильтрует по значению выбора в поле `.affiliation`, если оно задано.
-	 *    - Фильтрует по значению в поле `.input-number`, проверяя, является ли это значение началом номера крана.
-	 * 4. Разбивает отфильтрованные данные на страницы, основываясь на максимальном количестве элементов на страницу (`maxValue`).
-	 * 5. Обновляет отображение номеров страниц и текущей страницы.
-	 * 6. Отображает данные для текущей страницы.
+	 * 1. Получает выбранные значения из выпадающих списков с классами `choice`, `affiliation`, и `highways`, а также из текстового поля `input-number`.
+	 * 2. Создает копию глобального массива `cranes` для дальнейшей фильтрации.
+	 * 3. Применяет различные фильтры:
+	 *    - Если выбрано значение в `choice`, фильтрует краны по результату работы.
+	 *    - Если выбрано значение в `affiliation`, оставляет краны только от выбранного подразделения.
+	 *    - Если выбрано значение в `highways`, фильтрует краны по выбранной магистрали.
+	 *    - Если введен номер, фильтрует краны, проверяя начинается ли их технический номер с введенной строки.
 	 *
 	 * @returns {void}
 	 */
 	const filterFunc = () => {
 		const selectChoice = document.querySelector('.choice');
 		const selectAffiliation = document.querySelector('.affiliation');
+		const selectHighways = document.querySelector('.highways');
+		const selectClassCranes = document.querySelector('.class-cranes');
+		const selectTypeCranes = document.querySelector('.type-cranes');
 		const inputNumber = document.querySelector('.input-number');
+		const inputDiameterMin = document.querySelector('.input-diameter-min');
+		const inputDiameterMax = document.querySelector('.input-diameter-max');
+		const selectCompanies = document.querySelector('.company');
+		const selectFirmLocations = document.querySelector('.location');
 
 		let filterCranes = JSON.parse(JSON.stringify(cranes));
 		if (+selectChoice.value >= 0) {
@@ -312,20 +682,58 @@ document.addEventListener('DOMContentLoaded', async () => {
 		if (selectAffiliation.value != -1) {
 			filterCranes = {[selectAffiliation.value]: filterCranes[selectAffiliation.value]}
 		};
+		if (selectHighways.value != -1) {
+			for (const key in filterCranes) {
+				filterCranes[key] = filterCranes[key].filter((item) => item.highways === selectHighways.value);
+			};
+		};
+		if (selectClassCranes.value != -1) {
+			for (const key in filterCranes) {
+				filterCranes[key] = filterCranes[key].filter((item) => item.crane_class.split(', ')[0] === selectClassCranes.value);
+			};
+		};
+		if (selectTypeCranes.value != -1) {
+			for (const key in filterCranes) {
+				filterCranes[key] = filterCranes[key].filter((item) => item.crane_class.split(', ')[1] === selectTypeCranes.value);
+			};
+		};
 		if (inputNumber.value.trim()) {
 			for (const key in filterCranes){
 				// filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.includes(inputNumber.value)); // Так мы просто проверяем является ли введённая строка подстрокой
 				filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.startsWith(inputNumber.value)); // Так мы проверяем является ли введённая строка началом главной строки
 			};
 		};
+		if (inputDiameterMin.value.trim()) {
+			for (const key in filterCranes){
+				filterCranes[key] = filterCranes[key].filter((item) => item.DN >= inputDiameterMin.value);
+			};
+		};
+		if (inputDiameterMax.value.trim()) {
+			for (const key in filterCranes){
+				filterCranes[key] = filterCranes[key].filter((item) => item.DN <= inputDiameterMax.value);
+			};
+		};
+		if (selectCompanies.value != -1) {
+			for (const key in filterCranes) {
+				filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ')[0] === selectCompanies.value);
+			};
+		};
+		if (selectFirmLocations.value != -1) {
+			for (const key in filterCranes) {
+				// filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ')[1] === selectFirmLocations.value); // Можно и так, всё работает, но идёт сравнение с undefined
+				filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ').length > 1 && item.company.split(', ')[1] === selectFirmLocations.value);
+			};
+		};
+
+		filterCranes = sortFunc(filterCranes);
 
 		let temp = 0;
-		const list = [];
+		globalList = [];
 		let obj = {};
 		for (const key in filterCranes){
 			filterCranes[key].forEach((elem) => {
 				if (maxValue - temp === 0) {
-					list.push(obj);
+					globalList.push(obj);
 					obj = {};
 					temp = 0;
 				};
@@ -334,10 +742,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 				temp +=1;
 			});
 		};
-		list.push(obj);
-		drawNumbersPages(list.length);
-		numberPage = list.length - numberPage >= 0 ? numberPage : 0;
-		drawTable(list[numberPage]);
+		globalList.push(obj);
+		drawNumbersPages(globalList.length);
+		numberPage = globalList.length - numberPage > 0 ? numberPage : 0;
+		drawTable(globalList[numberPage]);
+	};
+	/**
+	 * Функция для сортировки объектов в массиве `filterCranes` на основе глобальной переменной `globalName`.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Проверяет, если `globalName` не является пустой строкой, что означает, что был выбран столбец для сортировки.
+	 * 2. Определяет HTML элемент столбца с классом `column-${globalName}`.
+	 * 3. Если элемент столбца имеет класс `aToB`, выполняется сортировка по возрастанию:
+	 *    - Проходится по всем ключам объекта `filterCranes`.
+	 *    - Для каждого ключа выполняется сортировка массива:
+	 *      - Если значение `globalName` является строкой, элементы сортируются по длине строки.
+	 *      - Если значение `globalName` является числом, элементы сортируются по числовому значению.
+	 * 4. Если элемент столбца имеет класс `bToA`, выполняется сортировка по убыванию:
+	 *    - Проходится по всем ключам объекта `filterCranes`.
+	 *    - Для каждого ключа выполняется сортировка массива:
+	 *      - Если значение `globalName` является строкой, элементы сортируются по длине строки в обратном порядке.
+	 *      - Если значение `globalName` является числом, элементы сортируются по числовому значению в обратном порядке.
+	 * 5. Возвращает отсортированный объект `filterCranes`.
+	 *
+	 * @param {Object} filterCranes - Объект, содержащий массивы объектов, которые нужно отсортировать.
+	 *
+	 * @returns {Object} - Отсортированный объект `filterCranes`.
+	 */
+	const sortFunc = (filterCranes) => {
+		if (globalName !== '') {
+			const sortElem = document.querySelector(`.column-${globalName}`);
+			if (sortElem.classList.contains('aToB')) {
+				for (const key in filterCranes) {
+					filterCranes[key].sort((a, b) => {
+						if (typeof a[globalName] === 'string') return a[globalName].length - b[globalName].length;
+						return a[globalName] - b[globalName];
+					});
+				};
+			} else if (sortElem.classList.contains('bToA')) {
+				for (const key in filterCranes) {
+					filterCranes[key].sort((a, b) => {
+						if (typeof a[globalName] === 'string') return b[globalName].length - a[globalName].length;
+						return b[globalName] - a[globalName];
+					});
+				};
+			};
+		};
+
+		return filterCranes;
 	};
 	/**
 	 * Добавляет обработчик события клика для кнопки переключения страниц.
@@ -353,18 +805,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventBtnNumberPagesClick = (btn) => {
 		btn.addEventListener('click', () => {
+			const allBtn = btn.parentNode.querySelectorAll('button');
+			allBtn.forEach((elem) => elem !== btn && (elem.classList.remove('currentPage')));
 			numberPage = +btn.textContent - 1;
-			filterFunc();
+			!btn.classList.contains('currentPage') && btn.classList.add('currentPage');
+			drawTable(globalList[numberPage]);
 		});
 	};
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	const maxValue = 15;
 	let numberPage = 0;
+	let globalList = [];
+	let globalName = '';
 	const cranes = await getAllCreanes();
+	const highways = await getAllHighways();
+	const classCranes = await getAllClassCranes();
+	const typeCranes = await getAllTypeCranes();
+	const companies = await getAllCompany();
+	const firmLocations = await getAllLocations();
 	drawSelectAffiliation();
+	drawSelectHigways();
+	drawSelectClassCranes();
+	drawSelectTypeCranes();
+	drawSelectCompanies();
+	drawSelectFirmLocations();
 	filterFunc();
 	addEventSelectChoiceChange();
 	addEventSelectAffiliationChange();
 	addEventInputNumberChang();
+	addEventSelectNameHighways();
+	addEventSelectClassCranes();
+	addEventSelectTypeCranes();
+	addEventInputDiameterChang();
+	addEventSelectCompanies();
+	addEventSelectFirmLocations();
+	['highways', 'location', 'DN'].forEach((elem) => addEventColumnClick(elem));
 });

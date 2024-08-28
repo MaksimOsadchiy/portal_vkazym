@@ -161,6 +161,9 @@
             <div class="table-pages d-flex flex-row justify-content-center column-gap-3"></div>
         </div>
     </section>
+	<div class="craneData d-flex d-none flex-column row-gap-2 p-1">
+		<h1>PPPPPPPP</h1>
+	</div>
 	<?php require("components/modalWindowNotif.php"); ?>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>

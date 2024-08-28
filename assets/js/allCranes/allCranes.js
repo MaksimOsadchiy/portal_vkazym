@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const select = document.querySelector('.affiliation');
 		for (const key in cranes) {
 			select.appendChild(createOption(key));
-		};
+		}
 	};
 	/**
 	 * Функция для заполнения выпадающего списка значениями из массива `highways`.
@@ -308,10 +308,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (cranes[section].length) {
 				tbody.appendChild(createSection(section));
 				cranes[section].forEach((crane) => tbody.appendChild(createRow(crane)));
-			};
-		};
+			}
+		}
 		const allRow = tbody.querySelectorAll('.t-row');
-		allRow.forEach((row, index) => (row.querySelector('.column').innerText = (index + 1)+(numberPage*maxValue)));
+		allRow.forEach((row, index) => (row.querySelector('.column').innerText = index + 1 + numberPage * maxValue));
 	};
 	/**
 	 * Создаёт и отображает кнопки для переключения между страницами таблицы.
@@ -334,11 +334,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const style = numberPage === i ? 'currentPage' : '';
 			btn.className = `${style} btn btn-outline-secondary`;
 
-			btn.innerText = i+1;
+			btn.innerText = i + 1;
 
 			container.appendChild(btn);
 			addEventBtnNumberPagesClick(btn);
-		};
+		}
 	};
 	/**
 	 * Создаёт и возвращает элемент опции (`<option>`) для выпадающего списка.
@@ -468,15 +468,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const select = document.querySelector('.choice-identified_faults');
 		if (select.value != -1) {
 			let timer;
-			row.addEventListener('mouseenter', () => {
+			const tooltip = document.querySelector('.craneData');
+
+			row.addEventListener('mouseenter', (event) => {
 				timer = setTimeout(() => {
 					console.log(identifiedFaults[crane.id].map((elem) => elem.possible_cause));
+					tooltip.classList.remove('d-none');
 				}, 450);
 			});
+
+			row.addEventListener('mousemove', (event) => {
+				setTimeout(() => {
+					tooltip.style.left = `${event.pageX + 15}px`;
+					tooltip.style.top = `${event.pageY}px`;
+				}, 100);
+			});
+
 			row.addEventListener('mouseleave', () => {
 				clearTimeout(timer);
+				!tooltip.classList.contains('d-none') && tooltip.classList.add('d-none');
+				tooltip.style.top = '';
+				tooltip.style.left = '';
 			});
-		};
+		}
 
 		return row;
 	};
@@ -507,7 +521,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventSelectAffiliationChange = () => {
 		const select = document.querySelector('.affiliation');
 		select.addEventListener('change', () => filterFunc());
-	}
+	};
 	/**
 	 * Добавляет обработчик события ввода для элемента `<input>`, чтобы вызывать функцию фильтрации при изменении значения.
 	 *
@@ -523,8 +537,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		input.addEventListener('input', () => {
 			setTimeout(() => {
 				filterFunc();
-			}, 500)
-		})
+			}, 500);
+		});
 	};
 	/**
 	 * Добавляет обработчик события ввода для элемента `<input>`, чтобы вызывать функцию фильтрации при изменении значения.
@@ -539,11 +553,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventInputDiameterChang = () => {
 		const inputFirst = document.querySelector('.input-diameter-min');
 		const inputSec = document.querySelector('.input-diameter-max');
-		[inputFirst, inputSec].forEach((elem) => addEventListener('input', () => {
-			setTimeout(() => {
-				filterFunc();
-			}, 700)
-		}));
+		[inputFirst, inputSec].forEach((elem) =>
+			addEventListener('input', () => {
+				setTimeout(() => {
+					filterFunc();
+				}, 700);
+			})
+		);
 	};
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
@@ -557,7 +573,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventSelectNameHighways = () => {
 		const input = document.querySelector('.highways');
-		input.addEventListener('change', () => filterFunc())
+		input.addEventListener('change', () => filterFunc());
 	};
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
@@ -571,7 +587,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventSelectClassCranes = () => {
 		const input = document.querySelector('.class-cranes');
-		input.addEventListener('change', () => filterFunc())
+		input.addEventListener('change', () => filterFunc());
 	};
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
@@ -585,7 +601,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventSelectTypeCranes = () => {
 		const input = document.querySelector('.type-cranes');
-		input.addEventListener('change', () => filterFunc())
+		input.addEventListener('change', () => filterFunc());
 	};
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
@@ -599,7 +615,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventSelectCompanies = () => {
 		const input = document.querySelector('.company');
-		input.addEventListener('change', () => filterFunc())
+		input.addEventListener('change', () => filterFunc());
 	};
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
@@ -613,7 +629,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventSelectFirmLocations = () => {
 		const input = document.querySelector('.location');
-		input.addEventListener('change', () => filterFunc())
+		input.addEventListener('change', () => filterFunc());
 	};
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
@@ -627,7 +643,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventSelectIdentifiedFaults = () => {
 		const input = document.querySelector('.choice-identified_faults');
-		input.addEventListener('change', () => filterFunc())
+		input.addEventListener('change', () => filterFunc());
 	};
 	/**
 	 * Функция для добавления события клика на заголовок столбца таблицы, что позволяет сортировать данные по этому столбцу.
@@ -657,16 +673,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 				if (!elem.classList.contains(`column-${name}`)) {
 					elem.classList.remove('aToB');
 					elem.classList.remove('bToA');
-				};
+				}
 			});
-			if (sortElem.classList.contains('aToB')){
-				sortElem.classList.remove('aToB')
+			if (sortElem.classList.contains('aToB')) {
+				sortElem.classList.remove('aToB');
 				sortElem.classList.add('bToA');
-			} else if (sortElem.classList.contains('bToA')){
-				sortElem.classList.remove('bToA')
+			} else if (sortElem.classList.contains('bToA')) {
+				sortElem.classList.remove('bToA');
 			} else {
 				sortElem.classList.add('aToB');
-			};
+			}
 			globalName = name;
 			filterFunc();
 		});
@@ -716,55 +732,55 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		let filterCranes = JSON.parse(JSON.stringify(cranes));
 		if (+selectChoice.value >= 0) {
-			for (const key in filterCranes){
+			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => item.result === +selectChoice.value);
-			};
-		};
+			}
+		}
 		if (selectAffiliation.value != -1) {
-			filterCranes = {[selectAffiliation.value]: filterCranes[selectAffiliation.value]}
-		};
+			filterCranes = { [selectAffiliation.value]: filterCranes[selectAffiliation.value] };
+		}
 		if (selectHighways.value != -1) {
 			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => item.highways === selectHighways.value);
-			};
-		};
+			}
+		}
 		if (selectClassCranes.value != -1) {
 			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => item.crane_class.split(', ')[0] === selectClassCranes.value);
-			};
-		};
+			}
+		}
 		if (selectTypeCranes.value != -1) {
 			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => item.crane_class.split(', ')[1] === selectTypeCranes.value);
-			};
-		};
+			}
+		}
 		if (inputNumber.value.trim()) {
-			for (const key in filterCranes){
+			for (const key in filterCranes) {
 				// filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.includes(inputNumber.value)); // Так мы просто проверяем является ли введённая строка подстрокой
 				filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.startsWith(inputNumber.value)); // Так мы проверяем является ли введённая строка началом главной строки
-			};
-		};
+			}
+		}
 		if (inputDiameterMin.value.trim()) {
-			for (const key in filterCranes){
+			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => item.DN >= inputDiameterMin.value);
-			};
-		};
+			}
+		}
 		if (inputDiameterMax.value.trim()) {
-			for (const key in filterCranes){
+			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => item.DN <= inputDiameterMax.value);
-			};
-		};
+			}
+		}
 		if (selectCompanies.value != -1) {
 			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ')[0] === selectCompanies.value);
-			};
-		};
+			}
+		}
 		if (selectFirmLocations.value != -1) {
 			for (const key in filterCranes) {
 				// filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ')[1] === selectFirmLocations.value); // Можно и так, всё работает, но идёт сравнение с undefined
 				filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ').length > 1 && item.company.split(', ')[1] === selectFirmLocations.value);
-			};
-		};
+			}
+		}
 		if (selectIdentifiedFaults.value != -1) {
 			for (const key in filterCranes) {
 				filterCranes[key] = filterCranes[key].filter((item) => {
@@ -773,30 +789,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 						if (+keySec === +item.id) {
 							flag = true;
 							break;
-						};
-					};
+						}
+					}
 					return flag;
 				});
-			};
-		};
+			}
+		}
 
 		filterCranes = sortFunc(filterCranes);
 
 		let temp = 0;
 		globalList = [];
 		let obj = {};
-		for (const key in filterCranes){
+		for (const key in filterCranes) {
 			filterCranes[key].forEach((elem) => {
 				if (maxValue - temp === 0) {
 					globalList.push(obj);
 					obj = {};
 					temp = 0;
-				};
+				}
 				if (!obj[key]) obj[key] = [];
 				obj[key].push(elem);
-				temp +=1;
+				temp += 1;
 			});
-		};
+		}
 		globalList.push(obj);
 		drawNumbersPages(globalList.length);
 		numberPage = globalList.length - numberPage > 0 ? numberPage : 0;
@@ -833,16 +849,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 						if (typeof a[globalName] === 'string') return a[globalName].length - b[globalName].length;
 						return a[globalName] - b[globalName];
 					});
-				};
+				}
 			} else if (sortElem.classList.contains('bToA')) {
 				for (const key in filterCranes) {
 					filterCranes[key].sort((a, b) => {
 						if (typeof a[globalName] === 'string') return b[globalName].length - a[globalName].length;
 						return b[globalName] - a[globalName];
 					});
-				};
-			};
-		};
+				}
+			}
+		}
 
 		return filterCranes;
 	};
@@ -861,7 +877,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventBtnNumberPagesClick = (btn) => {
 		btn.addEventListener('click', () => {
 			const allBtn = btn.parentNode.querySelectorAll('button');
-			allBtn.forEach((elem) => elem !== btn && (elem.classList.remove('currentPage')));
+			allBtn.forEach((elem) => elem !== btn && elem.classList.remove('currentPage'));
 			numberPage = +btn.textContent - 1;
 			!btn.classList.contains('currentPage') && btn.classList.add('currentPage');
 			drawTable(globalList[numberPage]);

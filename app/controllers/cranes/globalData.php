@@ -40,7 +40,7 @@ if (isset($_SESSION['id'])) {
             'crane_class' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $crane_classes),
             'name_cranes' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $name_cranes),
             'type_reinforcement' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $types_reinforcement),
-            'company' => array_map(fn($object) => ['key' => $object['firm'], 'name' => "{$object['firm']}, {$object['location']}"], $companies),
+            'company' => array_map(fn($object) => ['key' => $object['firm'], 'name' => !empty($object['location']) ? "{$object['firm']}, {$object['location']}" : $object['firm']], $companies),
             'execution' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $executions),
             'type_drive' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $types_drives),
             'drive_company' => array_map(fn($object) => ['key' => $object['firm'], 'name' => "{$object['firm']}, {$object['location']}"], $companies),

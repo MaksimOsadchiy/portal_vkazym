@@ -175,6 +175,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return [];
 		}
 	};
+	//
+	const getIdentifiedFaults = async () => {
+		try {
+			const response = await fetch(`${SERVER_URL}/cranes/allIdentifiedFaults.php`);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			return jsonResponse;
+		} catch (error) {
+			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
 	/**
 	 * Функция для заполнения выпадающего списка значениями из объекта `cranes`.
 	 *
@@ -452,6 +465,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 		replacement.innerText = crane.replacement ? crane.replacement : 'Не указано';
 		act_leakage.innerText = crane.act_leakage ? crane.act_leakage : 'Не указано';
 
+		const select = document.querySelector('.choice-identified_faults');
+		if (select.value != -1) {
+			let timer;
+			row.addEventListener('mouseenter', () => {
+				timer = setTimeout(() => {
+					console.log(identifiedFaults[crane.id].map((elem) => elem.possible_cause));
+				}, 450);
+			});
+			row.addEventListener('mouseleave', () => {
+				clearTimeout(timer);
+			});
+		};
+
 		return row;
 	};
 	/**
@@ -590,6 +616,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 		input.addEventListener('change', () => filterFunc())
 	};
 	/**
+	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит элемент `<select>` с классом `choice-identified_faults`.
+	 * 2. Добавляет обработчик события `change` на этот элемент.
+	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 *
+	 * @returns {void}
+	 */
+	const addEventSelectIdentifiedFaults = () => {
+		const input = document.querySelector('.choice-identified_faults');
+		input.addEventListener('change', () => filterFunc())
+	};
+	/**
 	 * Функция для добавления события клика на заголовок столбца таблицы, что позволяет сортировать данные по этому столбцу.
 	 *
 	 * Функция выполняет следующие шаги:
@@ -672,6 +712,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const inputDiameterMax = document.querySelector('.input-diameter-max');
 		const selectCompanies = document.querySelector('.company');
 		const selectFirmLocations = document.querySelector('.location');
+		const selectIdentifiedFaults = document.querySelector('.choice-identified_faults');
 
 		let filterCranes = JSON.parse(JSON.stringify(cranes));
 		if (+selectChoice.value >= 0) {
@@ -722,6 +763,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 			for (const key in filterCranes) {
 				// filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ')[1] === selectFirmLocations.value); // Можно и так, всё работает, но идёт сравнение с undefined
 				filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ').length > 1 && item.company.split(', ')[1] === selectFirmLocations.value);
+			};
+		};
+		if (selectIdentifiedFaults.value != -1) {
+			for (const key in filterCranes) {
+				filterCranes[key] = filterCranes[key].filter((item) => {
+					let flag = false;
+					for (const keySec in identifiedFaults) {
+						if (+keySec === +item.id) {
+							flag = true;
+							break;
+						};
+					};
+					return flag;
+				});
 			};
 		};
 
@@ -824,6 +879,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const typeCranes = await getAllTypeCranes();
 	const companies = await getAllCompany();
 	const firmLocations = await getAllLocations();
+	const identifiedFaults = await getIdentifiedFaults();
 	drawSelectAffiliation();
 	drawSelectHigways();
 	drawSelectClassCranes();
@@ -840,5 +896,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	addEventInputDiameterChang();
 	addEventSelectCompanies();
 	addEventSelectFirmLocations();
+	addEventSelectIdentifiedFaults();
 	['highways', 'location', 'DN'].forEach((elem) => addEventColumnClick(elem));
 });

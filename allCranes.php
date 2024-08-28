@@ -128,6 +128,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex flex-column row-gap-3 col-4">
+                        <p class="fs-5">Неисправности</p>
+                        <select class="form-select choice-identified_faults" aria-label="Default select example">
+                            <option value="-1" selected></option>
+                            <option value="0">Неустраненные </option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="table table-cranes d-flex flex-column align-items-center mt-4">

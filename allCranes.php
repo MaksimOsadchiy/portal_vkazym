@@ -42,12 +42,12 @@
     <script defer src="<?=BASE_URL?>assets/js/modalWindowNotif/modalWindowNotif.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/header/header.js"></script>
     <script defer src="<?=BASE_URL?>assets/js/modules/modules.js"></script>
-    <script defer src="<?=BASE_URL?>assets/js/allCranes/allCranes.js"></script>
+    <script defer type="module" src="<?=BASE_URL?>assets/js/allCranes/allCranes.js"></script>
     <title>Портал В.Казым</title>
 </head>
 <body>
 	<?php include("components/header.php")?>
-    <section class="d-flex flex-column align-items-center">
+    <section class="d-flex flex-column align-items-center mb-5">
         <?php include("components/modules.php");?>
         <div class="table-container d-flex flex-column align-items-center pt-3">
             <div class="managment d-flex flex-column row-gap-4 col-6 p-3">
@@ -128,7 +128,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column row-gap-3 col-4">
+                    <div class="d-flex flex-column row-gap-5 col-4">
                         <p class="fs-5">Неисправности</p>
                         <select class="form-select choice-identified_faults" aria-label="Default select example">
                             <option value="-1" selected></option>
@@ -136,8 +136,11 @@
                         </select>
                     </div>
                 </div>
+                <div class="d-flex flex-row justify-content-between column-gap-4">
+                   <button id="btnToExcel" class="btnToExcel btn btn-secondary">EXCEL</button>
+                </div>
             </div>
-            <div class="table table-cranes d-flex flex-column align-items-center mt-4">
+            <div id="table-cranes" class="table table-cranes d-flex flex-column align-items-center mt-4">
                 <div class="thead d-flex flex-column">
                     <div class="t-row d-flex flex-row justify-content-center">
                         <p class="column th">№п/п</p>
@@ -161,8 +164,10 @@
             <div class="table-pages d-flex flex-row justify-content-center column-gap-3"></div>
         </div>
     </section>
-	<div class="craneData d-flex d-none flex-column row-gap-2 p-1">
-		<h1>PPPPPPPP</h1>
+	<div class="craneData d-flex my-d-none flex-column row-gap-2 p-2">
+		<p class="craneData__title text-center">Неисправности</p>
+        <ul class="craneData__list d-flex flex-row flex-wrap row-gap-2">
+        </ul>
 	</div>
 	<?php require("components/modalWindowNotif.php"); ?>
     <script src="assets/js/bootstrap.bundle.min.js"></script>

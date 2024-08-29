@@ -136,10 +136,19 @@ p.bToA::after {
 }
 .craneData {
 	position: absolute;
+	top: 0;
+	width: 40%;
+	/*max-height: 245px;*/
 	border-radius: 0.25rem;
-	background-color: lightgray;
-	/* transition: left 0.1s ease, top 0.1s ease; */
+	background-color: rgba(231, 231, 231, 1);
 }
-.d-none {
-	display: none;
+.my-d-none {
+	z-index: -10;
+	opacity: 0;
+}
+.craneData__list{
+	padding: 0;
+	margin: 0;
+	font-size: 0.875rem;
+	list-style: none;
 }

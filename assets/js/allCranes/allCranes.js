@@ -1,3 +1,5 @@
+// import * as XLSX from 'https://cdn.sheetjs.com/xlsx-0.18.5/package/xlsx.mjs';
+import * as XLSX from '../xlsx.mjs';
 document.addEventListener('DOMContentLoaded', async () => {
 	/**
 	 * Асинхронная функция для получения списка всех кранов с сервера.
@@ -175,7 +177,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return [];
 		}
 	};
-	//
+	/**
+	 * Асинхронная функция для получения списка всех неустранённых неисправностей с сервера.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Отправляет HTTP GET запрос на сервер.
+	 * 2. Ожидает ответа от сервера и преобразует его тело в формат JSON.
+	 * 3. Проверяет статус ответа сервера:
+	 *    - Если статус ответа не `ok`, выбрасывает ошибку с кодом статуса, содержащимся в ответе.
+	 * 4. Если запрос успешен, возвращает полученные данные.
+	 * 5. В случае ошибки во время запроса или обработки ответа:
+	 *    - Вызывает событие `updateError`, передавая сообщение об ошибке в качестве детали события.
+	 *    - Возвращает пустой массив, чтобы избежать дальнейших проблем в коде, который ожидает данные.
+	 *
+	 * @throws {Error} Если запрос не удался или произошла ошибка при обработке ответа, будет выброшена ошибка с сообщением об ошибке.
+	 *
+	 * @returns {Record<number, Array<Object>>|[]} Возвращает массив. Или пустой массив в случае ошибки.
+	 */
 	const getIdentifiedFaults = async () => {
 		try {
 			const response = await fetch(`${SERVER_URL}/cranes/allIdentifiedFaults.php`);
@@ -341,6 +359,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	/**
+	 * Функция для отрисовки списка данных о кране в HTML-элементе.
+	 *
+	 * Функция выполняет следующие действия:
+	 * 1. Находит HTML элемент со списком, используя селектор `.craneData__list` внутри переданного `window`.
+	 * 2. Очищает содержимое списка перед добавлением новых элементов, устанавливая `innerText` в пустую строку.
+	 * 3. Проходит по массиву `data` и добавляет до 10 элементов в список:
+	 *    - Для первых 10 элементов массива создает элементы списка `<li>`, используя функцию `createLiElement`.
+	 *    - Каждый элемент списка содержит текст, созданный с помощью функции `formContent`, и порядковый номер `index`.
+	 *    - Если элементов больше 10, добавляет один элемент с текстом "Неисправностей больше 10, подробнее на странице крана".
+	 * 4. Если данных в массиве меньше 10, функция прерывает цикл и завершает работу.
+	 *
+	 * @param {HTMLElement} window - HTML элемент, содержащий список для отображения данных.
+	 * @param {Array<string>} data - Массив данных о кране, которые будут отображены в списке.
+	 *
+	 * @returns {void}
+	 */
+	const drawCraneDatalist = (window, data)  => {
+		const list = window.querySelector('.craneData__list');
+		list.innerText = '';
+		for (let index = 0; index < 11; index++) {
+			if (data[index]){
+				if (index < 10) list.appendChild(createLiElement(formContent(data[index], 70), index+1));
+				else list.appendChild(createLiElement('Неисправностей больше 10, подробнее на странице крана', 11));
+			} else {
+				break;
+			}
+		};
+	};
+	/**
 	 * Создаёт и возвращает элемент опции (`<option>`) для выпадающего списка.
 	 *
 	 * Функция выполняет следующие действия:
@@ -468,25 +515,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const select = document.querySelector('.choice-identified_faults');
 		if (select.value != -1) {
 			let timer;
+			let secTimer;
 			const tooltip = document.querySelector('.craneData');
 
 			row.addEventListener('mouseenter', (event) => {
 				timer = setTimeout(() => {
-					console.log(identifiedFaults[crane.id].map((elem) => elem.possible_cause));
-					tooltip.classList.remove('d-none');
+					drawCraneDatalist(tooltip, identifiedFaults[crane.id].map((elem) => elem.possible_cause));
+					tooltip.style.left = `${event.pageX + 15}px`;
+					tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
+					tooltip.classList.remove('my-d-none');
 				}, 450);
 			});
 
 			row.addEventListener('mousemove', (event) => {
-				setTimeout(() => {
-					tooltip.style.left = `${event.pageX + 15}px`;
-					tooltip.style.top = `${event.pageY}px`;
-				}, 100);
+				clearTimeout(timer);
+
+				if (tooltip.classList.contains('my-d-none')) {
+					timer = setTimeout(() => {
+						drawCraneDatalist(tooltip, identifiedFaults[crane.id].map((elem) => elem.possible_cause));
+						tooltip.style.left = `${event.pageX + 15}px`;
+						tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
+						tooltip.classList.remove('my-d-none');
+					}, 250);
+				} else {
+					secTimer = setTimeout(() => {
+						tooltip.style.left = `${event.pageX + 15}px`;
+						tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
+					}, 100);
+				}
 			});
 
 			row.addEventListener('mouseleave', () => {
 				clearTimeout(timer);
-				!tooltip.classList.contains('d-none') && tooltip.classList.add('d-none');
+				clearTimeout(secTimer);
+				!tooltip.classList.contains('my-d-none') && tooltip.classList.add('my-d-none');
 				tooltip.style.top = '';
 				tooltip.style.left = '';
 			});
@@ -494,6 +556,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		return row;
 	};
+	/**
+	 * Функция для создания HTML элемента списка `<li>`.
+	 *
+	 * Функция выполняет следующие действия:
+	 * 1. Создает новый элемент `<li>`.
+	 * 2. Устанавливает класс элемента в зависимости от значения `index`:
+	 *    - Если `index` равно 11, устанавливает класс `fs-5`.
+	 *    - В противном случае устанавливает класс `col-6`.
+	 * 3. Устанавливает текстовое содержимое элемента в формате `${index}) ${data}`, где `index` и `data` — информация о неисправности.
+	 * 4. Возвращает созданный элемент `<li>`.
+	 *
+	 * @param {string} data - Текстовое содержимое элемента списка.
+	 * @param {number} index - Индекс элемента, который используется для форматирования текста и для добавления класса.
+	 *
+	 * @returns {HTMLLIElement} Созданный элемент списка `<li>`.
+	 */
+	const createLiElement = (data, index) => {
+		const liElem = document.createElement('li');
+		liElem.className = `craneData__list-element ${index === 11 ? 'fs-5' : 'col-6'}`;
+		liElem.innerText = `${index}) ${data}`;
+		return liElem;
+	}
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
 	 *
@@ -863,6 +947,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 		return filterCranes;
 	};
 	/**
+	 * Функция для форматирования текста с учетом ограничения по длине.
+	 *
+	 * Функция выполняет следующие действия:
+	 * 1. Проверяет, превышает ли длина текста заданное значение `limit`.
+	 * 2. Если длина текста больше `limit`, возвращает подстроку текста, обрезанную до `limit` символов, и добавляет многоточие (`'...'`) в конце.
+	 * 3. Если длина текста не превышает `limit`, возвращает текст без изменений.
+	 *
+	 * @param {string} text - Исходный текст, который необходимо отформатировать.
+	 * @param {number} limit - Максимальная длина текста, после которой он будет обрезан.
+	 * @returns {string} Отформатированный текст, обрезанный до `limit` символов с добавлением многоточия, если необходимо.
+	 */
+	const formContent = (text, limit) => {
+		return text.length > limit ? text.substring(0, limit) + '...' : text;
+	};
+	/**
 	 * Добавляет обработчик события клика для кнопки переключения страниц.
 	 *
 	 * Функция выполняет следующие шаги:
@@ -883,6 +982,57 @@ document.addEventListener('DOMContentLoaded', async () => {
 			drawTable(globalList[numberPage]);
 		});
 	};
+	/**
+	 * Функция для экспорта таблицы из HTML в Excel-файл.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Инициализирует массивы `headers` и `data` для хранения заголовков и данных таблицы.
+	 * 2. Извлекает заголовки таблицы из элементов с классом `column th` внутри элемента с классом `thead`, и добавляет их в массив `headers`.
+	 * 3. Проходит по всем строкам таблицы с классом `t-row`, извлекает данные из элементов с классами `column th` и `text-center`, и добавляет их в массив `data`.
+	 * 4. Создает новый лист Excel с использованием заголовков и данных, преобразованных в формат, поддерживаемый библиотекой `XLSX`.
+	 * 5. Создает новый рабочий файл Excel и добавляет к нему созданный лист.
+	 * 6. Генерирует и сохраняет Excel-файл под именем `output.xlsx`.
+	 *
+	 * @returns {void}
+	 */
+	const exportTableToExcel = () => {
+		// Инициализация данных
+		let headers = [];
+		let data = [];
+
+		// Извлечение заголовков
+		document.querySelectorAll('.table-cranes .thead p.column.th').forEach((element) => headers.push(element.textContent.trim()));
+
+		// Извлечение данных строк
+		document.querySelectorAll('.t-row').forEach((row) => {
+			let rowData = [];
+			row.querySelectorAll('p.column.th.text-center').forEach(col => rowData.push(col.textContent.trim()));
+			if (rowData.length > 0) data.push(rowData);
+		});
+
+		// Создание Excel-книги и листа
+		const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+		const workbook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+
+		// Генерация и скачивание Excel-файла
+		XLSX.writeFile(workbook, 'cranes_P-VK.xlsx');
+	};
+	/**
+	 * Функция для добавления обработчика события на кнопку, инициирующую экспорт таблицы в Excel.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит кнопку с классом `btnToExcel` в документе.
+	 * 2. Добавляет обработчик события `click` на найденную кнопку.
+	 * 3. При нажатии на кнопку вызывает функцию `exportTableToExcel` для экспорта данных таблицы в Excel-файл.
+	 *
+	 * @returns {void}
+	 */
+	const addEventBtnToExcel = () => {
+		const btn = document.querySelector('.btnToExcel');
+		btn.addEventListener('click', () => exportTableToExcel());
+	};
+
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	const maxValue = 15;
@@ -913,5 +1063,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	addEventSelectCompanies();
 	addEventSelectFirmLocations();
 	addEventSelectIdentifiedFaults();
+	addEventBtnToExcel();
 	['highways', 'location', 'DN'].forEach((elem) => addEventColumnClick(elem));
 });

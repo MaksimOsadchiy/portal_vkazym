@@ -50,56 +50,46 @@
     <section class="d-flex flex-column align-items-center mb-5">
         <?php include("components/modules.php");?>
         <div class="table-container d-flex flex-column align-items-center pt-3">
-            <div class="managment d-flex flex-column row-gap-4 col-6 p-3">
-                <div class="d-flex flex-row justify-content-between column-gap-4">
-                    <div class="d-flex flex-column row-gap-3">
-                        <p class="fs-5">Состояние крана</p>
-                        <select class="form-select choice" aria-label="Default select example">
+            <div class="management d-flex flex-column row-gap-4 col-7 p-3">
+                <div class="d-flex flex-row justify-content-between col-12">
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <p class="col-6 align-self-center text-end">Состояние крана</p>
+                        <select class="form-select align-self-center choice" aria-label="Default select example">
                             <option value="-1" selected>Все краны</option>
                             <option value="2">Дефективные краны</option>
                             <option value="1">Работающие  краны</option>
                             <option value="0">Неработающие  краны</option>
                         </select>
                     </div>
-                    <div class="d-flex flex-column row-gap-3">
-                        <p class="fs-5">Крановый  узел</p>
-                        <select class="form-select affiliation" aria-label="Default select example">
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <p class="col-6 align-self-center text-end">Крановый  узел</p>
+                        <select class="form-select align-self-center affiliation" aria-label="Default select example">
                             <option value="-1" selected></option>
                         </select>
                     </div>
-                    <div class="d-flex flex-column row-gap-3">
-                        <p class="fs-5">Магистраль</p>
-                        <select class="form-select highways" aria-label="Default select example">
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <p class="col-6 align-self-center text-end">Магистраль</p>
+                        <select class="form-select align-self-center highways" aria-label="Default select example">
                             <option value="-1" selected></option>
                         </select>
                     </div>
                 </div>
-                <div class="d-flex flex-row justify-content-between column-gap-4">
-                    <div class="d-flex flex-column row-gap-3">
-                        <p class="text-center fs-5">Тип крана</p>
-                        <div class="select-group d-flex flex-row column-gap-2">
-                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
-<!--                                <p>Текст</p>-->
-                                <select class="form-select class-cranes" aria-label="Default select example">
-                                    <option value="-1" selected></option>
-                                </select>
-                            </div>
-                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
-<!--                                <p>Текст</p>-->
-                                <select class="form-select type-cranes" aria-label="Default select example">
-                                    <option value="-1" selected></option>
-                                </select>
-                            </div>
-                        </div>
+                <div class="d-flex flex-row justify-content-between col-12">
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <p class="align-self-center text-end col-6">Неисправности</p>
+                        <select class="form-select align-self-center choice-identified_faults" aria-label="Default select example">
+                            <option value="-1" selected></option>
+                            <option value="0">Неустраненные </option>
+                        </select>
                     </div>
-                    <div class="d-flex flex-column row-gap-3">
-                        <p class="fs-5">Номер крана</p>
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <p class="col-6 align-self-center text-end">Номер крана</p>
                         <div class="input-group input-group-sm">
                             <input type="text" class="form-control input-number">
                         </div>
                     </div>
-                    <div class="d-flex flex-column row-gap-3">
-                        <p class="text-center fs-5">Диаметр</p>
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <p class="col-6 align-self-center text-end">Диаметр</p>
                         <div class="d-flex flex-row column-gap-2">
                             <div class="input-group input-group-sm">
                                 <input type="number" class="form-control input-diameter-min" placeholder="ОТ">
@@ -110,34 +100,50 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex flex-row justify-content-between column-gap-4">
-                    <div class="d-flex flex-column row-gap-3 col-7">
-                        <p class="text-center fs-5">Производитель</p>
-                        <div class="select-group d-flex flex-row column-gap-2">
-                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
-                                <p>Компания</p>
-                                <select class="form-select company" aria-label="Default select example">
-                                    <option value="-1" selected></option>
-                                </select>
-                            </div>
-                            <div class="d-flex flex-column align-items-center row-gap-2 col-6">
-                                <p>Страна производиетль</p>
-                                <select class="form-select location" aria-label="Default select example">
-                                    <option value="-1" selected></option>
-                                </select>
-                            </div>
+                <div class="d-flex flex-row justify-content-between col-12">
+                    <div class="d-flex flex-row column-gap-2 col-6">
+                        <div class="d-flex flex-column row-gap-2 col-4">
+                            <p class="opacity-0">Компания</p>
+                            <p class="text-end pt-1">Производитель</p>
+                        </div>
+                        <div class="d-flex flex-column align-items-center row-gap-2">
+                            <p>Компания</p>
+                            <select class="form-select company" aria-label="Default select example">
+                                <option value="-1" selected></option>
+                            </select>
+                        </div>
+                        <div class="d-flex flex-column align-items-center row-gap-2">
+                            <p>Страна</p>
+                            <select class="form-select location" aria-label="Default select example">
+                                <option value="-1" selected></option>
+                            </select>
                         </div>
                     </div>
-                    <div class="d-flex flex-column row-gap-5 col-4">
-                        <p class="fs-5">Неисправности</p>
-                        <select class="form-select choice-identified_faults" aria-label="Default select example">
+                    <div class="d-flex flex-row column-gap-2 col-6">
+                        <div class="d-flex flex-column row-gap-2 col-4">
+                            <p class="opacity-0">Компания</p>
+                            <p class="text-end pt-1">Тип крана</p>
+                        </div>
+                        <select class="form-select align-self-end class-cranes" aria-label="Default select example">
                             <option value="-1" selected></option>
-                            <option value="0">Неустраненные </option>
+                        </select>
+                        <select class="form-select align-self-end type-cranes" aria-label="Default select example">
+                            <option value="-1" selected></option>
                         </select>
                     </div>
                 </div>
-                <div class="d-flex flex-row justify-content-between column-gap-4">
-                   <button id="btnToExcel" class="btnToExcel btn btn-secondary">EXCEL</button>
+                <div class="d-flex flex-row justify-content-center column-gap-5 col-12">
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <p class="align-self-center text-end col-6">Кол.-во кранов на странице</p>
+                        <div class="input-group align-self-center input-group-sm">
+                            <input type="number" class="form-control input-count-cranes" value="15" min="10" max="250">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row column-gap-2 col-4">
+                        <div class="input-group align-self-center input-group-sm">
+                            <button id="btnToExcel" class="btnToExcel btn btn-secondary">Сформировать excel</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="table-cranes" class="table table-cranes d-flex flex-column align-items-center mt-4">

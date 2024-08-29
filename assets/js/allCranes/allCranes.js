@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const select = document.querySelector('.affiliation');
 		for (const key in cranes) {
 			select.appendChild(createOption(key));
-		}
+		};
 	};
 	/**
 	 * Функция для заполнения выпадающего списка значениями из массива `highways`.
@@ -638,7 +638,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const inputFirst = document.querySelector('.input-diameter-min');
 		const inputSec = document.querySelector('.input-diameter-max');
 		[inputFirst, inputSec].forEach((elem) =>
-			addEventListener('input', () => {
+			elem.addEventListener('input', () => {
+				+elem.value === 0 && (elem.value = '');
 				setTimeout(() => {
 					filterFunc();
 				}, 700);
@@ -728,6 +729,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventSelectIdentifiedFaults = () => {
 		const input = document.querySelector('.choice-identified_faults');
 		input.addEventListener('change', () => filterFunc());
+	};
+	/**
+	 * Функция `addEventInputCountCranes` добавляет обработчик события ввода (input) к элементу ввода количества кранов.
+	 *
+	 * Функция выполняет следующие шаги:
+	 * 1. Находит HTML элемент с классом `input-count-cranes`.
+	 * 2. Инициализирует переменную `timerTo`, которая будет использоваться для хранения ID таймера.
+	 * 3. Добавляет обработчик события `input` на элемент, который выполняется каждый раз, когда значение в поле изменяется.
+	 * 4. В обработчике проверяется, находится ли введенное значение в диапазоне от 10 до 250:
+	 *    - Если значение не соответствует диапазону, устанавливается значение `maxValue` в 15 и создается таймер, который через 3 секунды сбросит значение поля ввода на 15.
+	 *    - Если значение соответствует диапазону, таймер очищается, и `maxValue` устанавливается в значение, введенное пользователем.
+	 * 5. Вызывает функцию `filterFunc`, чтобы обновить данные в соответствии с новым значением `maxValue`.
+	 *
+	 * @returns {void}
+	 */
+	const addEventInputCountCranes = () => {
+		const input = document.querySelector('.input-count-cranes');
+		let timerTo;
+		input.addEventListener('input', () => {
+			if (+input.value < 10 || +input.value > 250) {
+				maxValue = 15;
+				clearTimeout(timerTo);
+				timerTo = setTimeout(() => {input.value = 15;}, 3000);
+			} else {
+				clearTimeout(timerTo);
+				maxValue = +input.value;
+			};
+			filterFunc();
+		});
 	};
 	/**
 	 * Функция для добавления события клика на заголовок столбца таблицы, что позволяет сортировать данные по этому столбцу.
@@ -1035,7 +1065,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
-	const maxValue = 15;
+	let maxValue = 15;
 	let numberPage = 0;
 	let globalList = [];
 	let globalName = '';
@@ -1064,5 +1094,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	addEventSelectFirmLocations();
 	addEventSelectIdentifiedFaults();
 	addEventBtnToExcel();
+	addEventInputCountCranes();
 	['highways', 'location', 'DN'].forEach((elem) => addEventColumnClick(elem));
 });

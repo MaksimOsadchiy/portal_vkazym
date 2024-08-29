@@ -1,6 +1,12 @@
 <?php
-
+$sessionLifetime = 7; // 1 час
 session_start();
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $sessionLifetime)) {
+    // Если прошло больше времени, чем задано, очищаем и уничтожаем сессию
+    session_unset();
+    session_destroy();
+    session_start(); // Начинаем новую сессию после уничтожения предыдущей
+}
 require('connect.php');
 
 function customPrint($value){

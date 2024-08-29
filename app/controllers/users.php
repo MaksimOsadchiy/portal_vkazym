@@ -3,6 +3,9 @@
 include_once(__DIR__ . "/../database/dbFunction.php");
 
 function userAuph($user){
+	session_start();
+	// Обновляем временную метку
+	$_SESSION['last_activity'] = time();
 	$_SESSION['id'] = $user['id'];
 	$_SESSION['login'] = $user['login'];
     $_SESSION['service'] = $user['service_id'];

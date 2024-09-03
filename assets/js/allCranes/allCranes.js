@@ -221,92 +221,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const select = document.querySelector('.affiliation');
 		for (const key in cranes) {
 			select.appendChild(createOption(key));
-		};
+		}
 	};
 	/**
-	 * Функция для заполнения выпадающего списка значениями из массива `highways`.
+	 * Функция для динамического создания и заполнения выпадающего списка (select) элементами на основе переданных данных.
 	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит HTML элемент выпадающего списка с классом `highways`.
-	 * 2. Проходит по каждому элементу массива `highways` и для каждого элемента:
-	 *    - Создает элемент `<option>` с помощью функции `createOption`.
-	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
+	 * Функция выполняет следующие действия:
+	 * 1. Получает ссылку на элемент `select` в DOM с помощью класса, указанного в параметре `name`.
+	 * 2. Итерирует по каждому элементу массива `array`, который содержит данные для заполнения выпадающего списка.
+	 * 3. Для каждого элемента массива:
+	 *    - Извлекает значение свойства объекта, которое указано в параметре `key`.
+	 *    - Создаёт новый элемент `option` с этим значением.
+	 *    - Добавляет созданный элемент `option` в выпадающий список.
 	 *
-	 * @returns {void}
+	 * @param {string} name - Имя класса, используемое для поиска элемента `select` в DOM.
+	 * @param {Array<Object>} array - Массив объектов, содержащих данные для создания опций в выпадающем списке.
+	 * @param {string} key - Имя свойства объекта, значение которого будет использовано для заполнения опций выпадающего списка.
+	 *
+	 * @example
+	 * Пример использования:
+	 * const data = [{ id: 1, name: 'Option 1' }, { id: 2, name: 'Option 2' }];
+	 * drawGeneralSelect('dropdown', data, 'name');
+	 * В результате в элементе с классом 'dropdown' появятся опции 'Option 1' и 'Option 2'.
 	 */
-	const drawSelectHigways = () => {
-		const select = document.querySelector('.highways');
-		highways.forEach((elem) => {
-			select.appendChild(createOption(elem.name));
-		});
-	};
-	/**
-	 * Функция для заполнения выпадающего списка значениями из массива `classCranes`.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит HTML элемент выпадающего списка с классом `class-cranes`.
-	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
-	 *    - Создает элемент `<option>` с помощью функции `createOption`.
-	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
-	 *
-	 * @returns {void}
-	 */
-	const drawSelectClassCranes = () => {
-		const select = document.querySelector('.class-cranes');
-		classCranes.forEach((elem) => {
-			select.appendChild(createOption(elem.name));
-		});
-	};
-	/**
-	 * Функция для заполнения выпадающего списка значениями из массива `typeCranes`.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит HTML элемент выпадающего списка с классом `type-cranes`.
-	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
-	 *    - Создает элемент `<option>` с помощью функции `createOption`.
-	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
-	 *
-	 * @returns {void}
-	 */
-	const drawSelectTypeCranes = () => {
-		const select = document.querySelector('.type-cranes');
-		typeCranes.forEach((elem) => {
-			select.appendChild(createOption(elem.name));
-		});
-	};
-	/**
-	 * Функция для заполнения выпадающего списка значениями из массива `companies`.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит HTML элемент выпадающего списка с классом `company`.
-	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
-	 *    - Создает элемент `<option>` с помощью функции `createOption`.
-	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
-	 *
-	 * @returns {void}
-	 */
-	const drawSelectCompanies = () => {
-		const select = document.querySelector('.company');
-		companies.forEach((elem) => {
-			select.appendChild(createOption(elem.firm));
-		});
-	};
-	/**
-	 * Функция для заполнения выпадающего списка значениями из массива `firmLocations`.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит HTML элемент выпадающего списка с классом `location`.
-	 * 2. Проходит по каждому элементу массива `classCranes` и для каждого элемента:
-	 *    - Создает элемент `<option>` с помощью функции `createOption`.
-	 *    - Добавляет созданный элемент `<option>` в выпадающий список.
-	 *
-	 * @returns {void}
-	 */
-	const drawSelectFirmLocations = () => {
-		const select = document.querySelector('.location');
-		firmLocations.forEach((elem) => {
-			select.appendChild(createOption(elem.name));
-		});
+	const drawGeneralSelect = (name, array, key) => {
+		const select = document.querySelector(`.${name}`);
+		array.forEach((elem) => select.appendChild(createOption(elem[key])));
 	};
 	/**
 	 * Функция для отрисовки таблицы с данными из объекта `cranes`.
@@ -375,17 +315,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 *
 	 * @returns {void}
 	 */
-	const drawCraneDatalist = (window, data)  => {
+	const drawCraneDatalist = (window, data) => {
 		const list = window.querySelector('.craneData__list');
 		list.innerText = '';
 		for (let index = 0; index < 11; index++) {
-			if (data[index]){
-				if (index < 10) list.appendChild(createLiElement(formContent(data[index], 70), index+1));
+			if (data[index]) {
+				if (index < 10) list.appendChild(createLiElement(formContent(data[index], 70), index + 1));
 				else list.appendChild(createLiElement('Неисправностей больше 10, подробнее на странице крана', 11));
 			} else {
 				break;
 			}
-		};
+		}
 	};
 	/**
 	 * Создаёт и возвращает элемент опции (`<option>`) для выпадающего списка.
@@ -520,7 +460,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			row.addEventListener('mouseenter', (event) => {
 				timer = setTimeout(() => {
-					drawCraneDatalist(tooltip, identifiedFaults[crane.id].map((elem) => elem.possible_cause));
+					drawCraneDatalist(
+						tooltip,
+						identifiedFaults[crane.id].map((elem) => elem.possible_cause)
+					);
 					tooltip.style.left = `${event.pageX + 15}px`;
 					tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
 					tooltip.classList.remove('my-d-none');
@@ -532,7 +475,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 				if (tooltip.classList.contains('my-d-none')) {
 					timer = setTimeout(() => {
-						drawCraneDatalist(tooltip, identifiedFaults[crane.id].map((elem) => elem.possible_cause));
+						drawCraneDatalist(
+							tooltip,
+							identifiedFaults[crane.id].map((elem) => elem.possible_cause)
+						);
 						tooltip.style.left = `${event.pageX + 15}px`;
 						tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
 						tooltip.classList.remove('my-d-none');
@@ -577,7 +523,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		liElem.className = `craneData__list-element ${index === 11 ? 'fs-5' : 'col-6'}`;
 		liElem.innerText = `${index}) ${data}`;
 		return liElem;
-	}
+	};
 	/**
 	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
 	 *
@@ -647,73 +593,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 		);
 	};
 	/**
-	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
+	 * Функция для добавления обработчика события `change` к элементу `select` или `input`.
 	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит элемент `<select>` с классом `highways`.
-	 * 2. Добавляет обработчик события `change` на этот элемент.
-	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 * Функция выполняет следующие действия:
+	 * 1. Находит элемент в DOM с использованием класса, переданного в параметре `name`.
+	 * 2. Добавляет к этому элементу обработчик события `change`.
+	 * 3. Когда происходит изменение значения элемента, вызывается функция `filterFunc`.
 	 *
-	 * @returns {void}
-	 */
-	const addEventSelectNameHighways = () => {
-		const input = document.querySelector('.highways');
-		input.addEventListener('change', () => filterFunc());
-	};
-	/**
-	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит элемент `<select>` с классом `class-cranes`.
-	 * 2. Добавляет обработчик события `change` на этот элемент.
-	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
+	 * @param {string} name - Имя класса, используемого для поиска элемента `select` или `input` в DOM.
 	 *
 	 * @returns {void}
+	 *
+	 * @example
+	 * Пример использования:
+	 * addEventGeneralSelOrInp('dropdown');
+	 * Когда значение элемента с классом 'dropdown' изменится, будет вызвана функция filterFunc.
 	 */
-	const addEventSelectClassCranes = () => {
-		const input = document.querySelector('.class-cranes');
-		input.addEventListener('change', () => filterFunc());
-	};
-	/**
-	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит элемент `<select>` с классом `type-cranes`.
-	 * 2. Добавляет обработчик события `change` на этот элемент.
-	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
-	 *
-	 * @returns {void}
-	 */
-	const addEventSelectTypeCranes = () => {
-		const input = document.querySelector('.type-cranes');
-		input.addEventListener('change', () => filterFunc());
-	};
-	/**
-	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит элемент `<select>` с классом `company`.
-	 * 2. Добавляет обработчик события `change` на этот элемент.
-	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
-	 *
-	 * @returns {void}
-	 */
-	const addEventSelectCompanies = () => {
-		const input = document.querySelector('.company');
-		input.addEventListener('change', () => filterFunc());
-	};
-	/**
-	 * Добавляет обработчик события изменения выбора для элемента `<select>`, чтобы вызывать функцию фильтрации.
-	 *
-	 * Функция выполняет следующие шаги:
-	 * 1. Находит элемент `<select>` с классом `location`.
-	 * 2. Добавляет обработчик события `change` на этот элемент.
-	 * 3. При изменении выбора вызывает функцию `filterFunc()`, которая выполняет действия по фильтрации данных.
-	 *
-	 * @returns {void}
-	 */
-	const addEventSelectFirmLocations = () => {
-		const input = document.querySelector('.location');
+	const addEventGeneralSelOrInp = (name) => {
+		const input = document.querySelector(`.${name}`);
 		input.addEventListener('change', () => filterFunc());
 	};
 	/**
@@ -751,11 +648,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (+input.value < 10 || +input.value > 250) {
 				maxValue = 15;
 				clearTimeout(timerTo);
-				timerTo = setTimeout(() => {input.value = 15;}, 3000);
+				timerTo = setTimeout(() => {
+					input.value = 15;
+				}, 3000);
 			} else {
 				clearTimeout(timerTo);
 				maxValue = +input.value;
-			};
+			}
 			filterFunc();
 		});
 	};
@@ -1036,14 +935,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 		// Извлечение данных строк
 		document.querySelectorAll('.t-row').forEach((row) => {
 			let rowData = [];
-			row.querySelectorAll('p.column.th.text-center').forEach(col => rowData.push(col.textContent.trim()));
+			row.querySelectorAll('p.column.th.text-center').forEach((col) => rowData.push(col.textContent.trim()));
 			if (rowData.length > 0) data.push(rowData);
 		});
 
 		// Создание Excel-книги и листа
 		const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
 		const workbook = XLSX.utils.book_new();
-		XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+		XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
 
 		// Генерация и скачивание Excel-файла
 		XLSX.writeFile(workbook, 'cranes_P-VK.xlsx');
@@ -1063,7 +962,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 		btn.addEventListener('click', () => exportTableToExcel());
 	};
 
-
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
 	let maxValue = 15;
 	let numberPage = 0;
@@ -1077,21 +975,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const firmLocations = await getAllLocations();
 	const identifiedFaults = await getIdentifiedFaults();
 	drawSelectAffiliation();
-	drawSelectHigways();
-	drawSelectClassCranes();
-	drawSelectTypeCranes();
-	drawSelectCompanies();
-	drawSelectFirmLocations();
+	const tempArray = [
+		{
+			name: 'highways',
+			array: highways,
+			key: 'name',
+		},
+		{
+			name: 'class-cranes',
+			array: classCranes,
+			key: 'name',
+		},
+		{
+			name: 'type-cranes',
+			array: typeCranes,
+			key: 'name',
+		},
+		{
+			name: 'company',
+			array: companies,
+			key: 'firm',
+		},
+		{
+			name: 'location',
+			array: firmLocations,
+			key: 'name',
+		},
+	];
+
+	tempArray.forEach((obj) => drawGeneralSelect(obj.name, obj.array, obj.key));
+	// tempArray.forEach((obj) => drawGeneralSelect(...Object.values(obj))); // Так тоже можно, но лишний раз будем пробегаться по всему объекту
+
 	filterFunc();
 	addEventSelectChoiceChange();
 	addEventSelectAffiliationChange();
 	addEventInputNumberChang();
-	addEventSelectNameHighways();
-	addEventSelectClassCranes();
-	addEventSelectTypeCranes();
 	addEventInputDiameterChang();
-	addEventSelectCompanies();
-	addEventSelectFirmLocations();
+
+	tempArray.forEach((obj) => addEventGeneralSelOrInp(obj.name));
+
 	addEventSelectIdentifiedFaults();
 	addEventBtnToExcel();
 	addEventInputCountCranes();

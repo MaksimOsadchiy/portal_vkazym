@@ -53,13 +53,13 @@
             <div class="management d-flex flex-column row-gap-4 col-7 p-3">
                 <div class="d-flex flex-row justify-content-between col-12">
                     <div class="d-flex flex-row column-gap-2 col-4">
-                        <p class="col-6 align-self-center text-end">Состояние крана</p>
-                        <select class="form-select align-self-center choice" aria-label="Default select example">
-                            <option value="-1" selected>Все краны</option>
-                            <option value="2">Дефективные краны</option>
-                            <option value="1">Работающие  краны</option>
-                            <option value="0">Неработающие  краны</option>
-                        </select>
+						<p class="col-6 align-self-center text-end">Состояние крана</p>
+						<select class="form-select align-self-center choice" aria-label="Default select example">
+							<option value="-1" selected>Все краны</option>
+							<option value="2">Дефективные краны</option>
+							<option value="1">Работающие  краны</option>
+							<option value="0">Неработающие  краны</option>
+						</select>
                     </div>
                     <div class="d-flex flex-row column-gap-2 col-4">
                         <p class="col-6 align-self-center text-end">Крановый  узел</p>

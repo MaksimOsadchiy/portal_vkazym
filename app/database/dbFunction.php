@@ -1,11 +1,12 @@
 <?php
-$sessionLifetime = 7; // 1 час
+$sessionLifetime = 60 * 60; // 1 час
 session_start();
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $sessionLifetime)) {
     // Если прошло больше времени, чем задано, очищаем и уничтожаем сессию
-    session_unset();
-    session_destroy();
+    session_unset(); // Удаляем все переменные сессии
+    session_destroy(); // Уничтожаем сессию
     session_start(); // Начинаем новую сессию после уничтожения предыдущей
+	session_regenerate_id(true); // Создаем новый идентификатор сессии и удаляем старый
 }
 require('connect.php');
 

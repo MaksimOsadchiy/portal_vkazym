@@ -3,11 +3,14 @@
     include 'app/database/dbFunction.php';
     include 'app/controllers/technique_back.php';
 
+    //Если в $_SESSION нет поля ID, то перенаправление на страницу авторизации
     if (!isset($_SESSION['id'])) {
         header("Location:" . BASE_URL . "log.php");
         exit();
     };
-
+    // Если в $_SESSION в 1 строке массива роль не равна 2 (админ),
+    // то ищем эл. массива, где есть "technique" в поле name и смотрим привилегию
+    // если привилегия меньше 1, то перенаправление на страницу авторизации
     if ($_SESSION['accessibility'][0]['id_role'] !== 2) {
         $filtered = array_filter($_SESSION['accessibility'], function ($item) {
             return $item['name'] === "technique";
@@ -17,7 +20,6 @@
             exit();
         };
     };
-
     $pageTitle = "Свободная техника";
 ?>
 

@@ -6,7 +6,6 @@
 		header("Location:" . BASE_URL . "log.php");
 		exit();
 	};
-
 	$pageTitle = "Главная";
 	$all_links = selectAllRes('links');
 	$all_modules = selectAllRes('portal_modules');

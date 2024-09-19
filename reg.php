@@ -55,7 +55,7 @@
 			<div class="mb-3 col-12 col-md-4">
 				<label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
 				<input type="password" name="first_password" class="form-control" id="exampleInputPassword1"
-					placeholder="Не менее 8-ми символов">
+					placeholder="Не менее 10-ми символов">
 			</div>
 			<div class="w100"></div>
 			<div class="mb-3 col-12 col-md-4">

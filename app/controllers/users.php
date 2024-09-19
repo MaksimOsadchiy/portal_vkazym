@@ -18,7 +18,7 @@ function userAuph($user){
 	};
 };
 
-$pattern_for_pass = '/^[a-zA-Z]{2}\.[a-zA-Z0-9]+$/';
+$pattern_for_pass = '/^[a-zA-Z]{3}\.[a-zA-Z0-9]+$/';
 $errMsg = '';
 //Код для формы регистрации
 if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
 		$errMsg = 'Не все поля заполнены';
 	} elseif (!preg_match($pattern_for_pass, $login)) {
 		$errMsg = "Логин должен соответствовать формату ii.ivanov т.е. 2 символа(инициалы), точка, фамилия";
-	} elseif (mb_strlen($password, encoding: 'UTF8') < 8) {
-		$errMsg = "Пароль должен быть не менее 8 символов";
+	} elseif (mb_strlen($password, encoding: 'UTF8') < 10) {
+		$errMsg = "Пароль должен быть не менее 10 символов";
 	} elseif ($second_password !== $password) {
 		$errMsg = "Пароли не совпадают";
 	} else {

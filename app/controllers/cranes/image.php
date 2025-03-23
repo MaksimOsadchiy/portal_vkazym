@@ -1,6 +1,7 @@
 <?php
 
 include_once("../../database/dbFunction.php");
+include_once("../../../path.php");
 
 if (isset($_SESSION['id'])) {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -31,7 +32,7 @@ if (isset($_SESSION['id'])) {
         $targetFilePath = $targetDir . $newFileName;
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-            $str = "http://localhost/portal_vkazym/app/assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/img/{$newFileName}";
+            $str = BASE_URL . "app/assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/img/{$newFileName}";
             $params = [
                 'photo_url' => $str,
                 'id_fitting' => $id,

@@ -139,9 +139,14 @@
                             <input type="number" class="form-control input-count-cranes" value="15" min="10" max="250">
                         </div>
                     </div>
-                    <div class="d-flex flex-row column-gap-2 col-4">
+                    <div class="d-flex flex-row column-gap-2 col-2">
                         <div class="input-group align-self-center input-group-sm">
                             <button id="btnToExcel" class="btnToExcel btn btn-secondary">Сформировать excel</button>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row column-gap-2 col-2">
+                        <div class="input-group align-self-center input-group-sm">
+                            <button id="btnToAddCrane" class="btnToAddCrane btn btn-success">Добавить кран</button>
                         </div>
                     </div>
                 </div>
@@ -170,6 +175,18 @@
             <div class="table-pages d-flex flex-row justify-content-center column-gap-3"></div>
         </div>
     </section>
+    <div class="add-crane-popup">
+        <div class="add-crane-data">
+            <h3>Заполните обязательные поля</h3>
+            <div class="main-data">ssssss</div>
+            <div class="control-buttons">
+                <button class="btn btn-secondary">Добавить</button>
+                <button class="btn btn-success">Добавить и перейти к крану</button>
+                <button class="btn btn-secondary" disabled>Загрузить excel</button>
+                <button class="btn btn-danger">Отмена</button>
+            </div>
+        </div>
+    </div>
 	<div class="craneData d-flex my-d-none flex-column row-gap-2 p-2">
 		<p class="craneData__title text-center">Неисправности</p>
         <ul class="craneData__list d-flex flex-row flex-wrap row-gap-2">

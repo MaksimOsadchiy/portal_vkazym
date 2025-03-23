@@ -28,8 +28,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
+		}
+	};
+	/** some documentation */
+	const postCrane = async (data) => {
+		try {
+			const response = await fetch(`${SERVER_URL}cranes/temp.php`, {
+				method: 'POST',
+				body: data,
+			});
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Кран добавлен!' })
+			);
+			console.log(jsonResponse);
+		} catch (error) {
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 		}
 	};
 	/**
@@ -57,7 +79,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -80,13 +104,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const getAllClassCranes = async () => {
 		try {
-			const response = await fetch(`${SERVER_URL}/cranes/classCranes.php`);
+			const response = await fetch(
+				`${SERVER_URL}/cranes/classCranes.php`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -115,7 +143,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -144,7 +174,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -167,13 +199,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const getAllLocations = async () => {
 		try {
-			const response = await fetch(`${SERVER_URL}/cranes/firmLocations.php`);
+			const response = await fetch(
+				`${SERVER_URL}/cranes/firmLocations.php`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -196,13 +232,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const getIdentifiedFaults = async () => {
 		try {
-			const response = await fetch(`${SERVER_URL}/cranes/allIdentifiedFaults.php`);
+			const response = await fetch(
+				`${SERVER_URL}/cranes/allIdentifiedFaults.php`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -265,11 +305,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 		for (const section in cranes) {
 			if (cranes[section].length) {
 				tbody.appendChild(createSection(section));
-				cranes[section].forEach((crane) => tbody.appendChild(createRow(crane)));
+				cranes[section].forEach((crane) =>
+					tbody.appendChild(createRow(crane))
+				);
 			}
 		}
 		const allRow = tbody.querySelectorAll('.t-row');
-		allRow.forEach((row, index) => (row.querySelector('.column').innerText = index + 1 + numberPage * maxValue));
+		allRow.forEach(
+			(row, index) =>
+				(row.querySelector('.column').innerText =
+					index + 1 + numberPage * maxValue)
+		);
 	};
 	/**
 	 * Создаёт и отображает кнопки для переключения между страницами таблицы.
@@ -320,8 +366,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 		list.innerText = '';
 		for (let index = 0; index < 11; index++) {
 			if (data[index]) {
-				if (index < 10) list.appendChild(createLiElement(formContent(data[index], 70), index + 1));
-				else list.appendChild(createLiElement('Неисправностей больше 10, подробнее на странице крана', 11));
+				if (index < 10)
+					list.appendChild(
+						createLiElement(formContent(data[index], 70), index + 1)
+					);
+				else
+					list.appendChild(
+						createLiElement(
+							'Неисправностей больше 10, подробнее на странице крана',
+							11
+						)
+					);
 			} else {
 				break;
 			}
@@ -446,11 +501,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 		company.innerText = crane.company;
 		f_manufacture.innerText = crane.f_manufacture;
 		DN.innerText = crane.DN;
-		generalDescription.innerText = crane.general_description ? crane.general_description : 'Не указано';
+		generalDescription.innerText = crane.general_description
+			? crane.general_description
+			: 'Не указано';
 		drainage.innerText = crane.drainage ? crane.drainage : 'Не указано';
 		pipelines.innerText = crane.pipelines ? crane.pipelines : 'Не указано';
-		replacement.innerText = crane.replacement ? crane.replacement : 'Не указано';
-		act_leakage.innerText = crane.act_leakage ? crane.act_leakage : 'Не указано';
+		replacement.innerText = crane.replacement
+			? crane.replacement
+			: 'Не указано';
+		act_leakage.innerText = crane.act_leakage
+			? crane.act_leakage
+			: 'Не указано';
 
 		const select = document.querySelector('.choice-identified_faults');
 		if (select.value != -1) {
@@ -462,10 +523,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 				timer = setTimeout(() => {
 					drawCraneDatalist(
 						tooltip,
-						identifiedFaults[crane.id].map((elem) => elem.possible_cause)
+						identifiedFaults[crane.id].map(
+							(elem) => elem.possible_cause
+						)
 					);
 					tooltip.style.left = `${event.pageX + 15}px`;
-					tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
+					tooltip.style.top = `calc(${event.pageY}px - ${
+						tooltip.offsetHeight / 1.8
+					}px)`;
 					tooltip.classList.remove('my-d-none');
 				}, 450);
 			});
@@ -477,16 +542,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 					timer = setTimeout(() => {
 						drawCraneDatalist(
 							tooltip,
-							identifiedFaults[crane.id].map((elem) => elem.possible_cause)
+							identifiedFaults[crane.id].map(
+								(elem) => elem.possible_cause
+							)
 						);
 						tooltip.style.left = `${event.pageX + 15}px`;
-						tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
+						tooltip.style.top = `calc(${event.pageY}px - ${
+							tooltip.offsetHeight / 1.8
+						}px)`;
 						tooltip.classList.remove('my-d-none');
 					}, 250);
 				} else {
 					secTimer = setTimeout(() => {
 						tooltip.style.left = `${event.pageX + 15}px`;
-						tooltip.style.top = `calc(${event.pageY}px - ${tooltip.offsetHeight / 1.8}px)`;
+						tooltip.style.top = `calc(${event.pageY}px - ${
+							tooltip.offsetHeight / 1.8
+						}px)`;
 					}, 100);
 				}
 			});
@@ -494,7 +565,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 			row.addEventListener('mouseleave', () => {
 				clearTimeout(timer);
 				clearTimeout(secTimer);
-				!tooltip.classList.contains('my-d-none') && tooltip.classList.add('my-d-none');
+				!tooltip.classList.contains('my-d-none') &&
+					tooltip.classList.add('my-d-none');
 				tooltip.style.top = '';
 				tooltip.style.left = '';
 			});
@@ -520,7 +592,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const createLiElement = (data, index) => {
 		const liElem = document.createElement('li');
-		liElem.className = `craneData__list-element ${index === 11 ? 'fs-5' : 'col-6'}`;
+		liElem.className = `craneData__list-element ${
+			index === 11 ? 'fs-5' : 'col-6'
+		}`;
 		liElem.innerText = `${index}) ${data}`;
 		return liElem;
 	};
@@ -678,7 +752,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 * @returns {void}
 	 */
 	const addEventColumnClick = (name) => {
-		const headTable = document.querySelector('.thead').querySelector('.t-row');
+		const headTable = document
+			.querySelector('.thead')
+			.querySelector('.t-row');
 		const sortElem = document.querySelector(`.column-${name}`);
 		sortElem.classList.add('pointer');
 		sortElem.addEventListener('click', () => {
@@ -713,7 +789,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const addEventRowClick = (row) => {
 		row.addEventListener('click', () => {
-			window.location.href = `${BASE_URL}oneCrane.php?id=${+row.getAttribute('value')}`;
+			window.location.href = `${BASE_URL}oneCrane.php?id=${+row.getAttribute(
+				'value'
+			)}`;
 		});
 	};
 	/**
@@ -741,57 +819,88 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const inputDiameterMax = document.querySelector('.input-diameter-max');
 		const selectCompanies = document.querySelector('.company');
 		const selectFirmLocations = document.querySelector('.location');
-		const selectIdentifiedFaults = document.querySelector('.choice-identified_faults');
+		const selectIdentifiedFaults = document.querySelector(
+			'.choice-identified_faults'
+		);
 
 		let filterCranes = JSON.parse(JSON.stringify(cranes));
 		if (+selectChoice.value >= 0) {
 			for (const key in filterCranes) {
-				filterCranes[key] = filterCranes[key].filter((item) => item.result === +selectChoice.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) => item.result === +selectChoice.value
+				);
 			}
 		}
 		if (selectAffiliation.value != -1) {
-			filterCranes = { [selectAffiliation.value]: filterCranes[selectAffiliation.value] };
+			filterCranes = {
+				[selectAffiliation.value]:
+					filterCranes[selectAffiliation.value],
+			};
 		}
 		if (selectHighways.value != -1) {
 			for (const key in filterCranes) {
-				filterCranes[key] = filterCranes[key].filter((item) => item.highways === selectHighways.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) => item.highways === selectHighways.value
+				);
 			}
 		}
 		if (selectClassCranes.value != -1) {
 			for (const key in filterCranes) {
-				filterCranes[key] = filterCranes[key].filter((item) => item.crane_class.split(', ')[0] === selectClassCranes.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) =>
+						item.crane_class.split(', ')[0] ===
+						selectClassCranes.value
+				);
 			}
 		}
 		if (selectTypeCranes.value != -1) {
 			for (const key in filterCranes) {
-				filterCranes[key] = filterCranes[key].filter((item) => item.crane_class.split(', ')[1] === selectTypeCranes.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) =>
+						item.crane_class.split(', ')[1] ===
+						selectTypeCranes.value
+				);
 			}
 		}
 		if (inputNumber.value.trim()) {
 			for (const key in filterCranes) {
 				// filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.includes(inputNumber.value)); // Так мы просто проверяем является ли введённая строка подстрокой
-				filterCranes[key] = filterCranes[key].filter((item) => item.technical_number.startsWith(inputNumber.value)); // Так мы проверяем является ли введённая строка началом главной строки
+				filterCranes[key] = filterCranes[key].filter((item) =>
+					item.technical_number.startsWith(inputNumber.value)
+				); // Так мы проверяем является ли введённая строка началом главной строки
 			}
 		}
 		if (inputDiameterMin.value.trim()) {
 			for (const key in filterCranes) {
-				filterCranes[key] = filterCranes[key].filter((item) => item.DN >= inputDiameterMin.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) => item.DN >= inputDiameterMin.value
+				);
 			}
 		}
 		if (inputDiameterMax.value.trim()) {
 			for (const key in filterCranes) {
-				filterCranes[key] = filterCranes[key].filter((item) => item.DN <= inputDiameterMax.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) => item.DN <= inputDiameterMax.value
+				);
 			}
 		}
 		if (selectCompanies.value != -1) {
 			for (const key in filterCranes) {
-				filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ')[0] === selectCompanies.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) =>
+						item.company.split(', ')[0] === selectCompanies.value
+				);
 			}
 		}
 		if (selectFirmLocations.value != -1) {
 			for (const key in filterCranes) {
 				// filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ')[1] === selectFirmLocations.value); // Можно и так, всё работает, но идёт сравнение с undefined
-				filterCranes[key] = filterCranes[key].filter((item) => item.company.split(', ').length > 1 && item.company.split(', ')[1] === selectFirmLocations.value);
+				filterCranes[key] = filterCranes[key].filter(
+					(item) =>
+						item.company.split(', ').length > 1 &&
+						item.company.split(', ')[1] ===
+							selectFirmLocations.value
+				);
 			}
 		}
 		if (selectIdentifiedFaults.value != -1) {
@@ -859,14 +968,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (sortElem.classList.contains('aToB')) {
 				for (const key in filterCranes) {
 					filterCranes[key].sort((a, b) => {
-						if (typeof a[globalName] === 'string') return a[globalName].length - b[globalName].length;
+						if (typeof a[globalName] === 'string')
+							return a[globalName].length - b[globalName].length;
 						return a[globalName] - b[globalName];
 					});
 				}
 			} else if (sortElem.classList.contains('bToA')) {
 				for (const key in filterCranes) {
 					filterCranes[key].sort((a, b) => {
-						if (typeof a[globalName] === 'string') return b[globalName].length - a[globalName].length;
+						if (typeof a[globalName] === 'string')
+							return b[globalName].length - a[globalName].length;
 						return b[globalName] - a[globalName];
 					});
 				}
@@ -905,9 +1016,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventBtnNumberPagesClick = (btn) => {
 		btn.addEventListener('click', () => {
 			const allBtn = btn.parentNode.querySelectorAll('button');
-			allBtn.forEach((elem) => elem !== btn && elem.classList.remove('currentPage'));
+			allBtn.forEach(
+				(elem) => elem !== btn && elem.classList.remove('currentPage')
+			);
 			numberPage = +btn.textContent - 1;
-			!btn.classList.contains('currentPage') && btn.classList.add('currentPage');
+			!btn.classList.contains('currentPage') &&
+				btn.classList.add('currentPage');
 			drawTable(globalList[numberPage]);
 		});
 	};
@@ -930,12 +1044,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 		let data = [];
 
 		// Извлечение заголовков
-		document.querySelectorAll('.table-cranes .thead p.column.th').forEach((element) => headers.push(element.textContent.trim()));
+		document
+			.querySelectorAll('.table-cranes .thead p.column.th')
+			.forEach((element) => headers.push(element.textContent.trim()));
 
 		// Извлечение данных строк
 		document.querySelectorAll('.t-row').forEach((row) => {
 			let rowData = [];
-			row.querySelectorAll('p.column.th.text-center').forEach((col) => rowData.push(col.textContent.trim()));
+			row.querySelectorAll('p.column.th.text-center').forEach((col) =>
+				rowData.push(col.textContent.trim())
+			);
 			if (rowData.length > 0) data.push(rowData);
 		});
 
@@ -960,6 +1078,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventBtnToExcel = () => {
 		const btn = document.querySelector('.btnToExcel');
 		btn.addEventListener('click', () => exportTableToExcel());
+	};
+	/** some documentation */
+	const addEventPopup = () => {
+		const popupBg = document.querySelector('.add-crane-popup');
+		const popup = document.querySelector('.add-crane-data');
+		const closeBtn = popup.querySelector('.btn-danger');
+		popupBg.addEventListener('click', () => showAddDataCranePopup());
+		closeBtn.addEventListener('click', () => showAddDataCranePopup());
+		popup.addEventListener('click', (e) => e.stopPropagation());
+	};
+	/** some documentation */
+	const showAddDataCranePopup = () => {
+		const popup = document.querySelector('.add-crane-popup');
+		popup.classList.toggle('show-popup');
+		if (popup.classList.contains('show-popup')) {
+			document.body.style.overflowY = 'hidden';
+		} else {
+			document.body.style.overflowY = 'auto';
+		}
+	};
+	/** some documentation */
+	const addEventBtnToAddCrane = () => {
+		const btn = document.querySelector('.btnToAddCrane');
+		btn.addEventListener('click', () => showAddDataCranePopup());
 	};
 
 	// Основной блок кода, который выполняет начальные операции при загрузке скрипта.
@@ -1016,6 +1158,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	addEventSelectIdentifiedFaults();
 	addEventBtnToExcel();
+	addEventPopup();
+	addEventBtnToAddCrane();
 	addEventInputCountCranes();
 	['highways', 'location', 'DN'].forEach((elem) => addEventColumnClick(elem));
 });

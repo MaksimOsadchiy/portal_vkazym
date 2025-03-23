@@ -1,6 +1,7 @@
 <?php
 
 include_once("../../database/dbFunction.php");
+include_once("../../../path.php");
 
 if (isset($_SESSION['id'])) {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -30,7 +31,7 @@ if (isset($_SESSION['id'])) {
             http_response_code(400);
             echo json_encode(['status' => 'Файл с таким именем уже существует!']);
         } else if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-            $str = "http://localhost/portal_vkazym/app/assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/documents/{$fileName}";
+            $str = BASE_URL . "app/assets/crane_data/{$highway}/{$craneClass}_{$location}_{$number}/documents/{$fileName}";
             $params = [
                 'document_url' => $str,
                 'id_fitting' => $id,

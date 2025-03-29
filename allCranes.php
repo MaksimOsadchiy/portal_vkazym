@@ -178,7 +178,79 @@
     <div class="add-crane-popup">
         <div class="add-crane-data">
             <h3>Заполните обязательные поля</h3>
-            <div class="main-data">ssssss</div>
+            <div class="main-data">
+                <div class="my-row">
+                    <select name="" id="">
+                        <option value="">Газопровод</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Класс крана</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Тип крана</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Местонахождение(км)</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Технологический номер</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Завод изготовитель</option>
+                    </select>
+                </div>
+                <div class="my-row">
+                    <select name="" id="">
+                        <option value="">Год изготовления</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Заводской номер</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Dn(мм)</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">ИУС</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Объединение кранов</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Тип арматуры</option>
+                    </select>
+                </div>
+                <div class="my-row">
+                    <select name="" id="">
+                        <option value="">Давление</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Вид исполнения</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Ввод в эксплуатацию</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Плановая замена</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Тип привода</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Завод изготовитель</option>
+                    </select>
+                </div>
+                <div class="my-row">
+                    <select name="" id="">
+                        <option value="">Заводской номер</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Liquid?</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Ввод в эксплуатацию</option>
+                    </select>
+                </div>
+            </div>
             <div class="control-buttons">
                 <button class="btn btn-secondary">Добавить</button>
                 <button class="btn btn-success">Добавить и перейти к крану</button>

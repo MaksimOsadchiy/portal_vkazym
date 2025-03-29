@@ -4,7 +4,55 @@
 include_once("../../database/dbFunction.php");
 
 if (isset($_SESSION['id'])) {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // вначале создать привод INSERT INTO `drives` (`id`, `type_drive`, `company`, `factory_number`, `liquid`, `year_commission`) VALUES (NULL, 'Пневматический', 'JSW', NULL, NULL, '2004');
+        // потом взять ID созданного привода и добавить в запрос по созданию крана
+        // пример запроса создания крана INSERT INTO `fittings` (`id`, `name_highways`, `crane_class`, `name_crane`, `location_crane`, `technical_number`, `company`, `year_manufacture`, `factory_number`, `Dn`, `id_malfunction`, `plan_replacement`, `IUS`, `unification_crane`, `type_reinforcement`, `pressure`, `execution`, `year_commission`, `id_drive`, `classification_installation`)
+        //                                               VALUES (NULL, 'СРТО-Урал', 'Перемычка', 'Обводной', '777', '777-1', 'JSW', '2025', NULL, '300', NULL, NULL, '412', '537 КрУ', 'Шаровой', '69', 'Подземное', '2004', '563', NULL); 
+        if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
+            $requestBody = file_get_contents('php://input');
+            $data = json_decode($requestBody, true);
+            $requiredKeys = ["name_highways", "crane_class", "name_crane", "location_crane", "technical_number", "company", "year_manufacture", "Dn", "IUS", "unification_crane", "type_reinforcement", "pressure", "execution", "year_commission", "type_drive_d", "company_d", "year_commission_d"];
+            $missingKeys = array_diff($requiredKeys, array_keys($data));
+            $allParams = [];
+            if (empty($missingKeys)) {
+                // Обязательные ключи присутствуют
+                $allParams = array_intersect_key($data, array_flip($requiredKeys));
+                $optionalKeys = ["factory_number", "id_malfunction", "plan_replacement", "classification_installation", "factory_number_d", "liquid_d"];
+                $allParams += array_intersect_key($data, array_flip($optionalKeys));
+                $driveParams = [];
+                foreach ($allParams as $key => $value) {
+                    if (str_ends_with($key, "_d")) {
+                        // Добавляем значение в driveParams без "_d"
+                        $newKey = substr($key, 0, -2);
+                        $driveParams[$newKey] = $value;
+                    }
+                }
+                $table = 'drives';
+                $response = insertRes($table, $driveParams);
+                if (!empty($response)) {
+                    $fittingsParams = array_filter($allParams, function ($key) {
+                        return !str_ends_with($key, "_d");
+                    }, ARRAY_FILTER_USE_KEY);
+                    $fittingsParams["id_drive"] = $response;
+                    $table = 'fittings';
+                    $response = insertRes($table, $fittingsParams);
+                    echo json_encode($response);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(["status" => "Не удалось создать запись в таблице $table"]);
+                }
+            } else {
+                http_response_code(400);
+                echo json_encode(["status" => "Отсутствуют ключи", "missing_keys" => array_values($missingKeys)]);
+            }
+         } else {
+            http_response_code(403);
+            echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
+        };
+        return;
+
+    } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $id = $_GET['id'];
         $response = selectOneCranes($id);
         $mainInfo = [

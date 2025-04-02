@@ -31,6 +31,9 @@ if (isset($_SESSION['id'])) {
 
         $table = 'liquids';
         $liquids = (selectAllRes($table));
+        
+        $table = 'unification_cranes';
+        $unification_cranes = (selectAllRes($table));
 
         $keyWord = [['name' => 'Ввести свое значение']];
 
@@ -53,6 +56,7 @@ if (isset($_SESSION['id'])) {
             'f_commission' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
             'drive_factory_number' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
             'liquid' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $liquids),
+            'unification_crane' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $unification_cranes),
             'drive_year_commission' => array_map(fn($object) => ['key' => $object['name'], 'name' => $object['name']], $keyWord),
         ];
 

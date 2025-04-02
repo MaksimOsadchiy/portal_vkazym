@@ -36,15 +36,21 @@ if (isset($_SESSION['id'])) {
                     }, ARRAY_FILTER_USE_KEY);
                     $fittingsParams["id_drive"] = $response;
                     $table = 'fittings';
-                    $response = insertRes($table, $fittingsParams);
-                    echo json_encode($response);
+                    try {
+                        $response = insertRes($table, $fittingsParams);
+                        echo json_encode($response);
+                    } catch (PDOException $e) {
+                        $table = 'drives';
+                        $id = $fittingsParams['id_drive'];
+                        $response = deleteRes($table, $id);
+                    }
                 } else {
                     http_response_code(500);
-                    echo json_encode(["status" => "Не удалось создать запись в таблице $table"]);
+                    echo json_encode(["status" => "Не удалось создать привод!"]);
                 }
             } else {
                 http_response_code(400);
-                echo json_encode(["status" => "Отсутствуют ключи", "missing_keys" => array_values($missingKeys)]);
+                echo json_encode(["status" => "Отсутствуют обязательные поля", "missing_keys" => array_values($missingKeys)]);
             }
          } else {
             http_response_code(403);

@@ -1080,25 +1080,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 		btn.addEventListener('click', () => exportTableToExcel());
 	};
 	/** some documentation */
-	const addEventPopup = () => {
-		const popupBg = document.querySelector('.add-crane-popup');
-		const popup = document.querySelector('.add-crane-data');
-		const closeBtn = popup.querySelector('.btn-danger');
-		popupBg.addEventListener('click', () => showAddDataCranePopup());
-		closeBtn.addEventListener('click', () => showAddDataCranePopup());
-		popup.addEventListener('click', (e) => e.stopPropagation());
-	};
-	/** some documentation */
-	const showAddDataCranePopup = () => {
-		const popup = document.querySelector('.add-crane-popup');
-		popup.classList.toggle('show-popup');
-		if (popup.classList.contains('show-popup')) {
-			document.body.style.overflowY = 'hidden';
-		} else {
-			document.body.style.overflowY = 'auto';
-		}
-	};
-	/** some documentation */
 	const addEventBtnToAddCrane = () => {
 		const btn = document.querySelector('.btnToAddCrane');
 		btn.addEventListener('click', () => showAddDataCranePopup());
@@ -1158,7 +1139,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	addEventSelectIdentifiedFaults();
 	addEventBtnToExcel();
-	addEventPopup();
 	addEventBtnToAddCrane();
 	addEventInputCountCranes();
 	['highways', 'location', 'DN'].forEach((elem) => addEventColumnClick(elem));

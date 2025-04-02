@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' & isset($_POST['button-reg'])) {
 	if ($login === '' || $password === '' || $second_password === '') {
 		$errMsg = 'Не все поля заполнены';
 	} elseif (!preg_match($pattern_for_pass, $login)) {
-		$errMsg = "Логин должен соответствовать формату ii.ivanov т.е. 2 символа(инициалы), точка, фамилия";
+		$errMsg = "Логин должен соответствовать формату iii.ivanov т.е. 3 символа(инициалы), точка, фамилия";
 	} elseif (mb_strlen($password, encoding: 'UTF8') < 10) {
 		$errMsg = "Пароль должен быть не менее 10 символов";
 	} elseif ($second_password !== $password) {

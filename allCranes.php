@@ -146,7 +146,7 @@
                     </div>
                     <div class="d-flex flex-row column-gap-2 col-2">
                         <div class="input-group align-self-center input-group-sm">
-                            <button id="btnToAddCrane" class="btnToAddCrane btn btn-success">Добавить кран</button>
+                            <a href="<?=BASE_URL?>addCrane.php" id="btnToAddCrane" class="btnToAddCrane btn btn-success">Добавить кран</a>
                         </div>
                     </div>
                 </div>
@@ -175,90 +175,6 @@
             <div class="table-pages d-flex flex-row justify-content-center column-gap-3"></div>
         </div>
     </section>
-    <div class="add-crane-popup">
-        <div class="add-crane-data">
-            <h3>Заполните обязательные поля</h3>
-            <div class="main-data">
-                <div class="my-row">
-                    <select name="" id="">
-                        <option value="">Газопровод</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Класс крана</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Тип крана</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Местонахождение(км)</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Технологический номер</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Завод изготовитель</option>
-                    </select>
-                </div>
-                <div class="my-row">
-                    <select name="" id="">
-                        <option value="">Год изготовления</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Заводской номер</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Dn(мм)</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">ИУС</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Объединение кранов</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Тип арматуры</option>
-                    </select>
-                </div>
-                <div class="my-row">
-                    <select name="" id="">
-                        <option value="">Давление</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Вид исполнения</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Ввод в эксплуатацию</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Плановая замена</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Тип привода</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Завод изготовитель</option>
-                    </select>
-                </div>
-                <div class="my-row">
-                    <select name="" id="">
-                        <option value="">Заводской номер</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Liquid?</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">Ввод в эксплуатацию</option>
-                    </select>
-                </div>
-            </div>
-            <div class="control-buttons">
-                <button class="btn btn-secondary">Добавить</button>
-                <button class="btn btn-success">Добавить и перейти к крану</button>
-                <button class="btn btn-secondary" disabled>Загрузить excel</button>
-                <button class="btn btn-danger">Отмена</button>
-            </div>
-        </div>
-    </div>
 	<div class="craneData d-flex my-d-none flex-column row-gap-2 p-2">
 		<p class="craneData__title text-center">Неисправности</p>
         <ul class="craneData__list d-flex flex-row flex-wrap row-gap-2">

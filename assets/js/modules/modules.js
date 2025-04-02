@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return jsonResponse;
 		} catch (error) {
 			console.log(error);
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message }));
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			);
 			return [];
 		}
 	};
@@ -44,29 +46,49 @@ document.addEventListener('DOMContentLoaded', async () => {
 	 */
 	const drawApps = (modules) => {
 		const bodyTable = document.querySelector('.row-modules');
-		const pathList = new URL(window.location.href).pathname.split("/");
+		const pathList = new URL(window.location.href).pathname.split('/');
 		const namePage = pathList[pathList.length - 1];
 		let moduleName = modules.find((obj) => obj.link === namePage)?.name;
-		if (moduleName === undefined && namePage === 'oneCrane.php') moduleName = modules.find((obj) => obj.link === 'allCranes.php').name;
-		const userPrivilegeThisModule = SESSION.accessibility.find((obj) => obj.name === moduleName)?.privilege;
+		if (
+			moduleName === undefined &&
+			(namePage === 'oneCrane.php' || namePage === 'addCrane.php')
+		)
+			moduleName = modules.find(
+				(obj) => obj.link === 'allCranes.php'
+			).name;
+		const userPrivilegeThisModule = SESSION.accessibility.find(
+			(obj) => obj.name === moduleName
+		)?.privilege;
 		bodyTable.innerText = '';
 		bodyTable.appendChild(createApps('blue', 'index.php', 'Главная'));
 		if (SESSION.accessibility[0].id_role === 2) {
 			modules.forEach((value) => {
 				if (namePage === value.link) return;
 				if (moduleName !== value.name) return;
-				const row = createApps(value.color, value.link, value.description);
+				const row = createApps(
+					value.color,
+					value.link,
+					value.description
+				);
 				bodyTable.appendChild(row);
 			});
 		} else {
 			modules.forEach((value) => {
 				if (namePage === value.link) return;
 				if (moduleName !== value.name) return;
-				if (userPrivilegeThisModule < value.privilege || userPrivilegeThisModule === undefined) return;
-				const row = createApps(value.color, value.link, value.description);
+				if (
+					userPrivilegeThisModule < value.privilege ||
+					userPrivilegeThisModule === undefined
+				)
+					return;
+				const row = createApps(
+					value.color,
+					value.link,
+					value.description
+				);
 				bodyTable.appendChild(row);
 			});
-		};
+		}
 	};
 	/**
 	 * Создаёт элемент приложения с заданным стилем, ссылкой и текстом.
@@ -97,8 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		divCol3.appendChild(buttonApp);
 		return divCol3;
-	}
-
+	};
 
 	//
 	const allModules = await getMicroservices();

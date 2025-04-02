@@ -22,7 +22,8 @@ function dbCheckErrorRes($query){
     if ($errInfo[0] !== PDO::ERR_NONE) {
 		http_response_code(500);
         echo $errInfo[2];
-        exit();
+        // exit();
+        return throw new PDOException($errInfo[2]);
     };
     return true;
 };
@@ -134,9 +135,13 @@ function insertRes($table, $params){
 	$sql = "INSERT INTO $table ($coll) VALUES ($mask)";
 
 	$query = $pdo->prepare($sql);
-	$query->execute();
-	dbCheckErrorRes($query);
-	return ($pdo->lastInsertId());
+    try {
+        $query->execute();
+        dbCheckErrorRes($query);
+        return ($pdo->lastInsertId());
+    } catch (PDOException $e) {
+        dbCheckErrorRes($query);
+    }
 };
 
 //Обновление строки в таблице

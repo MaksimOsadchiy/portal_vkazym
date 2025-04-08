@@ -52,7 +52,7 @@ if (isset($_SESSION['id'])) {
                 http_response_code(400);
                 echo json_encode(["status" => "Отсутствуют обязательные поля", "missing_keys" => array_values($missingKeys)]);
             }
-         } else {
+        } else {
             http_response_code(403);
             echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
         };

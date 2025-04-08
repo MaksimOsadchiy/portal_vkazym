@@ -14,6 +14,10 @@
             header("Location:" . BASE_URL);
             exit();
         };
+        if (reset($filtered)['privilege'] < 3) {
+            header("Location:" . BASE_URL . "allCranes.php");
+            exit();
+        };
     };
 
     $pageTitle = "Добавить кран";

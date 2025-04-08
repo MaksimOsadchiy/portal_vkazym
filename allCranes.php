@@ -7,6 +7,8 @@
         exit();
     };
 
+    $canAddCrane = true;
+
     if ($_SESSION['accessibility'][0]['id_role'] !== 2) {
         $filtered = array_filter($_SESSION['accessibility'], function($item) {
             return $item['name'] === "cranes";
@@ -14,6 +16,9 @@
         if (reset($filtered)['privilege'] < 1) {
             header("Location:" . BASE_URL);
             exit();
+        };
+        if (reset($filtered)['privilege'] < 3) {
+            $canAddCrane = false;
         };
     };
 
@@ -146,7 +151,7 @@
                     </div>
                     <div class="d-flex flex-row column-gap-2 col-2">
                         <div class="input-group align-self-center input-group-sm">
-                            <a href="<?=BASE_URL?>addCrane.php" id="btnToAddCrane" class="btnToAddCrane btn btn-success">Добавить кран</a>
+                            <a href="<?= $canAddCrane ? BASE_URL . "addCrane.php" : "#"?>" id="btnToAddCrane" class="btnToAddCrane btn btn-success <?=$canAddCrane ? "" : "disabled"?>">Добавить кран</a>
                         </div>
                     </div>
                 </div>

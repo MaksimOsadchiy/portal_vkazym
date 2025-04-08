@@ -12,13 +12,13 @@ if (isset($_SESSION['id'])) {
         if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
             $requestBody = file_get_contents('php://input');
             $data = json_decode($requestBody, true);
-            $requiredKeys = ["name_highways", "crane_class", "name_crane", "location_crane", "technical_number", "company", "year_manufacture", "Dn", "IUS", "unification_crane", "type_reinforcement", "pressure", "execution", "year_commission", "type_drive_d", "company_d", "year_commission_d"];
+            $requiredKeys = ["name_highways", "crane_class", "name_crane", "location_crane", "technical_number", "company", "Dn", "type_drive_d", "company_d"];
             $missingKeys = array_diff($requiredKeys, array_keys($data));
             $allParams = [];
             if (empty($missingKeys)) {
                 // Обязательные ключи присутствуют
                 $allParams = array_intersect_key($data, array_flip($requiredKeys));
-                $optionalKeys = ["factory_number", "id_malfunction", "plan_replacement", "classification_installation", "factory_number_d", "liquid_d"];
+                $optionalKeys = ["year_manufacture", "IUS", "unification_crane", "type_reinforcement", "pressure", "execution", "year_commission", "factory_number", "id_malfunction", "plan_replacement", "classification_installation", "factory_number_d", "liquid_d", "year_commission_d"];
                 $allParams += array_intersect_key($data, array_flip($optionalKeys));
                 $driveParams = [];
                 foreach ($allParams as $key => $value) {

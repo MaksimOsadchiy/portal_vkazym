@@ -171,7 +171,7 @@ CREATE TABLE `drives` (
   `company` varchar(255) NOT NULL,
   `factory_number` varchar(127) DEFAULT NULL,
   `liquid` varchar(63) DEFAULT NULL,
-  `year_commission` year(4) NOT NULL
+  `year_commission` year(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -497,17 +497,17 @@ CREATE TABLE `fittings` (
   `location_crane` float NOT NULL,
   `technical_number` varchar(63) NOT NULL,
   `company` varchar(255) NOT NULL,
-  `year_manufacture` year(4) NOT NULL,
+  `year_manufacture` year(4) DEFAULT NULL,
   `factory_number` varchar(127) DEFAULT NULL,
   `Dn` int(11) NOT NULL,
   `id_malfunction` int(11) DEFAULT NULL,
   `plan_replacement` varchar(127) DEFAULT NULL,
-  `IUS` varchar(63) NOT NULL,
-  `unification_crane` varchar(63) NOT NULL,
-  `type_reinforcement` varchar(63) NOT NULL,
-  `pressure` int(11) NOT NULL,
-  `execution` varchar(63) NOT NULL,
-  `year_commission` year(4) NOT NULL,
+  `IUS` varchar(63) DEFAULT NULL,
+  `unification_crane` varchar(63) DEFAULT NULL,
+  `type_reinforcement` varchar(63) DEFAULT NULL,
+  `pressure` int(11) DEFAULT NULL,
+  `execution` varchar(63) DEFAULT NULL,
+  `year_commission` year(4) DEFAULT NULL,
   `id_drive` int(11) NOT NULL,
   `classification_installation` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

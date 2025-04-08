@@ -791,12 +791,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 				ius: {
 					title: 'ИУС',
 					value: '',
-					required: true,
+					required: false,
 				},
 				unification_crane: {
 					title: 'КРУ',
 					value: '',
-					required: true,
+					required: false,
 				},
 				lpumg: {
 					title: 'Наименование ЛПУМГ',
@@ -826,7 +826,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				type_reinforcement: {
 					title: 'ТИП',
 					value: '',
-					required: true,
+					required: false,
 				},
 				company: {
 					title: 'Фирма, завод изготовитель',
@@ -846,22 +846,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 				pressure: {
 					title: 'Р, кгс/см2',
 					value: null,
-					required: true,
+					required: false,
 				},
 				execution: {
 					title: 'Исполнение',
 					value: '',
-					required: true,
+					required: false,
 				},
 				f_manufacture: {
 					title: 'Год изготовления',
 					value: '',
-					required: true,
+					required: false,
 				},
 				f_commission: {
 					title: 'Дата ввода в эксплуатацию',
 					value: '',
-					required: true,
+					required: false,
 				},
 			},
 			Привод: {
@@ -888,7 +888,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				drive_year_commission: {
 					title: 'Дата ввода в эксплуатацию',
 					value: '',
-					required: true,
+					required: false,
 				},
 			},
 		},

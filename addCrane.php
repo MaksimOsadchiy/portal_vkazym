@@ -58,6 +58,7 @@
             <div class="content__body d-flex flex-column align-items-center">
                 <div class="switch d-flex flex-row column-gap-2 col-12 ps-5 mb-3">
                     <button class="btn btn-secondary take-group selected-group" disabled>Паспорт</button>
+                    <button class="btn btn-secondary take-group">Загрузить файл</button>
                 </div>
                 <p class="mb-2 fs-5">Характеристики ТПА</p>
                 <div class="table table-main-info d-flex flex-column align-items-center">

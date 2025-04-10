@@ -4,7 +4,123 @@
 include_once("../../database/dbFunction.php");
 
 if (isset($_SESSION['id'])) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
+        if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
+            // Файл загружен успешно
+            $tmpName = $_FILES['file']['tmp_name'];
+            $originalName = $_FILES['file']['name'];
+            $mimeType = $_FILES['file']['type'];
+            $size = $_FILES['file']['size'];
+   
+            // Проверка расширения
+            $allowedExtensions = ['csv'];
+            $ext = pathinfo($originalName, PATHINFO_EXTENSION);
+            
+            $requiredHeaders = ["name_highways", "crane_class", "name_crane", "location_crane", "technical_number", "company", "Dn", "type_drive_d", "company_d"];
+            $optionalHeaders = ["year_manufacture", "IUS", "unification_crane", "type_reinforcement", "pressure", "execution", "year_commission", "factory_number", "id_malfunction", "plan_replacement", "classification_installation", "factory_number_d", "liquid_d", "year_commission_d"];
+   
+            if (in_array(strtolower($ext), $allowedExtensions)) {
+                // Всё ок — можно обрабатывать файл
+                if (($handle = fopen($tmpName, "r")) !== false) {
+                    $headers = fgetcsv($handle, 1000, ",");
+                    if ($headers) {
+                        $missingKeys = array_diff($requiredHeaders, $headers);
+                        // echo json_encode(["test" => $missingKeys]);
+                        if (count($missingKeys) === 0) {
+                            // Все обязательные заголовки на месте — продолжаем
+                            $created = [];
+                            $errors = [];
+
+                            while (($row = fgetcsv($handle)) !== false) {
+                                $data = array_combine($headers, $row);
+                                if ($data === false) {
+                                    $errors[] = "Ошибка в строке: " . implode(", ", $row);
+                                    continue;
+                                }
+
+                                // Отделяем обязательные и опциональные поля
+                                $requiredKeys = $requiredHeaders;
+                                $optionalKeys = $optionalHeaders;
+                                $missingKeys = array_diff($requiredKeys, array_keys($data));
+
+                                if (!empty($missingKeys)) {
+                                    $errors[] = ["строка" => $data, "ошибка" => "Не хватает обязательных полей: " . implode(", ", $missingKeys)];
+                                    continue;
+                                }
+
+                                // Привод — только поля с суффиксом _d
+                                $driveParams = [];
+                                foreach ($data as $key => $value) {
+                                    if (str_ends_with($key, '_d')) {
+                                        $newKey = substr($key, 0, -2); // убираем _d
+                                        $driveParams[$newKey] = $value;
+                                    }
+                                }
+
+                                $idDrive = insertRes('drives', $driveParams);
+
+                                if ($idDrive) {
+                                    // Кран — все остальные, кроме _d
+                                    $fittingsParams = [];
+                                    foreach ($data as $key => $value) {
+                                        if (!str_ends_with($key, '_d')) {
+                                            $fittingsParams[$key] = $value;
+                                        }
+                                    }
+                                    $fittingsParams['id_drive'] = $idDrive;
+
+                                    try {
+                                        $idFitting = insertRes('fittings', $fittingsParams);
+                                        $created[] = $idFitting;
+                                    } catch (PDOException $e) {
+                                        // если кран не удалось создать — удалим привод
+                                        deleteRes('drives', $idDrive);
+                                        $errors[] = ["строка" => $data, "ошибка" => "Ошибка при добавлении крана: " . $e->getMessage()];
+                                    }
+                                } else {
+                                    $errors[] = ["строка" => $data, "ошибка" => "Не удалось создать привод"];
+                                }
+                            }
+
+                            fclose($handle);
+
+                            // Ответ
+                            if (count($errors) === 0 && count($created) !== 0) {
+                                echo json_encode(["status" => "Все краны успешно добавлены", "created" => $created]);
+                            } else if (count($errors) === 0) {
+                                http_response_code(207); // Partial Success
+                                echo json_encode(["status" => "Файл не содержит ни одного крана"]);
+                            } else {
+                                http_response_code(207); // Partial Success
+                                echo json_encode([
+                                    "status" => "Некоторые записи не удалось добавить",
+                                    "created" => $created,
+                                    "errors" => $errors
+                                ]);
+                            }
+                        } else {
+                            http_response_code(400);
+                            echo json_encode(["status" => "Отсутствуют обязательные поля", "missing_keys" => array_values($missingKeys)]);
+                        }
+                    } else {
+                        http_response_code(400);
+                        echo json_encode(["status" => "Заголовки не прочитались из файла"]);
+                    }
+                } else {
+                    http_response_code(500);
+                    echo json_encode(["status" => "Файл не удалось открыть"]);
+                }
+            } else {
+               http_response_code(400);
+               echo json_encode(["status" => "Недопустимое расширение файла"]);
+            }
+        } else {
+            http_response_code(403);
+            echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
+        };
+        return;
+
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // вначале создать привод INSERT INTO `drives` (`id`, `type_drive`, `company`, `factory_number`, `liquid`, `year_commission`) VALUES (NULL, 'Пневматический', 'JSW', NULL, NULL, '2004');
         // потом взять ID созданного привода и добавить в запрос по созданию крана
         // пример запроса создания крана INSERT INTO `fittings` (`id`, `name_highways`, `crane_class`, `name_crane`, `location_crane`, `technical_number`, `company`, `year_manufacture`, `factory_number`, `Dn`, `id_malfunction`, `plan_replacement`, `IUS`, `unification_crane`, `type_reinforcement`, `pressure`, `execution`, `year_commission`, `id_drive`, `classification_installation`)

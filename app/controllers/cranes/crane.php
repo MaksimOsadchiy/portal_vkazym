@@ -25,39 +25,39 @@ if (isset($_SESSION['id'])) {
                     $headers = fgetcsv($handle, 1000, ",");
                     if ($headers) {
                         $missingKeys = array_diff($requiredHeaders, $headers);
-                        // echo json_encode(["test" => $missingKeys]);
                         if (count($missingKeys) === 0) {
                             // Все обязательные заголовки на месте — продолжаем
                             $created = [];
                             $errors = [];
+                            $lineNumber = 1;
 
-                            while (($row = fgetcsv($handle)) !== false) {
+                            while (($baseRow = fgetcsv($handle)) !== false) {
+                                $row = array_map(function($value) {
+                                    return mb_strtolower($value, 'UTF-8') === 'null' ? null : $value;
+                                }, $baseRow);
+
+                                $lineNumber += 1;
+                                if (count($headers) !== count($row)) {
+                                    $errors[] = ["строка" => implode(", ", $row), "ошибка" => "Ошибка в строке №$lineNumber: " . "поля не соответствуют правильной структуре"];
+                                    continue;
+                                };
+
                                 $data = array_combine($headers, $row);
-                                if ($data === false) {
-                                    $errors[] = "Ошибка в строке: " . implode(", ", $row);
-                                    continue;
-                                }
-
-                                // Отделяем обязательные и опциональные поля
-                                $requiredKeys = $requiredHeaders;
-                                $optionalKeys = $optionalHeaders;
-                                $missingKeys = array_diff($requiredKeys, array_keys($data));
-
-                                if (!empty($missingKeys)) {
-                                    $errors[] = ["строка" => $data, "ошибка" => "Не хватает обязательных полей: " . implode(", ", $missingKeys)];
-                                    continue;
-                                }
-
                                 // Привод — только поля с суффиксом _d
                                 $driveParams = [];
                                 foreach ($data as $key => $value) {
                                     if (str_ends_with($key, '_d')) {
-                                        $newKey = substr($key, 0, -2); // убираем _d
+                                        $newKey = substr($key, 0, -2); // убираем '_d'
                                         $driveParams[$newKey] = $value;
                                     }
                                 }
 
-                                $idDrive = insertRes('drives', $driveParams);
+                                $idDrive = false;
+                                try {
+                                    $idDrive = insertRes('drives', $driveParams);
+                                } catch (PDOException $e) {
+                                    $errors[] = ["строка" => $data, "ошибка" => "Не удалось создать привод в строке $lineNumber: " . $e->getMessage()];
+                                }
 
                                 if ($idDrive) {
                                     // Кран — все остальные, кроме _d
@@ -75,10 +75,8 @@ if (isset($_SESSION['id'])) {
                                     } catch (PDOException $e) {
                                         // если кран не удалось создать — удалим привод
                                         deleteRes('drives', $idDrive);
-                                        $errors[] = ["строка" => $data, "ошибка" => "Ошибка при добавлении крана: " . $e->getMessage()];
+                                        $errors[] = ["строка" => $data, "ошибка" => "Ошибка при добавлении крана (строка $lineNumber): " . $e->getMessage()];
                                     }
-                                } else {
-                                    $errors[] = ["строка" => $data, "ошибка" => "Не удалось создать привод"];
                                 }
                             }
 
@@ -88,10 +86,10 @@ if (isset($_SESSION['id'])) {
                             if (count($errors) === 0 && count($created) !== 0) {
                                 echo json_encode(["status" => "Все краны успешно добавлены", "created" => $created]);
                             } else if (count($errors) === 0) {
-                                http_response_code(207); // Partial Success
+                                http_response_code(207);
                                 echo json_encode(["status" => "Файл не содержит ни одного крана"]);
                             } else {
-                                http_response_code(207); // Partial Success
+                                http_response_code(207);
                                 echo json_encode([
                                     "status" => "Некоторые записи не удалось добавить",
                                     "created" => $created,

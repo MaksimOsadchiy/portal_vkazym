@@ -21,7 +21,7 @@ function dbCheckErrorRes($query){
     $errInfo = $query->errorInfo();
     if ($errInfo[0] !== PDO::ERR_NONE) {
 		http_response_code(500);
-        echo $errInfo[2];
+        // echo $errInfo[2]; // убрвл, чтобы возвращать читабельную ошибку
         // exit();
         return throw new PDOException($errInfo[2]);
     };
@@ -124,10 +124,10 @@ function insertRes($table, $params){
 	foreach ($params as $key => $value) {
 		if ($i === 0) {
 			$coll = $coll . "$key";
-			$mask = $mask . "'" . "$value" . "'";
+			$mask = ($value === null) ? $mask . "NULL" : $mask . "'" . "$value" . "'";
 		} else {
 			$coll = $coll . ", $key";
-			$mask = $mask . ", '" . "$value" . "'";
+			$mask = ($value === null) ? $mask . ", NULL" : $mask . ", '" . $value . "'";
 		};
 		$i++;
 	};

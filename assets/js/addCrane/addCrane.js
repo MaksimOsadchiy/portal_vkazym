@@ -24,6 +24,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return [];
 		}
 	};
+	const postCraneAndStay = async (newCrane) => {
+		try {
+			const response = await fetch(`${SERVER_URL}cranes/crane.php`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(newCrane),
+			});
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Кран Создан!' })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+		} catch (error) {
+			console.log(error);
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return [];
+		}
+	};
 	const createCSV = async (file) => {
 		try {
 			const formData = new FormData();
@@ -93,13 +116,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 		body.appendChild(managmentBtn);
 		const mainContent = `
 			<p class="mb-2 fs-5">Характеристики ТПА</p>
-			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${
-				SESSION.accessibility[0].id_role === 2 ||
-				+SESSION.accessibility.find((obj) => obj.name === 'cranes')
-					.privilege === 3
-					? ''
-					: 'disabled'
-			}>Изменить</button>
+			<div class="d-flex flex-row flex-nowrap gap-2">
+				<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${
+					SESSION.accessibility[0].id_role === 2 ||
+					+SESSION.accessibility.find((obj) => obj.name === 'cranes')
+						.privilege === 3
+						? ''
+						: 'disabled'
+				}>Изменить</button>
+			</div>
 			<div class="table table-main-info d-flex flex-column align-items-center">
 				<div class="thead d-flex flex-column">
 					<div class="t-row d-flex flex-row justify-content-center">
@@ -109,13 +134,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 				</div>
 				<div class="tbody d-flex flex-column"></div>
 			</div>
-			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${
-				SESSION.accessibility[0].id_role === 2 ||
-				+SESSION.accessibility.find((obj) => obj.name === 'cranes')
-					.privilege === 3
-					? ''
-					: 'disabled'
-			}>Изменить</button>`;
+			<div class="d-flex flex-row flex-nowrap gap-2">
+				<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${
+					SESSION.accessibility[0].id_role === 2 ||
+					+SESSION.accessibility.find((obj) => obj.name === 'cranes')
+						.privilege === 3
+						? ''
+						: 'disabled'
+				}>Изменить</button>
+			</div>`;
 		body.insertAdjacentHTML('beforeend', mainContent);
 		const bodyTable = document
 			.querySelector('.table-main-info')
@@ -164,14 +191,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const btnAll = document.querySelectorAll('.btn-main-info');
 		btnAll.forEach((btn) => {
 			const newBtn = document.createElement('button');
-
 			newBtn.className = `${obj.style} btn-main-info btn btn-secondary mb-2`;
 			newBtn.innerText = obj.value;
+			if (obj.style === 'btn-save-main-info') {
+				btn.parentNode.replaceChild(newBtn, btn);
+				const secBtn = document.createElement('button');
+				secBtn.className = `btn-save-and-stay btn btn-secondary mb-2`;
+				secBtn.innerText = 'Сохранить и остаться';
 
-			btn.parentNode.replaceChild(newBtn, btn);
+				newBtn.parentNode.appendChild(secBtn);
 
-			const func = obj.func;
-			func(newBtn);
+				const func = obj.func;
+				func(newBtn);
+				const secFunc = obj.secFunc;
+				secFunc(secBtn);
+			} else {
+				const parent = btn.parentNode;
+				parent.innerHTML = '';
+				parent.appendChild(newBtn);
+
+				const func = obj.func;
+				func(newBtn);
+			}
 		});
 	};
 	//
@@ -315,6 +356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				style: 'btn-save-main-info',
 				value: 'Сохранить',
 				func: (el) => addEventBtnSaveMainInfo(el),
+				secFunc: (el) => addEventBtnSaveMainInfoAndStay(el),
 			};
 			drawBtnForMainInfo(obj);
 			const allRow = document
@@ -468,6 +510,84 @@ document.addEventListener('DOMContentLoaded', async () => {
 				year_commission_d: collectData.drive_year_commission,
 			};
 			await postCrane(newCrane);
+		});
+	};
+	const addEventBtnSaveMainInfoAndStay = (btn) => {
+		btn.addEventListener('click', async () => {
+			const obj = {
+				style: 'btn-change-main-info',
+				value: 'Изменить',
+				func: (el) => addEventBtnChangeMainInfo(el),
+			};
+			drawBtnForMainInfo(obj);
+			const allRow = document
+				.querySelector('.table-main-info')
+				.querySelector('.tbody')
+				.querySelectorAll('.t-row');
+			const collectData = {};
+
+			allRow.forEach((row) => {
+				const key = row.getAttribute('key');
+				if (key === 'crane_class') {
+					const paragraph = document.createElement('p');
+					paragraph.className = 'column th text-center';
+					const nextRow = row.nextElementSibling;
+					const lastChild = row.lastChild;
+					const text =
+						lastChild.options[lastChild.selectedIndex].text;
+					const nextText =
+						nextRow.querySelector('select').options[
+							nextRow.querySelector('select').selectedIndex
+						].text;
+					paragraph.innerText =
+						text && nextText
+							? `${text}, ${nextText}`
+							: `${text ? text : 'Класс крана не выбран'}, ${
+									nextText ? nextText : 'тип крана не выбран'
+							  }`;
+					row.replaceChild(paragraph, lastChild);
+					if (lastChild.value != -1)
+						collectData[key] = lastChild.value;
+				} else if (key === 'name_cranes') {
+					const lastChild = row.lastChild;
+					if (lastChild.value != -1)
+						collectData[key] = lastChild.value;
+					row.remove();
+				} else {
+					const paragraph = document.createElement('p');
+					const lastChild = row.lastChild;
+					paragraph.className = 'column th text-center';
+					const text =
+						lastChild.tagName.toLowerCase() === 'select'
+							? lastChild.options[lastChild.selectedIndex].text
+							: lastChild.value;
+					paragraph.innerText = text;
+					row.replaceChild(paragraph, lastChild);
+					if (lastChild.value != -1)
+						collectData[key] = lastChild.value;
+				}
+			});
+			console.log(collectData);
+			const newCrane = {
+				name_highways: collectData.name_highways,
+				crane_class: collectData.crane_class,
+				name_crane: collectData.name_cranes,
+				location_crane: collectData.location_crane,
+				technical_number: collectData.technical_number,
+				company: collectData.company,
+				year_manufacture: collectData.f_manufacture,
+				Dn: collectData.dn,
+				IUS: collectData.ius,
+				unification_crane: collectData.unification_crane,
+				type_reinforcement: collectData.type_reinforcement,
+				pressure: collectData.pressure,
+				execution: collectData.execution,
+				year_commission: collectData.f_commission,
+				type_drive_d: collectData.type_drive,
+				company_d: collectData.drive_company,
+				year_commission_d: collectData.drive_year_commission,
+			};
+			await postCraneAndStay(newCrane);
 		});
 	};
 

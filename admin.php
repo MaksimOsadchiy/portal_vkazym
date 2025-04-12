@@ -83,8 +83,8 @@
         <input class="form-control bg-light bg-gradient input-password" type="text" >
     </div>
     <div class="col">
-        <button class="btn-pass btn btn-outline-secondary">Сменить пароль</button>
-        <button class="btn-reset-password btn btn-outline-secondary">Сбросить пароль</button>
+        <button class="btn-reset-password btn-pass btn btn-outline-secondary">Сменить пароль</button>
+        <!-- <button class="btn-reset-password btn btn-outline-secondary">Сбросить пароль</button> -->
     </div>
 </div>
 </div>

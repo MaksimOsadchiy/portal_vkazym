@@ -125,7 +125,7 @@
 .content__body .table,
 .document-container,
 .affiliation-container {
-	width: 75%;
+	width: 87%;
 }
 
 .table {
@@ -189,7 +189,9 @@ textarea.column {
 	max-height: 6rem;
 }
 .complete-activities,
-.possible-cause {
+.possible-cause,
+.fio-logger,
+.fio-troubleshooting {
 	max-height: 59px;
 }
 .note {
@@ -292,6 +294,9 @@ select.red {
 
 		font-size: 10px;
 	}
+}
+.my-form-control {
+	max-width: 18%;
 }
 /*select.green:nth-child(1):active,*/
 /*select.red:nth-child(2):active {*/

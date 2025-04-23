@@ -5,13 +5,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}cranes/crane.php${qparametr}`);
+			const response = await fetch(
+				`${SERVER_URL}cranes/crane.php${qparametr}`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -20,21 +24,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 		try {
 			const qparametr = `?id=${craneData['id_malfunction']}`;
 			const data = collectContentChangeMalfunction();
-			const response = await fetch(`${SERVER_URL}cranes/malfunction.php${qparametr}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/malfunction.php${qparametr}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				}
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Кран изменён!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Кран изменён!' })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return jsonResponse;
 		} catch (error) {
 			console.log(error);
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -46,22 +57,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const qparametr = `?id=${id}`;
 			const formData = new FormData();
 			formData.append('image', data);
-			formData.append('crane_class', craneData.mainInfo['Основное'].crane_class.value);
-			formData.append('name_highways', craneData.mainInfo['Основное'].name_highways.value);
-			formData.append('location_crane', craneData.mainInfo['Основное'].location_crane.value);
-			formData.append('technical_number', craneData.mainInfo['Основное'].technical_number.value);
+			formData.append(
+				'crane_class',
+				craneData.mainInfo['Основное'].crane_class.value
+			);
+			formData.append(
+				'name_highways',
+				craneData.mainInfo['Основное'].name_highways.value
+			);
+			formData.append(
+				'location_crane',
+				craneData.mainInfo['Основное'].location_crane.value
+			);
+			formData.append(
+				'technical_number',
+				craneData.mainInfo['Основное'].technical_number.value
+			);
 
-			const response = await fetch(`${SERVER_URL}cranes/image.php${qparametr}`, {
-				method: 'POST',
-				body: formData,
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/image.php${qparametr}`,
+				{
+					method: 'POST',
+					body: formData,
+				}
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Фото добавлено!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Фото добавлено!' })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -72,15 +102,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}&name=${name}`;
 
-			const response = await fetch(`${SERVER_URL}cranes/image.php${qparametr}`, {
-				method: 'DELETE',
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/image.php${qparametr}`,
+				{
+					method: 'DELETE',
+				}
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Фото удалено!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Фото удалено!' })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 		}
 	};
 	//
@@ -89,13 +126,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}cranes/image.php${qparametr}`);
+			const response = await fetch(
+				`${SERVER_URL}cranes/image.php${qparametr}`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -107,22 +148,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const qparametr = `?id=${id}`;
 			const formData = new FormData();
 			formData.append('image', data);
-			formData.append('crane_class', craneData.mainInfo['Основное'].crane_class.value);
-			formData.append('name_highways', craneData.mainInfo['Основное'].name_highways.value);
-			formData.append('location_crane', craneData.mainInfo['Основное'].location_crane.value);
-			formData.append('technical_number', craneData.mainInfo['Основное'].technical_number.value);
+			formData.append(
+				'crane_class',
+				craneData.mainInfo['Основное'].crane_class.value
+			);
+			formData.append(
+				'name_highways',
+				craneData.mainInfo['Основное'].name_highways.value
+			);
+			formData.append(
+				'location_crane',
+				craneData.mainInfo['Основное'].location_crane.value
+			);
+			formData.append(
+				'technical_number',
+				craneData.mainInfo['Основное'].technical_number.value
+			);
 
-			const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`, {
-				method: 'POST',
-				body: formData,
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/document.php${qparametr}`,
+				{
+					method: 'POST',
+					body: formData,
+				}
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Документ добавлен!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Документ добавлен!' })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
 		}
 	};
@@ -132,13 +192,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`);
+			const response = await fetch(
+				`${SERVER_URL}cranes/document.php${qparametr}`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -146,18 +210,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const deleteDocument = async (id) => {
 		try {
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}cranes/document.php${qparametr}`, {
-				method: 'DELETE',
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/document.php${qparametr}`,
+				{
+					method: 'DELETE',
+				}
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Документ удален!' }));
-			documentUrl = documentUrl.filter((elem) => +elem.id !== +jsonResponse);
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Документ удален!' })
+			);
+			documentUrl = documentUrl.filter(
+				(elem) => +elem.id !== +jsonResponse
+			);
 			drawDocument(documentUrl);
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -167,7 +240,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}cranes/maintenance.php${qparametr}`);
+			const response = await fetch(
+				`${SERVER_URL}cranes/maintenance.php${qparametr}`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
@@ -176,20 +251,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 			});
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
 	//
 	const getTypesWork = async () => {
 		try {
-			const response = await fetch(`${SERVER_URL}cranes/typesMaintenance.php`);
+			const response = await fetch(
+				`${SERVER_URL}cranes/typesMaintenance.php`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -199,7 +280,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}`;
-			const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`);
+			const response = await fetch(
+				`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
@@ -208,7 +291,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			});
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [];
 		}
 	};
@@ -220,17 +305,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const qparametr = `?id=${id}`;
 			const data = collectContentPostMaintenance();
 
-			const response = await fetch(`${SERVER_URL}cranes/maintenance.php${qparametr}`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/maintenance.php${qparametr}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				}
+			);
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'ТОиР добавлен!' }));
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'ТОиР добавлен!' })
+			);
 			clearDataModalWindow();
 			const newObj = {
 				id: +jsonResponse,
@@ -245,7 +335,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (indexListBodyInfo === 2) drawTableAffiliation(maintenance);
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
 		}
 	};
@@ -257,36 +349,53 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${id}`;
 
-			const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				}
+			);
 
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Неисправность добавлена!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', {
+					detail: 'Неисправность добавлена!',
+				})
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			clearDataIdentifiedFaults();
 			const newObj = {
 				id: +jsonResponse,
 				id_fitting: id,
 				possible_cause: data.possibleCause,
-				login_detected: SESSION.login,
-				login_troubleshooting: data.completeActivities ? SESSION.login : '',
-				complete_activities: data.completeActivities ? data.completeActivities : '',
+				user_detection: data.userDetection,
+				user_troubleshooting: data.completeActivities
+					? data.userTroubleshooting
+					: '',
+				complete_activities: data.completeActivities
+					? data.completeActivities
+					: '',
 				note: data.note ? data.note : '',
 				date_detection: data.dateDetection,
-				date_troubleshooting: data.dateTroubleshooting ? data.dateTroubleshooting : '',
+				date_troubleshooting: data.dateTroubleshooting
+					? data.dateTroubleshooting
+					: '',
 				status: data.status,
+				author: SESSION.login,
 			};
 			identifiedFaults = [newObj, ...identifiedFaults];
-			if (indexListBodyInfo === 1) drawTableIdentifiedFaults(identifiedFaults);
+			if (indexListBodyInfo === 1)
+				drawTableIdentifiedFaults(identifiedFaults);
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
 		}
 	};
@@ -294,27 +403,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const putIdentifiedFaults = async () => {
 		try {
 			const data = collectContentPutIdentifiedFaults();
-			let requestData = {};
-			for (const key in data) {
-				if (key === 'id') continue;
-				else if (key === 'login_troubleshooting') requestData['id_user_troubleshooting'] = data[key];
-				else requestData[key] = data[key];
-			}
 			const url = new URL(window.location.href);
 			const id = new URLSearchParams(url.search).get('id');
 			const qparametr = `?id=${data.id}`;
-			const response = await fetch(`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(requestData),
-			});
+			const response = await fetch(
+				`${SERVER_URL}cranes/identifiedFaults.php${qparametr}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				}
+			);
 
 			const jsonResponse = await response.json(); // Получаем тело ответа
 			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Неисправность изменена!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', {
+					detail: 'Неисправность изменена!',
+				})
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 
 			for (let i = 0; i < identifiedFaults.length; i++) {
 				let elem = identifiedFaults[i];
@@ -322,18 +432,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 					const rewriteObj = {
 						id: data.id,
 						id_fitting: id,
-						possible_cause: data.possible_cause ? data.possible_cause : elem.possible_cause,
-						login_detected: data.login_detected ? data.login_detected : elem.login_detected,
-						login_troubleshooting: data.login_troubleshooting
-							? userData.find((elem) => +data.login_troubleshooting === +elem.id).name
-							: elem.login_troubleshooting
-							? elem.login_troubleshooting
+						possible_cause: data.possible_cause
+							? data.possible_cause
+							: elem.possible_cause,
+						user_detection: data.userDetection
+							? data.userDetection
+							: elem.user_detection,
+						user_troubleshooting: data.userTroubleshooting
+							? data.userTroubleshooting
+							: elem.user_troubleshooting
+							? elem.user_troubleshooting
 							: '',
-						complete_activities: data.complete_activities ? data.complete_activities : elem.complete_activities ? elem.complete_activities : '',
-						note: data.note ? data.note : elem.note ? elem.note : '',
-						date_detection: data.date_detection ? data.date_detection : elem.date_detection,
-						date_troubleshooting: data.date_troubleshooting ? data.date_troubleshooting : elem.date_troubleshooting ? elem.date_troubleshooting : '',
+						complete_activities: data.complete_activities
+							? data.complete_activities
+							: elem.complete_activities
+							? elem.complete_activities
+							: '',
+						note: data.note
+							? data.note
+							: elem.note
+							? elem.note
+							: '',
+						date_detection: data.date_detection
+							? data.date_detection
+							: elem.date_detection,
+						date_troubleshooting: data.date_troubleshooting
+							? data.date_troubleshooting
+							: elem.date_troubleshooting
+							? elem.date_troubleshooting
+							: '',
 						status: data.status,
+						author: SESSION.login,
 					};
 					identifiedFaults[i] = rewriteObj;
 				}
@@ -343,7 +472,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return jsonResponse;
 		} catch (error) {
 			console.log(error);
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
 		}
 	};
@@ -360,7 +491,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			}));
 			return jsonResponse;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return {};
 		}
 	};
@@ -369,42 +502,61 @@ document.addEventListener('DOMContentLoaded', async () => {
 		try {
 			const idDrive = craneData.id_drive;
 			const driveQparametr = `?id=${idDrive}`;
-			const drivrResponse = await fetch(`${SERVER_URL}cranes/drive.php${driveQparametr}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(dataDrive),
-			});
+			const drivrResponse = await fetch(
+				`${SERVER_URL}cranes/drive.php${driveQparametr}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(dataDrive),
+				}
+			);
 			const driveJsonResponse = await drivrResponse.json(); // Получаем тело ответа
 			if (!drivrResponse.ok) throw new Error(driveJsonResponse.status); // Проверяем HTTP статус ответа
 			for (const key in dataDrive) {
-				dataDrive[key] && (craneData.mainInfo['Привод'][key].value = dataDrive[key]);
+				dataDrive[key] &&
+					(craneData.mainInfo['Привод'][key].value = dataDrive[key]);
 			}
 
 			const url = new URL(window.location.href);
 			const idFitting = new URLSearchParams(url.search).get('id');
 			const fittingQparametr = `?id=${idFitting}`;
-			const fittingResponse = await fetch(`${SERVER_URL}cranes/crane.php${fittingQparametr}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(dataFitting),
-			});
+			const fittingResponse = await fetch(
+				`${SERVER_URL}cranes/crane.php${fittingQparametr}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(dataFitting),
+				}
+			);
 
 			const fittingJsonResponse = await fittingResponse.json(); // Получаем тело ответа
-			if (!fittingResponse.ok) throw new Error(fittingJsonResponse.status); // Проверяем HTTP статус ответа
+			if (!fittingResponse.ok)
+				throw new Error(fittingJsonResponse.status); // Проверяем HTTP статус ответа
 			for (const key in dataFitting) {
-				if (key === 'crane_class') dataFitting[key] && (craneData.mainInfo['Основное'][key].value = `${dataFitting[key]}, ${dataFitting['name_cranes']}`);
-				else if (key != 'name_cranes') dataFitting[key] && (craneData.mainInfo['Основное'][key].value = dataFitting[key]);
+				if (key === 'crane_class')
+					dataFitting[key] &&
+						(craneData.mainInfo['Основное'][
+							key
+						].value = `${dataFitting[key]}, ${dataFitting['name_cranes']}`);
+				else if (key != 'name_cranes')
+					dataFitting[key] &&
+						(craneData.mainInfo['Основное'][key].value =
+							dataFitting[key]);
 			}
 
-			document.dispatchEvent(new CustomEvent('updateError', { detail: 'Кран изменен!' })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: 'Кран изменен!' })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return [fittingResponse, driveJsonResponse];
 		} catch (error) {
 			console.log(error);
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return false;
 		}
 	};
@@ -421,18 +573,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 			}));
 			return result;
 		} catch (error) {
-			document.dispatchEvent(new CustomEvent('updateError', { detail: error.message })); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
 			return {};
 		}
 	};
 	//
 	const drawTableMalfunction = (crane) => {
-		const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
+		const bodyTable = document
+			.querySelector('.table-malfunction')
+			.querySelector('.tbody');
 		for (const key in crane.secondary) {
 			const title = crane.secondary[key].title;
 			const value = crane.secondary[key].value;
 			const list = crane[`list_${key}`];
-			bodyTable.appendChild(createRowMalfunction(title, value, list, key));
+			bodyTable.appendChild(
+				createRowMalfunction(title, value, list, key)
+			);
 		}
 		addEventSelectOtherCheck(bodyTable.querySelectorAll('select'));
 	};
@@ -444,7 +602,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 		body.appendChild(managmentBtn);
 		const mainContent = `
 			<p class="mb-2 fs-5">Характеристики ТПА</p>
-			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${SESSION.accessibility[0].id_role === 2 || +SESSION.accessibility.find((obj) => obj.name === 'cranes').privilege === 3 ? '' : 'disabled'}>Изменить</button>
+			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${
+				SESSION.accessibility[0].id_role === 2 ||
+				+SESSION.accessibility.find((obj) => obj.name === 'cranes')
+					.privilege === 3
+					? ''
+					: 'disabled'
+			}>Изменить</button>
 			<div class="table table-main-info d-flex flex-column align-items-center">
 				<div class="thead d-flex flex-column">
 					<div class="t-row d-flex flex-row justify-content-center">
@@ -454,24 +618,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 				</div>
 				<div class="tbody d-flex flex-column"></div>
 			</div>
-			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${SESSION.accessibility[0].id_role === 2 || +SESSION.accessibility.find((obj) => obj.name === 'cranes').privilege === 3 ? '' : 'disabled'}>Изменить</button>`;
+			<button class="btn-change-main-info btn-main-info btn btn-secondary mb-2" ${
+				SESSION.accessibility[0].id_role === 2 ||
+				+SESSION.accessibility.find((obj) => obj.name === 'cranes')
+					.privilege === 3
+					? ''
+					: 'disabled'
+			}>Изменить</button>`;
 		body.insertAdjacentHTML('beforeend', mainContent);
-		const bodyTable = document.querySelector('.table-main-info').querySelector('.tbody');
+		const bodyTable = document
+			.querySelector('.table-main-info')
+			.querySelector('.tbody');
 
-		document.querySelectorAll('.btn-change-main-info').forEach((btn) => addEventBtnChangeMainInfo(btn));
+		document
+			.querySelectorAll('.btn-change-main-info')
+			.forEach((btn) => addEventBtnChangeMainInfo(btn));
 
 		for (const key in crane.mainInfo) {
 			bodyTable.appendChild(createSection(key));
 			for (const keyTwo in crane.mainInfo[key]) {
 				const title = crane.mainInfo[key][keyTwo].title;
-				const value = key === 'Исправность' ? crane.mainInfo[key][keyTwo].description : crane.mainInfo[key][keyTwo].value;
+				const value =
+					key === 'Исправность'
+						? crane.mainInfo[key][keyTwo].description
+						: crane.mainInfo[key][keyTwo].value;
 				bodyTable.appendChild(createRowMainInfo(title, value, keyTwo));
 			}
 		}
 	};
 	//
 	const drawImage = (obj) => {
-		const img = document.querySelector('.content__img-container').querySelector('.input__picture');
+		const img = document
+			.querySelector('.content__img-container')
+			.querySelector('.input__picture');
 
 		const btnSave = document.querySelector('.btn-save-img');
 		const btnDelete = document.querySelector('.btn-delete-img');
@@ -482,7 +661,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		img.setAttribute('src', obj.photo_url);
 		img.setAttribute('name', obj.name);
 
-		obj.name === '' ? (btnDelete.disabled = true) : (btnDelete.disabled = false);
+		obj.name === ''
+			? (btnDelete.disabled = true)
+			: (btnDelete.disabled = false);
 		obj.file ? (btnSave.disabled = false) : (btnSave.disabled = true);
 
 		if (urlImg.length < 2) {
@@ -524,7 +705,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 		body.insertAdjacentHTML('beforeend', mainContent);
 
 		const container = document.querySelector('.document-container');
-		data.forEach((obj) => container.appendChild(createRowDocument(obj.id, obj.document_url, obj.name)));
+		data.forEach((obj) =>
+			container.appendChild(
+				createRowDocument(obj.id, obj.document_url, obj.name)
+			)
+		);
 		addEventInputLoadDocument();
 		addEventImgDeleteDocumentClick();
 	};
@@ -551,10 +736,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 			</div>`;
 		body.insertAdjacentHTML('beforeend', mainContent);
 
-		const bodyTable = document.querySelector('.table-affiliation').querySelector('.tbody');
+		const bodyTable = document
+			.querySelector('.table-affiliation')
+			.querySelector('.tbody');
 		bodyTable.innerText = '';
 		maintenance.forEach((elem) => {
-			const list = [elem.date.slice(0, 10), elem.type_maintenance, elem.service, elem.content_work, elem.result, elem.login];
+			const list = [
+				elem.date.slice(0, 10),
+				elem.type_maintenance,
+				elem.service,
+				elem.content_work,
+				elem.result,
+				elem.login,
+			];
 			bodyTable.appendChild(createRowMaintenance(list, elem.id));
 		});
 	};
@@ -580,31 +774,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 				<div class="thead d-flex flex-column">
 					<div class="t-row d-flex flex-row justify-content-center">
 						<p class="column th">Дата выявления неисправности</p>
-						<p class="column th">Фио обнаружевшего</p>
+						<p class="column th">Фио обнаружившего</p>
 						<p class="column th">Характер и возможная причина</p>
 						<p class="column th">Дата устранения неисправности</p>
 						<p class="column th">Выполненные мероприятия</p>
 						<p class="column th">ФИО устранившего</p>
 						<p class="column th">Примечание</p>
 						<p class="column th">Статус</p>
+						<p class="column th">Последние изменения вносил</p>
 					</div>
 				</div>
 				<div class="tbody d-flex flex-column"></div>
 			</div>`;
 		body.insertAdjacentHTML('beforeend', mainContent);
 
-		const bodyTable = document.querySelector('.table-identified-faults').querySelector('.tbody');
+		const bodyTable = document
+			.querySelector('.table-identified-faults')
+			.querySelector('.tbody');
 		bodyTable.innerText = '';
 		identifiedFaults.forEach((elem) => {
 			const list = [
 				elem.date_detection,
-				elem.login_detected,
+				elem.user_detection,
 				formContent(elem.possible_cause, 70),
 				elem.date_troubleshooting ? elem.date_troubleshooting : '-',
-				elem.complete_activities ? formContent(elem.complete_activities, 70) : '-',
-				elem.login_troubleshooting ? elem.login_troubleshooting : '-',
+				elem.complete_activities
+					? formContent(elem.complete_activities, 70)
+					: '-',
+				elem.user_troubleshooting ? elem.user_troubleshooting : '-',
 				elem.note ? formContent(elem.note, 40) : '-',
 				+elem.status ? 'Устранена' : 'Не устранена',
+				elem.author,
 			];
 			bodyTable.appendChild(createRowIdentifiedFaults(list, elem.id));
 		});
@@ -627,6 +827,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     </div>
                                 </div>
                                 <div class="status d-flex flex-row justify-content-between col-10 column-gap-2">
+                                	<p class="fs-6 text-center">ФИО обнаружившего</p>
+									<textarea class="form-control fio-logger"></textarea>
+								</div>
+                                <div class="status d-flex flex-row justify-content-between col-10 column-gap-2">
                                 	<p class="fs-6 text-center">Неисправность устранена?</p>
 									<select class="form-select" aria-label="Default select example" disabled>
 										<option value="0" selected>Нет</option>
@@ -643,6 +847,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                                         <textarea class="form-control complete-activities" id="complete-activities" disabled></textarea>
                                     </div>
                                 </div>
+								<div class="status d-flex flex-row justify-content-between col-10 column-gap-2">
+                                	<p class="fs-6 text-center">ФИО устранившего</p>
+									<textarea class="form-control fio-troubleshooting" disabled></textarea>
+								</div>
                                 <div class="d-flex flex-column col-10 row-gap-2">
                                     <p>Примечания</p>
                                     <textarea class="form-control note" id="note" disabled></textarea>
@@ -724,14 +932,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const status = document.createElement('select');
 		const goodOption = document.createElement('option');
 		const badOption = document.createElement('option');
-		statusContainer.className = 'modal-status d-flex flex-row column-gap-4 pt-2 align-items-start';
+		statusContainer.className =
+			'modal-status d-flex flex-row column-gap-4 pt-2 align-items-start';
 		titleStatus.className = 'col-2 text-end';
 		status.className = 'window-row-data';
 		goodOption.className = 'green';
 		badOption.className = 'red';
 		goodOption.setAttribute('value', 1);
 		badOption.setAttribute('value', 0);
-		data.status ? (goodOption.selected = true) : (badOption.selected = true);
+		data.status
+			? (goodOption.selected = true)
+			: (badOption.selected = true);
 		titleStatus.innerText = 'Статус неисправности';
 		goodOption.innerText = 'Устранена';
 		badOption.innerText = 'Не устранена';
@@ -763,14 +974,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const inputDateDetection = document.createElement('p');
 		const titleNameDetection = document.createElement('p');
 		const nameDetection = document.createElement('p');
-		firstContainer.className = 'd-flex flex-row align-items-center column-gap-4';
+		firstContainer.className =
+			'd-flex flex-row align-items-center column-gap-4';
 		titleDateDetection.className = 'col-2 text-end';
 		inputDateDetection.className = 'window-row-data';
 		nameDetection.className = 'window-row-data';
 		titleDateDetection.innerText = 'Дата:';
 		inputDateDetection.innerText = data.date_detection;
 		titleNameDetection.innerText = 'ФИО:';
-		nameDetection.innerText = data.login_detected;
+		nameDetection.innerText = data.user_detection;
 		firstContainer.appendChild(titleDateDetection);
 		firstContainer.appendChild(inputDateDetection);
 		firstContainer.appendChild(titleNameDetection);
@@ -779,18 +991,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const secondContainer = document.createElement('div');
 		const titlePossibleCause = document.createElement('p');
 		const possibleCause = document.createElement('p');
-		secondContainer.className = 'd-flex flex-row align-items-center column-gap-4';
+		secondContainer.className =
+			'd-flex flex-row align-items-center column-gap-4';
 		titlePossibleCause.className = 'col-2 text-end';
 		possibleCause.className = 'window-row-data col-8';
 		titlePossibleCause.innerText = 'Описание неисправности:';
-		possibleCause.innerText = data.possible_cause ? data.possible_cause : '-';
+		possibleCause.innerText = data.possible_cause
+			? data.possible_cause
+			: '-';
 		secondContainer.appendChild(titlePossibleCause);
 		secondContainer.appendChild(possibleCause);
 
 		modalBody.setAttribute('id', data.id);
 
 		const lastChild = modalBody.lastChild;
-		if (modalBody.querySelector('.temp')) modalBody.removeChild(lastChild.previousElementSibling);
+		if (modalBody.querySelector('.temp'))
+			modalBody.removeChild(lastChild.previousElementSibling);
 		temp.appendChild(firstContainer);
 		temp.appendChild(secondContainer);
 		modalBody.insertBefore(temp, lastChild);
@@ -806,23 +1022,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const inputDateTroubleshooting = document.createElement('input');
 		const titleNameTroubleshooting = document.createElement('p');
 		// const nameTroubleshooting = document.createElement('input');
-		const select = createSelect('', data.login_troubleshooting ? data.login_troubleshooting : '', userData);
-		firstContainer.className = 'd-flex flex-row align-items-center column-gap-4';
-		inputDateTroubleshooting.className = 'input-date-trouble form-control date-from col-3';
+		const fioTroubleshootingTextarea = document.createElement('textarea');
+		firstContainer.className =
+			'd-flex flex-row align-items-center column-gap-4';
+		inputDateTroubleshooting.className =
+			'input-date-trouble form-control date-from col-3';
 		titleDateTroubleshooting.className = 'col-2 text-end';
-		select.classList.add('window-row-data');
-		select.classList.add('input-name-trouble');
+		fioTroubleshootingTextarea.classList.add('form-control');
+		fioTroubleshootingTextarea.classList.add('fio-troubleshooting');
+		fioTroubleshootingTextarea.classList.add('my-form-control');
 		// nameTroubleshooting.className = 'input-name-trouble form-control';
 		inputDateTroubleshooting.setAttribute('type', 'date');
 		// nameTroubleshooting.setAttribute('type', 'text');
 		titleDateTroubleshooting.innerText = 'Дата:';
-		inputDateTroubleshooting.value = data.date_troubleshooting ? data.date_troubleshooting : '';
-		titleNameTroubleshooting.innerText = 'ФИО:';
+		inputDateTroubleshooting.value = data.date_troubleshooting
+			? data.date_troubleshooting
+			: '';
+		titleNameTroubleshooting.innerText = 'ФИО устранившего:';
+		fioTroubleshootingTextarea.innerText = data.user_troubleshooting;
 		// nameTroubleshooting.value = data.login_troubleshooting ? data.login_troubleshooting : '';
 		firstContainer.appendChild(titleDateTroubleshooting);
 		firstContainer.appendChild(inputDateTroubleshooting);
 		firstContainer.appendChild(titleNameTroubleshooting);
-		firstContainer.appendChild(select);
+		firstContainer.appendChild(fioTroubleshootingTextarea);
 		// firstContainer.appendChild(nameTroubleshooting);
 
 		const secondContainer = document.createElement('div');
@@ -832,9 +1054,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 		titleCompleteActivities.className = 'col-2 text-end';
 		completeActivities.className = 'col-8';
 		titleCompleteActivities.innerText = 'Содержание работы:';
-		completeActivities.value = data.complete_activities ? data.complete_activities : '';
+		completeActivities.value = data.complete_activities
+			? data.complete_activities
+			: '';
 		secondContainer.appendChild(titleCompleteActivities);
 		secondContainer.appendChild(completeActivities);
+		console.log(data);
 
 		const thirdContainer = document.createElement('div');
 		const titleNote = document.createElement('p');
@@ -887,7 +1112,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const name = document.createElement('p');
 		const titleService = document.createElement('p');
 		const service = document.createElement('p');
-		firstContainer.className = 'd-flex flex-row align-items-center column-gap-4 mt-3';
+		firstContainer.className =
+			'd-flex flex-row align-items-center column-gap-4 mt-3';
 		titleDate.className = 'col-2 text-end';
 		date.className = 'window-row-data';
 		name.className = 'window-row-data';
@@ -912,7 +1138,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		titleTypeWork.className = 'col-2 text-end';
 		typeWork.className = 'window-row-data col-8';
 		titleTypeWork.innerText = 'Вид ТОиР:';
-		typeWork.innerText = data.type_maintenance ? data.type_maintenance : '-';
+		typeWork.innerText = data.type_maintenance
+			? data.type_maintenance
+			: '-';
 		secondContainer.appendChild(titleTypeWork);
 		secondContainer.appendChild(typeWork);
 
@@ -1005,14 +1233,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const link = document.createElement('a');
 		const deleteDocument = document.createElement('img');
 
-		row.className = 'document-row d-flex flex-row column-gap-4 my-1 py-1 fs-5';
+		row.className =
+			'document-row d-flex flex-row column-gap-4 my-1 py-1 fs-5';
 		link.className = 'document-link';
 		deleteDocument.className = 'delete-document';
 
 		row.setAttribute('id', id);
 		link.setAttribute('href', ref);
 		link.setAttribute('download', name);
-		deleteDocument.setAttribute('src', `${BASE_URL}assets/image/garbage.png`);
+		deleteDocument.setAttribute(
+			'src',
+			`${BASE_URL}assets/image/garbage.png`
+		);
 		link.innerText = name;
 
 		row.appendChild(link);
@@ -1089,7 +1321,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 				const option = document.createElement('option');
 				option.innerText = elem.name;
 				option.value = elem.id;
-				name == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+				name == elem.name &&
+					(option.selected = true) &&
+					select.removeChild(select.firstChild);
 				select.appendChild(option);
 			});
 		}
@@ -1111,7 +1345,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const collectContentChangeMalfunction = () => {
-		const bodyTable = document.querySelector('.table-malfunction').querySelector('.tbody');
+		const bodyTable = document
+			.querySelector('.table-malfunction')
+			.querySelector('.tbody');
 
 		const resultTable = {};
 		const allRow = bodyTable.querySelectorAll('.t-row');
@@ -1119,10 +1355,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const key = row.getAttribute('key');
 			const isTextarea = row.lastChild.tagName === 'TEXTAREA';
 			if (row.lastChild.value >= 0 && !isTextarea) {
-				resultTable[key] = craneData[`list_${key}`].find((el) => +el.id === +row.lastChild.value).name;
+				resultTable[key] = craneData[`list_${key}`].find(
+					(el) => +el.id === +row.lastChild.value
+				).name;
 				if (key === 'result') {
-					document.querySelector('.table-main-info').querySelector(' .tbody').querySelectorAll('.t-row')[1].querySelectorAll('p')[1].innerText =
-						craneData.list_result.find((elem) => +elem.name === +resultTable[key]).description;
+					document
+						.querySelector('.table-main-info')
+						.querySelector(' .tbody')
+						.querySelectorAll('.t-row')[1]
+						.querySelectorAll('p')[1].innerText =
+						craneData.list_result.find(
+							(elem) => +elem.name === +resultTable[key]
+						).description;
 				}
 			} else if (isTextarea && row.lastChild.value) {
 				resultTable[key] = row.lastChild.value;
@@ -1133,30 +1377,57 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const collectContentIdentifiedFaults = () => {
-		const identifiedFaultsContainer = document.querySelector('.content__identified-faults');
+		const identifiedFaultsContainer = document.querySelector(
+			'.content__identified-faults'
+		);
 
-		const possibleCause = identifiedFaultsContainer.querySelector('.possible-cause').value.trim();
-		const dateDetection = identifiedFaultsContainer.querySelector('.identified-faults-date-from').value;
-		const status = +identifiedFaultsContainer.querySelector('.form-select').value;
-		const completeActivities = identifiedFaultsContainer.querySelector('.complete-activities').value.trim();
-		const dateTroubleshooting = identifiedFaultsContainer.querySelector('.identified-faults-date-to').value;
-		const note = identifiedFaultsContainer.querySelector('.note').value.trim();
+		const possibleCause = identifiedFaultsContainer
+			.querySelector('.possible-cause')
+			.value.trim();
+		const dateDetection = identifiedFaultsContainer.querySelector(
+			'.identified-faults-date-from'
+		).value;
+		const fioLogger =
+			identifiedFaultsContainer.querySelector('.fio-logger').value;
+		const status =
+			+identifiedFaultsContainer.querySelector('.form-select').value;
+		const completeActivities = identifiedFaultsContainer
+			.querySelector('.complete-activities')
+			.value.trim();
+		const dateTroubleshooting = identifiedFaultsContainer.querySelector(
+			'.identified-faults-date-to'
+		).value;
+		const fioTroubleshooting = identifiedFaultsContainer.querySelector(
+			'.fio-troubleshooting'
+		).value;
+		const note = identifiedFaultsContainer
+			.querySelector('.note')
+			.value.trim();
 
 		let obj = {};
 		if (!possibleCause) throw new Error('Введите возможную причину!');
-		if (!dateDetection) throw new Error('Введите дату обнаружения неисправности!');
+		if (!dateDetection)
+			throw new Error('Введите дату обнаружения неисправности!');
+		if (!fioLogger)
+			throw new Error('Введите ФИО обнаружившего неисправности!');
 
 		obj = {
 			dateDetection: dateDetection,
 			possibleCause: possibleCause,
-			userDetectionId: SESSION['id'],
+			userDetection: fioLogger,
+			author: SESSION['id'],
 			status: status,
 		};
 		if (status) {
-			if (!completeActivities) throw new Error('Введите выполненые мероприятия!');
-			if (!dateTroubleshooting) throw new Error('Введите дату устранения неисправности!');
+			if (!completeActivities)
+				throw new Error('Введите выполненые мероприятия!');
+			if (!dateTroubleshooting)
+				throw new Error('Введите дату устранения неисправности!');
+			if (!fioTroubleshooting)
+				throw new Error('Введите ФИО устранившего неисправность!');
 			obj.completeActivities = completeActivities;
 			obj.dateTroubleshooting = dateTroubleshooting;
+			obj.userTroubleshooting = fioTroubleshooting;
 			if (note) obj.note = note;
 		}
 
@@ -1164,10 +1435,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const collectContentPostMaintenance = () => {
-		const maintenanceContainer = document.querySelector('.content__maintenance');
-		const date = maintenanceContainer.querySelector('.check-datetime').value;
-		const typeWork = maintenanceContainer.querySelector('.form-select').value;
-		const contentWork = maintenanceContainer.querySelector('.content-work').value;
+		const maintenanceContainer = document.querySelector(
+			'.content__maintenance'
+		);
+		const date =
+			maintenanceContainer.querySelector('.check-datetime').value;
+		const typeWork =
+			maintenanceContainer.querySelector('.form-select').value;
+		const contentWork =
+			maintenanceContainer.querySelector('.content-work').value;
 		const result = maintenanceContainer.querySelector('.result-work').value;
 		const userId = SESSION.id;
 
@@ -1189,29 +1465,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 	//
 	const collectContentPutIdentifiedFaults = () => {
 		const body = document.querySelector('.modal-body');
-		const position = body.querySelector('.temp').querySelectorAll('div').length === 3;
+		const position =
+			body.querySelector('.temp').querySelectorAll('div').length === 3;
 		const id = +body.getAttribute('id');
-		const status = +body.querySelector('.modal-status').querySelector('select').value;
+		const status = +body
+			.querySelector('.modal-status')
+			.querySelector('select').value;
+		// const fioLogger = +body.querySelector('.window-row-data').value;
+		console.log(position);
 		let result = {
 			id,
 			status,
+			author: SESSION['id'],
 		};
 		if (!position) return result;
-		const dateTrouble = body.querySelector('.input-date-trouble').value.trim();
-		const loginTrouble = body.querySelector('.input-name-trouble').value.trim();
+		const dateTrouble = body
+			.querySelector('.input-date-trouble')
+			.value.trim();
 		const allTextarea = body.querySelectorAll('textarea');
-		const contentWork = allTextarea[0].value.trim();
-		const note = allTextarea[1].value.trim();
+		const loginTrouble = allTextarea[0].value.trim();
+		const contentWork = allTextarea[1].value.trim();
+		const note = allTextarea[2].value.trim();
 
-		if (!dateTrouble) throw new Error('Введите дату устранения неисправности');
+		if (!dateTrouble)
+			throw new Error('Введите дату устранения неисправности');
 		if (loginTrouble == -1) throw new Error('Введите ФИО устранившего');
 		if (!contentWork) throw new Error('Введите выполненные мероприятия');
 		result = {
 			id,
 			status,
-			login_troubleshooting: loginTrouble,
+			userTroubleshooting: loginTrouble,
 			complete_activities: contentWork,
 			date_troubleshooting: dateTrouble,
+			author: SESSION['id'],
 		};
 		if (note) result.note = note;
 		return result;
@@ -1232,7 +1518,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		select.value = 0;
 		container.querySelectorAll('textarea').forEach((elem, index) => {
 			elem.value = '';
-			if (index > 0) elem.disabled = true;
+			if (index > 1) elem.disabled = true;
 		});
 		container.querySelectorAll('input').forEach((elem, index) => {
 			elem.value = '';
@@ -1257,9 +1543,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const addEventSelectOtherCheck = (list) => {
 		// const list = document.querySelectorAll('select');
 		list.forEach((elem) => {
-			elem.dataset.previousValue = elem.querySelector(`[value="${elem.value}"]`).textContent;
+			elem.dataset.previousValue = elem.querySelector(
+				`[value="${elem.value}"]`
+			).textContent;
 			elem.addEventListener('change', (e) => {
-				const str = elem.querySelector(`[value="${elem.value}"]`).textContent;
+				const str = elem.querySelector(
+					`[value="${elem.value}"]`
+				).textContent;
 				if (str === 'Ввести свое значение') {
 					const previousValue = e.target.dataset.previousValue;
 					const parent = elem.parentNode;
@@ -1277,7 +1567,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (choosedFile) {
 				const reader = new FileReader();
 				reader.addEventListener('load', () => {
-					const imgData = { photo_url: reader.result, name: urlImg.length + 1, file: choosedFile };
+					const imgData = {
+						photo_url: reader.result,
+						name: urlImg.length + 1,
+						file: choosedFile,
+					};
 					urlImg.push(imgData);
 					indexListUrl = urlImg.length - 1;
 					drawImage(imgData);
@@ -1353,7 +1647,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const allRow = document.querySelectorAll('.document-row');
 		allRow.forEach((elem) => {
 			const img = elem.querySelector('.delete-document');
-			img.addEventListener('click', async () => await deleteDocument(elem.getAttribute('id')));
+			img.addEventListener(
+				'click',
+				async () => await deleteDocument(elem.getAttribute('id'))
+			);
 		});
 	};
 	//
@@ -1362,25 +1659,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 		btn.addEventListener('click', async () => await postNewMaintenance());
 	};
 	//
+	const toggleStateContentIdentifiedFaults = (textarea, textareaSec) => {
+		const container = document.querySelector('.content__identified-faults');
+		if (
+			textarea.value.trim().length > 0 &&
+			textareaSec.value.trim().length > 0
+		) {
+			container.querySelector('.form-select').disabled = false;
+			container.querySelector(
+				'.btn-save-identified-faults'
+			).disabled = false;
+		} else {
+			const selectStatus = document.querySelector('.form-select');
+			const dateTo = container.querySelector(
+				'.identified-faults-date-to'
+			);
+			const complete = container.querySelector('.complete-activities');
+			const note = container.querySelector('.note');
+			container.querySelector(
+				'.btn-save-identified-faults'
+			).disabled = true;
+			[selectStatus, dateTo, complete, note].forEach((elem) => {
+				elem.disabled = true;
+				elem.value = '';
+			});
+			selectStatus.value = 0;
+		}
+	};
+	//
 	const addEventInputPossibleCauseChange = () => {
 		const textarea = document.querySelector('.possible-cause');
-		const container = document.querySelector('.content__identified-faults');
+		const textareaSec = document.querySelector('.fio-logger');
 		textarea.addEventListener('input', () => {
-			if (textarea.value.trim().length > 0) {
-				container.querySelector('.form-select').disabled = false;
-				container.querySelector('.btn-save-identified-faults').disabled = false;
-			} else {
-				const selectStatus = document.querySelector('.form-select');
-				const dateTo = container.querySelector('.identified-faults-date-to');
-				const complete = container.querySelector('.complete-activities');
-				const note = container.querySelector('.note');
-				container.querySelector('.btn-save-identified-faults').disabled = true;
-				[selectStatus, dateTo, complete, note].forEach((elem) => {
-					elem.disabled = true;
-					elem.value = '';
-				});
-				selectStatus.value = 0;
-			}
+			toggleStateContentIdentifiedFaults(textarea, textareaSec);
+		});
+		textareaSec.addEventListener('input', () => {
+			toggleStateContentIdentifiedFaults(textareaSec, textarea);
 		});
 	};
 	//
@@ -1389,13 +1703,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const container = document.querySelector('.content__identified-faults');
 		selectStatus.addEventListener('change', () => {
 			if (+selectStatus.value) {
-				container.querySelector('.identified-faults-date-to').disabled = false;
-				container.querySelector('.complete-activities').disabled = false;
+				container.querySelector(
+					'.identified-faults-date-to'
+				).disabled = false;
+				container.querySelector(
+					'.complete-activities'
+				).disabled = false;
+				container.querySelector(
+					'.fio-troubleshooting'
+				).disabled = false;
 			} else {
-				const dateTo = container.querySelector('.identified-faults-date-to');
-				const complete = container.querySelector('.complete-activities');
+				const dateTo = container.querySelector(
+					'.identified-faults-date-to'
+				);
+				const complete = container.querySelector(
+					'.complete-activities'
+				);
+				const fio = container.querySelector('.fio-troubleshooting');
 				const note = container.querySelector('.note');
-				[dateTo, complete, note].forEach((elem) => {
+				[dateTo, complete, fio, note].forEach((elem) => {
 					elem.disabled = true;
 					elem.value = '';
 				});
@@ -1418,14 +1744,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const addEventBtnHeaderSwitchClick = () => {
-		const switchBtn = document.querySelector('.temp-container').querySelector('.switch').querySelectorAll('button');
+		const switchBtn = document
+			.querySelector('.temp-container')
+			.querySelector('.switch')
+			.querySelectorAll('button');
 		switchBtn.forEach((elem, index) => {
 			elem.addEventListener('click', () => {
 				elem.classList.add('selected-group');
 				elem.disabled = true;
-				switchBtn[switchBtn.length - 1 - index].classList.remove('selected-group');
+				switchBtn[switchBtn.length - 1 - index].classList.remove(
+					'selected-group'
+				);
 				switchBtn[switchBtn.length - 1 - index].disabled = false;
-				index ? drawIdentifiedFaultsContainer() : drawMaintenanceContainer();
+				index
+					? drawIdentifiedFaultsContainer()
+					: drawMaintenanceContainer();
 			});
 		});
 	};
@@ -1445,7 +1778,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const addEventBtnBodySwitchClick = () => {
-		const switchBtn = document.querySelector('.content__body').querySelector('.switch').querySelectorAll('button');
+		const switchBtn = document
+			.querySelector('.content__body')
+			.querySelector('.switch')
+			.querySelectorAll('button');
 		const list = [
 			() => drawTableMainInfo(craneData),
 			() => drawTableIdentifiedFaults(identifiedFaults),
@@ -1474,14 +1810,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 	};
 	//
 	const addEventWindowBtnSwitchClick = (data) => {
-		const switchBtn = document.querySelector('.modal-body').querySelector('.switch').querySelectorAll('button');
+		const switchBtn = document
+			.querySelector('.modal-body')
+			.querySelector('.switch')
+			.querySelectorAll('button');
 		switchBtn.forEach((elem, index) => {
 			elem.addEventListener('click', () => {
 				elem.classList.add('selected-group');
 				elem.disabled = true;
-				switchBtn[switchBtn.length - 1 - index].classList.remove('selected-group');
+				switchBtn[switchBtn.length - 1 - index].classList.remove(
+					'selected-group'
+				);
 				switchBtn[switchBtn.length - 1 - index].disabled = false;
-				index ? drawContentWindowIdentifiedFaultSecond(data) : drawContentWindowIdentifiedFaultFirst(data);
+				index
+					? drawContentWindowIdentifiedFaultSecond(data)
+					: drawContentWindowIdentifiedFaultFirst(data);
 			});
 		});
 	};
@@ -1497,14 +1840,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 				func: (el) => addEventBtnSaveMainInfo(el),
 			};
 			drawBtnForMainInfo(obj);
-			const allRow = document.querySelector('.table-main-info').querySelector('.tbody').querySelectorAll('.t-row');
+			const allRow = document
+				.querySelector('.table-main-info')
+				.querySelector('.tbody')
+				.querySelectorAll('.t-row');
 			allRow.forEach((row) => {
 				const key = row.getAttribute('key');
 				const select = document.createElement('select');
 				const lastChild = row.lastChild;
 
 				const option = document.createElement('option');
-				const text = key === 'crane_class' ? lastChild.textContent.split(', ') : lastChild.textContent;
+				const text =
+					key === 'crane_class'
+						? lastChild.textContent.split(', ')
+						: lastChild.textContent;
 				const curText = key === 'crane_class' ? text[0] : text;
 				option.innerText = curText;
 				option.value = -1;
@@ -1515,7 +1864,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 						const option = document.createElement('option');
 						option.innerText = elem.name;
 						option.value = elem.key;
-						curText == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+						curText == elem.name &&
+							(option.selected = true) &&
+							select.removeChild(select.firstChild);
 						select.appendChild(option);
 					});
 
@@ -1526,7 +1877,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 					const newRow = document.createElement('div');
 					const firstColumn = document.createElement('p');
 					const select = document.createElement('select');
-					newRow.className = 't-row d-flex flex-row justify-content-center';
+					newRow.className =
+						't-row d-flex flex-row justify-content-center';
 					newRow.setAttribute('key', 'name_cranes');
 					firstColumn.className = 'column th text-center';
 					firstColumn.innerText = 'Тип крана';
@@ -1542,7 +1894,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 							const option = document.createElement('option');
 							option.innerText = elem.name;
 							option.value = elem.key;
-							text[1] == elem.name && (option.selected = true) && select.removeChild(select.firstChild);
+							text[1] == elem.name &&
+								(option.selected = true) &&
+								select.removeChild(select.firstChild);
 							select.appendChild(option);
 						});
 					newRow.appendChild(firstColumn);
@@ -1551,7 +1905,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 				}
 			});
 			const selectAll = [];
-			allRow.forEach((elem) => selectAll.push(elem.querySelector('select')));
+			allRow.forEach((elem) =>
+				selectAll.push(elem.querySelector('select'))
+			);
 			addEventSelectOtherCheck(selectAll);
 		});
 	};
@@ -1566,7 +1922,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 				func: (el) => addEventBtnChangeMainInfo(el),
 			};
 			drawBtnForMainInfo(obj);
-			const allRow = document.querySelector('.table-main-info').querySelector('.tbody').querySelectorAll('.t-row');
+			const allRow = document
+				.querySelector('.table-main-info')
+				.querySelector('.tbody')
+				.querySelectorAll('.t-row');
 			const collectData = {};
 
 			allRow.forEach((row) => {
@@ -1576,23 +1935,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 					paragraph.className = 'column th text-center';
 					const nextRow = row.nextElementSibling;
 					const lastChild = row.lastChild;
-					const text = lastChild.options[lastChild.selectedIndex].text;
-					const nextText = nextRow.querySelector('select').options[nextRow.querySelector('select').selectedIndex].text;
+					const text =
+						lastChild.options[lastChild.selectedIndex].text;
+					const nextText =
+						nextRow.querySelector('select').options[
+							nextRow.querySelector('select').selectedIndex
+						].text;
 					paragraph.innerText = `${text}, ${nextText}`;
 					row.replaceChild(paragraph, lastChild);
-					if (lastChild.value != -1) collectData[key] = lastChild.value;
+					if (lastChild.value != -1)
+						collectData[key] = lastChild.value;
 				} else if (key === 'name_cranes') {
 					const lastChild = row.lastChild;
-					if (lastChild.value != -1) collectData[key] = lastChild.value;
+					if (lastChild.value != -1)
+						collectData[key] = lastChild.value;
 					row.remove();
 				} else {
 					const paragraph = document.createElement('p');
 					const lastChild = row.lastChild;
 					paragraph.className = 'column th text-center';
-					const text = lastChild.tagName.toLowerCase() === 'select' ? lastChild.options[lastChild.selectedIndex].text : lastChild.value;
+					const text =
+						lastChild.tagName.toLowerCase() === 'select'
+							? lastChild.options[lastChild.selectedIndex].text
+							: lastChild.value;
 					paragraph.innerText = text;
 					row.replaceChild(paragraph, lastChild);
-					if (lastChild.value != -1) collectData[key] = lastChild.value;
+					if (lastChild.value != -1)
+						collectData[key] = lastChild.value;
 				}
 			});
 

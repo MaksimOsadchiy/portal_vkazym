@@ -368,14 +368,14 @@ function getAllIdentifiedFaults($id) {
                     i.complete_activities,
                     i.note,
                     i.status,
-                    CONCAT(us_d.login) AS `login_detected`,
-                    CONCAT(us_t.login) AS `login_troubleshooting`
+                    i.user_detection,
+                    i.user_troubleshooting,
+                    CONCAT(us_a.login) AS `author`
+
             FROM 
                 identified_faults i
             LEFT JOIN 
-                users us_d ON us_d.id = i.id_user_detection
-			LEFT JOIN 
-				users us_t ON us_t.id = i.id_user_troubleshooting
+                users us_a ON us_a.id = i.id_user_author
             WHERE
                 i.id_fitting = $id;";
 

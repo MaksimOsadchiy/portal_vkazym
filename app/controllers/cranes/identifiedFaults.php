@@ -17,14 +17,15 @@ if (isset($_SESSION['id'])) {
         $params = [
             'id_fitting' => $id,
             'possible_cause' => $data['possibleCause'],
-            'id_user_detection' => $data['userDetectionId'],
+            'user_detection' => $data['userDetection'],
             'date_detection' => $data['dateDetection'],
             'status' => $data['status'],
+            'id_user_author' => $data['author'],
         ];
         if ($data['status'] === 1) {
             $params['complete_activities'] = $data['completeActivities'];
             $params['date_troubleshooting'] = $data['dateTroubleshooting'];
-            $params['id_user_troubleshooting'] = $data['userDetectionId'];
+            $params['user_troubleshooting'] = $data['userTroubleshooting']; // пока так оставить
             if (isset($data['note'])) {
                 $params['note'] = $data['note'];
             };
@@ -37,10 +38,22 @@ if (isset($_SESSION['id'])) {
         if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
             $requestBody = file_get_contents('php://input');
             $data = json_decode($requestBody, true);
-            $table = 'identified_faults';
             $id = $_GET['id'];
+            $table = 'identified_faults';
+            $params = [
+                'status' => $data['status'],
+                'id_user_author' => $data['author'],
+            ];
+            if ($data['status'] === 1) {
+                if (isset($data['completeActivities'])) $params['complete_activities'] = $data['completeActivities'];
+                if (isset($data['dateTroubleshooting'])) $params['date_troubleshooting'] = $data['dateTroubleshooting'];
+                if (isset($data['userTroubleshooting'])) $params['user_troubleshooting'] = $data['userTroubleshooting']; // пока так оставить
+                if (isset($data['note'])) {
+                    $params['note'] = $data['note'];
+                };
+            };
 
-            $response = updateRes($table, $id, $data);
+            $response = updateRes($table, $id, $params);
             echo json_encode($response);
         } else {
             http_response_code(403);

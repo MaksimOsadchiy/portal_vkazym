@@ -338,17 +338,15 @@ function getAllMaintenance($id) {
     $sql = "SELECT 
                     m.id,
                     m.date,
+                    m.user_performed,
                     m.type_maintenance,
-                    s.service,
                     m.content_work, 
                     m.result, 
-                    CONCAT(us.login) AS `login`
+                    CONCAT(us.login) AS `author`
             FROM 
                 maintenance m
             LEFT JOIN 
-                users us ON us.id = m.id_user
-            LEFT JOIN 
-                services s ON s.id = us.service_id
+                users us ON us.id = m.id_user_author
             WHERE
                 m.id_fitting = $id;";
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Апр 23 2025 г., 11:02
+-- Время создания: Апр 23 2025 г., 11:57
 -- Версия сервера: 8.0.39
 -- Версия PHP: 8.2.23
 
@@ -1216,21 +1216,24 @@ INSERT INTO `lpumgs` (`id`, `name`) VALUES
 CREATE TABLE `maintenance` (
   `id` int NOT NULL,
   `id_fitting` int NOT NULL,
+  `user_performed` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `type_maintenance` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `content_work` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `result` varchar(511) COLLATE utf8mb4_general_ci NOT NULL,
-  `id_user` int NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `id_user_author` int NOT NULL,
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Дамп данных таблицы `maintenance`
 --
 
-INSERT INTO `maintenance` (`id`, `id_fitting`, `type_maintenance`, `content_work`, `result`, `id_user`, `date`) VALUES
-(39, 6, 'ТО-1', 'Внешний осмотр', 'Запись в формуляре', 45, '2024-09-29 19:36:20'),
-(40, 6, 'ТО-2', 'Замена масла', 'Выполнено. Запись в формуляре', 45, '2024-09-29 19:36:32'),
-(41, 6, 'ТО-2', 'Набивка крана', 'Выполнено. Запись в формуляре', 45, '2024-09-29 19:36:41');
+INSERT INTO `maintenance` (`id`, `id_fitting`, `user_performed`, `type_maintenance`, `content_work`, `result`, `id_user_author`, `date`) VALUES
+(42, 320, 'ssd hdd cd', 'Вывод ЗРА в ремонт', 'работа', 'Результат', 55, '2025-04-23 16:25:11'),
+(43, 320, 'tt s d', 'ТО-1', 'Содержание ', 'Результат', 55, '2025-04-23 16:31:44'),
+(44, 320, 'ii o i', 'ТО-2', 'Содержание работ', 'Результат Результат', 55, '2025-04-23 16:41:10'),
+(45, 320, 'oo p o', 'Вывод ЗРА в ремонт', 'работ Содержание ', 'Результат X2', 54, '2025-04-23 16:42:04'),
+(46, 320, 'ss cc dd', 'ТО-2', 'работ X3', 'Результат X3', 54, '2025-04-17 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -2485,7 +2488,7 @@ ALTER TABLE `maintenance`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_fitting` (`id_fitting`),
   ADD KEY `type_maintenance` (`type_maintenance`),
-  ADD KEY `id_user` (`id_user`);
+  ADD KEY `id_user` (`id_user_author`);
 
 --
 -- Индексы таблицы `malfunctions`
@@ -2791,7 +2794,7 @@ ALTER TABLE `lpumgs`
 -- AUTO_INCREMENT для таблицы `maintenance`
 --
 ALTER TABLE `maintenance`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT для таблицы `malfunctions`
@@ -2989,7 +2992,7 @@ ALTER TABLE `identified_faults`
 --
 ALTER TABLE `maintenance`
   ADD CONSTRAINT `maintenance_ibfk_1` FOREIGN KEY (`id_fitting`) REFERENCES `fittings` (`id`),
-  ADD CONSTRAINT `maintenance_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `maintenance_ibfk_2` FOREIGN KEY (`id_user_author`) REFERENCES `users` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `microservices`

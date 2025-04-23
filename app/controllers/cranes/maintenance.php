@@ -16,10 +16,12 @@ if (isset($_SESSION['id'])) {
         $table = 'maintenance';
         $params = [
             'id_fitting' => $id,
+            'date' => $data['date'],
             'type_maintenance' => $data['typeWork'],
             'content_work' => $data['contentWork'],
             'result' => $data['result'],
-            'id_user' => $data['userId'],
+            'user_performed' => $data['userPerformed'],
+            'id_user_author' => $data['author'],
         ];
         $response = insertRes($table, $params);
         echo json_encode($response);

@@ -213,6 +213,7 @@ textarea.column {
 	max-width: 60rem;
 }
 .form-control.content-work,
+.user-performed,
 .form-control.result-work {
 	min-height: 3.5rem;
 	max-height: 13rem;

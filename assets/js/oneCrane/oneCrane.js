@@ -324,12 +324,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 			clearDataModalWindow();
 			const newObj = {
 				id: +jsonResponse,
-				login: SESSION['login'],
 				date: data.date,
+				user_performed: data.userPerformed,
 				type_maintenance: data.typeWork,
 				service: SESSION['service_name'].service,
 				content_work: data.contentWork,
 				result: data.result,
+				author: SESSION['login'],
 			};
 			maintenance = [newObj, ...maintenance];
 			if (indexListBodyInfo === 2) drawTableAffiliation(maintenance);
@@ -725,11 +726,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 				<div class="thead d-flex flex-column">
 					<div class="t-row d-flex flex-row justify-content-center">
 						<p class="column th">Дата</p>
+						<p class="column th">ФИО</p>
 						<p class="column th">Вид ТОиР</p>
-						<p class="column th">Служба</p>
 						<p class="column th">Содержание работ</p>
 						<p class="column th">Итог</p>
-						<p class="column th">ФИО</p>
+						<p class="column th">Запись оставил</p>
 					</div>
 				</div>
 				<div class="tbody d-flex flex-column"></div>
@@ -743,11 +744,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 		maintenance.forEach((elem) => {
 			const list = [
 				elem.date.slice(0, 10),
+				elem.user_performed,
 				elem.type_maintenance,
-				elem.service,
 				elem.content_work,
 				elem.result,
-				elem.login,
+				elem.author,
 			];
 			bodyTable.appendChild(createRowMaintenance(list, elem.id));
 		});
@@ -875,6 +876,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     <div class="date d-flex flex-column col-10">
                                         <p>Дата проведения</p>
                                         <input type="date" class="form-control date-from check-datetime" id="dateFrom">
+                                    </div>
+                                </div>
+								<div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
+                                    <div class="d-flex flex-column row-gap-2 col-12">
+                                        <p>ФИО выполняющего</p>
+                                        <textarea class="form-control user-performed"></textarea>
                                     </div>
                                 </div>
                                 <div class="fault-fixed d-flex flex-row justify-content-between col-10 column-gap-2">
@@ -1110,26 +1117,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const date = document.createElement('p');
 		const titleName = document.createElement('p');
 		const name = document.createElement('p');
-		const titleService = document.createElement('p');
-		const service = document.createElement('p');
+		const titleAuthor = document.createElement('p');
+		const author = document.createElement('p');
 		firstContainer.className =
 			'd-flex flex-row align-items-center column-gap-4 mt-3';
 		titleDate.className = 'col-2 text-end';
 		date.className = 'window-row-data';
 		name.className = 'window-row-data';
-		service.className = 'window-row-data';
+		author.className = 'window-row-data';
 		titleDate.innerText = 'Дата:';
 		date.innerText = data.date.slice(0, 10);
 		titleName.innerText = 'ФИО:';
-		name.innerText = data.login;
-		titleService.innerText = 'Служба:';
-		service.innerText = data.service;
+		name.innerText = data.user_performed;
+		titleAuthor.innerText = 'Автор записи:';
+		author.innerText = data.author;
 		firstContainer.appendChild(titleDate);
 		firstContainer.appendChild(date);
 		firstContainer.appendChild(titleName);
 		firstContainer.appendChild(name);
-		firstContainer.appendChild(titleService);
-		firstContainer.appendChild(service);
+		firstContainer.appendChild(titleAuthor);
+		firstContainer.appendChild(author);
 
 		const secondContainer = document.createElement('div');
 		const titleTypeWork = document.createElement('p');
@@ -1445,7 +1452,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const contentWork =
 			maintenanceContainer.querySelector('.content-work').value;
 		const result = maintenanceContainer.querySelector('.result-work').value;
-		const userId = SESSION.id;
+		const userPerformed =
+			maintenanceContainer.querySelector('.user-performed').value;
+		const author = SESSION.id;
 
 		if (!date) throw new Error('Введите дату!');
 		if (typeWork == -1) throw new Error('Введите вид работы!');
@@ -1457,7 +1466,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 			typeWork,
 			contentWork,
 			result,
-			userId,
+			userPerformed,
+			author,
 		};
 
 		return obj;

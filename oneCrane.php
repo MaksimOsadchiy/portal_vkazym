@@ -49,6 +49,7 @@
     <div class="main-container d-flex flex-column align-items-center pt-3">
         <?php include("components/modules.php");?>
         <div class="content d-flex flex-column align-items-center p-3 pb-5">
+            <button class="btn btn-danger btn-delete-crane align-self-center mb-2" disabled>Удалить кран!</button>
             <div class="content__header d-flex flex-row justify-content-between pb-2">
                 <div class="content__img-managment d-flex flex-column align-items-center row-gap-3">
                     <div class="content__img-container d-flex flex-row justify-content-center">

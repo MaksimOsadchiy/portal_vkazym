@@ -304,6 +304,17 @@ if (isset($_SESSION['id'])) {
         };
         return;
 
+    } else if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        if ($_SESSION['accessibility'][0]['id_role'] === 2 || array_values(array_filter($_SESSION['accessibility'], fn($obj) => $obj['name'] === 'cranes'))[0]['privilege'] === 3) {
+            $id = $_GET['id'];
+            $table = 'fittings';
+            $response = deleteRes($table, $id);
+            echo json_encode($response);
+        } else {
+            http_response_code(403);
+            echo json_encode(['status' => 'Вы не можите выполнять данный запрос!']);
+        };
+        return;
     } else {
         http_response_code(405);
         echo json_encode(['status' => 'Данный запрос не поддерживается для данного ресурса!']);

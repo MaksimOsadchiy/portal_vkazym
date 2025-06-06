@@ -581,6 +581,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 	};
 	//
+	const deleteCraneCurrent = async () => {
+		try {
+			const url = new URL(window.location.href);
+			const craneId = new URLSearchParams(url.search).get('id');
+			const response = await fetch(
+				`${SERVER_URL}cranes/crane.php?id=${craneId}`,
+				{
+					method: 'DELETE',
+				}
+			);
+			const jsonResponse = await response.json(); // Получаем тело ответа
+			if (!response.ok) throw new Error(jsonResponse.status); // Проверяем HTTP статус ответа
+			window.location.href = `${BASE_URL}allCranes.php`;
+		} catch (error) {
+			document.dispatchEvent(
+				new CustomEvent('updateError', { detail: error.message })
+			); // Если произошла ошибка, генерируем событие 'updateError' с сообщением об ошибке
+			return {};
+		}
+	};
+	//
 	const drawTableMalfunction = (crane) => {
 		const bodyTable = document
 			.querySelector('.table-malfunction')
@@ -2001,6 +2022,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 			await putForChangeInfo(fittingData, driveData);
 		});
 	};
+	//
+	const identifyDisabled = () => {
+		const deleteBtn = document.querySelector('.btn-delete-crane');
+		if (
+			SESSION.accessibility[0].id_role === 2 ||
+			+SESSION.accessibility.find((obj) => obj.name === 'cranes')
+		) {
+			deleteBtn.disabled = false;
+			deleteBtn.addEventListener('click', () => {
+				const confirmed = confirm(
+					'Вы уверены, что хотите удалить кран?'
+				);
+				if (confirmed) {
+					deleteCraneCurrent();
+				}
+			});
+		} else deleteBtn.disabled = true;
+	};
 
 	//
 	let allData;
@@ -2025,4 +2064,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 	addEventBtnSlideClick();
 	addEventBtnHeaderSwitchClick();
 	addEventBtnBodySwitchClick();
+	identifyDisabled();
 });
